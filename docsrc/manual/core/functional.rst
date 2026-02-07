@@ -1,6 +1,6 @@
-*****************************
+**********************************
 Functional Programming Patterns
-*****************************
+**********************************
 
 MGE provides utilities that enable functional programming patterns and idioms
 in C++.
@@ -32,8 +32,11 @@ The :cpp:class:`mge::on_leave` template implements the scope guard pattern,
 executing a callable when the object leaves scope. This is useful for resource
 cleanup and ensuring actions are performed regardless of how a scope is exited.
 
-.. doxygenclass:: mge::on_leave
-    :members:
+.. cpp:class:: template<typename Callable> mge::on_leave
+
+    Execute a callable on leaving the current scope.
+
+    :tparam Callable: Type of callable to execute
 
 Example usage:
 
@@ -50,7 +53,7 @@ Visitor Pattern Helper
 
 The :cpp:class:`mge::overloaded` struct template simplifies the visitor pattern
 by combining multiple lambda expressions or functors into a single overload set.
-This is particularly useful with :cpp:any:`std::variant` and :cpp:any:`std::visit`.
+This is particularly useful with ``std::variant`` and ``std::visit``.
 
 .. doxygenstruct:: mge::overloaded
     :members:

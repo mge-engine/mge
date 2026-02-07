@@ -15,13 +15,12 @@ arguments, and option values with type safety.
 .. doxygenclass:: mge::program_options
     :members:
 
-.. doxygenclass:: mge::program_options::options
-    :members:
-
 Unknown Option Exception
 -------------------------
 
-.. doxygenclass:: mge::unknown_option
+.. cpp:class:: mge::unknown_option : public mge::exception
+
+    Exception thrown when an unknown command-line option is specified.
 
 Line Editor
 ===========

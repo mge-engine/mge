@@ -8,31 +8,50 @@ enable compile-time introspection and type manipulation.
 Callable Detection
 ==================
 
-Type Trait
-----------
+Type trait and concept for detecting if a type is callable.
 
-.. doxygenclass:: mge::is_callable
-    :members:
+.. cpp:class:: template<typename T> mge::is_callable
 
-Variable Template
------------------
+    Type trait to check if a type is callable.
 
-.. doxygenvariable:: mge::is_callable_v
+    .. cpp:member:: static constexpr bool value
 
-Concept
--------
+        True if T is callable, false otherwise.
 
-.. doxygenconcept:: mge::callable
+.. cpp:var:: template<typename T> inline constexpr bool mge::is_callable_v
+
+    Helper variable template to check if a type is callable.
+
+.. cpp:concept:: template<typename T> mge::callable
+
+    Concept to check if a type is callable.
 
 Function Introspection
 ======================
 
-The :cpp:struct:`mge::function_traits` template provides compile-time
+The ``mge::function_traits`` template provides compile-time
 introspection of callable types, extracting information about return type,
 argument count (arity), and individual argument types.
 
-.. doxygenstruct:: mge::function_traits
-    :members:
+.. cpp:struct:: template<typename T> mge::function_traits
+
+    Function traits for compile-time introspection.
+
+    .. cpp:member:: static constexpr auto arity
+
+        Number of arguments.
+
+    .. cpp:type:: result_type
+
+        Return type of the function.
+
+    .. cpp:struct:: template<size_t I> arg
+
+        Argument type accessor.
+
+        .. cpp:type:: type
+
+            Type of the I-th argument.
 
 Example usage:
 
@@ -72,21 +91,22 @@ Associative Container Concept
 .. doxygenconcept:: mge::is_associative_container
 
 The :cpp:concept:`mge::is_associative_container` concept identifies associative
-containers (like :cpp:any:`std::map`) that support key-based element access.
+containers (like ``std::map``) that support key-based element access.
 
 Shared Pointer Detection
 =========================
 
-Type Trait
-----------
+.. cpp:struct:: template<typename T> mge::is_shared_ptr
 
-.. doxygenstruct:: mge::is_shared_ptr
-    :members:
+    Type trait to detect std::shared_ptr types.
 
-Variable Template
------------------
+    .. cpp:member:: static constexpr bool value
 
-.. doxygenvariable:: mge::is_shared_ptr_v
+        True if T is std::shared_ptr, false otherwise.
+
+.. cpp:var:: template<typename T> inline constexpr bool mge::is_shared_ptr_v
+
+    Helper variable template for shared pointer detection.
 
 Type Pack Utilities
 ===================
@@ -94,10 +114,9 @@ Type Pack Utilities
 Nth Type Extraction
 -------------------
 
-.. doxygentypedef:: mge::nth_type
+.. cpp:type:: template<std::size_t N, typename... Ts> mge::nth_type
 
-The :cpp:type:`mge::nth_type` alias template extracts the type at index N from
-a template parameter pack.
+    Extract the type at index N from a template parameter pack.
 
 Example usage:
 

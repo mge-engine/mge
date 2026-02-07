@@ -1,6 +1,6 @@
-*************
+***************
 Command Buffers
-*************
+***************
 
 Command buffers capture state changes on a graphics pipeline.
 

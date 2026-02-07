@@ -74,52 +74,61 @@ Enumeration Utilities
 Enum Set
 --------
 
-The :cpp:class:`mge::enum_set` template provides a type-safe bitset indexed
+The ``mge::enum_set`` template provides a type-safe bitset indexed
 by enum values.
 
-.. doxygenclass:: mge::enum_set
-    :members:
+.. cpp:class:: template<typename E, E M> mge::enum_set
+
+    A bitset defined using an enum E and a maximum enum value M.
+
+    :tparam E: Enum type
+    :tparam M: Maximum value of enum
 
 Magic Enum Integration
 ----------------------
 
 MGE integrates the magic_enum library to provide reflection capabilities for
-enumerations. The following utilities are available in the :cpp:any:`mge`
+enumerations. The following utilities are available in the ``mge``
 namespace:
 
 Type Traits:
 
-- :cpp:any:`mge::is_scoped_enum` - Check if enum is scoped
-- :cpp:any:`mge::is_scoped_enum_v` - Variable template version
-- :cpp:any:`mge::is_unscoped_enum` - Check if enum is unscoped
-- :cpp:any:`mge::is_unscoped_enum_v` - Variable template version
-- :cpp:any:`mge::underlying_type` - Get underlying type of enum
-- :cpp:any:`mge::underlying_type_t` - Alias template for underlying type
+- ``mge::is_scoped_enum`` - Check if enum is scoped
+- ``mge::is_scoped_enum_v`` - Variable template version
+- ``mge::is_unscoped_enum`` - Check if enum is unscoped
+- ``mge::is_unscoped_enum_v`` - Variable template version
+- ``mge::underlying_type`` - Get underlying type of enum
+- ``mge::underlying_type_t`` - Alias template for underlying type
 
 Enum Functions:
 
-- :cpp:any:`mge::enum_cast` - Convert string to enum value
-- :cpp:any:`mge::enum_name` - Get name of enum value
-- :cpp:any:`mge::enum_type_name` - Get name of enum type
-- :cpp:any:`mge::enum_contains` - Check if value is valid enum
-- :cpp:any:`mge::enum_count` - Get number of enum values
-- :cpp:any:`mge::enum_values` - Get array of all enum values
-- :cpp:any:`mge::enum_entries` - Get array of name-value pairs
-- :cpp:any:`mge::enum_index` - Get index of enum value
-- :cpp:any:`mge::enum_integer` - Convert enum to integer
+- ``mge::enum_cast`` - Convert string to enum value
+- ``mge::enum_name`` - Get name of enum value
+- ``mge::enum_type_name`` - Get name of enum type
+- ``mge::enum_contains`` - Check if value is valid enum
+- ``mge::enum_count`` - Get number of enum values
+- ``mge::enum_values`` - Get array of all enum values
+- ``mge::enum_entries`` - Get array of name-value pairs
+- ``mge::enum_index`` - Get index of enum value
+- ``mge::enum_integer`` - Convert enum to integer
 
 Flags Functions:
 
-- :cpp:any:`mge::enum_flags_cast` - Convert string to enum flags
-- :cpp:any:`mge::enum_flags_name` - Get name of enum flags
-- :cpp:any:`mge::enum_flags_contains` - Check flags contain value
+- ``mge::enum_flags_cast`` - Convert string to enum flags
+- ``mge::enum_flags_name`` - Get name of enum flags
+- ``mge::enum_flags_contains`` - Check flags contain value
 
 To Underlying
 -------------
 
 Convert enum values to their underlying integer type.
 
-.. doxygenfunction:: mge::to_underlying
+.. cpp:function:: template<typename E> constexpr auto mge::to_underlying(E e) -> typename std::underlying_type<E>::type
+
+    Convert enum to underlying type.
+
+    :param e: Enum value
+    :return: Underlying integer value
 
 Cleanup Handlers
 ================
@@ -173,16 +182,6 @@ the container.
 
 .. doxygenfunction:: mge::contains(const Container &, const Element &)
 
-Callback Map
-------------
-
-A callback map is used to manage callbacks or _listeners_. It manages
-a map of keys and callbacks, where the callback key can be used to remove
-a callback again, as function objects can't be compared.
-
-.. doxygenclass:: mge::callback_map
-    :members:
-
 Copy of Structures
 ------------------
 
@@ -231,11 +230,22 @@ Iterator Utilities
 
 Convert iterator to index within container.
 
-.. doxygenfunction:: mge::iterator_index
+.. cpp:function:: template<typename C> typename C::size_type mge::iterator_index(const C &container, const typename C::const_iterator &it)
+
+    Get index of iterator within container.
+
+    :param container: The container
+    :param it: Iterator to find index of
+    :return: Index of the iterator
 
 Lexical Cast
 ------------
 
 Convert between types using string representation.
 
-.. doxygenfunction:: mge::lexical_cast
+.. cpp:function:: template<typename Target, typename Source> Target mge::lexical_cast(const Source &value)
+
+    Convert value from source type to target type via string representation.
+
+    :param value: Value to convert
+    :return: Converted value
