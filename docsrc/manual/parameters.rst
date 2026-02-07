@@ -2,49 +2,34 @@ MGE uses a configuration parameter system to control runtime behavior. Parameter
 
 Parameters are organized into sections corresponding to different subsystems.
 
-Core Parameters
-===============
-
 .. list-table::
    :header-rows: 1
-   :widths: 20 20 20 40
+   :widths: 20 25 15 40
 
    * - Name
      - Type
      - Default
      - Description
+   * - **Core Parameters**
+     - 
+     - 
+     - 
    * - ``module_path``
      - ``std::string``
      - 
      - Paths from which to load modules
-
-Asset Parameters
-================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 30 10 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **Asset Parameters**
+     - 
+     - 
+     - 
    * - ``repositories``
      - ``std::vector<std::map<std::string, std::string>>``
      - 
      - Asset configuration
-
-Graphics Parameters
-===================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **Graphics Parameters**
+     - 
+     - 
+     - 
    * - ``render_system``
      - ``std::string``
      - ``"opengl"``
@@ -61,18 +46,10 @@ Graphics Parameters
      - ``bool``
      - ``false``
      - Honor vertical sync in screen update
-
-DirectX 11 Parameters
-=====================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **DirectX 11 Parameters**
+     - 
+     - 
+     - 
    * - ``debug``
      - ``bool``
      - ``false``
@@ -81,18 +58,10 @@ DirectX 11 Parameters
      - ``bool``
      - ``false``
      - Use the DirectX 11 software device
-
-DirectX 12 Parameters
-=====================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **DirectX 12 Parameters**
+     - 
+     - 
+     - 
    * - ``debug``
      - ``bool``
      - ``false``
@@ -101,34 +70,18 @@ DirectX 12 Parameters
      - ``bool``
      - ``false``
      - Enable DirectX 12 WARP (Windows Advanced Rasterization Platform) device
-
-OpenGL Parameters
-=================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **OpenGL Parameters**
+     - 
+     - 
+     - 
    * - ``debug``
      - ``bool``
      - ``false``
      - Enable OpenGL debug
-
-Vulkan Parameters
-=================
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Name
-     - Type
-     - Default
-     - Description
+   * - **Vulkan Parameters**
+     - 
+     - 
+     - 
    * - ``debug``
      - ``bool``
      - ``true``
