@@ -278,6 +278,10 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
+            - name: Verify Ninja installation
+              run: |
+                ninja --version
+                Write-Output "Ninja location: $(Get-Command ninja | Select-Object -ExpandProperty Source)"
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
@@ -336,6 +340,15 @@ jobs:
                 python tools/ci/vulkan.py
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1           
+            - name: Clean vcpkg downloads on cache hit
+              if: steps.cache-vcpkg.outputs.cache-hit == 'true'
+              run: |
+                $downloadsPath = "${{ github.workspace }}\vcpkg\downloads"
+                if (Test-Path $downloadsPath) {
+                  Write-Output "Cleaning vcpkg downloads to avoid stale ninja..."
+                  Remove-Item -Path "$downloadsPath\tools\ninja-*" -Recurse -Force -ErrorAction SilentlyContinue
+                  Remove-Item -Path "$downloadsPath\ninja-*" -Force -ErrorAction SilentlyContinue
+                }
             - name: Configure project
               run: |
                 $env:CC = "cl.exe"
@@ -361,6 +374,13 @@ jobs:
                     throw
                   }
                   Write-Output "CMake configuration failed on attempt $attempt. Retrying..."
+                  # Clean vcpkg downloads on retry
+                  $downloadsPath = "${{ github.workspace }}\vcpkg\downloads"
+                  if (Test-Path $downloadsPath) {
+                    Write-Output "Cleaning vcpkg downloads before retry..."
+                    Remove-Item -Path "$downloadsPath\tools\ninja-*" -Recurse -Force -ErrorAction SilentlyContinue
+                    Remove-Item -Path "$downloadsPath\ninja-*" -Force -ErrorAction SilentlyContinue
+                  }
                   Start-Sleep -Seconds 5
                   }
                 }
@@ -401,6 +421,10 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
+            - name: Verify Ninja installation
+              run: |
+                ninja --version
+                Write-Output "Ninja location: $(Get-Command ninja | Select-Object -ExpandProperty Source)"
             - name: Install doxygen.install
               run: |
                 choco install doxygen.install
@@ -462,6 +486,15 @@ jobs:
                     core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1           
+            - name: Clean vcpkg downloads on cache hit
+              if: steps.cache-vcpkg.outputs.cache-hit == 'true'
+              run: |
+                $downloadsPath = "${{ github.workspace }}\vcpkg\downloads"
+                if (Test-Path $downloadsPath) {
+                  Write-Output "Cleaning vcpkg downloads to avoid stale ninja..."
+                  Remove-Item -Path "$downloadsPath\tools\ninja-*" -Recurse -Force -ErrorAction SilentlyContinue
+                  Remove-Item -Path "$downloadsPath\ninja-*" -Force -ErrorAction SilentlyContinue
+                }
             - name: Configure project
               run: |
                 $env:CC = "cl.exe"
