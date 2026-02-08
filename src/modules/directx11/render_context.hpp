@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
@@ -68,6 +69,11 @@ namespace mge::dx11 {
         void render(const mge::pass& p) override;
 
     private:
+        void draw_geometry(mge::program*       program,
+                           mge::vertex_buffer* vb,
+                           mge::index_buffer*  ib);
+        ID3D11BlendState*
+             blend_state(const command_buffer::blend_state& blend_state);
         void create_swap_chain();
 
         mge::dx11::render_system&              m_render_system;
@@ -80,7 +86,13 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11Texture2D>         m_back_buffer;
         com_unique_ptr<ID3D11Texture2D>         m_depth_stencil_buffer;
         com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state;
+        com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state_blend;
         com_unique_ptr<ID3D11DepthStencilView>  m_depth_stencil_view;
+
+        using blend_state_cache_type =
+            std::unordered_map<mge::command_buffer::blend_state,
+                               com_unique_ptr<ID3D11BlendState>>;
+        blend_state_cache_type m_blend_state_cache;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

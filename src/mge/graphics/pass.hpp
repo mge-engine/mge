@@ -118,7 +118,7 @@ namespace mge {
         template <typename F> void for_each_draw_command(F&& f) const
         {
             for (const auto& cmd : m_draw_commands) {
-                f(cmd.program, cmd.vertices, cmd.indices);
+                f(cmd.program, cmd.vertices, cmd.indices, cmd.blend_state);
             }
         }
 
@@ -141,9 +141,10 @@ namespace mge {
 
         struct draw_command
         {
-            program_handle       program;
-            vertex_buffer_handle vertices;
-            index_buffer_handle  indices;
+            program_handle              program;
+            vertex_buffer_handle        vertices;
+            index_buffer_handle         indices;
+            command_buffer::blend_state blend_state;
         };
 
         std::vector<draw_command> m_draw_commands;

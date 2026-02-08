@@ -21,6 +21,74 @@ namespace mge {
 
 namespace mge::vulkan {
 
+    static inline VkBlendFactor blend_factor_to_vulkan(blend_factor factor)
+    {
+        switch (factor) {
+        case blend_factor::ZERO:
+            return VK_BLEND_FACTOR_ZERO;
+        case blend_factor::ONE:
+            return VK_BLEND_FACTOR_ONE;
+        case blend_factor::SRC_COLOR:
+            return VK_BLEND_FACTOR_SRC_COLOR;
+        case blend_factor::ONE_MINUS_SRC_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+        case blend_factor::DST_COLOR:
+            return VK_BLEND_FACTOR_DST_COLOR;
+        case blend_factor::ONE_MINUS_DST_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
+        case blend_factor::SRC_ALPHA:
+            return VK_BLEND_FACTOR_SRC_ALPHA;
+        case blend_factor::ONE_MINUS_SRC_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        case blend_factor::DST_ALPHA:
+            return VK_BLEND_FACTOR_DST_ALPHA;
+        case blend_factor::ONE_MINUS_DST_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
+        case blend_factor::CONSTANT_COLOR:
+            return VK_BLEND_FACTOR_CONSTANT_COLOR;
+        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR;
+        case blend_factor::CONSTANT_ALPHA:
+            return VK_BLEND_FACTOR_CONSTANT_ALPHA;
+        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
+        case blend_factor::SRC_ALPHA_SATURATE:
+            return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
+        case blend_factor::SRC1_COLOR:
+            return VK_BLEND_FACTOR_SRC1_COLOR;
+        case blend_factor::ONE_MINUS_SRC1_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR;
+        case blend_factor::SRC1_ALPHA:
+            return VK_BLEND_FACTOR_SRC1_ALPHA;
+        case blend_factor::ONE_MINUS_SRC1_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend factor: " << factor;
+        }
+    }
+
+    static inline VkBlendOp blend_operation_to_vulkan(blend_operation op)
+    {
+        switch (op) {
+        case blend_operation::NONE:
+            return VK_BLEND_OP_ADD;
+        case blend_operation::ADD:
+            return VK_BLEND_OP_ADD;
+        case blend_operation::SUBTRACT:
+            return VK_BLEND_OP_SUBTRACT;
+        case blend_operation::REVERSE_SUBTRACT:
+            return VK_BLEND_OP_REVERSE_SUBTRACT;
+        case blend_operation::MIN:
+            return VK_BLEND_OP_MIN;
+        case blend_operation::MAX:
+            return VK_BLEND_OP_MAX;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend operation: " << op;
+        }
+    }
+
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -826,6 +894,42 @@ namespace mge::vulkan {
         return mge::image_ref();
     }
 
+    void render_context::draw_geometry(
+        VkCommandBuffer                    command_buffer,
+        mge::program*                      program,
+        mge::vertex_buffer*                vb,
+        mge::index_buffer*                 ib,
+        const command_buffer::blend_state& blend_state)
+    {
+        mge::vulkan::program* vk_program =
+            static_cast<mge::vulkan::program*>(program);
+        mge::vulkan::vertex_buffer* vk_vertex_buffer =
+            static_cast<mge::vulkan::vertex_buffer*>(vb);
+        mge::vulkan::index_buffer* vk_index_buffer =
+            static_cast<mge::vulkan::index_buffer*>(ib);
+
+        VkPipeline pipeline =
+            this->pipeline(*vk_vertex_buffer, *vk_program, blend_state);
+        vkCmdBindPipeline(command_buffer,
+                          VK_PIPELINE_BIND_POINT_GRAPHICS,
+                          pipeline);
+
+        VkDeviceSize offsets[1]{0};
+        VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
+        vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
+        vkCmdBindIndexBuffer(command_buffer,
+                             vk_index_buffer->vk_buffer(),
+                             0,
+                             vk_index_buffer->vk_index_type());
+        vkCmdDrawIndexed(
+            command_buffer,
+            static_cast<uint32_t>(vk_index_buffer->element_count()),
+            1,
+            0,
+            0,
+            1);
+    }
+
     void render_context::render(const mge::pass& p)
     {
         if (m_current_frame_state == frame_state::BEFORE_DRAW) {
@@ -926,39 +1030,39 @@ namespace mge::vulkan {
                                   1,
                                   &clear_rect);
         }
-
-        p.for_each_draw_command([this, command_buffer](
-                                    const program_handle&       program,
-                                    const vertex_buffer_handle& vertex_buffer,
-                                    const index_buffer_handle&  index_buffer) {
-            mge::vulkan::program* vk_program =
-                static_cast<mge::vulkan::program*>(program.get());
-            mge::vulkan::vertex_buffer* vk_vertex_buffer =
-                static_cast<mge::vulkan::vertex_buffer*>(vertex_buffer.get());
-            mge::vulkan::index_buffer* vk_index_buffer =
-                static_cast<mge::vulkan::index_buffer*>(index_buffer.get());
-
-            VkPipeline pipeline =
-                this->pipeline(*vk_vertex_buffer, *vk_program);
-            vkCmdBindPipeline(command_buffer,
-                              VK_PIPELINE_BIND_POINT_GRAPHICS,
-                              pipeline);
-
-            VkDeviceSize offsets[1]{0};
-            VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
-            vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
-            vkCmdBindIndexBuffer(command_buffer,
-                                 vk_index_buffer->vk_buffer(),
-                                 0,
-                                 vk_index_buffer->vk_index_type());
-            vkCmdDrawIndexed(
-                command_buffer,
-                static_cast<uint32_t>(vk_index_buffer->element_count()),
-                1,
-                0,
-                0,
-                1);
-        });
+        bool blend_pass_needed = false;
+        p.for_each_draw_command(
+            [this, command_buffer, &blend_pass_needed](
+                const program_handle&              program,
+                const vertex_buffer_handle&        vertex_buffer,
+                const index_buffer_handle&         index_buffer,
+                const command_buffer::blend_state& blend_state) {
+                auto blend_operation = std::get<0>(blend_state);
+                if (blend_operation == mge::blend_operation::NONE) {
+                    draw_geometry(command_buffer,
+                                  program.get(),
+                                  vertex_buffer.get(),
+                                  index_buffer.get(),
+                                  blend_state);
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
+        if (blend_pass_needed) {
+            p.for_each_draw_command(
+                [this, command_buffer](
+                    const program_handle&              program,
+                    const vertex_buffer_handle&        vertex_buffer,
+                    const index_buffer_handle&         index_buffer,
+                    const command_buffer::blend_state& blend_state) {
+                    auto blend_operation = std::get<0>(blend_state);
+                    draw_geometry(command_buffer,
+                                  program.get(),
+                                  vertex_buffer.get(),
+                                  index_buffer.get(),
+                                  blend_state);
+                });
+        }
 
         vkCmdEndRenderPass(command_buffer);
         m_current_frame_state = frame_state::DRAW;
@@ -1024,14 +1128,19 @@ namespace mge::vulkan {
                    std::move(descriptions);
     }
 
-    VkPipeline render_context::pipeline(const vertex_buffer& buffer,
-                                        const program&       program)
+    VkPipeline
+    render_context::pipeline(const vertex_buffer&               buffer,
+                             const program&                     program,
+                             const command_buffer::blend_state& blend_state)
     {
         // binding_description
         // attribute_descriptions -> layout
         // program (pipeline layout)
         // render pass - always the same for now
-        pipeline_key_type key{buffer.vk_buffer(), program.pipeline_layout()};
+        // blend state
+        pipeline_key_type key{buffer.vk_buffer(),
+                              program.pipeline_layout(),
+                              blend_state};
 
         auto it = m_pipelines.find(key);
         if (it != m_pipelines.end()) {
@@ -1117,13 +1226,39 @@ namespace mge::vulkan {
         color_blend_attachment_state.colorWriteMask =
             VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
             VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-        color_blend_attachment_state.blendEnable = VK_FALSE;
-        color_blend_attachment_state.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;
-        color_blend_attachment_state.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
-        color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
-        color_blend_attachment_state.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
-        color_blend_attachment_state.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
-        color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
+
+        auto blend_operation = std::get<0>(blend_state);
+
+        if (blend_operation == mge::blend_operation::NONE) {
+            color_blend_attachment_state.blendEnable = VK_FALSE;
+            color_blend_attachment_state.srcColorBlendFactor =
+                VK_BLEND_FACTOR_ONE;
+            color_blend_attachment_state.dstColorBlendFactor =
+                VK_BLEND_FACTOR_ZERO;
+            color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
+            color_blend_attachment_state.srcAlphaBlendFactor =
+                VK_BLEND_FACTOR_ONE;
+            color_blend_attachment_state.dstAlphaBlendFactor =
+                VK_BLEND_FACTOR_ZERO;
+            color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
+        } else {
+            auto src_factor = std::get<1>(blend_state);
+            auto dst_factor = std::get<2>(blend_state);
+
+            color_blend_attachment_state.blendEnable = VK_TRUE;
+            color_blend_attachment_state.srcColorBlendFactor =
+                blend_factor_to_vulkan(src_factor);
+            color_blend_attachment_state.dstColorBlendFactor =
+                blend_factor_to_vulkan(dst_factor);
+            color_blend_attachment_state.colorBlendOp =
+                blend_operation_to_vulkan(blend_operation);
+            color_blend_attachment_state.srcAlphaBlendFactor =
+                blend_factor_to_vulkan(src_factor);
+            color_blend_attachment_state.dstAlphaBlendFactor =
+                blend_factor_to_vulkan(dst_factor);
+            color_blend_attachment_state.alphaBlendOp =
+                blend_operation_to_vulkan(blend_operation);
+        }
 
         VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
         color_blend_state_create_info.sType =

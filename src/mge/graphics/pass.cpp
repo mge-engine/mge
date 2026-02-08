@@ -102,11 +102,12 @@ namespace mge {
     void pass::submit(const command_buffer& cb)
     {
         if (!cb.empty()) {
-            cb.for_each([this](const program_handle&       program,
-                               const vertex_buffer_handle& vertices,
-                               const index_buffer_handle&  indices) {
+            cb.for_each([this](const program_handle&              program,
+                               const vertex_buffer_handle&        vertices,
+                               const index_buffer_handle&         indices,
+                               const command_buffer::blend_state& blend_state) {
                 m_draw_commands.push_back(
-                    draw_command{program, vertices, indices});
+                    draw_command{program, vertices, indices, blend_state});
             });
         }
         m_active = true;

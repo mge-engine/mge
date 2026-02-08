@@ -16,13 +16,14 @@ namespace mge {
      */
     enum class color_write_mask : uint8_t
     {
-        NONE = 0x00,                     //!< No color channels written
-        RED = 0x01,                      //!< Write red channel
-        GREEN = 0x02,                    //!< Write green channel
-        BLUE = 0x04,                     //!< Write blue channel
-        ALPHA = 0x08,                    //!< Write alpha channel
-        RGB = RED | GREEN | BLUE,        //!< Write RGB channels
-        ALL = RED | GREEN | BLUE | ALPHA //!< Write all channels
+        NONE = 0x00,                       //!< No color channels written
+        RED = 0x01,                        //!< Write red channel
+        GREEN = 0x02,                      //!< Write green channel
+        BLUE = 0x04,                       //!< Write blue channel
+        ALPHA = 0x08,                      //!< Write alpha channel
+        RGB = RED | GREEN | BLUE,          //!< Write RGB channels
+        RGBA = RED | GREEN | BLUE | ALPHA, //!< Write all channels
+        ALL = RGBA
     };
 
     /**

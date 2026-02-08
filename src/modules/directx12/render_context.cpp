@@ -23,6 +23,73 @@ namespace mge {
 }
 
 namespace mge::dx12 {
+    static inline D3D12_BLEND blend_factor_to_dx12(blend_factor factor)
+    {
+        switch (factor) {
+        case blend_factor::ZERO:
+            return D3D12_BLEND_ZERO;
+        case blend_factor::ONE:
+            return D3D12_BLEND_ONE;
+        case blend_factor::SRC_COLOR:
+            return D3D12_BLEND_SRC_COLOR;
+        case blend_factor::ONE_MINUS_SRC_COLOR:
+            return D3D12_BLEND_INV_SRC_COLOR;
+        case blend_factor::DST_COLOR:
+            return D3D12_BLEND_DEST_COLOR;
+        case blend_factor::ONE_MINUS_DST_COLOR:
+            return D3D12_BLEND_INV_DEST_COLOR;
+        case blend_factor::SRC_ALPHA:
+            return D3D12_BLEND_SRC_ALPHA;
+        case blend_factor::ONE_MINUS_SRC_ALPHA:
+            return D3D12_BLEND_INV_SRC_ALPHA;
+        case blend_factor::DST_ALPHA:
+            return D3D12_BLEND_DEST_ALPHA;
+        case blend_factor::ONE_MINUS_DST_ALPHA:
+            return D3D12_BLEND_INV_DEST_ALPHA;
+        case blend_factor::CONSTANT_COLOR:
+            return D3D12_BLEND_BLEND_FACTOR;
+        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
+            return D3D12_BLEND_INV_BLEND_FACTOR;
+        case blend_factor::CONSTANT_ALPHA:
+            return D3D12_BLEND_BLEND_FACTOR;
+        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
+            return D3D12_BLEND_INV_BLEND_FACTOR;
+        case blend_factor::SRC_ALPHA_SATURATE:
+            return D3D12_BLEND_SRC_ALPHA_SAT;
+        case blend_factor::SRC1_COLOR:
+            return D3D12_BLEND_SRC1_COLOR;
+        case blend_factor::ONE_MINUS_SRC1_COLOR:
+            return D3D12_BLEND_INV_SRC1_COLOR;
+        case blend_factor::SRC1_ALPHA:
+            return D3D12_BLEND_SRC1_ALPHA;
+        case blend_factor::ONE_MINUS_SRC1_ALPHA:
+            return D3D12_BLEND_INV_SRC1_ALPHA;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend factor: " << factor;
+        }
+    }
+
+    static inline D3D12_BLEND_OP blend_operation_to_dx12(blend_operation op)
+    {
+        switch (op) {
+        case blend_operation::NONE:
+            return D3D12_BLEND_OP_ADD;
+        case blend_operation::ADD:
+            return D3D12_BLEND_OP_ADD;
+        case blend_operation::SUBTRACT:
+            return D3D12_BLEND_OP_SUBTRACT;
+        case blend_operation::REVERSE_SUBTRACT:
+            return D3D12_BLEND_OP_REV_SUBTRACT;
+        case blend_operation::MIN:
+            return D3D12_BLEND_OP_MIN;
+        case blend_operation::MAX:
+            return D3D12_BLEND_OP_MAX;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend operation: " << op;
+        }
+    }
 
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
@@ -72,20 +139,20 @@ namespace mge::dx12 {
             .ForcedSampleCount = 0,
             .ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF};
 
-        m_blend_desc = {.AlphaToCoverageEnable = FALSE,
-                        .IndependentBlendEnable = FALSE};
+        m_blend_desc_no_blend = {.AlphaToCoverageEnable = FALSE,
+                                 .IndependentBlendEnable = FALSE};
 
-        m_blend_desc.RenderTarget[0] = {.BlendEnable = FALSE,
-                                        .LogicOpEnable = FALSE,
-                                        .SrcBlend = D3D12_BLEND_ONE,
-                                        .DestBlend = D3D12_BLEND_ZERO,
-                                        .BlendOp = D3D12_BLEND_OP_ADD,
-                                        .SrcBlendAlpha = D3D12_BLEND_ONE,
-                                        .DestBlendAlpha = D3D12_BLEND_ZERO,
-                                        .BlendOpAlpha = D3D12_BLEND_OP_ADD,
-                                        .LogicOp = D3D12_LOGIC_OP_NOOP,
-                                        .RenderTargetWriteMask =
-                                            D3D12_COLOR_WRITE_ENABLE_ALL};
+        m_blend_desc_no_blend.RenderTarget[0] = {
+            .BlendEnable = FALSE,
+            .LogicOpEnable = FALSE,
+            .SrcBlend = D3D12_BLEND_ONE,
+            .DestBlend = D3D12_BLEND_ZERO,
+            .BlendOp = D3D12_BLEND_OP_ADD,
+            .SrcBlendAlpha = D3D12_BLEND_ONE,
+            .DestBlendAlpha = D3D12_BLEND_ZERO,
+            .BlendOpAlpha = D3D12_BLEND_OP_ADD,
+            .LogicOp = D3D12_LOGIC_OP_NOOP,
+            .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
     }
 
     void render_context::create_command_queue()
@@ -752,39 +819,72 @@ namespace mge::dx12 {
                 0,
                 nullptr);
         }
+        bool blend_pass_needed = false;
+        p.for_each_draw_command(
+            [&](const mge::program_handle&         program,
+                const mge::vertex_buffer_handle&   vertices,
+                const mge::index_buffer_handle&    indices,
+                const command_buffer::blend_state& blend_state) {
+                auto blend_operation = std::get<0>(blend_state);
+                if (blend_operation == blend_operation::NONE) {
+                    draw_geometry(pass_command_list,
+                                  program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  blend_state);
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
 
-        p.for_each_draw_command([&](const mge::program_handle&       program,
-                                    const mge::vertex_buffer_handle& vertices,
-                                    const mge::index_buffer_handle&  indices) {
-            auto dx12_program = static_cast<dx12::program*>(program.get());
-            if (!dx12_program) {
-                MGE_THROW(mge::illegal_state)
-                    << "Draw command has no program assigned";
-            }
-            const auto& pipeline_state = static_pipeline_state(dx12_program);
-            if (!pipeline_state.Get()) {
-                MGE_THROW(mge::illegal_state)
-                    << "Failed to get pipeline state for program";
-            }
-            auto root_signature = dx12_program->root_signature();
-            pass_command_list->SetGraphicsRootSignature(root_signature);
-            pass_command_list->SetPipelineState(pipeline_state.Get());
-            pass_command_list->IASetPrimitiveTopology(
-                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-            auto dx12_vertices =
-                static_cast<dx12::vertex_buffer*>(vertices.get());
-            pass_command_list->IASetVertexBuffers(0,
-                                                  1,
-                                                  &(dx12_vertices->view()));
-            auto dx12_indices = static_cast<dx12::index_buffer*>(indices.get());
-            pass_command_list->IASetIndexBuffer(&(dx12_indices->view()));
-            pass_command_list->DrawIndexedInstanced(
-                static_cast<UINT>(dx12_indices->element_count()),
-                1,
-                0,
-                0,
-                0);
-        });
+        if (blend_pass_needed) {
+            p.for_each_draw_command(
+                [&](const mge::program_handle&         program,
+                    const mge::vertex_buffer_handle&   vertices,
+                    const mge::index_buffer_handle&    indices,
+                    const command_buffer::blend_state& blend_state) {
+                    draw_geometry(pass_command_list,
+                                  program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  blend_state);
+                });
+        }
+    }
+
+    void render_context::draw_geometry(
+        ID3D12GraphicsCommandList*         command_list,
+        mge::program*                      program,
+        mge::vertex_buffer*                vb,
+        mge::index_buffer*                 ib,
+        const command_buffer::blend_state& blend_state)
+    {
+        auto dx12_program = static_cast<dx12::program*>(program);
+        if (!dx12_program) {
+            MGE_THROW(mge::illegal_state)
+                << "Draw command has no program assigned";
+        }
+        const auto& pipeline_state =
+            static_pipeline_state(dx12_program, blend_state);
+        if (!pipeline_state.Get()) {
+            MGE_THROW(mge::illegal_state)
+                << "Failed to get pipeline state for program";
+        }
+        auto root_signature = dx12_program->root_signature();
+        command_list->SetGraphicsRootSignature(root_signature);
+        command_list->SetPipelineState(pipeline_state.Get());
+        command_list->IASetPrimitiveTopology(
+            D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        auto dx12_vertices = static_cast<dx12::vertex_buffer*>(vb);
+        command_list->IASetVertexBuffers(0, 1, &(dx12_vertices->view()));
+        auto dx12_indices = static_cast<dx12::index_buffer*>(ib);
+        command_list->IASetIndexBuffer(&(dx12_indices->view()));
+        command_list->DrawIndexedInstanced(
+            static_cast<UINT>(dx12_indices->element_count()),
+            1,
+            0,
+            0,
+            0);
     }
 
     mge::image_ref render_context::screenshot()
@@ -815,11 +915,14 @@ namespace mge::dx12 {
     }
 
     const mge::com_ptr<ID3D12PipelineState>&
-    render_context::static_pipeline_state(mge::dx12::program* program)
+    render_context::static_pipeline_state(mge::dx12::program* program,
+                                          const command_buffer::blend_state& bs)
     {
+        pipeline_state_key key = std::make_tuple(program, bs);
+
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            auto it = m_program_pipeline_states.find(program);
+            auto it = m_program_pipeline_states.find(key);
             if (it != m_program_pipeline_states.end()) {
                 return it->second;
             }
@@ -839,7 +942,28 @@ namespace mge::dx12 {
                        ps.code()->GetBufferSize()};
 
         pso_desc.RasterizerState = m_rasterizer_desc;
-        pso_desc.BlendState = m_blend_desc;
+        if (blend_operation::NONE == std::get<0>(bs)) {
+            pso_desc.BlendState = m_blend_desc_no_blend;
+        } else {
+            blend_operation op = std::get<0>(bs);
+            blend_factor    src_factor = std::get<1>(bs);
+            blend_factor    dst_factor = std::get<2>(bs);
+
+            pso_desc.BlendState = {.AlphaToCoverageEnable = FALSE,
+                                   .IndependentBlendEnable = FALSE};
+
+            pso_desc.BlendState.RenderTarget[0] = {
+                .BlendEnable = TRUE,
+                .LogicOpEnable = FALSE,
+                .SrcBlend = blend_factor_to_dx12(src_factor),
+                .DestBlend = blend_factor_to_dx12(dst_factor),
+                .BlendOp = blend_operation_to_dx12(op),
+                .SrcBlendAlpha = blend_factor_to_dx12(src_factor),
+                .DestBlendAlpha = blend_factor_to_dx12(dst_factor),
+                .BlendOpAlpha = blend_operation_to_dx12(op),
+                .LogicOp = D3D12_LOGIC_OP_NOOP,
+                .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
+        }
         pso_desc.DepthStencilState = {.DepthEnable = false,
                                       .StencilEnable = false};
         pso_desc.SampleMask = UINT_MAX;
@@ -854,8 +978,8 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            m_program_pipeline_states.emplace(program, pipeline_state);
-            return m_program_pipeline_states[program];
+            m_program_pipeline_states.emplace(key, pipeline_state);
+            return m_program_pipeline_states[key];
         }
     }
 

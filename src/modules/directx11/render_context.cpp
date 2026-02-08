@@ -22,6 +22,73 @@ namespace mge {
 }
 
 namespace mge::dx11 {
+    static inline D3D11_BLEND blend_factor_to_dx11(blend_factor factor)
+    {
+        switch (factor) {
+        case blend_factor::ZERO:
+            return D3D11_BLEND_ZERO;
+        case blend_factor::ONE:
+            return D3D11_BLEND_ONE;
+        case blend_factor::SRC_COLOR:
+            return D3D11_BLEND_SRC_COLOR;
+        case blend_factor::ONE_MINUS_SRC_COLOR:
+            return D3D11_BLEND_INV_SRC_COLOR;
+        case blend_factor::DST_COLOR:
+            return D3D11_BLEND_DEST_COLOR;
+        case blend_factor::ONE_MINUS_DST_COLOR:
+            return D3D11_BLEND_INV_DEST_COLOR;
+        case blend_factor::SRC_ALPHA:
+            return D3D11_BLEND_SRC_ALPHA;
+        case blend_factor::ONE_MINUS_SRC_ALPHA:
+            return D3D11_BLEND_INV_SRC_ALPHA;
+        case blend_factor::DST_ALPHA:
+            return D3D11_BLEND_DEST_ALPHA;
+        case blend_factor::ONE_MINUS_DST_ALPHA:
+            return D3D11_BLEND_INV_DEST_ALPHA;
+        case blend_factor::CONSTANT_COLOR:
+            return D3D11_BLEND_BLEND_FACTOR;
+        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
+            return D3D11_BLEND_INV_BLEND_FACTOR;
+        case blend_factor::CONSTANT_ALPHA:
+            return D3D11_BLEND_BLEND_FACTOR;
+        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
+            return D3D11_BLEND_INV_BLEND_FACTOR;
+        case blend_factor::SRC_ALPHA_SATURATE:
+            return D3D11_BLEND_SRC_ALPHA_SAT;
+        case blend_factor::SRC1_COLOR:
+            return D3D11_BLEND_SRC1_COLOR;
+        case blend_factor::ONE_MINUS_SRC1_COLOR:
+            return D3D11_BLEND_INV_SRC1_COLOR;
+        case blend_factor::SRC1_ALPHA:
+            return D3D11_BLEND_SRC1_ALPHA;
+        case blend_factor::ONE_MINUS_SRC1_ALPHA:
+            return D3D11_BLEND_INV_SRC1_ALPHA;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend factor: " << factor;
+        }
+    }
+
+    static inline D3D11_BLEND_OP blend_operation_to_dx11(blend_operation op)
+    {
+        switch (op) {
+        case blend_operation::NONE:
+            return D3D11_BLEND_OP_ADD;
+        case blend_operation::ADD:
+            return D3D11_BLEND_OP_ADD;
+        case blend_operation::SUBTRACT:
+            return D3D11_BLEND_OP_SUBTRACT;
+        case blend_operation::REVERSE_SUBTRACT:
+            return D3D11_BLEND_OP_REV_SUBTRACT;
+        case blend_operation::MIN:
+            return D3D11_BLEND_OP_MIN;
+        case blend_operation::MAX:
+            return D3D11_BLEND_OP_MAX;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend operation: " << op;
+        }
+    }
     render_context::render_context(mge::dx11::render_system& render_system_,
                                    mge::dx11::window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -287,73 +354,140 @@ namespace mge::dx11 {
                                                     p.clear_depth_value(),
                                                     0);
         }
+        bool blend_pass_needed = false;
+        p.for_each_draw_command(
+            [this, &blend_pass_needed](
+                program_handle                     program,
+                vertex_buffer_handle               vertices,
+                index_buffer_handle                indices,
+                const command_buffer::blend_state& blend_state) {
+                blend_operation op = std::get<0>(blend_state);
+                if (op == blend_operation::NONE) {
+                    draw_geometry(program.get(), vertices.get(), indices.get());
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
 
-        p.for_each_draw_command([this](program_handle       program,
-                                       vertex_buffer_handle vertices,
-                                       index_buffer_handle  indices) {
-            auto prog = program.get();
-            if (!prog) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has no program assigned";
-            }
-            const dx11::program& dx11_prog =
-                static_cast<const dx11::program&>(*prog);
-            const dx11::shader* dx11_vertex_shader =
-                static_cast<const dx11::shader*>(
-                    dx11_prog.program_shader(mge::shader_type::VERTEX));
-            ID3D11InputLayout* input_layout =
-                dx11_vertex_shader->input_layout();
-            if (input_layout == nullptr) {
-                MGE_THROW(mge::illegal_state)
-                    << "No input layout for vertex shader";
-            }
-            m_device_context->IASetInputLayout(input_layout);
-            m_device_context->IASetPrimitiveTopology(
-                D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        if (blend_pass_needed) {
+            p.for_each_draw_command(
+                [this](program_handle                     program,
+                       vertex_buffer_handle               vertices,
+                       index_buffer_handle                indices,
+                       const command_buffer::blend_state& blend_state) {
+                    blend_operation op = std::get<0>(blend_state);
+                    if (op != blend_operation::NONE) {
+                        ID3D11BlendState* blend_state_obj =
+                            this->blend_state(blend_state);
 
-            const auto& vertex_buffer = vertices.get();
-            if (!vertex_buffer) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has no vertex buffer assigned";
-            }
-            const dx11::vertex_buffer* dx11_vertex_buffer =
-                static_cast<const dx11::vertex_buffer*>(vertex_buffer);
-            UINT element_size =
-                static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
-            UINT          dummy_offset = 0;
-            ID3D11Buffer* vb = dx11_vertex_buffer->buffer();
-            m_device_context->IASetVertexBuffers(0,
-                                                 1,
-                                                 &vb,
-                                                 &element_size,
-                                                 &dummy_offset);
+                        float blend_factor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+                        m_device_context->OMSetBlendState(blend_state_obj,
+                                                          blend_factor,
+                                                          0xffffffff);
 
-            const auto& index_buffer = indices.get();
-            if (!index_buffer) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has no index buffer assigned";
-            }
-            const dx11::index_buffer* dx11_index_buffer =
-                static_cast<const dx11::index_buffer*>(index_buffer);
-            ID3D11Buffer* ib = dx11_index_buffer->buffer();
-            m_device_context->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+                        draw_geometry(program.get(),
+                                      vertices.get(),
+                                      indices.get());
+                    }
+                });
+            m_device_context->OMSetBlendState(nullptr, nullptr, 0xffffffff);
+        }
+    }
 
-            m_device_context->VSSetShader(
-                dx11_vertex_shader->directx_vertex_shader(),
-                nullptr,
-                0);
+    void render_context::draw_geometry(mge::program*       program,
+                                       mge::vertex_buffer* vb,
+                                       mge::index_buffer*  ib)
+    {
+        if (!program) {
+            MGE_THROW(illegal_state) << "Draw command has no program assigned";
+        }
+        const dx11::program& dx11_prog =
+            static_cast<const dx11::program&>(*program);
+        const dx11::shader* dx11_vertex_shader =
+            static_cast<const dx11::shader*>(
+                dx11_prog.program_shader(mge::shader_type::VERTEX));
+        ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
+        if (input_layout == nullptr) {
+            MGE_THROW(mge::illegal_state)
+                << "No input layout for vertex shader";
+        }
+        m_device_context->IASetInputLayout(input_layout);
+        m_device_context->IASetPrimitiveTopology(
+            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-            const dx11::shader* dx11_pixel_shader =
-                static_cast<const dx11::shader*>(
-                    dx11_prog.program_shader(mge::shader_type::FRAGMENT));
-            m_device_context->PSSetShader(
-                dx11_pixel_shader->directx_pixel_shader(),
-                nullptr,
-                0);
-            UINT element_count =
-                static_cast<UINT>(dx11_index_buffer->element_count());
-            m_device_context->DrawIndexed(element_count, 0, 0);
-        });
+        if (!vb) {
+            MGE_THROW(illegal_state)
+                << "Draw command has no vertex buffer assigned";
+        }
+        const dx11::vertex_buffer* dx11_vertex_buffer =
+            static_cast<const dx11::vertex_buffer*>(vb);
+        UINT element_size =
+            static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
+        UINT          dummy_offset = 0;
+        ID3D11Buffer* vb_buffer = dx11_vertex_buffer->buffer();
+        m_device_context->IASetVertexBuffers(0,
+                                             1,
+                                             &vb_buffer,
+                                             &element_size,
+                                             &dummy_offset);
+
+        if (!ib) {
+            MGE_THROW(illegal_state)
+                << "Draw command has no index buffer assigned";
+        }
+        const dx11::index_buffer* dx11_index_buffer =
+            static_cast<const dx11::index_buffer*>(ib);
+        ID3D11Buffer* ib_buffer = dx11_index_buffer->buffer();
+        m_device_context->IASetIndexBuffer(ib_buffer, DXGI_FORMAT_R32_UINT, 0);
+
+        m_device_context->VSSetShader(
+            dx11_vertex_shader->directx_vertex_shader(),
+            nullptr,
+            0);
+
+        const dx11::shader* dx11_pixel_shader =
+            static_cast<const dx11::shader*>(
+                dx11_prog.program_shader(mge::shader_type::FRAGMENT));
+        m_device_context->PSSetShader(dx11_pixel_shader->directx_pixel_shader(),
+                                      nullptr,
+                                      0);
+        UINT element_count =
+            static_cast<UINT>(dx11_index_buffer->element_count());
+        m_device_context->DrawIndexed(element_count, 0, 0);
+    }
+
+    ID3D11BlendState*
+    render_context::blend_state(const command_buffer::blend_state& blend_state)
+    {
+        auto it = m_blend_state_cache.find(blend_state);
+        if (it != m_blend_state_cache.end()) {
+            return it->second.get();
+        }
+
+        blend_operation op = std::get<0>(blend_state);
+        blend_factor    src_factor = std::get<1>(blend_state);
+        blend_factor    dst_factor = std::get<2>(blend_state);
+
+        D3D11_BLEND_DESC blend_desc = {};
+        blend_desc.RenderTarget[0].BlendEnable = TRUE;
+        blend_desc.RenderTarget[0].SrcBlend = blend_factor_to_dx11(src_factor);
+        blend_desc.RenderTarget[0].DestBlend = blend_factor_to_dx11(dst_factor);
+        blend_desc.RenderTarget[0].BlendOp = blend_operation_to_dx11(op);
+        blend_desc.RenderTarget[0].SrcBlendAlpha =
+            blend_factor_to_dx11(src_factor);
+        blend_desc.RenderTarget[0].DestBlendAlpha =
+            blend_factor_to_dx11(dst_factor);
+        blend_desc.RenderTarget[0].BlendOpAlpha = blend_operation_to_dx11(op);
+        blend_desc.RenderTarget[0].RenderTargetWriteMask =
+            D3D11_COLOR_WRITE_ENABLE_ALL;
+
+        ID3D11BlendState* blend_state_obj = nullptr;
+        HRESULT rc = m_device->CreateBlendState(&blend_desc, &blend_state_obj);
+        CHECK_HRESULT(rc, ID3D11Device, CreateBlendState);
+
+        com_unique_ptr<ID3D11BlendState> owned_ptr(blend_state_obj);
+        m_blend_state_cache[blend_state] = std::move(owned_ptr);
+        return m_blend_state_cache[blend_state].get();
     }
 
     mge::image_ref render_context::screenshot()

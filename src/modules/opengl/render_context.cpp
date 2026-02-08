@@ -33,6 +33,74 @@ namespace mge {
 }
 
 namespace mge::opengl {
+    static inline GLenum blend_factor_to_gl(blend_factor factor)
+    {
+        switch (factor) {
+        case blend_factor::ZERO:
+            return GL_ZERO;
+        case blend_factor::ONE:
+            return GL_ONE;
+        case blend_factor::SRC_COLOR:
+            return GL_SRC_COLOR;
+        case blend_factor::ONE_MINUS_SRC_COLOR:
+            return GL_ONE_MINUS_SRC_COLOR;
+        case blend_factor::DST_COLOR:
+            return GL_DST_COLOR;
+        case blend_factor::ONE_MINUS_DST_COLOR:
+            return GL_ONE_MINUS_DST_COLOR;
+        case blend_factor::SRC_ALPHA:
+            return GL_SRC_ALPHA;
+        case blend_factor::ONE_MINUS_SRC_ALPHA:
+            return GL_ONE_MINUS_SRC_ALPHA;
+        case blend_factor::DST_ALPHA:
+            return GL_DST_ALPHA;
+        case blend_factor::ONE_MINUS_DST_ALPHA:
+            return GL_ONE_MINUS_DST_ALPHA;
+        case blend_factor::CONSTANT_COLOR:
+            return GL_CONSTANT_COLOR;
+        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
+            return GL_ONE_MINUS_CONSTANT_COLOR;
+        case blend_factor::CONSTANT_ALPHA:
+            return GL_CONSTANT_ALPHA;
+        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
+            return GL_ONE_MINUS_CONSTANT_ALPHA;
+        case blend_factor::SRC_ALPHA_SATURATE:
+            return GL_SRC_ALPHA_SATURATE;
+        case blend_factor::SRC1_COLOR:
+            return GL_SRC1_COLOR;
+        case blend_factor::ONE_MINUS_SRC1_COLOR:
+            return GL_ONE_MINUS_SRC1_COLOR;
+        case blend_factor::SRC1_ALPHA:
+            return GL_SRC1_ALPHA;
+        case blend_factor::ONE_MINUS_SRC1_ALPHA:
+            return GL_ONE_MINUS_SRC1_ALPHA;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend factor: " << factor;
+        }
+    }
+
+    static inline GLenum blend_operation_to_gl(blend_operation op)
+    {
+        switch (op) {
+        case blend_operation::NONE:
+            return GL_FUNC_ADD; // Default, though NONE shouldn't reach here
+        case blend_operation::ADD:
+            return GL_FUNC_ADD;
+        case blend_operation::SUBTRACT:
+            return GL_FUNC_SUBTRACT;
+        case blend_operation::REVERSE_SUBTRACT:
+            return GL_FUNC_REVERSE_SUBTRACT;
+        case blend_operation::MIN:
+            return GL_MIN;
+        case blend_operation::MAX:
+            return GL_MAX;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend operation: " << op;
+        }
+    }
+
 #ifdef MGE_OS_WINDOWS
     render_context::render_context(mge::opengl::render_system& render_system_,
                                    mge::opengl::window*        context_window)
@@ -223,6 +291,56 @@ namespace mge::opengl {
         return m_window->extent().height;
     }
 
+    void render_context::draw_geometry(mge::program*       program,
+                                       mge::vertex_buffer* vb,
+                                       mge::index_buffer*  ib)
+    {
+        if (!program) {
+            MGE_THROW(illegal_state) << "Draw command has no program assigned";
+        }
+        if (program->needs_link()) {
+            MGE_THROW(illegal_state) << "Draw command has unlinked program "
+                                     << (void*)program << " assigned";
+        }
+
+        mge::opengl::program& gl_program =
+            static_cast<opengl::program&>(*program);
+        glUseProgram(gl_program.program_name());
+        CHECK_OPENGL_ERROR(glUseProgram);
+        if (!vb) {
+            MGE_THROW(illegal_state)
+                << "Draw command has invalid vertex buffer";
+        }
+        if (!ib) {
+            MGE_THROW(illegal_state) << "Draw command has invalid index buffer";
+        }
+
+        mge::opengl::vertex_buffer& gl_vb =
+            static_cast<opengl::vertex_buffer&>(*vb);
+        mge::opengl::index_buffer& gl_ib =
+            static_cast<opengl::index_buffer&>(*ib);
+
+        vao_key key = std::make_tuple(gl_vb.buffer_name(), gl_ib.buffer_name());
+        GLuint  vao = 0;
+        auto    it = m_vaos.find(key);
+        if (it != m_vaos.end()) {
+            vao = it->second;
+        } else {
+            vao = create_vao(&gl_vb, &gl_ib);
+        }
+        glBindVertexArray(vao);
+        CHECK_OPENGL_ERROR(glBindVertexArray);
+        glDrawElements(GL_TRIANGLES,
+                       static_cast<GLsizei>(gl_ib.element_count()),
+                       GL_UNSIGNED_INT,
+                       nullptr);
+        CHECK_OPENGL_ERROR(glDrawElements);
+        glBindVertexArray(0);
+        CHECK_OPENGL_ERROR(glBindVertexArray(0));
+        glUseProgram(0);
+        CHECK_OPENGL_ERROR(glUseProgram(0));
+    }
+
     void render_context::render(const mge::pass& p)
     {
         GLuint fb = 0;
@@ -263,60 +381,45 @@ namespace mge::opengl {
             glClear(GL_DEPTH_BUFFER_BIT);
             CHECK_OPENGL_ERROR(glClear);
         }
-
-        p.for_each_draw_command([this](const program_handle& program_handle,
-                                       const vertex_buffer_handle& vertices,
-                                       const index_buffer_handle&  indices) {
-            auto program = program_handle.get();
-            if (!program) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has no program assigned";
-            }
-            if (program->needs_link()) {
-                MGE_THROW(illegal_state) << "Draw command has unlinked program "
-                                         << (void*)program << " assigned";
-            }
-            mge::opengl::program& gl_program =
-                static_cast<opengl::program&>(*program);
-            glUseProgram(gl_program.program_name());
-            CHECK_OPENGL_ERROR(glUseProgram);
-            auto vb = vertices.get();
-            if (!vb) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has invalid vertex buffer";
-            }
-            auto ib = indices.get();
-            if (!ib) {
-                MGE_THROW(illegal_state)
-                    << "Draw command has invalid index buffer";
-            }
-
-            mge::opengl::vertex_buffer& gl_vb =
-                static_cast<opengl::vertex_buffer&>(*vb);
-            mge::opengl::index_buffer& gl_ib =
-                static_cast<opengl::index_buffer&>(*ib);
-
-            vao_key key =
-                std::make_tuple(gl_vb.buffer_name(), gl_ib.buffer_name());
-            GLuint vao = 0;
-            auto   it = m_vaos.find(key);
-            if (it != m_vaos.end()) {
-                vao = it->second;
-            } else {
-                vao = create_vao(gl_vb, gl_ib);
-            }
-            glBindVertexArray(vao);
-            CHECK_OPENGL_ERROR(glBindVertexArray);
-            glDrawElements(GL_TRIANGLES,
-                           static_cast<GLsizei>(gl_ib.element_count()),
-                           GL_UNSIGNED_INT,
-                           nullptr);
-            CHECK_OPENGL_ERROR(glDrawElements);
-            glBindVertexArray(0);
-            CHECK_OPENGL_ERROR(glBindVertexArray(0));
-            glUseProgram(0);
-            CHECK_OPENGL_ERROR(glUseProgram(0));
-        });
+        bool blend_pass_needed = false;
+        p.for_each_draw_command(
+            [this, &blend_pass_needed](
+                const program_handle&              program,
+                const vertex_buffer_handle&        vertices,
+                const index_buffer_handle&         indices,
+                const command_buffer::blend_state& blend_state) {
+                blend_operation op = std::get<0>(blend_state);
+                if (op == blend_operation::NONE) {
+                    draw_geometry(program.get(), vertices.get(), indices.get());
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
+        if (blend_pass_needed) {
+            glEnable(GL_BLEND);
+            CHECK_OPENGL_ERROR(glEnable);
+            p.for_each_draw_command(
+                [this](const program_handle&              program,
+                       const vertex_buffer_handle&        vertices,
+                       const index_buffer_handle&         indices,
+                       const command_buffer::blend_state& blend_state) {
+                    blend_operation op = std::get<0>(blend_state);
+                    blend_factor    src = std::get<1>(blend_state);
+                    blend_factor    dst = std::get<2>(blend_state);
+                    if (op != blend_operation::NONE) {
+                        glBlendFunc(blend_factor_to_gl(src),
+                                    blend_factor_to_gl(dst));
+                        CHECK_OPENGL_ERROR(glBlendFunc);
+                        glBlendEquation(blend_operation_to_gl(op));
+                        CHECK_OPENGL_ERROR(glBlendEquation);
+                        draw_geometry(program.get(),
+                                      vertices.get(),
+                                      indices.get());
+                    }
+                });
+            glDisable(GL_BLEND);
+            CHECK_OPENGL_ERROR(glDisable);
+        }
     }
 
     mge::image_ref render_context::screenshot()
@@ -333,21 +436,21 @@ namespace mge::opengl {
 #endif
     }
 
-    GLuint render_context::create_vao(mge::opengl::vertex_buffer& vb,
-                                      mge::opengl::index_buffer&  ib)
+    GLuint render_context::create_vao(mge::opengl::vertex_buffer* vb,
+                                      mge::opengl::index_buffer*  ib)
     {
-        vao_key key = std::make_tuple(vb.buffer_name(), ib.buffer_name());
+        vao_key key = std::make_tuple(vb->buffer_name(), ib->buffer_name());
         GLuint  vao = 0;
         glCreateVertexArrays(1, &vao);
         CHECK_OPENGL_ERROR(glCreateVertexArrays);
         glBindVertexArray(vao);
         CHECK_OPENGL_ERROR(glBindVertexArray);
-        glBindBuffer(GL_ARRAY_BUFFER, vb.buffer_name());
+        glBindBuffer(GL_ARRAY_BUFFER, vb->buffer_name());
         CHECK_OPENGL_ERROR(glBindBuffer(GL_ARRAY_BUFFER));
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib.buffer_name());
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->buffer_name());
         CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER));
 
-        const auto& layout = vb.layout();
+        const auto& layout = vb->layout();
         uint32_t    index = 0;
         for (const auto& f : layout.formats()) {
             glEnableVertexAttribArray(index);
