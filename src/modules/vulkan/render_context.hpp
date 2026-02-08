@@ -109,8 +109,15 @@ namespace mge::vulkan {
         const std::vector<VkVertexInputAttributeDescription>&
         vertex_input_attribute_descriptions(const mge::vertex_layout& layout);
 
-        VkPipeline pipeline(const vertex_buffer& buffer,
-                            const program&       program);
+        VkPipeline pipeline(const vertex_buffer&               buffer,
+                            const program&                     program,
+                            const command_buffer::blend_state& blend_state);
+
+        void draw_geometry(VkCommandBuffer                    command_buffer,
+                           mge::program*                      program,
+                           mge::vertex_buffer*                vb,
+                           mge::index_buffer*                 ib,
+                           const command_buffer::blend_state& blend_state);
 
     private:
         void create_surface();
@@ -181,11 +188,9 @@ namespace mge::vulkan {
                            std::vector<VkVertexInputAttributeDescription>>
             m_vertex_input_attribute_descriptions;
 
-        using pipeline_key_type = std::tuple<VkBuffer, VkPipelineLayout>;
-        using pipeline_cache_type =
-            std::unordered_map<pipeline_key_type,
-                               VkPipeline,
-                               std::hash<pipeline_key_type>>;
+        using pipeline_key_type =
+            std::tuple<VkBuffer, VkPipelineLayout, command_buffer::blend_state>;
+        using pipeline_cache_type = std::map<pipeline_key_type, VkPipeline>;
         pipeline_cache_type m_pipelines;
     };
 } // namespace mge::vulkan
