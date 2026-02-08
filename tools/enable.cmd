@@ -36,12 +36,27 @@ if /i "%~1"=="dx11" (
     goto parse_args
 )
 
+if /i "%~1"=="directx11" (
+    @echo Enable DirectX11 render system
+    SET MGE_RENDER_SYSTEM=dx11
+    shift
+    goto parse_args
+)
+
 if /i "%~1"=="dx12" (
     @echo Enable DirectX12 render system
     SET MGE_RENDER_SYSTEM=dx12
     shift
     goto parse_args
 )
+
+if /i "%~1"=="directx12" (
+    @echo Enable DirectX12 render system
+    SET MGE_RENDER_SYSTEM=dx12
+    shift
+    goto parse_args
+)
+
 
 if /i "%~1"=="trace" (
     @echo Enable trace to console
