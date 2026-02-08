@@ -117,12 +117,72 @@
 <p>They are used to record commands that will be sent to the GPU. In a multi-threaded
 application, command buffers can be recorded on multiple threads and then submitted
 to the GPU on a single thread.</p>
+<section id="blend-state">
+<h2>Blend State<a class="headerlink" href="#blend-state" title="Link to this heading"></a></h2>
+<p>Command buffers support configuring blend state for transparency and compositing effects.
+The blend state determines how source (incoming fragment) and destination (framebuffer)
+colors are combined.</p>
+<p>Basic blending is controlled by three components:</p>
+<ul class="simple">
+<li><p><strong>Blend operation</strong>: How source and destination are combined (add, subtract, min, max)</p></li>
+<li><p><strong>Source blend factor</strong>: Weight applied to source color</p></li>
+<li><p><strong>Destination blend factor</strong>: Weight applied to destination color</p></li>
+</ul>
+<p>The final color is computed as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">src</span> <span class="o">*</span> <span class="n">src_factor</span><span class="p">)</span> <span class="n">op</span> <span class="p">(</span><span class="n">dst</span> <span class="o">*</span> <span class="n">dst_factor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Example usage for standard alpha blending:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">command_buffer</span> <span class="n">cmd</span><span class="p">;</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">blend_equation</span><span class="p">(</span><span class="n">blend_operation</span><span class="p">::</span><span class="n">ADD</span><span class="p">);</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">blend_function</span><span class="p">(</span><span class="n">blend_factor</span><span class="p">::</span><span class="n">SRC_ALPHA</span><span class="p">,</span> <span class="n">blend_factor</span><span class="p">::</span><span class="n">ONE_MINUS_SRC_ALPHA</span><span class="p">);</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To disable blending:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmd</span><span class="o">.</span><span class="n">blend_opaque</span><span class="p">();</span>
+</pre></div>
+</div>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_bufferE">
 <span id="_CPPv3N3mge14command_bufferE"></span><span id="_CPPv2N3mge14command_bufferE"></span><span id="mge::command_buffer"></span><span class="target" id="classmge_1_1command__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">command_buffer</span></span></span><a class="headerlink" href="#_CPPv4N3mge14command_bufferE" title="Link to this definition"></a><br /></dt>
 <dd><p>A command buffer records rendering commands to be submitted to a render context. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer12blend_opaqueEv">
+<span id="_CPPv3N3mge14command_buffer12blend_opaqueEv"></span><span id="_CPPv2N3mge14command_buffer12blend_opaqueEv"></span><span id="mge::command_buffer::blend_opaque"></span><span class="target" id="classmge_1_1command__buffer_1ab1ad1efbbd0225046c056a2356cee59b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">blend_opaque</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer12blend_opaqueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the blend state to opaque (no blending). </p>
+<p>This is a convenience method that sets the blend state to a default opaque configuration, which is also the default state of the command buffer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer14blend_functionE12blend_factor12blend_factor">
+<span id="_CPPv3N3mge14command_buffer14blend_functionE12blend_factor12blend_factor"></span><span id="_CPPv2N3mge14command_buffer14blend_functionE12blend_factor12blend_factor"></span><span id="mge::command_buffer::blend_function__blend_factor.blend_factor"></span><span class="target" id="classmge_1_1command__buffer_1a50dd49a40be05a4375e4054888decb0a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">blend_function</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12blend_factorE" title="mge::blend_factor"><span class="n"><span class="pre">blend_factor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">src</span></span>, <a class="reference internal" href="#_CPPv4N3mge12blend_factorE" title="mge::blend_factor"><span class="n"><span class="pre">blend_factor</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dst</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer14blend_functionE12blend_factor12blend_factor" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the blend function for subsequent draw commands. </p>
+<p>This sets the blend factors for source and destination colors. The blend operation can be set separately using <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1command__buffer_1aa54eae8669c93e7dbb0895f16549eb90"><span class="std std-ref"><span class="pre">blend_equation()</span></span></a></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src</strong> – source blend factor </p></li>
+<li><p><strong>dst</strong> – destination blend factor </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer14blend_equationE15blend_operation">
+<span id="_CPPv3N3mge14command_buffer14blend_equationE15blend_operation"></span><span id="_CPPv2N3mge14command_buffer14blend_equationE15blend_operation"></span><span id="mge::command_buffer::blend_equation__blend_operation"></span><span class="target" id="classmge_1_1command__buffer_1aa54eae8669c93e7dbb0895f16549eb90"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">blend_equation</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge15blend_operationE" title="mge::blend_operation"><span class="n"><span class="pre">blend_operation</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">op</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer14blend_equationE15blend_operation" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the blend operation for subsequent draw commands. </p>
+<p>This sets the blend operation that determines how source and destination colors are combined. The blend factors can be set separately using <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1command__buffer_1a50dd49a40be05a4375e4054888decb0a"><span class="std std-ref"><span class="pre">blend_function()</span></span></a></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>op</strong> – blend operation </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle">
 <span id="_CPPv3N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle"></span><span id="_CPPv2N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle"></span><span id="mge::command_buffer::draw__program_handleCR.vertex_buffer_handleCR.index_buffer_handleCR"></span><span class="target" id="classmge_1_1command__buffer_1a1f9e8df114b884b8751ce4a3b811153d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">draw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">program_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">program</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">vertex_buffer_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vertices</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">index_buffer_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">indices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle" title="Link to this definition"></a><br /></dt>
@@ -141,6 +201,176 @@ to the GPU on a single thread.</p>
 </div>
 </dd></dl>
 
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operationE">
+<span id="_CPPv3N3mge15blend_operationE"></span><span id="_CPPv2N3mge15blend_operationE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">blend_operation</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Blend operations define how source and destination colors are combined. </p>
+<p>The blend equation combines source and destination colors using the specified operation and blend factors. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation4NONEE">
+<span id="_CPPv3N3mge15blend_operation4NONEE"></span><span id="_CPPv2N3mge15blend_operation4NONEE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6ab50339a10e1de285ac99d4c3990b8693"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NONE</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation4NONEE" title="Link to this definition"></a><br /></dt>
+<dd><p>No blending, source color is used directly. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation3ADDE">
+<span id="_CPPv3N3mge15blend_operation3ADDE"></span><span id="_CPPv2N3mge15blend_operation3ADDE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6a9eeb52badb613229884838847294b90d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADD</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation3ADDE" title="Link to this definition"></a><br /></dt>
+<dd><p>Add source and destination: src * srcFactor + dst * dstFactor. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation8SUBTRACTE">
+<span id="_CPPv3N3mge15blend_operation8SUBTRACTE"></span><span id="_CPPv2N3mge15blend_operation8SUBTRACTE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6a23ebcc4776b613af25dfbe7c8ce4813e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SUBTRACT</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation8SUBTRACTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtract destination from source: src * srcFactor - dst * dstFactor </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation16REVERSE_SUBTRACTE">
+<span id="_CPPv3N3mge15blend_operation16REVERSE_SUBTRACTE"></span><span id="_CPPv2N3mge15blend_operation16REVERSE_SUBTRACTE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6a84501f117a8c5a3f3f9faaa21be26e8e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REVERSE_SUBTRACT</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation16REVERSE_SUBTRACTE" title="Link to this definition"></a><br /></dt>
+<dd><p>Subtract source from destination: dst * dstFactor<ul class="simple">
+<li><p>src * srcFactor </p></li>
+</ul>
+</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation3MINE">
+<span id="_CPPv3N3mge15blend_operation3MINE"></span><span id="_CPPv2N3mge15blend_operation3MINE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6ace31e2a082d17e038fcc6e3006166653"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MIN</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation3MINE" title="Link to this definition"></a><br /></dt>
+<dd><p>Minimum of source and destination: min(src, dst) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15blend_operation3MAXE">
+<span id="_CPPv3N3mge15blend_operation3MAXE"></span><span id="_CPPv2N3mge15blend_operation3MAXE"></span><span class="target" id="namespacemge_1a01c71dc4e378fe2e5af36433c4765ae6a26a4b44a837bf97b972628509912b4a5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MAX</span></span></span><a class="headerlink" href="#_CPPv4N3mge15blend_operation3MAXE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum of source and destination: max(src, dst) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factorE">
+<span id="_CPPv3N3mge12blend_factorE"></span><span id="_CPPv2N3mge12blend_factorE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">blend_factor</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factorE" title="Link to this definition"></a><br /></dt>
+<dd><p>Blend factors for source and destination colors. </p>
+<p>Blend factors determine how source and destination colors are weighted in the blending equation. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor4ZEROE">
+<span id="_CPPv3N3mge12blend_factor4ZEROE"></span><span id="_CPPv2N3mge12blend_factor4ZEROE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a529e9e0beb5f85d1f132917c1a09860c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ZERO</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor4ZEROE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (0, 0, 0, 0) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor3ONEE">
+<span id="_CPPv3N3mge12blend_factor3ONEE"></span><span id="_CPPv2N3mge12blend_factor3ONEE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24abc21e6484530fc9d0313cb816b733396"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor3ONEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1, 1, 1, 1) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor9SRC_COLORE">
+<span id="_CPPv3N3mge12blend_factor9SRC_COLORE"></span><span id="_CPPv2N3mge12blend_factor9SRC_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a0d64e73cd04f53e815a849347285839e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SRC_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor9SRC_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is source color. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor19ONE_MINUS_SRC_COLORE">
+<span id="_CPPv3N3mge12blend_factor19ONE_MINUS_SRC_COLORE"></span><span id="_CPPv2N3mge12blend_factor19ONE_MINUS_SRC_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24af883b721fe8288abb2c5f8fc7b100b54"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_SRC_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor19ONE_MINUS_SRC_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - source color) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor9DST_COLORE">
+<span id="_CPPv3N3mge12blend_factor9DST_COLORE"></span><span id="_CPPv2N3mge12blend_factor9DST_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a220e8b21c17d3d0f297244647d60df59"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DST_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor9DST_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is destination color. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor19ONE_MINUS_DST_COLORE">
+<span id="_CPPv3N3mge12blend_factor19ONE_MINUS_DST_COLORE"></span><span id="_CPPv2N3mge12blend_factor19ONE_MINUS_DST_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24ace05af0f4690600250a4f0dce0029906"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_DST_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor19ONE_MINUS_DST_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - destination color) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor9SRC_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor9SRC_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor9SRC_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24aa01be6519d4fb614f16261a59958bbb4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SRC_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor9SRC_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is source alpha. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor19ONE_MINUS_SRC_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor19ONE_MINUS_SRC_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor19ONE_MINUS_SRC_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a92ba720a64bd436721e0d2aa50e170a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_SRC_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor19ONE_MINUS_SRC_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - source alpha) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor9DST_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor9DST_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor9DST_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a59b7e4d8d77a6fc488bfad5dfb160ecc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DST_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor9DST_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is destination alpha. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor19ONE_MINUS_DST_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor19ONE_MINUS_DST_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor19ONE_MINUS_DST_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a9760c2ee1a1ebfbfefe5e406c00fed0b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_DST_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor19ONE_MINUS_DST_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - destination alpha) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor14CONSTANT_COLORE">
+<span id="_CPPv3N3mge12blend_factor14CONSTANT_COLORE"></span><span id="_CPPv2N3mge12blend_factor14CONSTANT_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a30621775d687d61143980af264746e1d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONSTANT_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor14CONSTANT_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is constant color. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor24ONE_MINUS_CONSTANT_COLORE">
+<span id="_CPPv3N3mge12blend_factor24ONE_MINUS_CONSTANT_COLORE"></span><span id="_CPPv2N3mge12blend_factor24ONE_MINUS_CONSTANT_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a49cf245431d345a1c63d5466cfe07a53"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_CONSTANT_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor24ONE_MINUS_CONSTANT_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - constant color) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor14CONSTANT_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor14CONSTANT_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor14CONSTANT_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24aadea5dd772ca5c4e887ee15c3bb588ec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONSTANT_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor14CONSTANT_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is constant alpha. </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor24ONE_MINUS_CONSTANT_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor24ONE_MINUS_CONSTANT_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor24ONE_MINUS_CONSTANT_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a45bb9007096d3f45207250f093c6968b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_CONSTANT_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor24ONE_MINUS_CONSTANT_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - constant alpha) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor18SRC_ALPHA_SATURATEE">
+<span id="_CPPv3N3mge12blend_factor18SRC_ALPHA_SATURATEE"></span><span id="_CPPv2N3mge12blend_factor18SRC_ALPHA_SATURATEE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24ac3b3d055cc049ac9787677800d1c2c0a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SRC_ALPHA_SATURATE</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor18SRC_ALPHA_SATURATEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is min(source alpha, 1 - destination alpha) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor10SRC1_COLORE">
+<span id="_CPPv3N3mge12blend_factor10SRC1_COLORE"></span><span id="_CPPv2N3mge12blend_factor10SRC1_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a66d0eeba66efb4330b4282febabb5376"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SRC1_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor10SRC1_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is secondary source color (dual source blending) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor20ONE_MINUS_SRC1_COLORE">
+<span id="_CPPv3N3mge12blend_factor20ONE_MINUS_SRC1_COLORE"></span><span id="_CPPv2N3mge12blend_factor20ONE_MINUS_SRC1_COLORE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24ac0434c02ff2c9c36c8863c3d2ff6bc8c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_SRC1_COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor20ONE_MINUS_SRC1_COLORE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - secondary source color) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor10SRC1_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor10SRC1_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor10SRC1_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a9093618941290447db0d37e48f60f82a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SRC1_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor10SRC1_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is secondary source alpha (dual source blending) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE">
+<span id="_CPPv3N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a719bbe74905414513bd3c49d86563aa9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_SRC1_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE" title="Link to this definition"></a><br /></dt>
+<dd><p>Factor is (1 - secondary source alpha) </p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 </section>
 
 
