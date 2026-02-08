@@ -6,13 +6,12 @@
 #include "error.hpp"
 #include "mge/config.hpp"
 #include "mge/core/mutex.hpp"
-#include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
-#include <map>
+#include <unordered_map>
 
 namespace mge::dx12 {
     class window;
@@ -98,22 +97,16 @@ namespace mge::dx12 {
 
         void remove_pipeline_state(mge::dx12::program* program)
         {
-            std::lock_guard<mge::mutex>                    lock(m_data_lock);
-            std::tuple<void*, command_buffer::blend_state> key{
-                program,
-                command_buffer::blend_state{}};
-            auto it = m_program_pipeline_states.lower_bound(key);
-            while (it != m_program_pipeline_states.end()) {
-                if (std::get<0>(it->first) != program) {
-                    break;
-                }
-                it = m_program_pipeline_states.erase(it);
+            std::lock_guard<mge::mutex> lock(m_data_lock);
+            auto it = m_program_pipeline_states.find(program);
+            if (it != m_program_pipeline_states.end()) {
+                m_program_pipeline_states.erase(it);
             }
         }
 
         const mge::com_ptr<ID3D12PipelineState>&
         static_pipeline_state(mge::dx12::program*         program,
-                              command_buffer::blend_state blend_state);
+                              command_buffer::blend_state bs);
 
     private:
         void enable_debug_layer();
@@ -127,6 +120,12 @@ namespace mge::dx12 {
         void update_render_target_views();
         void create_depth_stencil_views();
         void create_command_lists();
+
+        void draw_geometry(ID3D12GraphicsCommandList*         command_list,
+                           mge::program*                      program,
+                           mge::vertex_buffer*                vb,
+                           mge::index_buffer*                 ib,
+                           const command_buffer::blend_state& blend_state);
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,
@@ -158,8 +157,7 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandAllocator>    m_xfer_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_xfer_command_list;
 
-        std::map<std::tuple<void*, command_buffer::blend_state>,
-                 mge::com_ptr<ID3D12PipelineState>>
+        std::unordered_map<void*, mge::com_ptr<ID3D12PipelineState>>
             m_program_pipeline_states;
 
         D3D12_VIEWPORT m_viewport;
