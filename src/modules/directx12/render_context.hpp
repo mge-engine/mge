@@ -98,13 +98,16 @@ namespace mge::dx12 {
 
         void remove_pipeline_state(mge::dx12::program* program)
         {
-            /*
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            auto it = m_program_pipeline_states.find(program);
-            if (it != m_program_pipeline_states.end()) {
-                m_program_pipeline_states.erase(it);
+            pipeline_state_key          min_key{program,
+                                                {blend_operation::NONE,
+                                                 blend_factor::ZERO,
+                                                 blend_factor::ZERO}};
+            auto it = m_program_pipeline_states.lower_bound(min_key);
+            while (it != m_program_pipeline_states.end() &&
+                   std::get<0>(it->first) == program) {
+                it = m_program_pipeline_states.erase(it);
             }
-            */
         }
 
         const mge::com_ptr<ID3D12PipelineState>&
