@@ -47,7 +47,8 @@ TEST(command_buffer, for_each_verifies_single_draw)
     cb.for_each([&](const mge::program_handle&              p,
                     const mge::vertex_buffer_handle&        v,
                     const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+                    const mge::command_buffer::blend_state& bs,
+                    uint64_t                                draw_flags) {
         EXPECT_EQ(p, prog);
         EXPECT_EQ(v, vb);
         EXPECT_EQ(i, ib);
@@ -74,7 +75,8 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
     cb.for_each([&](const mge::program_handle&              p,
                     const mge::vertex_buffer_handle&        v,
                     const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+                    const mge::command_buffer::blend_state& bs,
+                    uint64_t                                draw_flags) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(p, prog1);
@@ -114,7 +116,8 @@ TEST(command_buffer, for_each_verifies_blend_states)
     cb.for_each([&](const mge::program_handle&              p,
                     const mge::vertex_buffer_handle&        v,
                     const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+                    const mge::command_buffer::blend_state& bs,
+                    uint64_t                                draw_flags) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(std::get<0>(bs), mge::blend_operation::NONE);
