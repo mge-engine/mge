@@ -752,43 +752,55 @@ namespace mge::dx12 {
                 0,
                 nullptr);
         }
-
+        bool blend_pass_needed = false;
         p.for_each_draw_command(
             [&](const mge::program_handle&         program,
                 const mge::vertex_buffer_handle&   vertices,
                 const mge::index_buffer_handle&    indices,
                 const command_buffer::blend_state& blend_state) {
-                auto dx12_program = static_cast<dx12::program*>(program.get());
-                if (!dx12_program) {
-                    MGE_THROW(mge::illegal_state)
-                        << "Draw command has no program assigned";
+                auto blend_operation = std::get<0>(blend_state);
+                if (blend_operation == blend_operation::NONE) {
+                    auto dx12_program =
+                        static_cast<dx12::program*>(program.get());
+                    if (!dx12_program) {
+                        MGE_THROW(mge::illegal_state)
+                            << "Draw command has no program assigned";
+                    }
+                    const auto& pipeline_state =
+                        static_pipeline_state(dx12_program, blend_state);
+                    if (!pipeline_state.Get()) {
+                        MGE_THROW(mge::illegal_state)
+                            << "Failed to get pipeline state for program";
+                    }
+                    auto root_signature = dx12_program->root_signature();
+                    pass_command_list->SetGraphicsRootSignature(root_signature);
+                    pass_command_list->SetPipelineState(pipeline_state.Get());
+                    pass_command_list->IASetPrimitiveTopology(
+                        D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+                    auto dx12_vertices =
+                        static_cast<dx12::vertex_buffer*>(vertices.get());
+                    pass_command_list->IASetVertexBuffers(
+                        0,
+                        1,
+                        &(dx12_vertices->view()));
+                    auto dx12_indices =
+                        static_cast<dx12::index_buffer*>(indices.get());
+                    pass_command_list->IASetIndexBuffer(
+                        &(dx12_indices->view()));
+                    pass_command_list->DrawIndexedInstanced(
+                        static_cast<UINT>(dx12_indices->element_count()),
+                        1,
+                        0,
+                        0,
+                        0);
+                } else {
+                    blend_pass_needed = true;
                 }
-                const auto& pipeline_state =
-                    static_pipeline_state(dx12_program);
-                if (!pipeline_state.Get()) {
-                    MGE_THROW(mge::illegal_state)
-                        << "Failed to get pipeline state for program";
-                }
-                auto root_signature = dx12_program->root_signature();
-                pass_command_list->SetGraphicsRootSignature(root_signature);
-                pass_command_list->SetPipelineState(pipeline_state.Get());
-                pass_command_list->IASetPrimitiveTopology(
-                    D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-                auto dx12_vertices =
-                    static_cast<dx12::vertex_buffer*>(vertices.get());
-                pass_command_list->IASetVertexBuffers(0,
-                                                      1,
-                                                      &(dx12_vertices->view()));
-                auto dx12_indices =
-                    static_cast<dx12::index_buffer*>(indices.get());
-                pass_command_list->IASetIndexBuffer(&(dx12_indices->view()));
-                pass_command_list->DrawIndexedInstanced(
-                    static_cast<UINT>(dx12_indices->element_count()),
-                    1,
-                    0,
-                    0,
-                    0);
             });
+        if (blend_pass_needed) {
+            MGE_WARNING_TRACE(DX12,
+                              "Blend pass is needed but not implemented yet");
+        }
     }
 
     mge::image_ref render_context::screenshot()
@@ -819,11 +831,13 @@ namespace mge::dx12 {
     }
 
     const mge::com_ptr<ID3D12PipelineState>&
-    render_context::static_pipeline_state(mge::dx12::program* program)
+    render_context::static_pipeline_state(
+        mge::dx12::program* program, command_buffer::blend_state blend_state)
     {
+        auto key = std::make_tuple(program, blend_state);
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            auto it = m_program_pipeline_states.find(program);
+            auto it = m_program_pipeline_states.find(key);
             if (it != m_program_pipeline_states.end()) {
                 return it->second;
             }
@@ -858,8 +872,8 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            m_program_pipeline_states.emplace(program, pipeline_state);
-            return m_program_pipeline_states[program];
+            return m_program_pipeline_states.emplace(key, pipeline_state)
+                .first->second;
         }
     }
 
