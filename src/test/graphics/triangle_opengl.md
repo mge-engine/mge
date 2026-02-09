@@ -33,6 +33,10 @@
   - depth: 1
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDepthFunc
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -68,6 +72,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 2
 - Call: glBindFramebuffer
@@ -97,6 +103,10 @@
   - depth: 1
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDepthFunc
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -110,6 +120,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 3
 - Call: glBindFramebuffer
@@ -139,6 +151,10 @@
   - depth: 1
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDepthFunc
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -152,6 +168,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 4
 - Call: glBindFramebuffer
@@ -181,6 +199,10 @@
   - depth: 1
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDepthFunc
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -194,6 +216,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 5
 - Call: glBindFramebuffer
@@ -223,6 +247,10 @@
   - depth: 1
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDepthFunc
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -236,5 +264,7 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 
