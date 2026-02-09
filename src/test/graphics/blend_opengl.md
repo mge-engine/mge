@@ -34,12 +34,18 @@
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
   - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -75,11 +81,17 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -115,8 +127,12 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 2
 - Call: glBindFramebuffer
@@ -147,12 +163,18 @@
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
   - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -166,11 +188,17 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -184,8 +212,12 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 3
 - Call: glBindFramebuffer
@@ -216,12 +248,18 @@
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
   - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -235,11 +273,17 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -253,8 +297,12 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 4
 - Call: glBindFramebuffer
@@ -285,12 +333,18 @@
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
   - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -304,11 +358,17 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -322,8 +382,12 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 5
 - Call: glBindFramebuffer
@@ -354,12 +418,18 @@
 - Call: glClear
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
   - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -373,11 +443,17 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
 - Call: glBlendFunc
   - sfactor: GL_LINES
   - dfactor: GL_LINES
 - Call: glBlendEquation
   - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -391,7 +467,11 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
+- Call: glDepthMask
+  - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 

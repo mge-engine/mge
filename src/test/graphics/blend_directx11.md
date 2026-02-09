@@ -52,6 +52,10 @@
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -85,11 +89,19 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -123,6 +135,10 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
@@ -156,6 +172,10 @@
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -189,11 +209,19 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -227,6 +255,10 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
@@ -260,6 +292,10 @@
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -293,11 +329,19 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -331,6 +375,10 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
@@ -364,6 +412,10 @@
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -397,11 +449,19 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -435,6 +495,10 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
@@ -468,6 +532,10 @@
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -501,11 +569,19 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
   - BlendFactor: _ignored_
   - SampleMask: 4294967295
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: _ignored_
   - pInputLayout: _ignored_
@@ -539,6 +615,10 @@
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
+- Call: ID3D11DeviceContext::OMSetDepthStencilState
+  - Context: _ignored_
+  - pDepthStencilState: _ignored_
+  - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
   - Context: _ignored_
   - pBlendState: _ignored_
