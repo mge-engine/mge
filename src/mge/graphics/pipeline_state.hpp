@@ -66,17 +66,17 @@ namespace mge {
         static constexpr uint64_t COLOR_BLEND_OPERATION_MASK =
             0x7ull << COLOR_BLEND_OPERATION_SHIFT;
 
-        static constexpr uint64_t ALPHA_BLEND_FACTOR_SRC_SHIFT = 32;
+        static constexpr uint64_t ALPHA_BLEND_FACTOR_SRC_SHIFT = 33;
         static constexpr uint64_t ALPHA_BLEND_FACTOR_SRC_MASK =
             0x1Full << ALPHA_BLEND_FACTOR_SRC_SHIFT;
-        static constexpr uint64_t ALPHA_BLEND_FACTOR_DST_SHIFT = 37;
+        static constexpr uint64_t ALPHA_BLEND_FACTOR_DST_SHIFT = 38;
         static constexpr uint64_t ALPHA_BLEND_FACTOR_DST_MASK =
             0x1Full << ALPHA_BLEND_FACTOR_DST_SHIFT;
-        static constexpr uint64_t ALPHA_BLEND_OPERATION_SHIFT = 42;
+        static constexpr uint64_t ALPHA_BLEND_OPERATION_SHIFT = 43;
         static constexpr uint64_t ALPHA_BLEND_OPERATION_MASK =
             0x7ull << ALPHA_BLEND_OPERATION_SHIFT;
 
-        static constexpr uint64_t PRIMITIVE_TOPOLOGY_SHIFT = 45;
+        static constexpr uint64_t PRIMITIVE_TOPOLOGY_SHIFT = 46;
         static constexpr uint64_t PRIMITIVE_TOPOLOGY_MASK =
             0x3ull << PRIMITIVE_TOPOLOGY_SHIFT;
         static constexpr uint64_t PRIMITIVE_TOPOLOGY_TRIANGLE_LIST =
@@ -88,7 +88,7 @@ namespace mge {
         static constexpr uint64_t PRIMITIVE_TOPOLOGY_POINT_LIST =
             3ull << PRIMITIVE_TOPOLOGY_SHIFT;
 
-        static constexpr uint64_t MSAA_SAMPLE_COUNT_SHIFT = 47;
+        static constexpr uint64_t MSAA_SAMPLE_COUNT_SHIFT = 48;
         static constexpr uint64_t MSAA_SAMPLE_COUNT_MASK =
             0x7ull << MSAA_SAMPLE_COUNT_SHIFT;
         static constexpr uint64_t MSAA_SAMPLE_COUNT_1 =
@@ -105,9 +105,9 @@ namespace mge {
             5ull << MSAA_SAMPLE_COUNT_SHIFT;
         static constexpr uint64_t MSAA_SAMPLE_COUNT_64 =
             6ull << MSAA_SAMPLE_COUNT_SHIFT;
-        static constexpr uint64_t MSAA_ALPHA_TO_COVERAGE = 1ull << 50;
-        static constexpr uint64_t MSAA_SAMPLE_SHADING = 1ull << 51;
-        static constexpr uint64_t CONSERVATIVE_RASTERIZATION = 1ull << 52;
+        static constexpr uint64_t MSAA_ALPHA_TO_COVERAGE = 1ull << 51;
+        static constexpr uint64_t MSAA_SAMPLE_SHADING = 1ull << 52;
+        static constexpr uint64_t CONSERVATIVE_RASTERIZATION = 1ull << 53;
 
         static constexpr uint64_t ALL_VALID_BITS =
             ALL_FLAGS | COLOR_BLEND_FACTOR_SRC_MASK |

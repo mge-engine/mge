@@ -134,7 +134,7 @@ namespace mge {
                     #version 330 core
                     layout(location = 0) out vec4 color;
                     void main() {
-                        color = vec4(0.5, 0.5, 0.5, 1.0);
+                        color = vec4(0.5, 0.5, 0.5, 0.5);
                     }
                 )shader";
                 MGE_DEBUG_TRACE(BLEND, "Compile fragment shader");
@@ -184,13 +184,13 @@ namespace mge {
             float triangle1_coords[] = {
                 -0.5f,
                 0.5f,
-                0.5f, // top left
+                0.0f, // top left
                 -0.1f,
                 0.5f,
-                0.5f, // top right
+                0.0f, // top right
                 -0.3f,
                 -0.5f,
-                0.5f, // bottom
+                0.0f, // bottom
             };
 
             // Second triangle (right side, overlapping in the middle)
