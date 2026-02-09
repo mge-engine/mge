@@ -298,6 +298,20 @@ namespace mge {
             set_alpha_blend_factors(src, dst);
         }
 
+        void depth_write(bool enable) noexcept
+        {
+            if (enable) {
+                set(DEPTH_WRITE);
+            } else {
+                clear(DEPTH_WRITE);
+            }
+        }
+
+        bool depth_write() const noexcept
+        {
+            return test(DEPTH_WRITE);
+        }
+
     private:
         uint64_t m_flags{DEFAULT};
     };

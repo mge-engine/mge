@@ -138,3 +138,35 @@ TEST(command_buffer, for_each_verifies_blend_states)
     });
     EXPECT_EQ(count, 3);
 }
+
+TEST(command_buffer, depth_write_state)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog1, prog2, prog3;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog1, vb, ib);
+
+    cb.depth_write(true);
+    cb.draw(prog2, vb, ib);
+
+    cb.depth_write(false);
+    cb.draw(prog3, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
+        ++count;
+        if (count == 1) {
+            EXPECT_TRUE(state.depth_write());
+        } else if (count == 2) {
+            EXPECT_TRUE(state.depth_write());
+        } else if (count == 3) {
+            EXPECT_FALSE(state.depth_write());
+        }
+    });
+    EXPECT_EQ(count, 3);
+}

@@ -389,7 +389,15 @@ namespace mge::opengl {
                                        const mge::pipeline_state&  state) {
                 blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_FALSE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
                     draw_geometry(program.get(), vertices.get(), indices.get());
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_TRUE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
                 } else {
                     blend_pass_needed = true;
                 }
@@ -426,7 +434,15 @@ namespace mge::opengl {
                             blend_operation_to_gl(alpha_op));
                         CHECK_OPENGL_ERROR(glBlendEquationSeparate);
                     }
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_FALSE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
                     draw_geometry(program.get(), vertices.get(), indices.get());
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_TRUE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
                 }
             });
             glDisable(GL_BLEND);

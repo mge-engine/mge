@@ -362,7 +362,17 @@ namespace mge::dx11 {
                                        const mge::pipeline_state& state) {
                 blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
+                    if (!state.depth_write()) {
+                        ID3D11DepthStencilState* ds_state =
+                            this->depth_stencil_state(state);
+                        m_device_context->OMSetDepthStencilState(ds_state, 1);
+                    }
                     draw_geometry(program.get(), vertices.get(), indices.get());
+                    if (!state.depth_write()) {
+                        m_device_context->OMSetDepthStencilState(
+                            m_depth_stencil_state.get(),
+                            1);
+                    }
                 } else {
                     blend_pass_needed = true;
                 }
@@ -383,7 +393,17 @@ namespace mge::dx11 {
                                                       blend_factor,
                                                       0xffffffff);
 
+                    if (!state.depth_write()) {
+                        ID3D11DepthStencilState* ds_state =
+                            this->depth_stencil_state(state);
+                        m_device_context->OMSetDepthStencilState(ds_state, 1);
+                    }
                     draw_geometry(program.get(), vertices.get(), indices.get());
+                    if (!state.depth_write()) {
+                        m_device_context->OMSetDepthStencilState(
+                            m_depth_stencil_state.get(),
+                            1);
+                    }
                 }
             });
             m_device_context->OMSetBlendState(nullptr, nullptr, 0xffffffff);
@@ -488,6 +508,44 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11BlendState> owned_ptr(blend_state_obj);
         m_blend_state_cache[state] = std::move(owned_ptr);
         return m_blend_state_cache[state].get();
+    }
+
+    ID3D11DepthStencilState*
+    render_context::depth_stencil_state(const mge::pipeline_state& state)
+    {
+        auto it = m_depth_stencil_state_cache.find(state);
+        if (it != m_depth_stencil_state_cache.end()) {
+            return it->second.get();
+        }
+
+        D3D11_DEPTH_STENCIL_DESC depth_stencil_desc = {};
+        depth_stencil_desc.DepthEnable = TRUE;
+        depth_stencil_desc.DepthWriteMask = state.depth_write()
+                                                ? D3D11_DEPTH_WRITE_MASK_ALL
+                                                : D3D11_DEPTH_WRITE_MASK_ZERO;
+        depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS;
+        depth_stencil_desc.StencilEnable = TRUE;
+        depth_stencil_desc.StencilReadMask = 0xFF;
+        depth_stencil_desc.StencilWriteMask = 0xFF;
+        depth_stencil_desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depth_stencil_desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+        depth_stencil_desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depth_stencil_desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+        depth_stencil_desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+        depth_stencil_desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+        depth_stencil_desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+        depth_stencil_desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+        ID3D11DepthStencilState* depth_stencil_state_obj = nullptr;
+        HRESULT                  rc =
+            m_device->CreateDepthStencilState(&depth_stencil_desc,
+                                              &depth_stencil_state_obj);
+        CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilState);
+
+        com_unique_ptr<ID3D11DepthStencilState> owned_ptr(
+            depth_stencil_state_obj);
+        m_depth_stencil_state_cache[state] = std::move(owned_ptr);
+        return m_depth_stencil_state_cache[state].get();
     }
 
     mge::image_ref render_context::screenshot()

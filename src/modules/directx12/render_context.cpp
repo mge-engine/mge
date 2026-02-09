@@ -964,12 +964,17 @@ namespace mge::dx12 {
                 .LogicOp = D3D12_LOGIC_OP_NOOP,
                 .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
         }
-        pso_desc.DepthStencilState = {.DepthEnable = false,
-                                      .StencilEnable = false};
+        pso_desc.DepthStencilState = {
+            .DepthEnable = TRUE,
+            .DepthWriteMask = state.depth_write() ? D3D12_DEPTH_WRITE_MASK_ALL
+                                                  : D3D12_DEPTH_WRITE_MASK_ZERO,
+            .DepthFunc = D3D12_COMPARISON_FUNC_LESS,
+            .StencilEnable = FALSE};
         pso_desc.SampleMask = UINT_MAX;
         pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
         pso_desc.NumRenderTargets = 1;
         pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        pso_desc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
         pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
         mge::com_ptr<ID3D12PipelineState> pipeline_state;
         auto rc = m_device->CreateGraphicsPipelineState(

@@ -1211,12 +1211,16 @@ namespace mge::vulkan {
         multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
         multisampling_create_info.alphaToOneEnable = VK_FALSE;
 
-        // no depth stencil tests
-        // VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info
-        // =
-        //    {};
-        // depth_stencil_state_create_info.sType =
-        //    VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info =
+            {};
+        depth_stencil_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        depth_stencil_state_create_info.depthTestEnable = VK_TRUE;
+        depth_stencil_state_create_info.depthWriteEnable =
+            state.depth_write() ? VK_TRUE : VK_FALSE;
+        depth_stencil_state_create_info.depthCompareOp = VK_COMPARE_OP_LESS;
+        depth_stencil_state_create_info.depthBoundsTestEnable = VK_FALSE;
+        depth_stencil_state_create_info.stencilTestEnable = VK_FALSE;
 
         // color blending
         VkPipelineColorBlendAttachmentState color_blend_attachment_state = {};
@@ -1290,7 +1294,8 @@ namespace mge::vulkan {
         pipeline_create_info.pRasterizationState =
             &rasterization_state_create_info;
         pipeline_create_info.pMultisampleState = &multisampling_create_info;
-        pipeline_create_info.pDepthStencilState = nullptr;
+        pipeline_create_info.pDepthStencilState =
+            &depth_stencil_state_create_info;
         pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
         pipeline_create_info.pDynamicState = &dynamic_state_create_info;
         pipeline_create_info.layout = pipeline_layout;
