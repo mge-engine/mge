@@ -56,7 +56,7 @@ namespace mge {
          */
         void blend_function(blend_factor src, blend_factor dst)
         {
-            m_current_pipeline_state.set_color_blend_factors(src, dst);
+            m_current_pipeline_state.set_blend_factors(src, dst);
         }
 
         /**
@@ -70,7 +70,7 @@ namespace mge {
          */
         void blend_equation(blend_operation op)
         {
-            m_current_pipeline_state.set_color_blend_operation(op);
+            m_current_pipeline_state.set_blend_operation(op);
         }
 
         /**

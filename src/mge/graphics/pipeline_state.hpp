@@ -244,6 +244,60 @@ namespace mge {
                 COLOR_BLEND_FACTOR_DST_SHIFT);
         }
 
+        void set_alpha_blend_operation(blend_operation op) noexcept
+        {
+            m_flags &= ~ALPHA_BLEND_OPERATION_MASK;
+            m_flags |=
+                (static_cast<uint64_t>(op) << ALPHA_BLEND_OPERATION_SHIFT) &
+                ALPHA_BLEND_OPERATION_MASK;
+        }
+
+        blend_operation alpha_blend_operation() const noexcept
+        {
+            return static_cast<blend_operation>(
+                (m_flags & ALPHA_BLEND_OPERATION_MASK) >>
+                ALPHA_BLEND_OPERATION_SHIFT);
+        }
+
+        void set_alpha_blend_factors(blend_factor src,
+                                     blend_factor dst) noexcept
+        {
+            m_flags &=
+                ~(ALPHA_BLEND_FACTOR_SRC_MASK | ALPHA_BLEND_FACTOR_DST_MASK);
+            m_flags |=
+                (static_cast<uint64_t>(src) << ALPHA_BLEND_FACTOR_SRC_SHIFT) &
+                ALPHA_BLEND_FACTOR_SRC_MASK;
+            m_flags |=
+                (static_cast<uint64_t>(dst) << ALPHA_BLEND_FACTOR_DST_SHIFT) &
+                ALPHA_BLEND_FACTOR_DST_MASK;
+        }
+
+        blend_factor alpha_blend_factor_src() const noexcept
+        {
+            return static_cast<blend_factor>(
+                (m_flags & ALPHA_BLEND_FACTOR_SRC_MASK) >>
+                ALPHA_BLEND_FACTOR_SRC_SHIFT);
+        }
+
+        blend_factor alpha_blend_factor_dst() const noexcept
+        {
+            return static_cast<blend_factor>(
+                (m_flags & ALPHA_BLEND_FACTOR_DST_MASK) >>
+                ALPHA_BLEND_FACTOR_DST_SHIFT);
+        }
+
+        void set_blend_operation(blend_operation op) noexcept
+        {
+            set_color_blend_operation(op);
+            set_alpha_blend_operation(op);
+        }
+
+        void set_blend_factors(blend_factor src, blend_factor dst) noexcept
+        {
+            set_color_blend_factors(src, dst);
+            set_alpha_blend_factors(src, dst);
+        }
+
     private:
         uint64_t m_flags{DEFAULT};
     };

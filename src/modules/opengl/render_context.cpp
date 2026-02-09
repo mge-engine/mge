@@ -401,15 +401,30 @@ namespace mge::opengl {
                                            const vertex_buffer_handle& vertices,
                                            const index_buffer_handle&  indices,
                                            const mge::pipeline_state&  state) {
-                blend_operation op = state.color_blend_operation();
-                blend_factor    src = state.color_blend_factor_src();
-                blend_factor    dst = state.color_blend_factor_dst();
-                if (op != blend_operation::NONE) {
-                    glBlendFunc(blend_factor_to_gl(src),
-                                blend_factor_to_gl(dst));
-                    CHECK_OPENGL_ERROR(glBlendFunc);
-                    glBlendEquation(blend_operation_to_gl(op));
-                    CHECK_OPENGL_ERROR(glBlendEquation);
+                blend_operation color_op = state.color_blend_operation();
+                blend_operation alpha_op = state.alpha_blend_operation();
+                blend_factor    color_src = state.color_blend_factor_src();
+                blend_factor    color_dst = state.color_blend_factor_dst();
+                blend_factor    alpha_src = state.alpha_blend_factor_src();
+                blend_factor    alpha_dst = state.alpha_blend_factor_dst();
+                if (color_op != blend_operation::NONE) {
+                    if (color_op == alpha_op && color_src == alpha_src &&
+                        color_dst == alpha_dst) {
+                        glBlendFunc(blend_factor_to_gl(color_src),
+                                    blend_factor_to_gl(color_dst));
+                        CHECK_OPENGL_ERROR(glBlendFunc);
+                        glBlendEquation(blend_operation_to_gl(color_op));
+                        CHECK_OPENGL_ERROR(glBlendEquation);
+                    } else {
+                        glBlendFuncSeparate(blend_factor_to_gl(color_src),
+                                            blend_factor_to_gl(color_dst),
+                                            blend_factor_to_gl(alpha_src),
+                                            blend_factor_to_gl(alpha_dst));
+                        CHECK_OPENGL_ERROR(glBlendFuncSeparate);
+                        glBlendEquationSeparate(blend_operation_to_gl(color_op),
+                                                blend_operation_to_gl(alpha_op));
+                        CHECK_OPENGL_ERROR(glBlendEquationSeparate);
+                    }
                     draw_geometry(program.get(), vertices.get(), indices.get());
                 }
             });
