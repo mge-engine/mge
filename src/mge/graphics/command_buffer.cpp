@@ -24,4 +24,9 @@ namespace mge {
         }
     }
 
+    void command_buffer::depth_test_function(test func) noexcept
+    {
+        m_current_pipeline_state.set_depth_test_function(func);
+    }
+
 } // namespace mge

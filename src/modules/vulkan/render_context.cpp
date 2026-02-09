@@ -89,6 +89,31 @@ namespace mge::vulkan {
         }
     }
 
+    static inline VkCompareOp depth_test_to_vulkan(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return VK_COMPARE_OP_NEVER;
+        case mge::test::LESS:
+            return VK_COMPARE_OP_LESS;
+        case mge::test::EQUAL:
+            return VK_COMPARE_OP_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return VK_COMPARE_OP_LESS_OR_EQUAL;
+        case mge::test::GREATER:
+            return VK_COMPARE_OP_GREATER;
+        case mge::test::NOT_EQUAL:
+            return VK_COMPARE_OP_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return VK_COMPARE_OP_GREATER_OR_EQUAL;
+        case mge::test::ALWAYS:
+            return VK_COMPARE_OP_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -1317,7 +1342,8 @@ namespace mge::vulkan {
         depth_stencil_state_create_info.depthTestEnable = VK_TRUE;
         depth_stencil_state_create_info.depthWriteEnable =
             state.depth_write() ? VK_TRUE : VK_FALSE;
-        depth_stencil_state_create_info.depthCompareOp = VK_COMPARE_OP_LESS;
+        depth_stencil_state_create_info.depthCompareOp =
+            depth_test_to_vulkan(state.depth_test_function());
         depth_stencil_state_create_info.depthBoundsTestEnable = VK_FALSE;
         depth_stencil_state_create_info.stencilTestEnable = VK_FALSE;
 

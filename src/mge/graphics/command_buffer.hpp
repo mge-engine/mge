@@ -6,6 +6,7 @@
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/program_handle.hpp"
+#include "mge/graphics/test.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 
 #include <tuple>
@@ -28,6 +29,7 @@ namespace mge {
         command_buffer& operator=(command_buffer&&) = default;
 
         void depth_write(bool enable) noexcept;
+        void depth_test_function(test func) noexcept;
 
         /**
          * @brief Set the blend state to opaque (no blending).

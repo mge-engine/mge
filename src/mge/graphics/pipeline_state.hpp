@@ -7,6 +7,7 @@
 #include "mge/graphics/blend_factor.hpp"
 #include "mge/graphics/blend_operation.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/test.hpp"
 
 #include <functional>
 
@@ -22,41 +23,46 @@ namespace mge {
     {
     public:
         static constexpr uint64_t NONE = 0;
-        static constexpr uint64_t DEPTH_TEST_LESS = 1ull << 0;
-        static constexpr uint64_t DEPTH_TEST_LESS_EQUAL = 1ull << 1;
+        static constexpr uint64_t DEPTH_TEST_NEVER = 1ull << 0;
+        static constexpr uint64_t DEPTH_TEST_LESS = 1ull << 1;
         static constexpr uint64_t DEPTH_TEST_EQUAL = 1ull << 2;
-        static constexpr uint64_t DEPTH_TEST_GREATER = 1ull << 3;
-        static constexpr uint64_t DEPTH_TEST_GREATER_EQUAL = 1ull << 4;
+        static constexpr uint64_t DEPTH_TEST_LESS_EQUAL = 1ull << 3;
+        static constexpr uint64_t DEPTH_TEST_GREATER = 1ull << 4;
         static constexpr uint64_t DEPTH_TEST_NOT_EQUAL = 1ull << 5;
-        static constexpr uint64_t DEPTH_TEST_ALWAYS = 1ull << 6;
-        static constexpr uint64_t DEPTH_WRITE = 1ull << 7;
-        static constexpr uint64_t STENCIL_TEST = 1ull << 8;
-        static constexpr uint64_t FRONT_FACE_COUNTER_CLOCKWISE = 1ull << 9;
-        static constexpr uint64_t STENCIL_WRITE = 1ull << 10;
-        static constexpr uint64_t RED_WRITE = 1ull << 11;
-        static constexpr uint64_t GREEN_WRITE = 1ull << 12;
-        static constexpr uint64_t BLUE_WRITE = 1ull << 13;
-        static constexpr uint64_t ALPHA_WRITE = 1ull << 14;
+        static constexpr uint64_t DEPTH_TEST_GREATER_EQUAL = 1ull << 6;
+        static constexpr uint64_t DEPTH_TEST_ALWAYS = 1ull << 7;
+        static constexpr uint64_t DEPTH_TEST_MASK =
+            DEPTH_TEST_NEVER | DEPTH_TEST_LESS | DEPTH_TEST_EQUAL |
+            DEPTH_TEST_LESS_EQUAL | DEPTH_TEST_GREATER | DEPTH_TEST_NOT_EQUAL |
+            DEPTH_TEST_GREATER_EQUAL | DEPTH_TEST_ALWAYS;
+        static constexpr uint64_t DEPTH_WRITE = 1ull << 8;
+        static constexpr uint64_t STENCIL_TEST = 1ull << 9;
+        static constexpr uint64_t FRONT_FACE_COUNTER_CLOCKWISE = 1ull << 10;
+        static constexpr uint64_t STENCIL_WRITE = 1ull << 11;
+        static constexpr uint64_t RED_WRITE = 1ull << 12;
+        static constexpr uint64_t GREEN_WRITE = 1ull << 13;
+        static constexpr uint64_t BLUE_WRITE = 1ull << 14;
+        static constexpr uint64_t ALPHA_WRITE = 1ull << 15;
         static constexpr uint64_t COLOR_WRITE =
             RED_WRITE | GREEN_WRITE | BLUE_WRITE | ALPHA_WRITE;
         static constexpr uint64_t RGB_WRITE =
             RED_WRITE | GREEN_WRITE | BLUE_WRITE;
         static constexpr uint64_t RGBA_WRITE =
             RED_WRITE | GREEN_WRITE | BLUE_WRITE | ALPHA_WRITE;
-        static constexpr uint64_t CULL_CLOCK_WISE = 1ull << 15;
-        static constexpr uint64_t CULL_COUNTER_CLOCK_WISE = 1ull << 16;
-        static constexpr uint64_t DEPTH_BIAS_ENABLE = 1ull << 17;
-        static constexpr uint64_t DEPTH_CLAMP_ENABLE = 1ull << 18;
+        static constexpr uint64_t CULL_CLOCK_WISE = 1ull << 16;
+        static constexpr uint64_t CULL_COUNTER_CLOCK_WISE = 1ull << 17;
+        static constexpr uint64_t DEPTH_BIAS_ENABLE = 1ull << 18;
+        static constexpr uint64_t DEPTH_CLAMP_ENABLE = 1ull << 19;
         static constexpr uint64_t LAST = DEPTH_CLAMP_ENABLE;
         static constexpr uint64_t ALL_FLAGS = (LAST << 1) - 1;
 
-        static constexpr uint64_t COLOR_BLEND_FACTOR_SRC_SHIFT = 19;
+        static constexpr uint64_t COLOR_BLEND_FACTOR_SRC_SHIFT = 20;
         static constexpr uint64_t COLOR_BLEND_FACTOR_SRC_MASK =
             0x1Full << COLOR_BLEND_FACTOR_SRC_SHIFT;
-        static constexpr uint64_t COLOR_BLEND_FACTOR_DST_SHIFT = 24;
+        static constexpr uint64_t COLOR_BLEND_FACTOR_DST_SHIFT = 25;
         static constexpr uint64_t COLOR_BLEND_FACTOR_DST_MASK =
             0x1Full << COLOR_BLEND_FACTOR_DST_SHIFT;
-        static constexpr uint64_t COLOR_BLEND_OPERATION_SHIFT = 29;
+        static constexpr uint64_t COLOR_BLEND_OPERATION_SHIFT = 30;
         static constexpr uint64_t COLOR_BLEND_OPERATION_MASK =
             0x7ull << COLOR_BLEND_OPERATION_SHIFT;
 
@@ -112,8 +118,8 @@ namespace mge {
             MSAA_SAMPLE_SHADING | CONSERVATIVE_RASTERIZATION;
 
         static constexpr uint64_t DEFAULT =
-            DEPTH_WRITE | COLOR_WRITE | PRIMITIVE_TOPOLOGY_TRIANGLE_LIST |
-            MSAA_SAMPLE_COUNT_1 |
+            DEPTH_TEST_LESS | DEPTH_WRITE | COLOR_WRITE |
+            PRIMITIVE_TOPOLOGY_TRIANGLE_LIST | MSAA_SAMPLE_COUNT_1 |
             (1ull << COLOR_BLEND_FACTOR_SRC_SHIFT); // src = ONE, dst = ZERO
 
         pipeline_state() = default;
@@ -310,6 +316,59 @@ namespace mge {
         bool depth_write() const noexcept
         {
             return test(DEPTH_WRITE);
+        }
+
+        void set_depth_test_function(mge::test func) noexcept
+        {
+            m_flags &= ~DEPTH_TEST_MASK;
+            switch (func) {
+            case mge::test::NEVER:
+                m_flags |= DEPTH_TEST_NEVER;
+                break;
+            case mge::test::LESS:
+                m_flags |= DEPTH_TEST_LESS;
+                break;
+            case mge::test::EQUAL:
+                m_flags |= DEPTH_TEST_EQUAL;
+                break;
+            case mge::test::LESS_EQUAL:
+                m_flags |= DEPTH_TEST_LESS_EQUAL;
+                break;
+            case mge::test::GREATER:
+                m_flags |= DEPTH_TEST_GREATER;
+                break;
+            case mge::test::NOT_EQUAL:
+                m_flags |= DEPTH_TEST_NOT_EQUAL;
+                break;
+            case mge::test::GREATER_EQUAL:
+                m_flags |= DEPTH_TEST_GREATER_EQUAL;
+                break;
+            case mge::test::ALWAYS:
+                m_flags |= DEPTH_TEST_ALWAYS;
+                break;
+            }
+        }
+
+        mge::test depth_test_function() const noexcept
+        {
+            uint64_t depth_bits = m_flags & DEPTH_TEST_MASK;
+            if (depth_bits & DEPTH_TEST_NEVER)
+                return mge::test::NEVER;
+            if (depth_bits & DEPTH_TEST_LESS)
+                return mge::test::LESS;
+            if (depth_bits & DEPTH_TEST_EQUAL)
+                return mge::test::EQUAL;
+            if (depth_bits & DEPTH_TEST_LESS_EQUAL)
+                return mge::test::LESS_EQUAL;
+            if (depth_bits & DEPTH_TEST_GREATER)
+                return mge::test::GREATER;
+            if (depth_bits & DEPTH_TEST_NOT_EQUAL)
+                return mge::test::NOT_EQUAL;
+            if (depth_bits & DEPTH_TEST_GREATER_EQUAL)
+                return mge::test::GREATER_EQUAL;
+            if (depth_bits & DEPTH_TEST_ALWAYS)
+                return mge::test::ALWAYS;
+            return mge::test::LESS; // default
         }
 
     private:

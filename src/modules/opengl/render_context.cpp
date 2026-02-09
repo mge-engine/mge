@@ -101,6 +101,31 @@ namespace mge::opengl {
         }
     }
 
+    static inline GLenum depth_test_to_gl(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return GL_NEVER;
+        case mge::test::LESS:
+            return GL_LESS;
+        case mge::test::EQUAL:
+            return GL_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return GL_LEQUAL;
+        case mge::test::GREATER:
+            return GL_GREATER;
+        case mge::test::NOT_EQUAL:
+            return GL_NOTEQUAL;
+        case mge::test::GREATER_EQUAL:
+            return GL_GEQUAL;
+        case mge::test::ALWAYS:
+            return GL_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
 #ifdef MGE_OS_WINDOWS
     render_context::render_context(mge::opengl::render_system& render_system_,
                                    mge::opengl::window*        context_window)
@@ -120,15 +145,15 @@ namespace mge::opengl {
         init_gl3w();
         collect_opengl_info();
 
-        // Set clip control to match DirectX/Vulkan conventions (GL 4.5+)
-        // - GL_UPPER_LEFT: viewport origin at top-left (matches DirectX/Vulkan)
+        // Set clip control to keep OpenGL Y orientation while using 0..1 depth
+        // - GL_LOWER_LEFT: keep OpenGL viewport origin
         // - GL_ZERO_TO_ONE: depth range [0,1] (matches DirectX/Vulkan)
         if (gl_info().major_version > 4 ||
             (gl_info().major_version == 4 && gl_info().minor_version >= 5)) {
             MGE_INFO_TRACE(
                 OPENGL,
-                "Setting clip control: GL_UPPER_LEFT, GL_ZERO_TO_ONE");
-            glClipControl(GL_UPPER_LEFT, GL_ZERO_TO_ONE);
+                "Setting clip control: GL_LOWER_LEFT, GL_ZERO_TO_ONE");
+            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
             CHECK_OPENGL_ERROR(glClipControl);
         } else {
             MGE_WARNING_TRACE(OPENGL,
@@ -400,6 +425,10 @@ namespace mge::opengl {
             glClear(GL_DEPTH_BUFFER_BIT);
             CHECK_OPENGL_ERROR(glClear);
         }
+
+        glEnable(GL_DEPTH_TEST);
+        CHECK_OPENGL_ERROR(glEnable);
+
         bool blend_pass_needed = false;
         p.for_each_draw_command(
             [this, &blend_pass_needed](const program_handle&       program,
@@ -408,6 +437,8 @@ namespace mge::opengl {
                                        const mge::pipeline_state&  state) {
                 blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
+                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                    CHECK_OPENGL_ERROR(glDepthFunc);
                     if (!state.depth_write()) {
                         glDepthMask(GL_FALSE);
                         CHECK_OPENGL_ERROR(glDepthMask);
@@ -435,6 +466,8 @@ namespace mge::opengl {
                 blend_factor    alpha_src = state.alpha_blend_factor_src();
                 blend_factor    alpha_dst = state.alpha_blend_factor_dst();
                 if (color_op != blend_operation::NONE) {
+                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                    CHECK_OPENGL_ERROR(glDepthFunc);
                     if (color_op == alpha_op && color_src == alpha_src &&
                         color_dst == alpha_dst) {
                         glBlendFunc(blend_factor_to_gl(color_src),
@@ -467,6 +500,9 @@ namespace mge::opengl {
             glDisable(GL_BLEND);
             CHECK_OPENGL_ERROR(glDisable);
         }
+
+        glDisable(GL_DEPTH_TEST);
+        CHECK_OPENGL_ERROR(glDisable);
     }
 
     mge::image_ref render_context::screenshot()

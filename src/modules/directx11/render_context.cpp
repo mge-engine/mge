@@ -89,6 +89,32 @@ namespace mge::dx11 {
                 << "Unknown blend operation: " << op;
         }
     }
+
+    static inline D3D11_COMPARISON_FUNC depth_test_to_dx11(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return D3D11_COMPARISON_NEVER;
+        case mge::test::LESS:
+            return D3D11_COMPARISON_LESS;
+        case mge::test::EQUAL:
+            return D3D11_COMPARISON_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return D3D11_COMPARISON_LESS_EQUAL;
+        case mge::test::GREATER:
+            return D3D11_COMPARISON_GREATER;
+        case mge::test::NOT_EQUAL:
+            return D3D11_COMPARISON_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return D3D11_COMPARISON_GREATER_EQUAL;
+        case mge::test::ALWAYS:
+            return D3D11_COMPARISON_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
     render_context::render_context(mge::dx11::render_system& render_system_,
                                    mge::dx11::window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -523,7 +549,8 @@ namespace mge::dx11 {
         depth_stencil_desc.DepthWriteMask = state.depth_write()
                                                 ? D3D11_DEPTH_WRITE_MASK_ALL
                                                 : D3D11_DEPTH_WRITE_MASK_ZERO;
-        depth_stencil_desc.DepthFunc = D3D11_COMPARISON_LESS;
+        depth_stencil_desc.DepthFunc =
+            depth_test_to_dx11(state.depth_test_function());
         depth_stencil_desc.StencilEnable = TRUE;
         depth_stencil_desc.StencilReadMask = 0xFF;
         depth_stencil_desc.StencilWriteMask = 0xFF;

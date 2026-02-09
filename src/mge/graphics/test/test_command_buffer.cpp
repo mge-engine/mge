@@ -170,3 +170,40 @@ TEST(command_buffer, depth_write_state)
     });
     EXPECT_EQ(count, 3);
 }
+
+TEST(command_buffer, depth_test_function_state)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog1, prog2, prog3, prog4;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog1, vb, ib);
+
+    cb.depth_test_function(mge::test::GREATER);
+    cb.draw(prog2, vb, ib);
+
+    cb.depth_test_function(mge::test::ALWAYS);
+    cb.draw(prog3, vb, ib);
+
+    cb.depth_test_function(mge::test::NEVER);
+    cb.draw(prog4, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
+        ++count;
+        if (count == 1) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::LESS);
+        } else if (count == 2) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::GREATER);
+        } else if (count == 3) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::ALWAYS);
+        } else if (count == 4) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::NEVER);
+        }
+    });
+    EXPECT_EQ(count, 4);
+}

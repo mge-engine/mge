@@ -91,6 +91,31 @@ namespace mge::dx12 {
         }
     }
 
+    static inline D3D12_COMPARISON_FUNC depth_test_to_dx12(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return D3D12_COMPARISON_FUNC_NEVER;
+        case mge::test::LESS:
+            return D3D12_COMPARISON_FUNC_LESS;
+        case mge::test::EQUAL:
+            return D3D12_COMPARISON_FUNC_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return D3D12_COMPARISON_FUNC_LESS_EQUAL;
+        case mge::test::GREATER:
+            return D3D12_COMPARISON_FUNC_GREATER;
+        case mge::test::NOT_EQUAL:
+            return D3D12_COMPARISON_FUNC_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return D3D12_COMPARISON_FUNC_GREATER_EQUAL;
+        case mge::test::ALWAYS:
+            return D3D12_COMPARISON_FUNC_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -968,7 +993,7 @@ namespace mge::dx12 {
             .DepthEnable = TRUE,
             .DepthWriteMask = state.depth_write() ? D3D12_DEPTH_WRITE_MASK_ALL
                                                   : D3D12_DEPTH_WRITE_MASK_ZERO,
-            .DepthFunc = D3D12_COMPARISON_FUNC_LESS,
+            .DepthFunc = depth_test_to_dx12(state.depth_test_function()),
             .StencilEnable = FALSE};
         pso_desc.SampleMask = UINT_MAX;
         pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
