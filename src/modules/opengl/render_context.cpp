@@ -119,6 +119,25 @@ namespace mge::opengl {
         create_primary_glrc();
         init_gl3w();
         collect_opengl_info();
+
+        // Set clip control to match DirectX/Vulkan conventions (GL 4.5+)
+        // - GL_UPPER_LEFT: viewport origin at top-left (matches DirectX/Vulkan)
+        // - GL_ZERO_TO_ONE: depth range [0,1] (matches DirectX/Vulkan)
+        if (gl_info().major_version > 4 ||
+            (gl_info().major_version == 4 && gl_info().minor_version >= 5)) {
+            MGE_INFO_TRACE(
+                OPENGL,
+                "Setting clip control: GL_UPPER_LEFT, GL_ZERO_TO_ONE");
+            glClipControl(GL_UPPER_LEFT, GL_ZERO_TO_ONE);
+            CHECK_OPENGL_ERROR(glClipControl);
+        } else {
+            MGE_WARNING_TRACE(OPENGL,
+                              "OpenGL {}.{} does not support glClipControl "
+                              "(requires 4.5+)",
+                              gl_info().major_version,
+                              gl_info().minor_version);
+        }
+
         auto fd = render_system_.frame_debugger();
         if (fd) {
             fd->set_context(
