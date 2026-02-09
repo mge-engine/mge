@@ -356,12 +356,12 @@ namespace mge::dx11 {
         }
         bool blend_pass_needed = false;
         p.for_each_draw_command(
-            [this, &blend_pass_needed](
-                program_handle                     program,
-                vertex_buffer_handle               vertices,
-                index_buffer_handle                indices,
-                const command_buffer::blend_state& blend_state,
-                const mge::draw_flags&             flags) {
+            [this,
+             &blend_pass_needed](program_handle                     program,
+                                 vertex_buffer_handle               vertices,
+                                 index_buffer_handle                indices,
+                                 const command_buffer::blend_state& blend_state,
+                                 const mge::draw_flags&             flags) {
                 blend_operation op = std::get<0>(blend_state);
                 if (op == blend_operation::NONE) {
                     draw_geometry(program.get(), vertices.get(), indices.get());

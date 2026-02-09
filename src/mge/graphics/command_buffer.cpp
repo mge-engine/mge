@@ -16,4 +16,13 @@ namespace mge {
         m_draw_flags.push_back(m_current_draw_flags);
     }
 
+    void command_buffer::depth_write(bool enable) noexcept
+    {
+        if (enable) {
+            m_current_draw_flags.set(draw_flags::DEPTH_WRITE);
+        } else {
+            m_current_draw_flags.clear(draw_flags::DEPTH_WRITE);
+        }
+    }
+
 } // namespace mge

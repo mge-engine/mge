@@ -106,9 +106,12 @@ namespace mge {
                                const vertex_buffer_handle&        vertices,
                                const index_buffer_handle&         indices,
                                const command_buffer::blend_state& blend_state,
-                               uint64_t                           draw_flags) {
-                m_draw_commands.push_back(
-                    draw_command{program, vertices, indices, blend_state});
+                               const draw_flags&                  draw_flags) {
+                m_draw_commands.push_back(draw_command{program,
+                                                       vertices,
+                                                       indices,
+                                                       blend_state,
+                                                       draw_flags});
             });
         }
         m_active = true;

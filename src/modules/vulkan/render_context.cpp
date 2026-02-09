@@ -1051,12 +1051,12 @@ namespace mge::vulkan {
             });
         if (blend_pass_needed) {
             p.for_each_draw_command(
-                [this, command_buffer](
-                    const program_handle&              program,
-                    const vertex_buffer_handle&        vertex_buffer,
-                    const index_buffer_handle&         index_buffer,
-                    const command_buffer::blend_state& blend_state,
-                    const mge::draw_flags&             flags) {
+                [this,
+                 command_buffer](const program_handle&       program,
+                                 const vertex_buffer_handle& vertex_buffer,
+                                 const index_buffer_handle&  index_buffer,
+                                 const command_buffer::blend_state& blend_state,
+                                 const mge::draw_flags&             flags) {
                     auto blend_operation = std::get<0>(blend_state);
                     draw_geometry(command_buffer,
                                   program.get(),

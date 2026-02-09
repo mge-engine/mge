@@ -83,6 +83,7 @@ SET(mgegraphics_headers
     frame_buffer.hpp
     command_buffer.hpp
     frame_debugger.hpp
+    test.hpp
 )
 
 MGE_LIBRARY(

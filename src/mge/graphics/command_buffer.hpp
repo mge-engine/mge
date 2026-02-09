@@ -5,6 +5,7 @@
 #include "mge/graphics/blend_factor.hpp"
 #include "mge/graphics/blend_operation.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/draw_flags.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/program_handle.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
@@ -23,14 +24,6 @@ namespace mge {
         using blend_state =
             std::tuple<blend_operation, blend_factor, blend_factor>;
 
-        enum draw_flags
-        {
-            NONE = 0,
-            DEPTH_TEST = 1 << 0,
-            DEPTH_WRITE = 1 << 1,
-            ALL = DEPTH_TEST | DEPTH_WRITE
-        };
-
         command_buffer() = default;
         ~command_buffer() = default;
 
@@ -39,7 +32,7 @@ namespace mge {
         command_buffer& operator=(const command_buffer&) = delete;
         command_buffer& operator=(command_buffer&&) = default;
 
-        void depth_test(bool enable);
+        void depth_write(bool enable) noexcept;
 
         /**
          * @brief Set the blend state to opaque (no blending).
@@ -127,9 +120,9 @@ namespace mge {
     private:
         blend_state m_current_blend_state{
             blend_operation::NONE, blend_factor::ONE, blend_factor::ZERO};
-        uint64_t m_current_draw_flags{draw_flags::DEPTH_TEST};
+        draw_flags m_current_draw_flags{draw_flags::DEFAULT};
 
-        std::vector<uint64_t>             m_draw_flags;
+        std::vector<draw_flags>           m_draw_flags;
         std::vector<blend_state>          m_blend_states;
         std::vector<program_handle>       m_programs;
         std::vector<vertex_buffer_handle> m_vertex_buffers;

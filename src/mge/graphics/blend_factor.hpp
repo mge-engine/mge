@@ -8,10 +8,10 @@
 namespace mge {
 
     /**
-     * @brief Blend factors for source and destination colors.
+     * @brief Blend factors for source and destination colors/alpha values.
      *
-     * Blend factors determine how source and destination colors are weighted
-     * in the blending equation.
+     * Blend factors determine how source and destination colors/alpha values
+     * are weighted in the blending equation.
      */
     enum class blend_factor
     {
