@@ -820,54 +820,49 @@ namespace mge::dx12 {
                 nullptr);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [&](const mge::program_handle&         program,
-                const mge::vertex_buffer_handle&   vertices,
-                const mge::index_buffer_handle&    indices,
-                const command_buffer::blend_state& blend_state,
-                const mge::pipeline_state&         state) {
-                auto blend_operation = std::get<0>(blend_state);
-                if (blend_operation == blend_operation::NONE) {
-                    draw_geometry(pass_command_list,
-                                  program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  blend_state);
-                } else {
-                    blend_pass_needed = true;
-                }
-            });
+        p.for_each_draw_command([&](const mge::program_handle&       program,
+                                    const mge::vertex_buffer_handle& vertices,
+                                    const mge::index_buffer_handle&  indices,
+                                    const mge::pipeline_state&       state) {
+            auto blend_operation = state.color_blend_operation();
+            if (blend_operation == blend_operation::NONE) {
+                draw_geometry(pass_command_list,
+                              program.get(),
+                              vertices.get(),
+                              indices.get(),
+                              state);
+            } else {
+                blend_pass_needed = true;
+            }
+        });
 
         if (blend_pass_needed) {
             p.for_each_draw_command(
-                [&](const mge::program_handle&         program,
-                    const mge::vertex_buffer_handle&   vertices,
-                    const mge::index_buffer_handle&    indices,
-                    const command_buffer::blend_state& blend_state,
-                    const mge::pipeline_state&         state) {
+                [&](const mge::program_handle&       program,
+                    const mge::vertex_buffer_handle& vertices,
+                    const mge::index_buffer_handle&  indices,
+                    const mge::pipeline_state&       state) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
                                   indices.get(),
-                                  blend_state);
+                                  state);
                 });
         }
     }
 
-    void render_context::draw_geometry(
-        ID3D12GraphicsCommandList*         command_list,
-        mge::program*                      program,
-        mge::vertex_buffer*                vb,
-        mge::index_buffer*                 ib,
-        const command_buffer::blend_state& blend_state)
+    void render_context::draw_geometry(ID3D12GraphicsCommandList* command_list,
+                                       mge::program*              program,
+                                       mge::vertex_buffer*        vb,
+                                       mge::index_buffer*         ib,
+                                       const mge::pipeline_state& state)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
             MGE_THROW(mge::illegal_state)
                 << "Draw command has no program assigned";
         }
-        const auto& pipeline_state =
-            static_pipeline_state(dx12_program, blend_state);
+        const auto& pipeline_state = static_pipeline_state(dx12_program, state);
         if (!pipeline_state.Get()) {
             MGE_THROW(mge::illegal_state)
                 << "Failed to get pipeline state for program";
@@ -917,10 +912,10 @@ namespace mge::dx12 {
     }
 
     const mge::com_ptr<ID3D12PipelineState>&
-    render_context::static_pipeline_state(mge::dx12::program* program,
-                                          const command_buffer::blend_state& bs)
+    render_context::static_pipeline_state(mge::dx12::program*        program,
+                                          const mge::pipeline_state& state)
     {
-        pipeline_state_key key = std::make_tuple(program, bs);
+        pipeline_state_key key = std::make_tuple(program, state);
 
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
@@ -944,12 +939,12 @@ namespace mge::dx12 {
                        ps.code()->GetBufferSize()};
 
         pso_desc.RasterizerState = m_rasterizer_desc;
-        if (blend_operation::NONE == std::get<0>(bs)) {
+        if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;
         } else {
-            blend_operation op = std::get<0>(bs);
-            blend_factor    src_factor = std::get<1>(bs);
-            blend_factor    dst_factor = std::get<2>(bs);
+            blend_operation op = state.color_blend_operation();
+            blend_factor    src_factor = state.color_blend_factor_src();
+            blend_factor    dst_factor = state.color_blend_factor_dst();
 
             pso_desc.BlendState = {.AlphaToCoverageEnable = FALSE,
                                    .IndependentBlendEnable = FALSE};

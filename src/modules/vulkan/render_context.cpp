@@ -894,12 +894,11 @@ namespace mge::vulkan {
         return mge::image_ref();
     }
 
-    void render_context::draw_geometry(
-        VkCommandBuffer                    command_buffer,
-        mge::program*                      program,
-        mge::vertex_buffer*                vb,
-        mge::index_buffer*                 ib,
-        const command_buffer::blend_state& blend_state)
+    void render_context::draw_geometry(VkCommandBuffer     command_buffer,
+                                       mge::program*       program,
+                                       mge::vertex_buffer* vb,
+                                       mge::index_buffer*  ib,
+                                       const mge::pipeline_state& state)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -909,7 +908,7 @@ namespace mge::vulkan {
             static_cast<mge::vulkan::index_buffer*>(ib);
 
         VkPipeline pipeline =
-            this->pipeline(*vk_vertex_buffer, *vk_program, blend_state);
+            this->pipeline(*vk_vertex_buffer, *vk_program, state);
         vkCmdBindPipeline(command_buffer,
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
@@ -1031,38 +1030,35 @@ namespace mge::vulkan {
                                   &clear_rect);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, command_buffer, &blend_pass_needed](
-                const program_handle&              program,
-                const vertex_buffer_handle&        vertex_buffer,
-                const index_buffer_handle&         index_buffer,
-                const command_buffer::blend_state& blend_state,
-                const mge::pipeline_state&         state) {
-                auto blend_operation = std::get<0>(blend_state);
-                if (blend_operation == mge::blend_operation::NONE) {
-                    draw_geometry(command_buffer,
-                                  program.get(),
-                                  vertex_buffer.get(),
-                                  index_buffer.get(),
-                                  blend_state);
-                } else {
-                    blend_pass_needed = true;
-                }
-            });
+        p.for_each_draw_command([this, command_buffer, &blend_pass_needed](
+                                    const program_handle&       program,
+                                    const vertex_buffer_handle& vertex_buffer,
+                                    const index_buffer_handle&  index_buffer,
+                                    const mge::pipeline_state&  state) {
+            auto blend_operation = state.color_blend_operation();
+            if (blend_operation == mge::blend_operation::NONE) {
+                draw_geometry(command_buffer,
+                              program.get(),
+                              vertex_buffer.get(),
+                              index_buffer.get(),
+                              state);
+            } else {
+                blend_pass_needed = true;
+            }
+        });
         if (blend_pass_needed) {
             p.for_each_draw_command(
                 [this,
                  command_buffer](const program_handle&       program,
                                  const vertex_buffer_handle& vertex_buffer,
                                  const index_buffer_handle&  index_buffer,
-                                 const command_buffer::blend_state& blend_state,
-                                 const mge::pipeline_state&         state) {
-                    auto blend_operation = std::get<0>(blend_state);
+                                 const mge::pipeline_state&  state) {
+                    auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
                                   index_buffer.get(),
-                                  blend_state);
+                                  state);
                 });
         }
 
@@ -1130,10 +1126,9 @@ namespace mge::vulkan {
                    std::move(descriptions);
     }
 
-    VkPipeline
-    render_context::pipeline(const vertex_buffer&               buffer,
-                             const program&                     program,
-                             const command_buffer::blend_state& blend_state)
+    VkPipeline render_context::pipeline(const vertex_buffer&       buffer,
+                                        const program&             program,
+                                        const mge::pipeline_state& state)
     {
         // binding_description
         // attribute_descriptions -> layout
@@ -1142,7 +1137,7 @@ namespace mge::vulkan {
         // blend state
         pipeline_key_type key{buffer.vk_buffer(),
                               program.pipeline_layout(),
-                              blend_state};
+                              state};
 
         auto it = m_pipelines.find(key);
         if (it != m_pipelines.end()) {
@@ -1229,7 +1224,7 @@ namespace mge::vulkan {
             VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
             VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 
-        auto blend_operation = std::get<0>(blend_state);
+        auto blend_operation = state.color_blend_operation();
 
         if (blend_operation == mge::blend_operation::NONE) {
             color_blend_attachment_state.blendEnable = VK_FALSE;
@@ -1244,8 +1239,8 @@ namespace mge::vulkan {
                 VK_BLEND_FACTOR_ZERO;
             color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
         } else {
-            auto src_factor = std::get<1>(blend_state);
-            auto dst_factor = std::get<2>(blend_state);
+            auto src_factor = state.color_blend_factor_src();
+            auto dst_factor = state.color_blend_factor_dst();
 
             color_blend_attachment_state.blendEnable = VK_TRUE;
             color_blend_attachment_state.srcColorBlendFactor =

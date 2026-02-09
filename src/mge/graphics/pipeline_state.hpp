@@ -4,6 +4,8 @@
 #pragma once
 #include "mge/core/format.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/graphics/blend_factor.hpp"
+#include "mge/graphics/blend_operation.hpp"
 #include "mge/graphics/dllexport.hpp"
 
 #include <functional>
@@ -109,9 +111,10 @@ namespace mge {
             MSAA_SAMPLE_COUNT_MASK | MSAA_ALPHA_TO_COVERAGE |
             MSAA_SAMPLE_SHADING | CONSERVATIVE_RASTERIZATION;
 
-        static constexpr uint64_t DEFAULT = DEPTH_WRITE | COLOR_WRITE |
-                                            PRIMITIVE_TOPOLOGY_TRIANGLE_LIST |
-                                            MSAA_SAMPLE_COUNT_1;
+        static constexpr uint64_t DEFAULT =
+            DEPTH_WRITE | COLOR_WRITE | PRIMITIVE_TOPOLOGY_TRIANGLE_LIST |
+            MSAA_SAMPLE_COUNT_1 |
+            (1ull << COLOR_BLEND_FACTOR_SRC_SHIFT); // src = ONE, dst = ZERO
 
         pipeline_state() = default;
 
@@ -140,6 +143,21 @@ namespace mge {
         pipeline_state(pipeline_state&&) noexcept = default;
         pipeline_state& operator=(const pipeline_state&) = default;
         pipeline_state& operator=(pipeline_state&&) noexcept = default;
+
+        bool operator==(const pipeline_state& other) const noexcept
+        {
+            return m_flags == other.m_flags;
+        }
+
+        bool operator!=(const pipeline_state& other) const noexcept
+        {
+            return m_flags != other.m_flags;
+        }
+
+        bool operator<(const pipeline_state& other) const noexcept
+        {
+            return m_flags < other.m_flags;
+        }
 
         uint64_t raw() const noexcept
         {
@@ -184,8 +202,50 @@ namespace mge {
             return (m_flags & other.m_flags) == other.m_flags;
         }
 
+        void set_color_blend_operation(blend_operation op) noexcept
+        {
+            m_flags &= ~COLOR_BLEND_OPERATION_MASK;
+            m_flags |=
+                (static_cast<uint64_t>(op) << COLOR_BLEND_OPERATION_SHIFT) &
+                COLOR_BLEND_OPERATION_MASK;
+        }
+
+        blend_operation color_blend_operation() const noexcept
+        {
+            return static_cast<blend_operation>(
+                (m_flags & COLOR_BLEND_OPERATION_MASK) >>
+                COLOR_BLEND_OPERATION_SHIFT);
+        }
+
+        void set_color_blend_factors(blend_factor src,
+                                     blend_factor dst) noexcept
+        {
+            m_flags &=
+                ~(COLOR_BLEND_FACTOR_SRC_MASK | COLOR_BLEND_FACTOR_DST_MASK);
+            m_flags |=
+                (static_cast<uint64_t>(src) << COLOR_BLEND_FACTOR_SRC_SHIFT) &
+                COLOR_BLEND_FACTOR_SRC_MASK;
+            m_flags |=
+                (static_cast<uint64_t>(dst) << COLOR_BLEND_FACTOR_DST_SHIFT) &
+                COLOR_BLEND_FACTOR_DST_MASK;
+        }
+
+        blend_factor color_blend_factor_src() const noexcept
+        {
+            return static_cast<blend_factor>(
+                (m_flags & COLOR_BLEND_FACTOR_SRC_MASK) >>
+                COLOR_BLEND_FACTOR_SRC_SHIFT);
+        }
+
+        blend_factor color_blend_factor_dst() const noexcept
+        {
+            return static_cast<blend_factor>(
+                (m_flags & COLOR_BLEND_FACTOR_DST_MASK) >>
+                COLOR_BLEND_FACTOR_DST_SHIFT);
+        }
+
     private:
-        uint64_t m_flags{0};
+        uint64_t m_flags{DEFAULT};
     };
 
 } // namespace mge

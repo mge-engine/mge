@@ -99,10 +99,8 @@ namespace mge::dx12 {
         void remove_pipeline_state(mge::dx12::program* program)
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
-            pipeline_state_key          min_key{program,
-                                                {blend_operation::NONE,
-                                                 blend_factor::ZERO,
-                                                 blend_factor::ZERO}};
+            auto min_key = std::make_tuple(static_cast<void*>(program),
+                                           mge::pipeline_state{});
             auto it = m_program_pipeline_states.lower_bound(min_key);
             while (it != m_program_pipeline_states.end() &&
                    std::get<0>(it->first) == program) {
@@ -111,8 +109,8 @@ namespace mge::dx12 {
         }
 
         const mge::com_ptr<ID3D12PipelineState>&
-        static_pipeline_state(mge::dx12::program*                program,
-                              const command_buffer::blend_state& bs);
+        static_pipeline_state(mge::dx12::program*        program,
+                              const mge::pipeline_state& state);
 
     private:
         void enable_debug_layer();
@@ -127,11 +125,11 @@ namespace mge::dx12 {
         void create_depth_stencil_views();
         void create_command_lists();
 
-        void draw_geometry(ID3D12GraphicsCommandList*         command_list,
-                           mge::program*                      program,
-                           mge::vertex_buffer*                vb,
-                           mge::index_buffer*                 ib,
-                           const command_buffer::blend_state& blend_state);
+        void draw_geometry(ID3D12GraphicsCommandList* command_list,
+                           mge::program*              program,
+                           mge::vertex_buffer*        vb,
+                           mge::index_buffer*         ib,
+                           const mge::pipeline_state& state);
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,
@@ -163,8 +161,7 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandAllocator>    m_xfer_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_xfer_command_list;
 
-        using pipeline_state_key =
-            std::tuple<void*, command_buffer::blend_state>;
+        using pipeline_state_key = std::tuple<void*, mge::pipeline_state>;
 
         std::map<pipeline_state_key, mge::com_ptr<ID3D12PipelineState>>
             m_program_pipeline_states;

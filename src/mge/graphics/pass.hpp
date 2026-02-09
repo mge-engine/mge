@@ -123,7 +123,6 @@ namespace mge {
                 f(cmd.program,
                   cmd.vertices,
                   cmd.indices,
-                  cmd.blend_state,
                   cmd.state);
             }
         }
@@ -150,7 +149,6 @@ namespace mge {
             program_handle              program;
             vertex_buffer_handle        vertices;
             index_buffer_handle         indices;
-            command_buffer::blend_state blend_state;
             mge::pipeline_state         state;
         };
 

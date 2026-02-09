@@ -356,13 +356,11 @@ namespace mge::dx11 {
         }
         bool blend_pass_needed = false;
         p.for_each_draw_command(
-            [this,
-             &blend_pass_needed](program_handle                     program,
-                                 vertex_buffer_handle               vertices,
-                                 index_buffer_handle                indices,
-                                 const command_buffer::blend_state& blend_state,
-                                 const mge::pipeline_state&         state) {
-                blend_operation op = std::get<0>(blend_state);
+            [this, &blend_pass_needed](program_handle             program,
+                                       vertex_buffer_handle       vertices,
+                                       index_buffer_handle        indices,
+                                       const mge::pipeline_state& state) {
+                blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
                     draw_geometry(program.get(), vertices.get(), indices.get());
                 } else {
@@ -371,27 +369,23 @@ namespace mge::dx11 {
             });
 
         if (blend_pass_needed) {
-            p.for_each_draw_command(
-                [this](program_handle                     program,
-                       vertex_buffer_handle               vertices,
-                       index_buffer_handle                indices,
-                       const command_buffer::blend_state& blend_state,
-                       const mge::pipeline_state&         state) {
-                    blend_operation op = std::get<0>(blend_state);
-                    if (op != blend_operation::NONE) {
-                        ID3D11BlendState* blend_state_obj =
-                            this->blend_state(blend_state);
+            p.for_each_draw_command([this](program_handle             program,
+                                           vertex_buffer_handle       vertices,
+                                           index_buffer_handle        indices,
+                                           const mge::pipeline_state& state) {
+                blend_operation op = state.color_blend_operation();
+                if (op != blend_operation::NONE) {
+                    ID3D11BlendState* blend_state_obj =
+                        this->blend_state(state);
 
-                        float blend_factor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-                        m_device_context->OMSetBlendState(blend_state_obj,
-                                                          blend_factor,
-                                                          0xffffffff);
+                    float blend_factor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+                    m_device_context->OMSetBlendState(blend_state_obj,
+                                                      blend_factor,
+                                                      0xffffffff);
 
-                        draw_geometry(program.get(),
-                                      vertices.get(),
-                                      indices.get());
-                    }
-                });
+                    draw_geometry(program.get(), vertices.get(), indices.get());
+                }
+            });
             m_device_context->OMSetBlendState(nullptr, nullptr, 0xffffffff);
         }
     }
@@ -459,16 +453,16 @@ namespace mge::dx11 {
     }
 
     ID3D11BlendState*
-    render_context::blend_state(const command_buffer::blend_state& blend_state)
+    render_context::blend_state(const mge::pipeline_state& state)
     {
-        auto it = m_blend_state_cache.find(blend_state);
+        auto it = m_blend_state_cache.find(state);
         if (it != m_blend_state_cache.end()) {
             return it->second.get();
         }
 
-        blend_operation op = std::get<0>(blend_state);
-        blend_factor    src_factor = std::get<1>(blend_state);
-        blend_factor    dst_factor = std::get<2>(blend_state);
+        blend_operation op = state.color_blend_operation();
+        blend_factor    src_factor = state.color_blend_factor_src();
+        blend_factor    dst_factor = state.color_blend_factor_dst();
 
         D3D11_BLEND_DESC blend_desc = {};
         blend_desc.RenderTarget[0].BlendEnable = TRUE;
@@ -488,8 +482,8 @@ namespace mge::dx11 {
         CHECK_HRESULT(rc, ID3D11Device, CreateBlendState);
 
         com_unique_ptr<ID3D11BlendState> owned_ptr(blend_state_obj);
-        m_blend_state_cache[blend_state] = std::move(owned_ptr);
-        return m_blend_state_cache[blend_state].get();
+        m_blend_state_cache[state] = std::move(owned_ptr);
+        return m_blend_state_cache[state].get();
     }
 
     mge::image_ref render_context::screenshot()

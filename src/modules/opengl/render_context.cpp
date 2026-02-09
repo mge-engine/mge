@@ -383,13 +383,11 @@ namespace mge::opengl {
         }
         bool blend_pass_needed = false;
         p.for_each_draw_command(
-            [this,
-             &blend_pass_needed](const program_handle&              program,
-                                 const vertex_buffer_handle&        vertices,
-                                 const index_buffer_handle&         indices,
-                                 const command_buffer::blend_state& blend_state,
-                                 const mge::pipeline_state&         state) {
-                blend_operation op = std::get<0>(blend_state);
+            [this, &blend_pass_needed](const program_handle&       program,
+                                       const vertex_buffer_handle& vertices,
+                                       const index_buffer_handle&  indices,
+                                       const mge::pipeline_state&  state) {
+                blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
                     draw_geometry(program.get(), vertices.get(), indices.get());
                 } else {
@@ -399,26 +397,22 @@ namespace mge::opengl {
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command(
-                [this](const program_handle&              program,
-                       const vertex_buffer_handle&        vertices,
-                       const index_buffer_handle&         indices,
-                       const command_buffer::blend_state& blend_state,
-                       const mge::pipeline_state&         state) {
-                    blend_operation op = std::get<0>(blend_state);
-                    blend_factor    src = std::get<1>(blend_state);
-                    blend_factor    dst = std::get<2>(blend_state);
-                    if (op != blend_operation::NONE) {
-                        glBlendFunc(blend_factor_to_gl(src),
-                                    blend_factor_to_gl(dst));
-                        CHECK_OPENGL_ERROR(glBlendFunc);
-                        glBlendEquation(blend_operation_to_gl(op));
-                        CHECK_OPENGL_ERROR(glBlendEquation);
-                        draw_geometry(program.get(),
-                                      vertices.get(),
-                                      indices.get());
-                    }
-                });
+            p.for_each_draw_command([this](const program_handle&       program,
+                                           const vertex_buffer_handle& vertices,
+                                           const index_buffer_handle&  indices,
+                                           const mge::pipeline_state&  state) {
+                blend_operation op = state.color_blend_operation();
+                blend_factor    src = state.color_blend_factor_src();
+                blend_factor    dst = state.color_blend_factor_dst();
+                if (op != blend_operation::NONE) {
+                    glBlendFunc(blend_factor_to_gl(src),
+                                blend_factor_to_gl(dst));
+                    CHECK_OPENGL_ERROR(glBlendFunc);
+                    glBlendEquation(blend_operation_to_gl(op));
+                    CHECK_OPENGL_ERROR(glBlendEquation);
+                    draw_geometry(program.get(), vertices.get(), indices.get());
+                }
+            });
             glDisable(GL_BLEND);
             CHECK_OPENGL_ERROR(glDisable);
         }
