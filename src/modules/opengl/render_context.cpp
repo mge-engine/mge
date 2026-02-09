@@ -421,8 +421,9 @@ namespace mge::opengl {
                                             blend_factor_to_gl(alpha_src),
                                             blend_factor_to_gl(alpha_dst));
                         CHECK_OPENGL_ERROR(glBlendFuncSeparate);
-                        glBlendEquationSeparate(blend_operation_to_gl(color_op),
-                                                blend_operation_to_gl(alpha_op));
+                        glBlendEquationSeparate(
+                            blend_operation_to_gl(color_op),
+                            blend_operation_to_gl(alpha_op));
                         CHECK_OPENGL_ERROR(glBlendEquationSeparate);
                     }
                     draw_geometry(program.get(), vertices.get(), indices.get());

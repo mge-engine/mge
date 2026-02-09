@@ -942,9 +942,12 @@ namespace mge::dx12 {
         if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;
         } else {
-            blend_operation op = state.color_blend_operation();
-            blend_factor    src_factor = state.color_blend_factor_src();
-            blend_factor    dst_factor = state.color_blend_factor_dst();
+            blend_operation color_op = state.color_blend_operation();
+            blend_factor    color_src = state.color_blend_factor_src();
+            blend_factor    color_dst = state.color_blend_factor_dst();
+            blend_operation alpha_op = state.alpha_blend_operation();
+            blend_factor    alpha_src = state.alpha_blend_factor_src();
+            blend_factor    alpha_dst = state.alpha_blend_factor_dst();
 
             pso_desc.BlendState = {.AlphaToCoverageEnable = FALSE,
                                    .IndependentBlendEnable = FALSE};
@@ -952,12 +955,12 @@ namespace mge::dx12 {
             pso_desc.BlendState.RenderTarget[0] = {
                 .BlendEnable = TRUE,
                 .LogicOpEnable = FALSE,
-                .SrcBlend = blend_factor_to_dx12(src_factor),
-                .DestBlend = blend_factor_to_dx12(dst_factor),
-                .BlendOp = blend_operation_to_dx12(op),
-                .SrcBlendAlpha = blend_factor_to_dx12(src_factor),
-                .DestBlendAlpha = blend_factor_to_dx12(dst_factor),
-                .BlendOpAlpha = blend_operation_to_dx12(op),
+                .SrcBlend = blend_factor_to_dx12(color_src),
+                .DestBlend = blend_factor_to_dx12(color_dst),
+                .BlendOp = blend_operation_to_dx12(color_op),
+                .SrcBlendAlpha = blend_factor_to_dx12(alpha_src),
+                .DestBlendAlpha = blend_factor_to_dx12(alpha_dst),
+                .BlendOpAlpha = blend_operation_to_dx12(alpha_op),
                 .LogicOp = D3D12_LOGIC_OP_NOOP,
                 .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
         }

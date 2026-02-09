@@ -460,20 +460,24 @@ namespace mge::dx11 {
             return it->second.get();
         }
 
-        blend_operation op = state.color_blend_operation();
-        blend_factor    src_factor = state.color_blend_factor_src();
-        blend_factor    dst_factor = state.color_blend_factor_dst();
+        blend_operation color_op = state.color_blend_operation();
+        blend_factor    color_src = state.color_blend_factor_src();
+        blend_factor    color_dst = state.color_blend_factor_dst();
+        blend_operation alpha_op = state.alpha_blend_operation();
+        blend_factor    alpha_src = state.alpha_blend_factor_src();
+        blend_factor    alpha_dst = state.alpha_blend_factor_dst();
 
         D3D11_BLEND_DESC blend_desc = {};
         blend_desc.RenderTarget[0].BlendEnable = TRUE;
-        blend_desc.RenderTarget[0].SrcBlend = blend_factor_to_dx11(src_factor);
-        blend_desc.RenderTarget[0].DestBlend = blend_factor_to_dx11(dst_factor);
-        blend_desc.RenderTarget[0].BlendOp = blend_operation_to_dx11(op);
+        blend_desc.RenderTarget[0].SrcBlend = blend_factor_to_dx11(color_src);
+        blend_desc.RenderTarget[0].DestBlend = blend_factor_to_dx11(color_dst);
+        blend_desc.RenderTarget[0].BlendOp = blend_operation_to_dx11(color_op);
         blend_desc.RenderTarget[0].SrcBlendAlpha =
-            blend_factor_to_dx11(src_factor);
+            blend_factor_to_dx11(alpha_src);
         blend_desc.RenderTarget[0].DestBlendAlpha =
-            blend_factor_to_dx11(dst_factor);
-        blend_desc.RenderTarget[0].BlendOpAlpha = blend_operation_to_dx11(op);
+            blend_factor_to_dx11(alpha_dst);
+        blend_desc.RenderTarget[0].BlendOpAlpha =
+            blend_operation_to_dx11(alpha_op);
         blend_desc.RenderTarget[0].RenderTargetWriteMask =
             D3D11_COLOR_WRITE_ENABLE_ALL;
 

@@ -1224,9 +1224,9 @@ namespace mge::vulkan {
             VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
             VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 
-        auto blend_operation = state.color_blend_operation();
+        auto color_blend_operation = state.color_blend_operation();
 
-        if (blend_operation == mge::blend_operation::NONE) {
+        if (color_blend_operation == mge::blend_operation::NONE) {
             color_blend_attachment_state.blendEnable = VK_FALSE;
             color_blend_attachment_state.srcColorBlendFactor =
                 VK_BLEND_FACTOR_ONE;
@@ -1239,22 +1239,25 @@ namespace mge::vulkan {
                 VK_BLEND_FACTOR_ZERO;
             color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
         } else {
-            auto src_factor = state.color_blend_factor_src();
-            auto dst_factor = state.color_blend_factor_dst();
+            auto color_src_factor = state.color_blend_factor_src();
+            auto color_dst_factor = state.color_blend_factor_dst();
+            auto alpha_blend_operation = state.alpha_blend_operation();
+            auto alpha_src_factor = state.alpha_blend_factor_src();
+            auto alpha_dst_factor = state.alpha_blend_factor_dst();
 
             color_blend_attachment_state.blendEnable = VK_TRUE;
             color_blend_attachment_state.srcColorBlendFactor =
-                blend_factor_to_vulkan(src_factor);
+                blend_factor_to_vulkan(color_src_factor);
             color_blend_attachment_state.dstColorBlendFactor =
-                blend_factor_to_vulkan(dst_factor);
+                blend_factor_to_vulkan(color_dst_factor);
             color_blend_attachment_state.colorBlendOp =
-                blend_operation_to_vulkan(blend_operation);
+                blend_operation_to_vulkan(color_blend_operation);
             color_blend_attachment_state.srcAlphaBlendFactor =
-                blend_factor_to_vulkan(src_factor);
+                blend_factor_to_vulkan(alpha_src_factor);
             color_blend_attachment_state.dstAlphaBlendFactor =
-                blend_factor_to_vulkan(dst_factor);
+                blend_factor_to_vulkan(alpha_dst_factor);
             color_blend_attachment_state.alphaBlendOp =
-                blend_operation_to_vulkan(blend_operation);
+                blend_operation_to_vulkan(alpha_blend_operation);
         }
 
         VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
