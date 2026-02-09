@@ -1036,7 +1036,8 @@ namespace mge::vulkan {
                 const program_handle&              program,
                 const vertex_buffer_handle&        vertex_buffer,
                 const index_buffer_handle&         index_buffer,
-                const command_buffer::blend_state& blend_state) {
+                const command_buffer::blend_state& blend_state,
+                const mge::draw_flags&             flags) {
                 auto blend_operation = std::get<0>(blend_state);
                 if (blend_operation == mge::blend_operation::NONE) {
                     draw_geometry(command_buffer,
@@ -1054,7 +1055,8 @@ namespace mge::vulkan {
                     const program_handle&              program,
                     const vertex_buffer_handle&        vertex_buffer,
                     const index_buffer_handle&         index_buffer,
-                    const command_buffer::blend_state& blend_state) {
+                    const command_buffer::blend_state& blend_state,
+                    const mge::draw_flags&             flags) {
                     auto blend_operation = std::get<0>(blend_state);
                     draw_geometry(command_buffer,
                                   program.get(),

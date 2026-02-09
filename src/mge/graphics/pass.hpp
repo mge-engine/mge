@@ -5,6 +5,7 @@
 #pragma once
 #include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/draw_flags.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
@@ -118,7 +119,11 @@ namespace mge {
         template <typename F> void for_each_draw_command(F&& f) const
         {
             for (const auto& cmd : m_draw_commands) {
-                f(cmd.program, cmd.vertices, cmd.indices, cmd.blend_state);
+                f(cmd.program,
+                  cmd.vertices,
+                  cmd.indices,
+                  cmd.blend_state,
+                  cmd.flags);
             }
         }
 
@@ -145,6 +150,7 @@ namespace mge {
             vertex_buffer_handle        vertices;
             index_buffer_handle         indices;
             command_buffer::blend_state blend_state;
+            mge::draw_flags             flags;
         };
 
         std::vector<draw_command> m_draw_commands;
