@@ -128,6 +128,7 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void create_depth_resources();
         void create_render_pass();
         void create_graphics_command_pool();
         void create_primary_command_buffers();
@@ -176,6 +177,9 @@ namespace mge::vulkan {
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
+        std::vector<VkImage>            m_depth_images;
+        std::vector<VmaAllocation>      m_depth_image_allocations;
+        std::vector<VkImageView>        m_depth_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
 
