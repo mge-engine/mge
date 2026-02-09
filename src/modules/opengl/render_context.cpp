@@ -388,7 +388,7 @@ namespace mge::opengl {
                                  const vertex_buffer_handle&        vertices,
                                  const index_buffer_handle&         indices,
                                  const command_buffer::blend_state& blend_state,
-                                 const mge::draw_flags&             flags) {
+                                 const mge::pipeline_state&         state) {
                 blend_operation op = std::get<0>(blend_state);
                 if (op == blend_operation::NONE) {
                     draw_geometry(program.get(), vertices.get(), indices.get());
@@ -404,7 +404,7 @@ namespace mge::opengl {
                        const vertex_buffer_handle&        vertices,
                        const index_buffer_handle&         indices,
                        const command_buffer::blend_state& blend_state,
-                       const mge::draw_flags&             flags) {
+                       const mge::pipeline_state&         state) {
                     blend_operation op = std::get<0>(blend_state);
                     blend_factor    src = std::get<1>(blend_state);
                     blend_factor    dst = std::get<2>(blend_state);

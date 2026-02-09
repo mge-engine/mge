@@ -5,12 +5,13 @@
 #pragma once
 #include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/dllexport.hpp"
-#include "mge/graphics/draw_flags.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
+
 
 namespace mge {
 
@@ -123,7 +124,7 @@ namespace mge {
                   cmd.vertices,
                   cmd.indices,
                   cmd.blend_state,
-                  cmd.flags);
+                  cmd.state);
             }
         }
 
@@ -150,7 +151,7 @@ namespace mge {
             vertex_buffer_handle        vertices;
             index_buffer_handle         indices;
             command_buffer::blend_state blend_state;
-            mge::draw_flags             flags;
+            mge::pipeline_state         state;
         };
 
         std::vector<draw_command> m_draw_commands;

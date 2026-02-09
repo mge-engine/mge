@@ -67,7 +67,7 @@ SET(mgegraphics_headers
     attribute_semantic.hpp
     blend_factor.hpp
     blend_operation.hpp
-    draw_flags.hpp
+    pipeline_state.hpp
     texture_type.hpp
     texture.hpp
     topology.hpp

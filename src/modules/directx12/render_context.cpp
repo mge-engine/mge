@@ -825,7 +825,7 @@ namespace mge::dx12 {
                 const mge::vertex_buffer_handle&   vertices,
                 const mge::index_buffer_handle&    indices,
                 const command_buffer::blend_state& blend_state,
-                const mge::draw_flags&             flags) {
+                const mge::pipeline_state&         state) {
                 auto blend_operation = std::get<0>(blend_state);
                 if (blend_operation == blend_operation::NONE) {
                     draw_geometry(pass_command_list,
@@ -844,7 +844,7 @@ namespace mge::dx12 {
                     const mge::vertex_buffer_handle&   vertices,
                     const mge::index_buffer_handle&    indices,
                     const command_buffer::blend_state& blend_state,
-                    const mge::draw_flags&             flags) {
+                    const mge::pipeline_state&         state) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),

@@ -5,10 +5,11 @@
 #include "mge/graphics/blend_factor.hpp"
 #include "mge/graphics/blend_operation.hpp"
 #include "mge/graphics/dllexport.hpp"
-#include "mge/graphics/draw_flags.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
+#include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/program_handle.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
+
 
 #include <tuple>
 
@@ -99,7 +100,7 @@ namespace mge {
                   m_vertex_buffers[i],
                   m_index_buffers[i],
                   m_blend_states[i],
-                  m_draw_flags[i]);
+                  m_pipeline_states[i]);
             }
         }
 
@@ -114,15 +115,15 @@ namespace mge {
             m_vertex_buffers.clear();
             m_index_buffers.clear();
             m_blend_states.clear();
-            m_draw_flags.clear();
+            m_pipeline_states.clear();
         }
 
     private:
         blend_state m_current_blend_state{
             blend_operation::NONE, blend_factor::ONE, blend_factor::ZERO};
-        draw_flags m_current_draw_flags{draw_flags::DEFAULT};
+        pipeline_state m_current_pipeline_state{pipeline_state::DEFAULT};
 
-        std::vector<draw_flags>           m_draw_flags;
+        std::vector<pipeline_state>       m_pipeline_states;
         std::vector<blend_state>          m_blend_states;
         std::vector<program_handle>       m_programs;
         std::vector<vertex_buffer_handle> m_vertex_buffers;

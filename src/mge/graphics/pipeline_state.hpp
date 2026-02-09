@@ -11,12 +11,12 @@
 namespace mge {
 
     /**
-     * @brief Draw flags used to control rendering state.
+     * @brief Pipeline state configuration for graphics rendering.
      *
-     * These flags define properties of the drawing pipeline, e.g.
-     * whether to enable depth testing, blending, face culling, etc.
+     * Encapsulates graphics pipeline state including depth/stencil,
+     * blending, rasterization, topology, MSAA, and other render state.
      */
-    class MGEGRAPHICS_EXPORT draw_flags
+    class MGEGRAPHICS_EXPORT pipeline_state
     {
     public:
         static constexpr uint64_t NONE = 0;
@@ -113,33 +113,33 @@ namespace mge {
                                             PRIMITIVE_TOPOLOGY_TRIANGLE_LIST |
                                             MSAA_SAMPLE_COUNT_1;
 
-        draw_flags() = default;
+        pipeline_state() = default;
 
-        draw_flags(uint64_t raw_flags)
+        pipeline_state(uint64_t raw_flags)
             : m_flags(raw_flags)
         {
             if ((raw_flags & ~ALL_VALID_BITS) != 0) {
                 MGE_THROW(mge::illegal_argument)
-                    << "Invalid draw flags: " << raw_flags;
+                    << "Invalid pipeline state: " << raw_flags;
             }
         }
 
-        draw_flags(const std::initializer_list<uint64_t>& flags)
+        pipeline_state(const std::initializer_list<uint64_t>& flags)
             : m_flags(0)
         {
             for (auto flag : flags) {
                 if ((flag & ~ALL_VALID_BITS) != 0) {
                     MGE_THROW(mge::illegal_argument)
-                        << "Invalid draw flag: " << flag;
+                        << "Invalid pipeline state flag: " << flag;
                 }
                 m_flags |= flag;
             }
         }
 
-        draw_flags(const draw_flags&) = default;
-        draw_flags(draw_flags&&) noexcept = default;
-        draw_flags& operator=(const draw_flags&) = default;
-        draw_flags& operator=(draw_flags&&) noexcept = default;
+        pipeline_state(const pipeline_state&) = default;
+        pipeline_state(pipeline_state&&) noexcept = default;
+        pipeline_state& operator=(const pipeline_state&) = default;
+        pipeline_state& operator=(pipeline_state&&) noexcept = default;
 
         uint64_t raw() const noexcept
         {
@@ -150,7 +150,7 @@ namespace mge {
         {
             if ((flag & ~ALL_VALID_BITS) != 0) {
                 MGE_THROW(mge::illegal_argument)
-                    << "Invalid draw flag: " << flag;
+                    << "Invalid pipeline state flag: " << flag;
             }
             m_flags |= flag;
         }
@@ -159,7 +159,7 @@ namespace mge {
         {
             if ((flag & ~ALL_VALID_BITS) != 0) {
                 MGE_THROW(mge::illegal_argument)
-                    << "Invalid draw flag: " << flag;
+                    << "Invalid pipeline state flag: " << flag;
             }
             m_flags &= ~flag;
         }
@@ -179,7 +179,7 @@ namespace mge {
             m_flags = 0;
         }
 
-        bool includes(const draw_flags& other) const noexcept
+        bool includes(const pipeline_state& other) const noexcept
         {
             return (m_flags & other.m_flags) == other.m_flags;
         }
@@ -191,29 +191,32 @@ namespace mge {
 } // namespace mge
 
 template <>
-struct fmt::formatter<mge::draw_flags> : public fmt::formatter<uint64_t>
+struct fmt::formatter<mge::pipeline_state> : public fmt::formatter<uint64_t>
 {
     template <typename FormatContext>
-    auto format(const mge::draw_flags& flags, FormatContext& ctx) const
+    auto format(const mge::pipeline_state& state, FormatContext& ctx) const
     {
-        return fmt::format_to(ctx.out(), "draw_flags{{{:#018x}}}", flags.raw());
+        return fmt::format_to(ctx.out(),
+                              "pipeline_state{{{:#018x}}}",
+                              state.raw());
     }
 };
 
 namespace mge {
-    inline std::ostream& operator<<(std::ostream& os, const draw_flags& flags)
+    inline std::ostream& operator<<(std::ostream&         os,
+                                    const pipeline_state& state)
     {
-        fmt::print(os, "{}", flags);
+        fmt::print(os, "{}", state);
         return os;
     }
 } // namespace mge
 
 namespace std {
-    template <> struct hash<mge::draw_flags>
+    template <> struct hash<mge::pipeline_state>
     {
-        size_t operator()(const mge::draw_flags& flags) const noexcept
+        size_t operator()(const mge::pipeline_state& state) const noexcept
         {
-            return std::hash<uint64_t>{}(flags.raw());
+            return std::hash<uint64_t>{}(state.raw());
         }
     };
 } // namespace std

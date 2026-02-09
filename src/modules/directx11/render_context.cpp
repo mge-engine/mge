@@ -361,7 +361,7 @@ namespace mge::dx11 {
                                  vertex_buffer_handle               vertices,
                                  index_buffer_handle                indices,
                                  const command_buffer::blend_state& blend_state,
-                                 const mge::draw_flags&             flags) {
+                                 const mge::pipeline_state&         state) {
                 blend_operation op = std::get<0>(blend_state);
                 if (op == blend_operation::NONE) {
                     draw_geometry(program.get(), vertices.get(), indices.get());
@@ -376,7 +376,7 @@ namespace mge::dx11 {
                        vertex_buffer_handle               vertices,
                        index_buffer_handle                indices,
                        const command_buffer::blend_state& blend_state,
-                       const mge::draw_flags&             flags) {
+                       const mge::pipeline_state&         state) {
                     blend_operation op = std::get<0>(blend_state);
                     if (op != blend_operation::NONE) {
                         ID3D11BlendState* blend_state_obj =
