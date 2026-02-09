@@ -78,6 +78,9 @@ namespace mge {
                 auto& command_buffer =
                     m_window->render_context().command_buffer(true);
 
+                command_buffer.depth_test_function(mge::test::ALWAYS);
+                command_buffer.depth_write(false);
+
                 // Use additive blending to make overlapping areas brighter
                 command_buffer.blend_equation(blend_operation::ADD);
                 command_buffer.blend_function(blend_factor::ONE,
