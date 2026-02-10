@@ -109,15 +109,15 @@ namespace mge::vulkan {
         const std::vector<VkVertexInputAttributeDescription>&
         vertex_input_attribute_descriptions(const mge::vertex_layout& layout);
 
-        VkPipeline pipeline(const vertex_buffer&               buffer,
-                            const program&                     program,
-                            const command_buffer::blend_state& blend_state);
+        VkPipeline pipeline(const vertex_buffer&       buffer,
+                            const program&             program,
+                            const mge::pipeline_state& state);
 
-        void draw_geometry(VkCommandBuffer                    command_buffer,
-                           mge::program*                      program,
-                           mge::vertex_buffer*                vb,
-                           mge::index_buffer*                 ib,
-                           const command_buffer::blend_state& blend_state);
+        void draw_geometry(VkCommandBuffer            command_buffer,
+                           mge::program*              program,
+                           mge::vertex_buffer*        vb,
+                           mge::index_buffer*         ib,
+                           const mge::pipeline_state& state);
 
     private:
         void create_surface();
@@ -128,6 +128,7 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void create_depth_resources();
         void create_render_pass();
         void create_graphics_command_pool();
         void create_primary_command_buffers();
@@ -176,6 +177,9 @@ namespace mge::vulkan {
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
+        std::vector<VkImage>            m_depth_images;
+        std::vector<VmaAllocation>      m_depth_image_allocations;
+        std::vector<VkImageView>        m_depth_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
 
@@ -189,8 +193,9 @@ namespace mge::vulkan {
             m_vertex_input_attribute_descriptions;
 
         using pipeline_key_type =
-            std::tuple<VkBuffer, VkPipelineLayout, command_buffer::blend_state>;
-        using pipeline_cache_type = std::map<pipeline_key_type, VkPipeline>;
+            std::tuple<VkBuffer, VkPipelineLayout, mge::pipeline_state>;
+        using pipeline_cache_type =
+            std::unordered_map<pipeline_key_type, VkPipeline>;
         pipeline_cache_type m_pipelines;
     };
 } // namespace mge::vulkan

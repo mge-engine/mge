@@ -7,9 +7,11 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
+
 
 namespace mge {
 
@@ -118,7 +120,10 @@ namespace mge {
         template <typename F> void for_each_draw_command(F&& f) const
         {
             for (const auto& cmd : m_draw_commands) {
-                f(cmd.program, cmd.vertices, cmd.indices, cmd.blend_state);
+                f(cmd.program,
+                  cmd.vertices,
+                  cmd.indices,
+                  cmd.state);
             }
         }
 
@@ -144,7 +149,7 @@ namespace mge {
             program_handle              program;
             vertex_buffer_handle        vertices;
             index_buffer_handle         indices;
-            command_buffer::blend_state blend_state;
+            mge::pipeline_state         state;
         };
 
         std::vector<draw_command> m_draw_commands;

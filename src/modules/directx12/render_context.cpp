@@ -91,6 +91,31 @@ namespace mge::dx12 {
         }
     }
 
+    static inline D3D12_COMPARISON_FUNC depth_test_to_dx12(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return D3D12_COMPARISON_FUNC_NEVER;
+        case mge::test::LESS:
+            return D3D12_COMPARISON_FUNC_LESS;
+        case mge::test::EQUAL:
+            return D3D12_COMPARISON_FUNC_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return D3D12_COMPARISON_FUNC_LESS_EQUAL;
+        case mge::test::GREATER:
+            return D3D12_COMPARISON_FUNC_GREATER;
+        case mge::test::NOT_EQUAL:
+            return D3D12_COMPARISON_FUNC_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return D3D12_COMPARISON_FUNC_GREATER_EQUAL;
+        case mge::test::ALWAYS:
+            return D3D12_COMPARISON_FUNC_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -820,52 +845,49 @@ namespace mge::dx12 {
                 nullptr);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [&](const mge::program_handle&         program,
-                const mge::vertex_buffer_handle&   vertices,
-                const mge::index_buffer_handle&    indices,
-                const command_buffer::blend_state& blend_state) {
-                auto blend_operation = std::get<0>(blend_state);
-                if (blend_operation == blend_operation::NONE) {
-                    draw_geometry(pass_command_list,
-                                  program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  blend_state);
-                } else {
-                    blend_pass_needed = true;
-                }
-            });
+        p.for_each_draw_command([&](const mge::program_handle&       program,
+                                    const mge::vertex_buffer_handle& vertices,
+                                    const mge::index_buffer_handle&  indices,
+                                    const mge::pipeline_state&       state) {
+            auto blend_operation = state.color_blend_operation();
+            if (blend_operation == blend_operation::NONE) {
+                draw_geometry(pass_command_list,
+                              program.get(),
+                              vertices.get(),
+                              indices.get(),
+                              state);
+            } else {
+                blend_pass_needed = true;
+            }
+        });
 
         if (blend_pass_needed) {
             p.for_each_draw_command(
-                [&](const mge::program_handle&         program,
-                    const mge::vertex_buffer_handle&   vertices,
-                    const mge::index_buffer_handle&    indices,
-                    const command_buffer::blend_state& blend_state) {
+                [&](const mge::program_handle&       program,
+                    const mge::vertex_buffer_handle& vertices,
+                    const mge::index_buffer_handle&  indices,
+                    const mge::pipeline_state&       state) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
                                   indices.get(),
-                                  blend_state);
+                                  state);
                 });
         }
     }
 
-    void render_context::draw_geometry(
-        ID3D12GraphicsCommandList*         command_list,
-        mge::program*                      program,
-        mge::vertex_buffer*                vb,
-        mge::index_buffer*                 ib,
-        const command_buffer::blend_state& blend_state)
+    void render_context::draw_geometry(ID3D12GraphicsCommandList* command_list,
+                                       mge::program*              program,
+                                       mge::vertex_buffer*        vb,
+                                       mge::index_buffer*         ib,
+                                       const mge::pipeline_state& state)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
             MGE_THROW(mge::illegal_state)
                 << "Draw command has no program assigned";
         }
-        const auto& pipeline_state =
-            static_pipeline_state(dx12_program, blend_state);
+        const auto& pipeline_state = static_pipeline_state(dx12_program, state);
         if (!pipeline_state.Get()) {
             MGE_THROW(mge::illegal_state)
                 << "Failed to get pipeline state for program";
@@ -915,10 +937,10 @@ namespace mge::dx12 {
     }
 
     const mge::com_ptr<ID3D12PipelineState>&
-    render_context::static_pipeline_state(mge::dx12::program* program,
-                                          const command_buffer::blend_state& bs)
+    render_context::static_pipeline_state(mge::dx12::program*        program,
+                                          const mge::pipeline_state& state)
     {
-        pipeline_state_key key = std::make_tuple(program, bs);
+        pipeline_state_key key = std::make_tuple(program, state);
 
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
@@ -942,12 +964,15 @@ namespace mge::dx12 {
                        ps.code()->GetBufferSize()};
 
         pso_desc.RasterizerState = m_rasterizer_desc;
-        if (blend_operation::NONE == std::get<0>(bs)) {
+        if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;
         } else {
-            blend_operation op = std::get<0>(bs);
-            blend_factor    src_factor = std::get<1>(bs);
-            blend_factor    dst_factor = std::get<2>(bs);
+            blend_operation color_op = state.color_blend_operation();
+            blend_factor    color_src = state.color_blend_factor_src();
+            blend_factor    color_dst = state.color_blend_factor_dst();
+            blend_operation alpha_op = state.alpha_blend_operation();
+            blend_factor    alpha_src = state.alpha_blend_factor_src();
+            blend_factor    alpha_dst = state.alpha_blend_factor_dst();
 
             pso_desc.BlendState = {.AlphaToCoverageEnable = FALSE,
                                    .IndependentBlendEnable = FALSE};
@@ -955,21 +980,26 @@ namespace mge::dx12 {
             pso_desc.BlendState.RenderTarget[0] = {
                 .BlendEnable = TRUE,
                 .LogicOpEnable = FALSE,
-                .SrcBlend = blend_factor_to_dx12(src_factor),
-                .DestBlend = blend_factor_to_dx12(dst_factor),
-                .BlendOp = blend_operation_to_dx12(op),
-                .SrcBlendAlpha = blend_factor_to_dx12(src_factor),
-                .DestBlendAlpha = blend_factor_to_dx12(dst_factor),
-                .BlendOpAlpha = blend_operation_to_dx12(op),
+                .SrcBlend = blend_factor_to_dx12(color_src),
+                .DestBlend = blend_factor_to_dx12(color_dst),
+                .BlendOp = blend_operation_to_dx12(color_op),
+                .SrcBlendAlpha = blend_factor_to_dx12(alpha_src),
+                .DestBlendAlpha = blend_factor_to_dx12(alpha_dst),
+                .BlendOpAlpha = blend_operation_to_dx12(alpha_op),
                 .LogicOp = D3D12_LOGIC_OP_NOOP,
                 .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
         }
-        pso_desc.DepthStencilState = {.DepthEnable = false,
-                                      .StencilEnable = false};
+        pso_desc.DepthStencilState = {
+            .DepthEnable = TRUE,
+            .DepthWriteMask = state.depth_write() ? D3D12_DEPTH_WRITE_MASK_ALL
+                                                  : D3D12_DEPTH_WRITE_MASK_ZERO,
+            .DepthFunc = depth_test_to_dx12(state.depth_test_function()),
+            .StencilEnable = FALSE};
         pso_desc.SampleMask = UINT_MAX;
         pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
         pso_desc.NumRenderTargets = 1;
         pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        pso_desc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
         pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
         mge::com_ptr<ID3D12PipelineState> pipeline_state;
         auto rc = m_device->CreateGraphicsPipelineState(

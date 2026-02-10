@@ -11,22 +11,23 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/test.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
 
 namespace mge {
-    MGE_DEFINE_TRACE(BLEND);
+    MGE_DEFINE_TRACE(DEPTH_TEST);
 }
 
 namespace mge {
-    class blend : public application
+    class depth_test : public application
     {
     public:
-        blend() = default;
+        depth_test() = default;
 
         void setup() override
         {
-            MGE_DEBUG_TRACE(BLEND, "Setup blend");
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Setup depth_test");
 
             mge::properties p;
             p.set("directory", "./assets");
@@ -59,11 +60,12 @@ namespace mge {
 
         void screenshot()
         {
-            MGE_DEBUG_TRACE(BLEND, "Taking screenshot");
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Taking screenshot");
             auto       img = m_window->render_context().screenshot();
             mge::asset img_asset("/temp/screenshot.png");
             img_asset.store(mge::asset_type("image", "png"), img);
-            MGE_DEBUG_TRACE(BLEND, "Screenshot saved to /temp/screenshot.png");
+            MGE_DEBUG_TRACE(DEPTH_TEST,
+                            "Screenshot saved to /temp/screenshot.png");
         }
 
         void draw(uint64_t cycle, double delta)
@@ -72,31 +74,28 @@ namespace mge {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();
                 pass.default_scissor();
-                pass.clear_color(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                pass.clear_color(rgba_color(0.2f, 0.2f, 0.2f, 1.0f));
                 pass.clear_depth(1.0f);
 
                 auto& command_buffer =
                     m_window->render_context().command_buffer(true);
 
-                command_buffer.depth_test_function(mge::test::ALWAYS);
-                command_buffer.depth_write(false);
+                // Use default depth test (LESS) - nearer objects occlude
+                // farther ones
 
-                // Use additive blending to make overlapping areas brighter
-                command_buffer.blend_equation(blend_operation::ADD);
-                command_buffer.blend_function(blend_factor::ONE,
-                                              blend_factor::ONE);
+                // Draw back triangle (red, at z=0.5)
+                command_buffer.draw(m_program_back, m_vertices_back, m_indices);
 
-                // Draw first triangle
-                command_buffer.draw(m_program, m_vertices1, m_indices);
-
-                // Draw second triangle (will blend additively)
-                command_buffer.draw(m_program, m_vertices2, m_indices);
+                // Draw front triangle (green, at z=0.0)
+                command_buffer.draw(m_program_front,
+                                    m_vertices_front,
+                                    m_indices);
 
                 pass.submit(command_buffer);
             } else {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();
-                pass.clear_color(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                pass.clear_color(rgba_color(0.2f, 0.2f, 0.2f, 1.0f));
                 pass.touch();
             }
             m_window->render_context().frame();
@@ -104,14 +103,12 @@ namespace mge {
 
         void initialize()
         {
-            MGE_DEBUG_TRACE(BLEND, "Initializing objects");
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Initializing objects");
 
-            auto pixel_shader =
-                m_window->render_context().create_shader(shader_type::FRAGMENT);
-            auto vertex_shader =
-                m_window->render_context().create_shader(shader_type::VERTEX);
-            m_program = m_window->render_context().create_program();
-            MGE_DEBUG_TRACE(BLEND,
+            m_program_back = m_window->render_context().create_program();
+            m_program_front = m_window->render_context().create_program();
+
+            MGE_DEBUG_TRACE(DEPTH_TEST,
                             "render system is {}",
                             m_render_system->implementation_name());
 
@@ -125,28 +122,49 @@ namespace mge {
 
                     void main() {
                       gl_Position.xyz = vertexPosition;
-                      gl_Position.y = gl_Position.y;
                       gl_Position.w = 1.0;
                     }
                 )shader";
 
-                const char* fragment_shader_glsl = R"shader(
+                const char* fragment_shader_red_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) out vec4 color;
                     void main() {
-                        color = vec4(0.5, 0.5, 0.5, 0.5);
+                        color = vec4(1.0, 0.0, 0.0, 1.0);
                     }
                 )shader";
-                MGE_DEBUG_TRACE(BLEND, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_glsl);
-                MGE_DEBUG_TRACE(BLEND, "Compile vertex shader");
+
+                const char* fragment_shader_green_glsl = R"shader(
+                    #version 330 core
+                    layout(location = 0) out vec4 color;
+                    void main() {
+                        color = vec4(0.0, 1.0, 0.0, 1.0);
+                    }
+                )shader";
+
+                auto vertex_shader = m_window->render_context().create_shader(
+                    shader_type::VERTEX);
+                auto pixel_shader_red =
+                    m_window->render_context().create_shader(
+                        shader_type::FRAGMENT);
+                auto pixel_shader_green =
+                    m_window->render_context().create_shader(
+                        shader_type::FRAGMENT);
+
+                MGE_DEBUG_TRACE(DEPTH_TEST, "Compile shaders");
                 vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(BLEND, "Shaders compiled");
+                pixel_shader_red->compile(fragment_shader_red_glsl);
+                pixel_shader_green->compile(fragment_shader_green_glsl);
+
+                m_program_back->set_shader(vertex_shader);
+                m_program_back->set_shader(pixel_shader_red);
+                m_program_front->set_shader(vertex_shader);
+                m_program_front->set_shader(pixel_shader_green);
+
             } else if (m_render_system->implementation_name() ==
                            "mge::dx11::render_system" ||
                        m_render_system->implementation_name() ==
                            "mge::dx12::render_system") {
-
                 const char* vertex_shader_hlsl = R"shader(
                     float4 main( float4 pos : POSITION ) : SV_POSITION
                     {
@@ -154,55 +172,73 @@ namespace mge {
                     }
                 )shader";
 
-                const char* fragment_shader_hlsl = R"shader(
+                const char* fragment_shader_red_hlsl = R"shader(
                     float4 main() : SV_TARGET
                     {
-                        return float4(0.5f, 0.5f, 0.5f, 1.0f);
+                        return float4(1.0f, 0.0f, 0.0f, 1.0f);
                     }
                 )shader";
-                MGE_DEBUG_TRACE(BLEND, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_hlsl);
-                MGE_DEBUG_TRACE(BLEND, "Compile vertex shader");
+
+                const char* fragment_shader_green_hlsl = R"shader(
+                    float4 main() : SV_TARGET
+                    {
+                        return float4(0.0f, 1.0f, 0.0f, 1.0f);
+                    }
+                )shader";
+
+                auto vertex_shader = m_window->render_context().create_shader(
+                    shader_type::VERTEX);
+                auto pixel_shader_red =
+                    m_window->render_context().create_shader(
+                        shader_type::FRAGMENT);
+                auto pixel_shader_green =
+                    m_window->render_context().create_shader(
+                        shader_type::FRAGMENT);
+
+                MGE_DEBUG_TRACE(DEPTH_TEST, "Compile shaders");
                 vertex_shader->compile(vertex_shader_hlsl);
-                MGE_DEBUG_TRACE(BLEND, "Shaders compiled");
+                pixel_shader_red->compile(fragment_shader_red_hlsl);
+                pixel_shader_green->compile(fragment_shader_green_hlsl);
+
+                m_program_back->set_shader(vertex_shader);
+                m_program_back->set_shader(pixel_shader_red);
+                m_program_front->set_shader(vertex_shader);
+                m_program_front->set_shader(pixel_shader_green);
             } else {
-                MGE_ERROR_TRACE(BLEND,
+                MGE_ERROR_TRACE(DEPTH_TEST,
                                 "Cannot create shaders for {} render system",
                                 m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
-            m_program->set_shader(pixel_shader);
-            m_program->set_shader(vertex_shader);
-            MGE_DEBUG_TRACE(BLEND, "Linking program");
-            m_program->link();
-            MGE_DEBUG_TRACE(BLEND,
-                            "Program linked: {}",
-                            m_program->needs_link() ? "needs link"
-                                                    : "linked successfully");
 
-            // First triangle (left side)
-            float triangle1_coords[] = {
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Linking programs");
+            m_program_back->link();
+            m_program_front->link();
+
+            // Back triangle (red) at z=0.5 (farther from camera)
+            float back_coords[] = {
                 -0.5f,
                 0.5f,
-                0.0f, // top left
-                -0.1f,
+                0.5f, // top left
                 0.5f,
-                0.0f, // top right
-                -0.3f,
-                -0.5f,
-                0.0f, // bottom
-            };
-
-            // Second triangle (right side, overlapping in the middle)
-            float triangle2_coords[] = {
-                -0.3f,
                 0.5f,
-                0.0f, // top left
-                0.3f,
-                0.5f,
-                0.0f, // top right
+                0.5f, // top right
                 0.0f,
                 -0.5f,
+                0.5f, // bottom
+            };
+
+            // Front triangle (green) at z=0.0 (closer to camera)
+            // Overlaps the bottom half of the back triangle
+            float front_coords[] = {
+                -0.3f,
+                0.0f,
+                0.0f, // top left
+                0.3f,
+                0.0f,
+                0.0f, // top right
+                0.0f,
+                -0.8f,
                 0.0f, // bottom
             };
 
@@ -211,23 +247,23 @@ namespace mge {
             mge::vertex_layout layout;
             layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
 
-            MGE_DEBUG_TRACE(BLEND, "Create vertex buffers");
-            m_vertices1 = m_window->render_context().create_vertex_buffer(
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Create vertex buffers");
+            m_vertices_back = m_window->render_context().create_vertex_buffer(
                 layout,
-                sizeof(triangle1_coords),
-                mge::make_buffer(triangle1_coords));
+                sizeof(back_coords),
+                mge::make_buffer(back_coords));
 
-            m_vertices2 = m_window->render_context().create_vertex_buffer(
+            m_vertices_front = m_window->render_context().create_vertex_buffer(
                 layout,
-                sizeof(triangle2_coords),
-                mge::make_buffer(triangle2_coords));
+                sizeof(front_coords),
+                mge::make_buffer(front_coords));
 
-            MGE_DEBUG_TRACE(BLEND, "Create index buffer");
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
                 mge::make_buffer(triangle_indices));
-            MGE_DEBUG_TRACE(BLEND, "Initializing objects done");
+            MGE_DEBUG_TRACE(DEPTH_TEST, "Initializing objects done");
             m_initialized = true;
         }
 
@@ -235,13 +271,14 @@ namespace mge {
         render_system_ref    m_render_system;
         window_ref           m_window;
         std::atomic<bool>    m_initialized;
-        program_handle       m_program;
-        vertex_buffer_handle m_vertices1;
-        vertex_buffer_handle m_vertices2;
+        program_handle       m_program_back;
+        program_handle       m_program_front;
+        vertex_buffer_handle m_vertices_back;
+        vertex_buffer_handle m_vertices_front;
         index_buffer_handle  m_indices;
     };
 
-    MGE_REGISTER_IMPLEMENTATION(blend, mge::application, blend);
+    MGE_REGISTER_IMPLEMENTATION(depth_test, mge::application, depth_test);
 } // namespace mge
 
 MGE_MAINFUNCTION

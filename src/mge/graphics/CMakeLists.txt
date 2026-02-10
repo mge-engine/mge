@@ -67,7 +67,7 @@ SET(mgegraphics_headers
     attribute_semantic.hpp
     blend_factor.hpp
     blend_operation.hpp
-    color_write_mask.hpp
+    pipeline_state.hpp
     texture_type.hpp
     texture.hpp
     topology.hpp
@@ -83,6 +83,7 @@ SET(mgegraphics_headers
     frame_buffer.hpp
     command_buffer.hpp
     frame_debugger.hpp
+    test.hpp
 )
 
 MGE_LIBRARY(

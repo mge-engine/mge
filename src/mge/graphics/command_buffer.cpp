@@ -12,7 +12,21 @@ namespace mge {
         m_programs.push_back(program);
         m_vertex_buffers.push_back(vertices);
         m_index_buffers.push_back(indices);
-        m_blend_states.push_back(m_current_blend_state);
+        m_pipeline_states.push_back(m_current_pipeline_state);
+    }
+
+    void command_buffer::depth_write(bool enable) noexcept
+    {
+        if (enable) {
+            m_current_pipeline_state.set(pipeline_state::DEPTH_WRITE);
+        } else {
+            m_current_pipeline_state.clear(pipeline_state::DEPTH_WRITE);
+        }
+    }
+
+    void command_buffer::depth_test_function(test func) noexcept
+    {
+        m_current_pipeline_state.set_depth_test_function(func);
     }
 
 } // namespace mge

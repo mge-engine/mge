@@ -89,6 +89,31 @@ namespace mge::vulkan {
         }
     }
 
+    static inline VkCompareOp depth_test_to_vulkan(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return VK_COMPARE_OP_NEVER;
+        case mge::test::LESS:
+            return VK_COMPARE_OP_LESS;
+        case mge::test::EQUAL:
+            return VK_COMPARE_OP_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return VK_COMPARE_OP_LESS_OR_EQUAL;
+        case mge::test::GREATER:
+            return VK_COMPARE_OP_GREATER;
+        case mge::test::NOT_EQUAL:
+            return VK_COMPARE_OP_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return VK_COMPARE_OP_GREATER_OR_EQUAL;
+        case mge::test::ALWAYS:
+            return VK_COMPARE_OP_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
         : mge::render_context(render_system_, window_.extent())
@@ -105,6 +130,7 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
+            create_depth_resources();
             create_render_pass();
             create_graphics_command_pool();
             create_primary_command_buffers();
@@ -298,6 +324,25 @@ namespace mge::vulkan {
             }
         }
         m_swap_chain_image_views.clear();
+
+        if (vkDestroyImageView) {
+            for (auto view : m_depth_image_views) {
+                if (view != VK_NULL_HANDLE) {
+                    vkDestroyImageView(m_device, view, nullptr);
+                }
+            }
+        }
+        m_depth_image_views.clear();
+
+        for (size_t i = 0; i < m_depth_images.size(); ++i) {
+            if (m_allocator && m_depth_images[i] != VK_NULL_HANDLE) {
+                vmaDestroyImage(m_allocator,
+                                m_depth_images[i],
+                                m_depth_image_allocations[i]);
+            }
+        }
+        m_depth_images.clear();
+        m_depth_image_allocations.clear();
 
         m_swap_chain_images.clear();
 
@@ -592,6 +637,59 @@ namespace mge::vulkan {
         }
     }
 
+    void render_context::create_depth_resources()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Create depth resources");
+        VkFormat depth_format = VK_FORMAT_D24_UNORM_S8_UINT;
+
+        m_depth_images.resize(m_swap_chain_images.size());
+        m_depth_image_allocations.resize(m_swap_chain_images.size());
+        m_depth_image_views.resize(m_swap_chain_images.size());
+
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            VkImageCreateInfo image_info = {};
+            image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+            image_info.imageType = VK_IMAGE_TYPE_2D;
+            image_info.extent.width = m_extent.width;
+            image_info.extent.height = m_extent.height;
+            image_info.extent.depth = 1;
+            image_info.mipLevels = 1;
+            image_info.arrayLayers = 1;
+            image_info.format = depth_format;
+            image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+            image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+            image_info.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+            image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+            image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+            VmaAllocationCreateInfo alloc_info = {};
+            alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+            CHECK_VK_CALL(vmaCreateImage(m_allocator,
+                                         &image_info,
+                                         &alloc_info,
+                                         &m_depth_images[i],
+                                         &m_depth_image_allocations[i],
+                                         nullptr));
+
+            VkImageViewCreateInfo view_info = {};
+            view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            view_info.image = m_depth_images[i];
+            view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            view_info.format = depth_format;
+            view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+            view_info.subresourceRange.baseMipLevel = 0;
+            view_info.subresourceRange.levelCount = 1;
+            view_info.subresourceRange.baseArrayLayer = 0;
+            view_info.subresourceRange.layerCount = 1;
+
+            CHECK_VK_CALL(vkCreateImageView(m_device,
+                                            &view_info,
+                                            nullptr,
+                                            &m_depth_image_views[i]));
+        }
+    }
+
     void render_context::create_allocator()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create allocator");
@@ -628,27 +726,52 @@ namespace mge::vulkan {
         color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
+        VkAttachmentDescription depth_attachment = {};
+        depth_attachment.format = VK_FORMAT_D24_UNORM_S8_UINT;
+        depth_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        depth_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        depth_attachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depth_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        depth_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depth_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        depth_attachment.finalLayout =
+            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
         VkAttachmentReference color_attachment_ref = {};
         color_attachment_ref.attachment = 0;
         color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkAttachmentReference depth_attachment_ref = {};
+        depth_attachment_ref.attachment = 1;
+        depth_attachment_ref.layout =
+            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
         VkSubpassDescription subpass = {};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
+        subpass.pDepthStencilAttachment = &depth_attachment_ref;
 
         VkSubpassDependency dependency = {};
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         dependency.dstSubpass = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+            VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
         dependency.srcAccessMask = 0;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+            VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
+                                   VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+
+        VkAttachmentDescription attachments[] = {color_attachment,
+                                                 depth_attachment};
 
         VkRenderPassCreateInfo render_pass_info = {};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-        render_pass_info.attachmentCount = 1;
-        render_pass_info.pAttachments = &color_attachment;
+        render_pass_info.attachmentCount = 2;
+        render_pass_info.pAttachments = attachments;
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
         render_pass_info.dependencyCount = 1;
@@ -701,12 +824,13 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN, "Create framebuffers");
         m_swap_chain_framebuffers.resize(m_swap_chain_image_views.size());
         for (size_t i = 0; i < m_swap_chain_image_views.size(); ++i) {
-            VkImageView attachments[] = {m_swap_chain_image_views[i]};
+            VkImageView attachments[] = {m_swap_chain_image_views[i],
+                                         m_depth_image_views[i]};
 
             VkFramebufferCreateInfo framebuffer_info = {};
             framebuffer_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
             framebuffer_info.renderPass = m_render_pass;
-            framebuffer_info.attachmentCount = 1;
+            framebuffer_info.attachmentCount = 2;
             framebuffer_info.pAttachments = attachments;
             framebuffer_info.width = m_extent.width;
             framebuffer_info.height = m_extent.height;
@@ -894,12 +1018,11 @@ namespace mge::vulkan {
         return mge::image_ref();
     }
 
-    void render_context::draw_geometry(
-        VkCommandBuffer                    command_buffer,
-        mge::program*                      program,
-        mge::vertex_buffer*                vb,
-        mge::index_buffer*                 ib,
-        const command_buffer::blend_state& blend_state)
+    void render_context::draw_geometry(VkCommandBuffer     command_buffer,
+                                       mge::program*       program,
+                                       mge::vertex_buffer* vb,
+                                       mge::index_buffer*  ib,
+                                       const mge::pipeline_state& state)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -909,7 +1032,7 @@ namespace mge::vulkan {
             static_cast<mge::vulkan::index_buffer*>(ib);
 
         VkPipeline pipeline =
-            this->pipeline(*vk_vertex_buffer, *vk_program, blend_state);
+            this->pipeline(*vk_vertex_buffer, *vk_program, state);
         vkCmdBindPipeline(command_buffer,
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
@@ -1031,36 +1154,35 @@ namespace mge::vulkan {
                                   &clear_rect);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, command_buffer, &blend_pass_needed](
-                const program_handle&              program,
-                const vertex_buffer_handle&        vertex_buffer,
-                const index_buffer_handle&         index_buffer,
-                const command_buffer::blend_state& blend_state) {
-                auto blend_operation = std::get<0>(blend_state);
-                if (blend_operation == mge::blend_operation::NONE) {
-                    draw_geometry(command_buffer,
-                                  program.get(),
-                                  vertex_buffer.get(),
-                                  index_buffer.get(),
-                                  blend_state);
-                } else {
-                    blend_pass_needed = true;
-                }
-            });
+        p.for_each_draw_command([this, command_buffer, &blend_pass_needed](
+                                    const program_handle&       program,
+                                    const vertex_buffer_handle& vertex_buffer,
+                                    const index_buffer_handle&  index_buffer,
+                                    const mge::pipeline_state&  state) {
+            auto blend_operation = state.color_blend_operation();
+            if (blend_operation == mge::blend_operation::NONE) {
+                draw_geometry(command_buffer,
+                              program.get(),
+                              vertex_buffer.get(),
+                              index_buffer.get(),
+                              state);
+            } else {
+                blend_pass_needed = true;
+            }
+        });
         if (blend_pass_needed) {
             p.for_each_draw_command(
-                [this, command_buffer](
-                    const program_handle&              program,
-                    const vertex_buffer_handle&        vertex_buffer,
-                    const index_buffer_handle&         index_buffer,
-                    const command_buffer::blend_state& blend_state) {
-                    auto blend_operation = std::get<0>(blend_state);
+                [this,
+                 command_buffer](const program_handle&       program,
+                                 const vertex_buffer_handle& vertex_buffer,
+                                 const index_buffer_handle&  index_buffer,
+                                 const mge::pipeline_state&  state) {
+                    auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
                                   index_buffer.get(),
-                                  blend_state);
+                                  state);
                 });
         }
 
@@ -1128,10 +1250,9 @@ namespace mge::vulkan {
                    std::move(descriptions);
     }
 
-    VkPipeline
-    render_context::pipeline(const vertex_buffer&               buffer,
-                             const program&                     program,
-                             const command_buffer::blend_state& blend_state)
+    VkPipeline render_context::pipeline(const vertex_buffer&       buffer,
+                                        const program&             program,
+                                        const mge::pipeline_state& state)
     {
         // binding_description
         // attribute_descriptions -> layout
@@ -1140,7 +1261,7 @@ namespace mge::vulkan {
         // blend state
         pipeline_key_type key{buffer.vk_buffer(),
                               program.pipeline_layout(),
-                              blend_state};
+                              state};
 
         auto it = m_pipelines.find(key);
         if (it != m_pipelines.end()) {
@@ -1214,12 +1335,17 @@ namespace mge::vulkan {
         multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
         multisampling_create_info.alphaToOneEnable = VK_FALSE;
 
-        // no depth stencil tests
-        // VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info
-        // =
-        //    {};
-        // depth_stencil_state_create_info.sType =
-        //    VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info =
+            {};
+        depth_stencil_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        depth_stencil_state_create_info.depthTestEnable = VK_TRUE;
+        depth_stencil_state_create_info.depthWriteEnable =
+            state.depth_write() ? VK_TRUE : VK_FALSE;
+        depth_stencil_state_create_info.depthCompareOp =
+            depth_test_to_vulkan(state.depth_test_function());
+        depth_stencil_state_create_info.depthBoundsTestEnable = VK_FALSE;
+        depth_stencil_state_create_info.stencilTestEnable = VK_FALSE;
 
         // color blending
         VkPipelineColorBlendAttachmentState color_blend_attachment_state = {};
@@ -1227,9 +1353,9 @@ namespace mge::vulkan {
             VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
             VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
 
-        auto blend_operation = std::get<0>(blend_state);
+        auto color_blend_operation = state.color_blend_operation();
 
-        if (blend_operation == mge::blend_operation::NONE) {
+        if (color_blend_operation == mge::blend_operation::NONE) {
             color_blend_attachment_state.blendEnable = VK_FALSE;
             color_blend_attachment_state.srcColorBlendFactor =
                 VK_BLEND_FACTOR_ONE;
@@ -1242,22 +1368,25 @@ namespace mge::vulkan {
                 VK_BLEND_FACTOR_ZERO;
             color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
         } else {
-            auto src_factor = std::get<1>(blend_state);
-            auto dst_factor = std::get<2>(blend_state);
+            auto color_src_factor = state.color_blend_factor_src();
+            auto color_dst_factor = state.color_blend_factor_dst();
+            auto alpha_blend_operation = state.alpha_blend_operation();
+            auto alpha_src_factor = state.alpha_blend_factor_src();
+            auto alpha_dst_factor = state.alpha_blend_factor_dst();
 
             color_blend_attachment_state.blendEnable = VK_TRUE;
             color_blend_attachment_state.srcColorBlendFactor =
-                blend_factor_to_vulkan(src_factor);
+                blend_factor_to_vulkan(color_src_factor);
             color_blend_attachment_state.dstColorBlendFactor =
-                blend_factor_to_vulkan(dst_factor);
+                blend_factor_to_vulkan(color_dst_factor);
             color_blend_attachment_state.colorBlendOp =
-                blend_operation_to_vulkan(blend_operation);
+                blend_operation_to_vulkan(color_blend_operation);
             color_blend_attachment_state.srcAlphaBlendFactor =
-                blend_factor_to_vulkan(src_factor);
+                blend_factor_to_vulkan(alpha_src_factor);
             color_blend_attachment_state.dstAlphaBlendFactor =
-                blend_factor_to_vulkan(dst_factor);
+                blend_factor_to_vulkan(alpha_dst_factor);
             color_blend_attachment_state.alphaBlendOp =
-                blend_operation_to_vulkan(blend_operation);
+                blend_operation_to_vulkan(alpha_blend_operation);
         }
 
         VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
@@ -1290,7 +1419,8 @@ namespace mge::vulkan {
         pipeline_create_info.pRasterizationState =
             &rasterization_state_create_info;
         pipeline_create_info.pMultisampleState = &multisampling_create_info;
-        pipeline_create_info.pDepthStencilState = nullptr;
+        pipeline_create_info.pDepthStencilState =
+            &depth_stencil_state_create_info;
         pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
         pipeline_create_info.pDynamicState = &dynamic_state_create_info;
         pipeline_create_info.layout = pipeline_layout;

@@ -44,16 +44,16 @@ TEST(command_buffer, for_each_verifies_single_draw)
     cb.draw(prog, vb, ib);
 
     size_t count = 0;
-    cb.for_each([&](const mge::program_handle&              p,
-                    const mge::vertex_buffer_handle&        v,
-                    const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
         EXPECT_EQ(p, prog);
         EXPECT_EQ(v, vb);
         EXPECT_EQ(i, ib);
-        EXPECT_EQ(std::get<0>(bs), mge::blend_operation::NONE);
-        EXPECT_EQ(std::get<1>(bs), mge::blend_factor::ONE);
-        EXPECT_EQ(std::get<2>(bs), mge::blend_factor::ZERO);
+        EXPECT_EQ(state.color_blend_operation(), mge::blend_operation::NONE);
+        EXPECT_EQ(state.color_blend_factor_src(), mge::blend_factor::ONE);
+        EXPECT_EQ(state.color_blend_factor_dst(), mge::blend_factor::ZERO);
         ++count;
     });
     EXPECT_EQ(count, 1);
@@ -71,10 +71,10 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
     cb.draw(prog3, vb3, ib3);
 
     size_t count = 0;
-    cb.for_each([&](const mge::program_handle&              p,
-                    const mge::vertex_buffer_handle&        v,
-                    const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(p, prog1);
@@ -111,24 +111,99 @@ TEST(command_buffer, for_each_verifies_blend_states)
     cb.draw(prog3, vb3, ib3);
 
     size_t count = 0;
-    cb.for_each([&](const mge::program_handle&              p,
-                    const mge::vertex_buffer_handle&        v,
-                    const mge::index_buffer_handle&         i,
-                    const mge::command_buffer::blend_state& bs) {
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
         ++count;
         if (count == 1) {
-            EXPECT_EQ(std::get<0>(bs), mge::blend_operation::NONE);
-            EXPECT_EQ(std::get<1>(bs), mge::blend_factor::ONE);
-            EXPECT_EQ(std::get<2>(bs), mge::blend_factor::ZERO);
+            EXPECT_EQ(state.color_blend_operation(),
+                      mge::blend_operation::NONE);
+            EXPECT_EQ(state.color_blend_factor_src(), mge::blend_factor::ONE);
+            EXPECT_EQ(state.color_blend_factor_dst(), mge::blend_factor::ZERO);
         } else if (count == 2) {
-            EXPECT_EQ(std::get<0>(bs), mge::blend_operation::NONE);
-            EXPECT_EQ(std::get<1>(bs), mge::blend_factor::SRC_ALPHA);
-            EXPECT_EQ(std::get<2>(bs), mge::blend_factor::ONE_MINUS_SRC_ALPHA);
+            EXPECT_EQ(state.color_blend_operation(),
+                      mge::blend_operation::NONE);
+            EXPECT_EQ(state.color_blend_factor_src(),
+                      mge::blend_factor::SRC_ALPHA);
+            EXPECT_EQ(state.color_blend_factor_dst(),
+                      mge::blend_factor::ONE_MINUS_SRC_ALPHA);
         } else if (count == 3) {
-            EXPECT_EQ(std::get<0>(bs), mge::blend_operation::ADD);
-            EXPECT_EQ(std::get<1>(bs), mge::blend_factor::SRC_ALPHA);
-            EXPECT_EQ(std::get<2>(bs), mge::blend_factor::ONE_MINUS_SRC_ALPHA);
+            EXPECT_EQ(state.color_blend_operation(), mge::blend_operation::ADD);
+            EXPECT_EQ(state.color_blend_factor_src(),
+                      mge::blend_factor::SRC_ALPHA);
+            EXPECT_EQ(state.color_blend_factor_dst(),
+                      mge::blend_factor::ONE_MINUS_SRC_ALPHA);
         }
     });
     EXPECT_EQ(count, 3);
+}
+
+TEST(command_buffer, depth_write_state)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog1, prog2, prog3;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog1, vb, ib);
+
+    cb.depth_write(true);
+    cb.draw(prog2, vb, ib);
+
+    cb.depth_write(false);
+    cb.draw(prog3, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
+        ++count;
+        if (count == 1) {
+            EXPECT_TRUE(state.depth_write());
+        } else if (count == 2) {
+            EXPECT_TRUE(state.depth_write());
+        } else if (count == 3) {
+            EXPECT_FALSE(state.depth_write());
+        }
+    });
+    EXPECT_EQ(count, 3);
+}
+
+TEST(command_buffer, depth_test_function_state)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog1, prog2, prog3, prog4;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog1, vb, ib);
+
+    cb.depth_test_function(mge::test::GREATER);
+    cb.draw(prog2, vb, ib);
+
+    cb.depth_test_function(mge::test::ALWAYS);
+    cb.draw(prog3, vb, ib);
+
+    cb.depth_test_function(mge::test::NEVER);
+    cb.draw(prog4, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle&       p,
+                    const mge::vertex_buffer_handle& v,
+                    const mge::index_buffer_handle&  i,
+                    const mge::pipeline_state&       state) {
+        ++count;
+        if (count == 1) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::LESS);
+        } else if (count == 2) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::GREATER);
+        } else if (count == 3) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::ALWAYS);
+        } else if (count == 4) {
+            EXPECT_EQ(state.depth_test_function(), mge::test::NEVER);
+        }
+    });
+    EXPECT_EQ(count, 4);
 }

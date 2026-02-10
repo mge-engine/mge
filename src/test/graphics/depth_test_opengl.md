@@ -23,9 +23,9 @@
   - width: 800
   - height: 600
 - Call: glClearColor
-  - red: 0
-  - green: 0
-  - blue: 0
+  - red: 0.20000000298023224
+  - green: 0.20000000298023224
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -35,17 +35,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
-- Call: glEnable
-  - cap: GL_BLEND
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -81,17 +72,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -127,10 +109,6 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
-- Call: glDisable
-  - cap: GL_BLEND
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -152,9 +130,9 @@
   - width: 800
   - height: 600
 - Call: glClearColor
-  - red: 0
-  - green: 0
-  - blue: 0
+  - red: 0.20000000298023224
+  - green: 0.20000000298023224
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -164,17 +142,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
-- Call: glEnable
-  - cap: GL_BLEND
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -188,17 +157,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -212,10 +172,6 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
-- Call: glDisable
-  - cap: GL_BLEND
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -237,9 +193,9 @@
   - width: 800
   - height: 600
 - Call: glClearColor
-  - red: 0
-  - green: 0
-  - blue: 0
+  - red: 0.20000000298023224
+  - green: 0.20000000298023224
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -249,17 +205,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
-- Call: glEnable
-  - cap: GL_BLEND
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -273,17 +220,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -297,10 +235,6 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
-- Call: glDisable
-  - cap: GL_BLEND
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -322,9 +256,9 @@
   - width: 800
   - height: 600
 - Call: glClearColor
-  - red: 0
-  - green: 0
-  - blue: 0
+  - red: 0.20000000298023224
+  - green: 0.20000000298023224
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -334,17 +268,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
-- Call: glEnable
-  - cap: GL_BLEND
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -358,17 +283,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -382,10 +298,6 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
-- Call: glDisable
-  - cap: GL_BLEND
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -407,9 +319,9 @@
   - width: 800
   - height: 600
 - Call: glClearColor
-  - red: 0
-  - green: 0
-  - blue: 0
+  - red: 0.20000000298023224
+  - green: 0.20000000298023224
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -419,17 +331,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
-- Call: glEnable
-  - cap: GL_BLEND
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -443,17 +346,8 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
 - Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_LINES
-  - dfactor: GL_LINES
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
+  - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -467,10 +361,6 @@
   - vaobj: _ignored_
 - Call: glUseProgram
   - program: _ignored_
-- Call: glDepthMask
-  - flag: true
-- Call: glDisable
-  - cap: GL_BLEND
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers

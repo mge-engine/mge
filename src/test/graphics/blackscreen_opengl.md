@@ -29,6 +29,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 2
 - Call: glBindFramebuffer
@@ -54,6 +58,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 3
 - Call: glBindFramebuffer
@@ -79,6 +87,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 4
 - Call: glBindFramebuffer
@@ -104,6 +116,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 5
 - Call: glBindFramebuffer
@@ -129,5 +145,9 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 

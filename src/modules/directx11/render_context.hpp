@@ -69,11 +69,12 @@ namespace mge::dx11 {
         void render(const mge::pass& p) override;
 
     private:
-        void draw_geometry(mge::program*       program,
-                           mge::vertex_buffer* vb,
-                           mge::index_buffer*  ib);
-        ID3D11BlendState*
-             blend_state(const command_buffer::blend_state& blend_state);
+        void              draw_geometry(mge::program*       program,
+                                        mge::vertex_buffer* vb,
+                                        mge::index_buffer*  ib);
+        ID3D11BlendState* blend_state(const mge::pipeline_state& state);
+        ID3D11DepthStencilState*
+             depth_stencil_state(const mge::pipeline_state& state);
         void create_swap_chain();
 
         mge::dx11::render_system&              m_render_system;
@@ -90,9 +91,14 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11DepthStencilView>  m_depth_stencil_view;
 
         using blend_state_cache_type =
-            std::unordered_map<mge::command_buffer::blend_state,
+            std::unordered_map<mge::pipeline_state,
                                com_unique_ptr<ID3D11BlendState>>;
         blend_state_cache_type m_blend_state_cache;
+
+        using depth_stencil_state_cache_type =
+            std::unordered_map<mge::pipeline_state,
+                               com_unique_ptr<ID3D11DepthStencilState>>;
+        depth_stencil_state_cache_type m_depth_stencil_state_cache;
     };
 
     inline render_context& dx11_context(mge::render_context& context)
