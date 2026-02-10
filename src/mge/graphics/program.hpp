@@ -121,6 +121,8 @@ namespace mge {
          */
         const uniform_buffer_list& uniform_buffers() const;
 
+        // uniform_block_handle make_uniform_block();
+
     protected:
         bool                m_needs_link;
         attribute_list      m_attributes;
