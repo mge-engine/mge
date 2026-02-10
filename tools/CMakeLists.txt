@@ -4,20 +4,10 @@
 IF(WIN32)
     SET(helper_scripts
         enable.cmd
-        enable_trace.cmd
-        enable_trace.ps1
-        disable_trace.cmd
-        disable_trace.ps1
-        enable_opengl.cmd
-        enable_opengl.ps1
-        enable_vulkan.cmd
-        enable_vulkan.ps1
-        enable_dx11.cmd
-        enable_dx11.ps1
-        enable_dx12.cmd
-        enable_dx12.ps1
-        reset_render_system.cmd
-        reset_render_system.ps1)
+        enable.ps1
+        disable.cmd
+        disable.ps1
+    )
 
     FOREACH(FILE ${helper_scripts})
         COPY_FILE("${CMAKE_CURRENT_SOURCE_DIR}/${FILE}"
