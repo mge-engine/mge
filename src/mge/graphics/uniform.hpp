@@ -49,9 +49,13 @@ namespace mge {
                       "Uniform data type must be a supported type");
 
     public:
+        uniform(const std::string_view& name)
+            : uniform_base(name)
+        {}
+
         constexpr uniform_data_type type() const noexcept
         {
-            return uniform_data_type_of<T>();
+            return uniform_data_type_of<T>::value;
         }
 
         inline T& operator=(const T& value) noexcept
