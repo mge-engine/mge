@@ -849,14 +849,15 @@ namespace mge::dx12 {
                                     const mge::vertex_buffer_handle& vertices,
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
-                                    mge::uniform_block* /*ub*/) {
+                                    mge::uniform_block*              ub) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == blend_operation::NONE) {
                 draw_geometry(pass_command_list,
                               program.get(),
                               vertices.get(),
                               indices.get(),
-                              state);
+                              state,
+                              ub);
             } else {
                 blend_pass_needed = true;
             }
@@ -868,12 +869,13 @@ namespace mge::dx12 {
                     const mge::vertex_buffer_handle& vertices,
                     const mge::index_buffer_handle&  indices,
                     const mge::pipeline_state&       state,
-                    mge::uniform_block* /*ub*/) {
+                    mge::uniform_block*              ub) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
                                   indices.get(),
-                                  state);
+                                  state,
+                                  ub);
                 });
         }
     }
@@ -882,13 +884,15 @@ namespace mge::dx12 {
                                        mge::program*              program,
                                        mge::vertex_buffer*        vb,
                                        mge::index_buffer*         ib,
-                                       const mge::pipeline_state& state)
+                                       const mge::pipeline_state& state,
+                                       mge::uniform_block*        ub)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
             MGE_THROW(mge::illegal_state)
                 << "Draw command has no program assigned";
         }
+
         const auto& pipeline_state = static_pipeline_state(dx12_program, state);
         if (!pipeline_state.Get()) {
             MGE_THROW(mge::illegal_state)
@@ -897,6 +901,11 @@ namespace mge::dx12 {
         auto root_signature = dx12_program->root_signature();
         command_list->SetGraphicsRootSignature(root_signature);
         command_list->SetPipelineState(pipeline_state.Get());
+
+        if (ub) {
+            bind_uniform_block(command_list, *dx12_program, *ub);
+        }
+
         command_list->IASetPrimitiveTopology(
             D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         auto dx12_vertices = static_cast<dx12::vertex_buffer*>(vb);
@@ -909,6 +918,74 @@ namespace mge::dx12 {
             0,
             0,
             0);
+    }
+
+    void
+    render_context::bind_uniform_block(ID3D12GraphicsCommandList* command_list,
+                                       mge::dx12::program&        dx12_program,
+                                       mge::uniform_block&        ub)
+    {
+        ID3D12Resource* cbuffer = nullptr;
+        auto            it = m_constant_buffers.find(&ub);
+        if (it != m_constant_buffers.end()) {
+            cbuffer = it->second.Get();
+        } else {
+            D3D12_HEAP_PROPERTIES heap_props = {
+                .Type = D3D12_HEAP_TYPE_UPLOAD,
+                .CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN,
+                .MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN,
+                .CreationNodeMask = 1,
+                .VisibleNodeMask = 1};
+
+            size_t aligned_size = (ub.data_size() + 255) & ~255;
+
+            D3D12_RESOURCE_DESC buffer_desc = {
+                .Dimension = D3D12_RESOURCE_DIMENSION_BUFFER,
+                .Alignment = 0,
+                .Width = aligned_size,
+                .Height = 1,
+                .DepthOrArraySize = 1,
+                .MipLevels = 1,
+                .Format = DXGI_FORMAT_UNKNOWN,
+                .SampleDesc = {1, 0},
+                .Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR,
+                .Flags = D3D12_RESOURCE_FLAG_NONE};
+
+            HRESULT rc = m_device->CreateCommittedResource(
+                &heap_props,
+                D3D12_HEAP_FLAG_NONE,
+                &buffer_desc,
+                D3D12_RESOURCE_STATE_GENERIC_READ,
+                nullptr,
+                IID_PPV_ARGS(&cbuffer));
+            CHECK_HRESULT(rc, ID3D12Device, CreateCommittedResource);
+
+            m_constant_buffers[&ub] = mge::com_ptr<ID3D12Resource>(cbuffer);
+            m_constant_buffer_versions[&ub] = 0;
+        }
+
+        auto& cached_version = m_constant_buffer_versions[&ub];
+        if (cached_version != ub.version()) {
+            void*   mapped_data = nullptr;
+            HRESULT rc = cbuffer->Map(0, nullptr, &mapped_data);
+            CHECK_HRESULT(rc, ID3D12Resource, Map);
+
+            memcpy(mapped_data, ub.data(), ub.data_size());
+            cbuffer->Unmap(0, nullptr);
+
+            cached_version = ub.version();
+        }
+
+        uint32_t root_parameter_index = 0;
+        for (const auto& ub_metadata : dx12_program.uniform_blocks()) {
+            if (ub_metadata.name == ub.name()) {
+                command_list->SetGraphicsRootConstantBufferView(
+                    root_parameter_index,
+                    cbuffer->GetGPUVirtualAddress());
+                break;
+            }
+            ++root_parameter_index;
+        }
     }
 
     mge::image_ref render_context::screenshot()

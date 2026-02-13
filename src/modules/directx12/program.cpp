@@ -8,6 +8,10 @@
 #include "render_context.hpp"
 #include "shader.hpp"
 
+namespace mge {
+    MGE_USE_TRACE(DX12);
+}
+
 namespace mge::dx12 {
 
     program::program(render_context& context)
@@ -39,6 +43,10 @@ namespace mge::dx12 {
 
     void program::collect_information()
     {
+        for (auto& buffers : m_shader_buffers) {
+            buffers.clear();
+        }
+
         for (const auto& s : m_shaders) {
             if (s) {
                 const dx12::shader* dx12_s =
@@ -46,15 +54,43 @@ namespace mge::dx12 {
                 dx12_s->reflect(m_attributes,
                                 m_uniforms,
                                 m_uniform_block_metadata);
+
+                auto index = mge::to_underlying(s->type());
+                for (const auto& ub : m_uniform_block_metadata) {
+                    m_shader_buffers[index].insert(ub.name);
+                }
             }
         }
     }
 
     void program::create_root_signature()
     {
+        std::vector<D3D12_ROOT_PARAMETER> root_parameters;
+
+        for (const auto& ub : m_uniform_block_metadata) {
+            D3D12_ROOT_PARAMETER param = {};
+            param.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+            param.Descriptor.ShaderRegister = ub.location;
+            param.Descriptor.RegisterSpace = 0;
+
+            if (uses_in_vertex_shader(ub.name) &&
+                uses_in_pixel_shader(ub.name)) {
+                param.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+            } else if (uses_in_vertex_shader(ub.name)) {
+                param.ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;
+            } else if (uses_in_pixel_shader(ub.name)) {
+                param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+            } else {
+                param.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
+            }
+
+            root_parameters.push_back(param);
+        }
+
         D3D12_ROOT_SIGNATURE_DESC desc = {
-            .NumParameters = 0,
-            .pParameters = nullptr,
+            .NumParameters = static_cast<UINT>(root_parameters.size()),
+            .pParameters =
+                root_parameters.empty() ? nullptr : root_parameters.data(),
             .NumStaticSamplers = 0,
             .pStaticSamplers = nullptr,
             .Flags =
@@ -89,6 +125,33 @@ namespace mge::dx12 {
             serialized_signature->GetBufferSize(),
             IID_PPV_ARGS(&m_root_signature));
         CHECK_HRESULT(rc, ID3D12Device, CreateRootSignature);
+    }
+
+    uint32_t program::buffer_bind_point(const std::string& name) const
+    {
+        for (const auto& ub : m_uniform_block_metadata) {
+            if (ub.name == name) {
+                return ub.location;
+            }
+        }
+        MGE_WARNING_TRACE(DX12,
+                          "Uniform buffer '{}' not found, using slot 0",
+                          name);
+        return 0;
+    }
+
+    bool program::uses_in_vertex_shader(const std::string& name) const
+    {
+        auto index = mge::to_underlying(mge::shader_type::VERTEX);
+        return m_shader_buffers[index].find(name) !=
+               m_shader_buffers[index].end();
+    }
+
+    bool program::uses_in_pixel_shader(const std::string& name) const
+    {
+        auto index = mge::to_underlying(mge::shader_type::FRAGMENT);
+        return m_shader_buffers[index].find(name) !=
+               m_shader_buffers[index].end();
     }
 
 } // namespace mge::dx12
