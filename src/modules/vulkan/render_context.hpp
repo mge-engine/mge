@@ -119,11 +119,16 @@ namespace mge::vulkan {
                            mge::vertex_buffer*        vb,
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
-                           mge::uniform_block*        ub);
+                           mge::uniform_block*        ub,
+                           mge::texture*              tex);
 
         void bind_uniform_block(VkCommandBuffer       command_buffer,
                                 mge::vulkan::program& vk_program,
                                 mge::uniform_block&   ub);
+
+        void bind_texture(VkCommandBuffer       command_buffer,
+                          mge::vulkan::program& vk_program,
+                          mge::texture*         tex);
 
     private:
         void create_surface();

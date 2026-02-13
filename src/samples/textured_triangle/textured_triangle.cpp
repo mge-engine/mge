@@ -125,7 +125,7 @@ namespace mge {
                     layout(location = 0) in vec3 vertexPosition;
                     layout(location = 1) in vec2 vertexTexCoord;
 
-                    out vec2 fragTexCoord;
+                    layout(location = 0) out vec2 fragTexCoord;
 
                     void main() {
                         gl_Position = vec4(vertexPosition, 1.0);
@@ -135,10 +135,10 @@ namespace mge {
 
                 const char* fragment_shader_glsl = R"shader(
                     #version 450 core
-                    in vec2 fragTexCoord;
+                    layout(location = 0) in vec2 fragTexCoord;
                     layout(location = 0) out vec4 color;
 
-                    uniform sampler2D texSampler;
+                    layout(binding = 0) uniform sampler2D texSampler;
 
                     void main() {
                         color = texture(texSampler, fragTexCoord);

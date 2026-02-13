@@ -234,9 +234,10 @@ namespace mge::vulkan {
     }
 
     void shader::reflect(
-        mge::program::attribute_list&              attributes,
-        mge::program::uniform_list&                uniforms,
-        mge::program::uniform_block_metadata_list& uniform_buffers) const
+        mge::program::attribute_list&                  attributes,
+        mge::program::uniform_list&                    uniforms,
+        mge::program::uniform_block_metadata_list&     uniform_buffers,
+        std::vector<std::pair<std::string, uint32_t>>& sampler_bindings) const
     {
         if (m_code.empty()) {
             return;
@@ -281,7 +282,11 @@ namespace mge::vulkan {
                 const auto& binding = *bindings[i];
 
                 if (binding.descriptor_type ==
-                    SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
+                    SPV_REFLECT_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER) {
+                    std::string name = binding.name ? binding.name : "";
+                    sampler_bindings.push_back({name, binding.binding});
+                } else if (binding.descriptor_type ==
+                           SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
                     mge::program::uniform_block_metadata ub_metadata;
                     ub_metadata.name = binding.type_description->type_name;
                     ub_metadata.location = binding.binding;
