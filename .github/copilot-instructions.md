@@ -49,6 +49,8 @@ cmake --build build          # Multi-threaded build
 cmake --build build -j 1     # Single-threaded for debugging errors
 ctest --output-on-failure --test-dir build
 ```
+- if stopped for build confirmation, if nothing is build after continuing,
+  assume the user has done the build already
 
 ### CMake Structure
 - use CMakePresets.json for settings
