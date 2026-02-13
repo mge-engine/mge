@@ -387,7 +387,8 @@ namespace mge::dx11 {
                                     vertex_buffer_handle       vertices,
                                     index_buffer_handle        indices,
                                     const mge::pipeline_state& state,
-                                    mge::uniform_block*        ub) {
+                                    mge::uniform_block*        ub,
+                                    mge::texture* /*tex*/) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
                 if (!state.depth_write()) {
@@ -411,7 +412,8 @@ namespace mge::dx11 {
                                            vertex_buffer_handle       vertices,
                                            index_buffer_handle        indices,
                                            const mge::pipeline_state& state,
-                                           mge::uniform_block*        ub) {
+                                           mge::uniform_block*        ub,
+                                           mge::texture* /*tex*/) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
                     ID3D11BlendState* blend_state_obj =

@@ -14,7 +14,9 @@ namespace mge {
         m_index_buffers.push_back(indices);
         m_pipeline_states.push_back(m_current_pipeline_state);
         m_uniform_blocks.push_back(m_current_uniform_block);
+        m_textures.push_back(m_current_texture);
         m_current_uniform_block = nullptr;
+        m_current_texture = nullptr;
     }
 
     void command_buffer::depth_write(bool enable) noexcept

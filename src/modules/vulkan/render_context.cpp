@@ -1324,7 +1324,8 @@ namespace mge::vulkan {
                                     const vertex_buffer_handle& vertex_buffer,
                                     const index_buffer_handle&  index_buffer,
                                     const mge::pipeline_state&  state,
-                                    mge::uniform_block*         ub) {
+                                    mge::uniform_block*         ub,
+                                    mge::texture* /*tex*/) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == mge::blend_operation::NONE) {
                 draw_geometry(command_buffer,
@@ -1344,7 +1345,8 @@ namespace mge::vulkan {
                                  const vertex_buffer_handle& vertex_buffer,
                                  const index_buffer_handle&  index_buffer,
                                  const mge::pipeline_state&  state,
-                                 mge::uniform_block*         ub) {
+                                 mge::uniform_block*         ub,
+                                 mge::texture* /*tex*/) {
                     auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),

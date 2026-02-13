@@ -93,6 +93,18 @@ namespace mge::opengl {
                          pixel_type(format),
                          data);
             CHECK_OPENGL_ERROR(glTexImage2D);
+            glTexParameteri(GL_TEXTURE_2D,
+                            GL_TEXTURE_MIN_FILTER,
+                            GL_LINEAR);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D,
+                            GL_TEXTURE_MAG_FILTER,
+                            GL_LINEAR);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            CHECK_OPENGL_ERROR(glTexParameteri);
             glBindTexture(GL_TEXTURE_2D, 0);
             CHECK_OPENGL_ERROR(glBindTexture(0));
         } else {
