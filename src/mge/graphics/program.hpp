@@ -74,6 +74,7 @@ namespace mge {
         {
             std::string  name;
             uniform_list uniforms;
+            uint32_t     location; //!< binding point/slot
         };
 
         using uniform_buffer_list = small_vector<uniform_buffer, 3>;

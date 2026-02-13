@@ -628,10 +628,12 @@ namespace mge::dx11 {
             cached_version = ub.version();
         }
 
-        // Bind the constant buffer to both vertex and pixel shader stages at
-        // slot 0
-        m_device_context->VSSetConstantBuffers(0, 1, &cbuffer);
-        m_device_context->PSSetConstantBuffers(0, 1, &cbuffer);
+        // Get the bind point for this uniform block
+        uint32_t bind_point = dx11_program.buffer_bind_point(ub.name());
+
+        // Bind the constant buffer to both vertex and pixel shader stages
+        m_device_context->VSSetConstantBuffers(bind_point, 1, &cbuffer);
+        m_device_context->PSSetConstantBuffers(bind_point, 1, &cbuffer);
     }
 
     mge::image_ref render_context::screenshot()

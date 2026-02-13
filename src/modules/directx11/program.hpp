@@ -23,6 +23,8 @@ namespace mge::dx11 {
             return m_shaders[mge::to_underlying(t)];
         }
 
+        uint32_t buffer_bind_point(const std::string& name) const;
+
     protected:
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;

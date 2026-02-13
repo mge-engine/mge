@@ -3,8 +3,13 @@
 // All rights reserved.
 #include "program.hpp"
 #include "mge/core/to_underlying.hpp"
+#include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(DX11);
+}
 
 namespace mge::dx11 {
 
@@ -39,6 +44,19 @@ namespace mge::dx11 {
                 dx11_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
             }
         }
+    }
+
+    uint32_t program::buffer_bind_point(const std::string& name) const
+    {
+        for (const auto& ub : m_uniform_buffers) {
+            if (ub.name == name) {
+                return ub.location;
+            }
+        }
+        MGE_WARNING_TRACE(DX11,
+                          "Uniform buffer '{}' not found, using slot 0",
+                          name);
+        return 0;
     }
 
 } // namespace mge::dx11

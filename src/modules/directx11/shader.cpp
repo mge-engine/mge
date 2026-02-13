@@ -227,6 +227,22 @@ namespace mge::dx11 {
                 cbuffer->GetDesc(&cbuffer_desc);
                 mge::program::uniform_buffer uniform_buffer;
                 uniform_buffer.name = cbuffer_desc.Name;
+
+                // Get bind point for this constant buffer
+                D3D11_SHADER_INPUT_BIND_DESC bind_desc = {};
+                HRESULT                      bind_rc =
+                    shader_reflection->GetResourceBindingDescByName(
+                        cbuffer_desc.Name,
+                        &bind_desc);
+                if (SUCCEEDED(bind_rc)) {
+                    uniform_buffer.location = bind_desc.BindPoint;
+                } else {
+                    uniform_buffer.location = 0;
+                    MGE_WARNING_TRACE(
+                        DX11,
+                        "Could not get bind point for buffer '{}'",
+                        cbuffer_desc.Name);
+                }
                 for (uint32_t j = 0; j < cbuffer_desc.Variables; ++j) {
                     ID3D11ShaderReflectionVariable* variable =
                         cbuffer->GetVariableByIndex(j);

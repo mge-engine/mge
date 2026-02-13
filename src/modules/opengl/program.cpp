@@ -497,6 +497,14 @@ namespace mge::opengl {
             program::uniform_buffer ub;
             ub.name = name;
 
+            // Get the block index for this uniform block
+            GLuint block_index =
+                glGetUniformBlockIndex(m_program, name.c_str());
+            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+            ub.location = (block_index != GL_INVALID_INDEX)
+                              ? static_cast<uint32_t>(block_index)
+                              : 0;
+
             // Collect each uniform member of this block
             const GLenum member_props[] = {GL_NAME_LENGTH,
                                            GL_TYPE,
