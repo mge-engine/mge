@@ -11,6 +11,51 @@ namespace mge {
     MGE_USE_TRACE(OPENGL);
 }
 
+static bool is_sampler_type(GLenum t)
+{
+    switch (t) {
+    case GL_SAMPLER_1D:
+    case GL_SAMPLER_2D:
+    case GL_SAMPLER_3D:
+    case GL_SAMPLER_CUBE:
+    case GL_SAMPLER_1D_SHADOW:
+    case GL_SAMPLER_2D_SHADOW:
+    case GL_SAMPLER_1D_ARRAY:
+    case GL_SAMPLER_2D_ARRAY:
+    case GL_SAMPLER_1D_ARRAY_SHADOW:
+    case GL_SAMPLER_2D_ARRAY_SHADOW:
+    case GL_SAMPLER_2D_MULTISAMPLE:
+    case GL_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_SAMPLER_CUBE_SHADOW:
+    case GL_SAMPLER_BUFFER:
+    case GL_SAMPLER_2D_RECT:
+    case GL_SAMPLER_2D_RECT_SHADOW:
+    case GL_INT_SAMPLER_1D:
+    case GL_INT_SAMPLER_2D:
+    case GL_INT_SAMPLER_3D:
+    case GL_INT_SAMPLER_CUBE:
+    case GL_INT_SAMPLER_1D_ARRAY:
+    case GL_INT_SAMPLER_2D_ARRAY:
+    case GL_INT_SAMPLER_2D_MULTISAMPLE:
+    case GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_INT_SAMPLER_BUFFER:
+    case GL_INT_SAMPLER_2D_RECT:
+    case GL_UNSIGNED_INT_SAMPLER_1D:
+    case GL_UNSIGNED_INT_SAMPLER_2D:
+    case GL_UNSIGNED_INT_SAMPLER_3D:
+    case GL_UNSIGNED_INT_SAMPLER_CUBE:
+    case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE:
+    case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_BUFFER:
+    case GL_UNSIGNED_INT_SAMPLER_2D_RECT:
+        return true;
+    default:
+        return false;
+    }
+}
+
 static mge::uniform_data_type uniform_type_from_gl(GLenum t)
 {
     switch (t) {
@@ -256,6 +301,7 @@ namespace mge::opengl {
     void program::collect_uniforms()
     {
         m_uniforms.clear(); // Assuming m_uniforms is the member variable
+        m_sampler_locations.clear();
 
         GLint num_uniforms = 0;
         glGetProgramInterfaceiv(m_program,
@@ -322,6 +368,18 @@ namespace mge::opengl {
             GLenum      gl_type = values[1];
             GLint       array_size = values[2];
             GLint       location = values[3];
+
+            // Collect sampler uniforms separately
+            if (is_sampler_type(gl_type)) {
+                m_sampler_locations.push_back({name, location});
+                MGE_DEBUG_TRACE(
+                    OPENGL,
+                    "Sampler uniform: '{}', location: {}",
+                    name,
+                    location);
+                continue;
+            }
+
             auto uniform_type = static_cast<mge::uniform_data_type>(values[1]);
             uniform_type = uniform_type_from_gl(gl_type);
 

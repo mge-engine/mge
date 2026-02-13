@@ -81,6 +81,9 @@ namespace mge::opengl {
                            size_t                   size)
     {
         if (type() == mge::texture_type::TYPE_2D) {
+            // Image data is top-to-bottom (stb_image convention).
+            // Not flipping: OpenGL places row 0 at texture bottom,
+            // so V=0 maps to image top, matching DX/Vulkan convention.
             glBindTexture(GL_TEXTURE_2D, m_texture);
             CHECK_OPENGL_ERROR(glBindTexture);
             glTexImage2D(GL_TEXTURE_2D,
@@ -93,6 +96,18 @@ namespace mge::opengl {
                          pixel_type(format),
                          data);
             CHECK_OPENGL_ERROR(glTexImage2D);
+            glTexParameteri(GL_TEXTURE_2D,
+                            GL_TEXTURE_MIN_FILTER,
+                            GL_LINEAR);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D,
+                            GL_TEXTURE_MAG_FILTER,
+                            GL_LINEAR);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            CHECK_OPENGL_ERROR(glTexParameteri);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            CHECK_OPENGL_ERROR(glTexParameteri);
             glBindTexture(GL_TEXTURE_2D, 0);
             CHECK_OPENGL_ERROR(glBindTexture(0));
         } else {

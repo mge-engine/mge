@@ -124,7 +124,8 @@ namespace mge {
                   cmd.vertices,
                   cmd.indices,
                   cmd.state,
-                  cmd.uniform_block);
+                  cmd.uniform_block,
+                  cmd.texture);
             }
         }
 
@@ -152,6 +153,7 @@ namespace mge {
             index_buffer_handle         indices;
             mge::pipeline_state         state;
             mge::uniform_block*         uniform_block{nullptr};
+            mge::texture*               texture{nullptr};
         };
 
         std::vector<draw_command> m_draw_commands;

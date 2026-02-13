@@ -37,11 +37,19 @@ namespace mge::vulkan {
         m_uniform_block_metadata.clear();
         m_attributes.clear();
         m_uniforms.clear();
+        m_sampler_bindings.clear();
 
+        std::vector<std::pair<std::string, uint32_t>> sampler_bindings_raw;
         for (const auto& shader : m_shaders) {
             m_shader_stage_create_infos.push_back(
                 shader->pipeline_stage_info());
-            shader->reflect(m_attributes, m_uniforms, m_uniform_block_metadata);
+            shader->reflect(m_attributes,
+                            m_uniforms,
+                            m_uniform_block_metadata,
+                            sampler_bindings_raw);
+        }
+        for (const auto& [name, binding] : sampler_bindings_raw) {
+            m_sampler_bindings.push_back({name, binding});
         }
         create_pipeline_layout();
     }
@@ -63,6 +71,17 @@ namespace mge::vulkan {
             binding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
             binding.descriptorCount = 1;
             binding.stageFlags = VK_SHADER_STAGE_ALL_GRAPHICS;
+            binding.pImmutableSamplers = nullptr;
+            layout_bindings.push_back(binding);
+        }
+
+        // Create descriptor set layout bindings for combined image samplers
+        for (const auto& sb : m_sampler_bindings) {
+            VkDescriptorSetLayoutBinding binding = {};
+            binding.binding = sb.binding;
+            binding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            binding.descriptorCount = 1;
+            binding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
             binding.pImmutableSamplers = nullptr;
             layout_bindings.push_back(binding);
         }

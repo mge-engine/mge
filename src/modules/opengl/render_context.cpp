@@ -339,7 +339,8 @@ namespace mge::opengl {
     void render_context::draw_geometry(mge::program*       program,
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
-                                       mge::uniform_block* ub)
+                                       mge::uniform_block* ub,
+                                       mge::texture*       tex)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -357,6 +358,21 @@ namespace mge::opengl {
         // Bind uniform block if provided
         if (ub) {
             bind_uniform_block(gl_program, *ub);
+        }
+
+        // Bind texture if provided
+        if (tex) {
+            mge::opengl::texture& gl_tex =
+                static_cast<opengl::texture&>(*tex);
+            glActiveTexture(GL_TEXTURE0);
+            CHECK_OPENGL_ERROR(glActiveTexture);
+            glBindTexture(GL_TEXTURE_2D, gl_tex.texture_name());
+            CHECK_OPENGL_ERROR(glBindTexture);
+            // Set all sampler uniforms to texture unit 0
+            for (const auto& sampler : gl_program.sampler_locations()) {
+                glUniform1i(sampler.location, 0);
+                CHECK_OPENGL_ERROR(glUniform1i);
+            }
         }
 
         if (!vb) {
@@ -389,6 +405,10 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glDrawElements);
         glBindVertexArray(0);
         CHECK_OPENGL_ERROR(glBindVertexArray(0));
+        if (tex) {
+            glBindTexture(GL_TEXTURE_2D, 0);
+            CHECK_OPENGL_ERROR(glBindTexture(0));
+        }
         glUseProgram(0);
         CHECK_OPENGL_ERROR(glUseProgram(0));
     }
@@ -495,7 +515,8 @@ namespace mge::opengl {
                                     const vertex_buffer_handle& vertices,
                                     const index_buffer_handle&  indices,
                                     const mge::pipeline_state&  state,
-                                    mge::uniform_block*         ub) {
+                                    mge::uniform_block*         ub,
+                                    mge::texture*               tex) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
                 glDepthFunc(depth_test_to_gl(state.depth_test_function()));
@@ -504,7 +525,11 @@ namespace mge::opengl {
                     glDepthMask(GL_FALSE);
                     CHECK_OPENGL_ERROR(glDepthMask);
                 }
-                draw_geometry(program.get(), vertices.get(), indices.get(), ub);
+                draw_geometry(program.get(),
+                              vertices.get(),
+                              indices.get(),
+                              ub,
+                              tex);
                 if (!state.depth_write()) {
                     glDepthMask(GL_TRUE);
                     CHECK_OPENGL_ERROR(glDepthMask);
@@ -520,7 +545,8 @@ namespace mge::opengl {
                                            const vertex_buffer_handle& vertices,
                                            const index_buffer_handle&  indices,
                                            const mge::pipeline_state&  state,
-                                           mge::uniform_block*         ub) {
+                                           mge::uniform_block*         ub,
+                                           mge::texture*               tex) {
                 blend_operation color_op = state.color_blend_operation();
                 blend_operation alpha_op = state.alpha_blend_operation();
                 blend_factor    color_src = state.color_blend_factor_src();
@@ -555,7 +581,8 @@ namespace mge::opengl {
                     draw_geometry(program.get(),
                                   vertices.get(),
                                   indices.get(),
-                                  ub);
+                                  ub,
+                                  tex);
                     if (!state.depth_write()) {
                         glDepthMask(GL_TRUE);
                         CHECK_OPENGL_ERROR(glDepthMask);
@@ -599,18 +626,21 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER));
 
         const auto& layout = vb->layout();
+        GLsizei     stride = static_cast<GLsizei>(layout.stride());
         uint32_t    index = 0;
         for (const auto& f : layout.formats()) {
             glEnableVertexAttribArray(index);
             CHECK_OPENGL_ERROR(glEnableVertexAttribArray);
+            auto offset =
+                reinterpret_cast<const void*>(layout.offset(index));
             switch (f.type()) {
             case mge::data_type::FLOAT:
                 glVertexAttribPointer(index,
                                       f.size(),
                                       GL_FLOAT,
                                       GL_FALSE,
-                                      0,
-                                      nullptr);
+                                      stride,
+                                      offset);
                 CHECK_OPENGL_ERROR(glVertexAttribPointer);
                 break;
             default:

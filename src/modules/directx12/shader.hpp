@@ -7,6 +7,9 @@
 #include "mge/graphics/shader.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
+#include <string>
+#include <vector>
+
 namespace mge::dx12 {
     class render_context;
     class shader : public mge::shader
@@ -42,9 +45,11 @@ namespace mge::dx12 {
 
     private:
         std::string profile() const;
+        void        create_input_layout();
 
         mge::com_unique_ptr<ID3DBlob>         m_code;
         std::vector<D3D12_INPUT_ELEMENT_DESC> m_input_layout;
+        std::vector<std::string>              m_semantic_names;
     };
 
     inline shader& dx12_shader(mge::shader& s)

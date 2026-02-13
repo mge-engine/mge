@@ -9,6 +9,7 @@
 #include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
+#include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
@@ -195,8 +196,7 @@ namespace mge::vulkan {
 
     mge::texture_ref render_context::create_texture(texture_type type)
     {
-        mge::texture_ref result;
-        return result;
+        return std::make_shared<mge::vulkan::texture>(*this, type);
     }
 
     void render_context::create_surface()
@@ -892,14 +892,16 @@ namespace mge::vulkan {
     {
         MGE_DEBUG_TRACE(VULKAN, "Create descriptor pool");
 
-        VkDescriptorPoolSize pool_size = {};
-        pool_size.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        pool_size.descriptorCount = 1000; // Max uniform buffers
+        std::array<VkDescriptorPoolSize, 2> pool_sizes = {};
+        pool_sizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        pool_sizes[0].descriptorCount = 1000;
+        pool_sizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        pool_sizes[1].descriptorCount = 1000;
 
         VkDescriptorPoolCreateInfo pool_info = {};
         pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        pool_info.poolSizeCount = 1;
-        pool_info.pPoolSizes = &pool_size;
+        pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
+        pool_info.pPoolSizes = pool_sizes.data();
         pool_info.maxSets = 1000;
         pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
 
@@ -1177,12 +1179,89 @@ namespace mge::vulkan {
                                 nullptr);
     }
 
+    void render_context::bind_texture(VkCommandBuffer       command_buffer,
+                                      mge::vulkan::program& vk_program,
+                                      mge::texture*         tex)
+    {
+        if (!tex) {
+            return;
+        }
+
+        auto* vk_tex = static_cast<mge::vulkan::texture*>(tex);
+
+        const auto& sampler_bindings = vk_program.sampler_bindings();
+        if (sampler_bindings.empty()) {
+            return;
+        }
+
+        VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
+        if (layout == VK_NULL_HANDLE) {
+            return;
+        }
+
+        // Use a key based on texture pointer and descriptor set layout
+        auto desc_key =
+            std::make_pair(static_cast<mge::uniform_block*>(nullptr), layout);
+
+        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+        auto            desc_it = m_descriptor_sets.find(desc_key);
+
+        if (desc_it != m_descriptor_sets.end()) {
+            descriptor_set = desc_it->second;
+        } else {
+            VkDescriptorSetAllocateInfo alloc_info = {};
+            alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+            alloc_info.descriptorPool = m_descriptor_pool;
+            alloc_info.descriptorSetCount = 1;
+            alloc_info.pSetLayouts = &layout;
+
+            VkResult result = vkAllocateDescriptorSets(m_device,
+                                                       &alloc_info,
+                                                       &descriptor_set);
+            if (result != VK_SUCCESS) {
+                return;
+            }
+
+            m_descriptor_sets[desc_key] = descriptor_set;
+        }
+
+        // Update the descriptor set with the texture's image info
+        for (const auto& sb : sampler_bindings) {
+            VkDescriptorImageInfo image_info = {};
+            image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            image_info.imageView = vk_tex->image_view();
+            image_info.sampler = vk_tex->sampler();
+
+            VkWriteDescriptorSet descriptor_write = {};
+            descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            descriptor_write.dstSet = descriptor_set;
+            descriptor_write.dstBinding = sb.binding;
+            descriptor_write.dstArrayElement = 0;
+            descriptor_write.descriptorType =
+                VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+            descriptor_write.descriptorCount = 1;
+            descriptor_write.pImageInfo = &image_info;
+
+            vkUpdateDescriptorSets(m_device, 1, &descriptor_write, 0, nullptr);
+        }
+
+        vkCmdBindDescriptorSets(command_buffer,
+                                VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                vk_program.pipeline_layout(),
+                                0,
+                                1,
+                                &descriptor_set,
+                                0,
+                                nullptr);
+    }
+
     void render_context::draw_geometry(VkCommandBuffer     command_buffer,
                                        mge::program*       program,
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
                                        const mge::pipeline_state& state,
-                                       mge::uniform_block*        ub)
+                                       mge::uniform_block*        ub,
+                                       mge::texture*              tex)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -1200,6 +1279,11 @@ namespace mge::vulkan {
         // Bind uniform block if present
         if (ub) {
             bind_uniform_block(command_buffer, *vk_program, *ub);
+        }
+
+        // Bind texture if present
+        if (tex) {
+            bind_texture(command_buffer, *vk_program, tex);
         }
 
         VkDeviceSize offsets[1]{0};
@@ -1324,7 +1408,8 @@ namespace mge::vulkan {
                                     const vertex_buffer_handle& vertex_buffer,
                                     const index_buffer_handle&  index_buffer,
                                     const mge::pipeline_state&  state,
-                                    mge::uniform_block*         ub) {
+                                    mge::uniform_block*         ub,
+                                    mge::texture*               tex) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == mge::blend_operation::NONE) {
                 draw_geometry(command_buffer,
@@ -1332,7 +1417,8 @@ namespace mge::vulkan {
                               vertex_buffer.get(),
                               index_buffer.get(),
                               state,
-                              ub);
+                              ub,
+                              tex);
             } else {
                 blend_pass_needed = true;
             }
@@ -1344,14 +1430,16 @@ namespace mge::vulkan {
                                  const vertex_buffer_handle& vertex_buffer,
                                  const index_buffer_handle&  index_buffer,
                                  const mge::pipeline_state&  state,
-                                 mge::uniform_block*         ub) {
+                                 mge::uniform_block*         ub,
+                                 mge::texture*               tex) {
                     auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
                                   index_buffer.get(),
                                   state,
-                                  ub);
+                                  ub,
+                                  tex);
                 });
         }
 

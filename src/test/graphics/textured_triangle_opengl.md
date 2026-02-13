@@ -25,7 +25,7 @@
 - Call: glClearColor
   - red: 0
   - green: 0
-  - blue: 1
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -39,6 +39,16 @@
   - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
+- Call: glUniform1i
+  - Program: _ignored_
+  - location: 0
+  - count: 1
+  - values: _ignored_
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glBindBuffer
@@ -57,8 +67,20 @@
   - size: 3
   - type: GL_FLOAT
   - normalized: false
-  - stride: 12
+  - stride: 20
   - offset: 0
+- Call: glEnableVertexAttribArray
+  - vaobj: _ignored_
+  - index: 1
+- Call: glVertexAttribPointer
+  - vaobj: _ignored_
+  - buffer: _ignored_
+  - index: 1
+  - size: 2
+  - type: GL_FLOAT
+  - normalized: false
+  - stride: 20
+  - offset: 12
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glBindVertexArray
@@ -70,6 +92,9 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
 - Call: glUseProgram
   - program: _ignored_
 - Call: glDisable
@@ -95,7 +120,7 @@
 - Call: glClearColor
   - red: 0
   - green: 0
-  - blue: 1
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -109,6 +134,16 @@
   - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
+- Call: glUniform1i
+  - Program: _ignored_
+  - location: 0
+  - count: 1
+  - values: _ignored_
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glDrawElements
@@ -118,6 +153,9 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
 - Call: glUseProgram
   - program: _ignored_
 - Call: glDisable
@@ -143,7 +181,7 @@
 - Call: glClearColor
   - red: 0
   - green: 0
-  - blue: 1
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -157,6 +195,16 @@
   - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
+- Call: glUniform1i
+  - Program: _ignored_
+  - location: 0
+  - count: 1
+  - values: _ignored_
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glDrawElements
@@ -166,6 +214,9 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
 - Call: glUseProgram
   - program: _ignored_
 - Call: glDisable
@@ -191,7 +242,7 @@
 - Call: glClearColor
   - red: 0
   - green: 0
-  - blue: 1
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -205,6 +256,16 @@
   - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
+- Call: glUniform1i
+  - Program: _ignored_
+  - location: 0
+  - count: 1
+  - values: _ignored_
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glDrawElements
@@ -214,6 +275,9 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
 - Call: glUseProgram
   - program: _ignored_
 - Call: glDisable
@@ -239,7 +303,7 @@
 - Call: glClearColor
   - red: 0
   - green: 0
-  - blue: 1
+  - blue: 0.20000000298023224
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
@@ -253,6 +317,16 @@
   - func: GL_LESS
 - Call: glUseProgram
   - program: _ignored_
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
+- Call: glUniform1i
+  - Program: _ignored_
+  - location: 0
+  - count: 1
+  - values: _ignored_
 - Call: glBindVertexArray
   - vaobj: _ignored_
 - Call: glDrawElements
@@ -262,6 +336,9 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
+- Call: glBindTexture
+  - target: GL_TEXTURE_2D
+  - texture: _ignored_
 - Call: glUseProgram
   - program: _ignored_
 - Call: glDisable

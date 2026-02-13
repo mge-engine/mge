@@ -4,6 +4,7 @@
 #include "shader.hpp"
 #include "error.hpp"
 #include "mge/core/on_leave.hpp"
+#include "mge/core/trace.hpp"
 #include "render_context.hpp"
 
 namespace mge {
@@ -13,18 +14,122 @@ namespace mge {
 namespace mge::dx12 {
     shader::shader(render_context& context, shader_type type)
         : mge::shader(context, type)
-    {
-        m_input_layout.emplace_back(
-            D3D12_INPUT_ELEMENT_DESC{"POSITION",
-                                     0,
-                                     DXGI_FORMAT_R32G32B32_FLOAT,
-                                     0,
-                                     0,
-                                     D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
-                                     0});
-    }
+    {}
 
     shader::~shader() {}
+
+    static DXGI_FORMAT
+    format_from_parameter(const D3D12_SIGNATURE_PARAMETER_DESC& desc)
+    {
+        BYTE mask = desc.Mask;
+        int  components = 0;
+        while (mask) {
+            components += (mask & 1);
+            mask >>= 1;
+        }
+
+        switch (desc.ComponentType) {
+        case D3D_REGISTER_COMPONENT_FLOAT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_FLOAT;
+            case 2:
+                return DXGI_FORMAT_R32G32_FLOAT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_FLOAT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_FLOAT;
+            default:
+                break;
+            }
+            break;
+        case D3D_REGISTER_COMPONENT_UINT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_UINT;
+            case 2:
+                return DXGI_FORMAT_R32G32_UINT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_UINT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_UINT;
+            default:
+                break;
+            }
+            break;
+        case D3D_REGISTER_COMPONENT_SINT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_SINT;
+            case 2:
+                return DXGI_FORMAT_R32G32_SINT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_SINT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_SINT;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+        MGE_THROW(dx12::error)
+            << "Unsupported input parameter format: " << desc.ComponentType
+            << " with " << components << " components";
+    }
+
+    void shader::create_input_layout()
+    {
+        if (!m_code) {
+            return;
+        }
+
+        ID3D12ShaderReflection* shader_reflection = nullptr;
+        HRESULT                 rc = D3DReflect(m_code->GetBufferPointer(),
+                                m_code->GetBufferSize(),
+                                IID_ID3D12ShaderReflection,
+                                (void**)&shader_reflection);
+        CHECK_HRESULT(rc, , D3DReflect);
+
+        on_leave delete_shader_reflection([&]() {
+            if (shader_reflection) {
+                shader_reflection->Release();
+            }
+        });
+
+        D3D12_SHADER_DESC shader_desc = {};
+        shader_reflection->GetDesc(&shader_desc);
+
+        m_input_layout.clear();
+        m_semantic_names.clear();
+        m_semantic_names.reserve(shader_desc.InputParameters);
+
+        for (uint32_t i = 0; i < shader_desc.InputParameters; ++i) {
+            D3D12_SIGNATURE_PARAMETER_DESC parameter_desc = {};
+            shader_reflection->GetInputParameterDesc(i, &parameter_desc);
+
+            m_semantic_names.push_back(
+                std::string(parameter_desc.SemanticName));
+
+            D3D12_INPUT_ELEMENT_DESC input_element = {};
+            input_element.SemanticName = m_semantic_names.back().c_str();
+            input_element.SemanticIndex = parameter_desc.SemanticIndex;
+            input_element.InputSlot = 0;
+            input_element.AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+            input_element.InputSlotClass =
+                D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+            input_element.InstanceDataStepRate = 0;
+            input_element.Format = format_from_parameter(parameter_desc);
+            m_input_layout.push_back(input_element);
+
+            MGE_DEBUG_TRACE(DX12,
+                            "Input element[{}]: {} index={}",
+                            i,
+                            parameter_desc.SemanticName,
+                            parameter_desc.SemanticIndex);
+        }
+    }
 
     void shader::on_compile(std::string_view code)
     {
@@ -60,6 +165,9 @@ namespace mge::dx12 {
         } else {
             m_code.reset(compiled_code);
         }
+        if (type() == mge::shader_type::VERTEX) {
+            create_input_layout();
+        }
     }
 
     std::string shader::profile() const
@@ -83,6 +191,9 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, , D3DCreateBlob);
         m_code.reset(code_blob);
         memcpy(m_code->GetBufferPointer(), code.data(), code.size());
+        if (type() == mge::shader_type::VERTEX) {
+            create_input_layout();
+        }
     }
 
     static mge::uniform_data_type

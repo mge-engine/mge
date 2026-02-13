@@ -72,11 +72,37 @@ namespace mge::dx11 {
 
         ID3D11Texture2D* texture = nullptr;
 
-        auto hr =
-            dx11_context(context()).device()->CreateTexture2D(&desc,
-                                                              &subresource_data,
-                                                              &texture);
+        auto* device = dx11_context(context()).device();
+
+        auto hr = device->CreateTexture2D(&desc, &subresource_data, &texture);
         CHECK_HRESULT(hr, ID3D11Device, CreateTexture2D);
         m_texture.reset(texture);
+
+        D3D11_SHADER_RESOURCE_VIEW_DESC srv_desc;
+        mge::zero_memory(srv_desc);
+        srv_desc.Format = desc.Format;
+        srv_desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+        srv_desc.Texture2D.MostDetailedMip = 0;
+        srv_desc.Texture2D.MipLevels = 1;
+
+        ID3D11ShaderResourceView* srv = nullptr;
+        hr = device->CreateShaderResourceView(m_texture.get(), &srv_desc, &srv);
+        CHECK_HRESULT(hr, ID3D11Device, CreateShaderResourceView);
+        m_shader_resource_view.reset(srv);
+
+        D3D11_SAMPLER_DESC sampler_desc;
+        mge::zero_memory(sampler_desc);
+        sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+        sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+        sampler_desc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+        sampler_desc.MinLOD = 0;
+        sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
+
+        ID3D11SamplerState* sampler = nullptr;
+        hr = device->CreateSamplerState(&sampler_desc, &sampler);
+        CHECK_HRESULT(hr, ID3D11Device, CreateSamplerState);
+        m_sampler_state.reset(sampler);
     }
 } // namespace mge::dx11

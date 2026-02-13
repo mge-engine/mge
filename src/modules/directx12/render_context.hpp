@@ -14,6 +14,7 @@
 
 #include <map>
 #include <tuple>
+#include <utility>
 
 namespace mge::dx12 {
     class window;
@@ -66,6 +67,19 @@ namespace mge::dx12 {
         void copy_resource_sync(ID3D12Resource*       dst,
                                 ID3D12Resource*       src,
                                 D3D12_RESOURCE_STATES state_after);
+
+        void
+        copy_texture_sync(ID3D12Resource*                           dst,
+                          ID3D12Resource*                           src,
+                          const D3D12_PLACED_SUBRESOURCE_FOOTPRINT& footprint);
+
+        std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE>
+        allocate_srv();
+
+        ID3D12DescriptorHeap* srv_heap() const
+        {
+            return m_srv_heap.Get();
+        }
 
         const mge::com_ptr<ID3D12Resource>& backbuffer(uint32_t index) const
         {
@@ -131,7 +145,8 @@ namespace mge::dx12 {
                            mge::vertex_buffer*        vb,
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
-                           mge::uniform_block*        ub);
+                           mge::uniform_block*        ub,
+                           mge::texture*              tex);
 
         void bind_uniform_block(ID3D12GraphicsCommandList* command_list,
                                 mge::dx12::program&        dx12_program,
@@ -157,6 +172,7 @@ namespace mge::dx12 {
         HANDLE                                    m_command_queue_fence_event;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
         mge::com_ptr<ID3D12DescriptorHeap>        m_dsv_heap;
+        mge::com_ptr<ID3D12DescriptorHeap>        m_srv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
         std::vector<mge::com_ptr<ID3D12Resource>> m_depth_buffers;
         mge::com_ptr<IDXGISwapChain4>             m_swap_chain;
@@ -176,6 +192,8 @@ namespace mge::dx12 {
         D3D12_RECT     m_scissor_rect;
         uint32_t       m_rtv_descriptor_size;
         uint32_t       m_dsv_descriptor_size;
+        uint32_t       m_srv_descriptor_size;
+        uint32_t       m_srv_next_index;
         DWORD          m_callback_cookie;
 
         D3D12_RASTERIZER_DESC m_rasterizer_desc;

@@ -15,6 +15,7 @@
 #include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
+#include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
@@ -125,6 +126,8 @@ namespace mge::dx12 {
         , m_command_queue_fence_event(0)
         , m_rtv_descriptor_size(0)
         , m_dsv_descriptor_size(0)
+        , m_srv_descriptor_size(0)
+        , m_srv_next_index(0)
         , m_callback_cookie(0)
         , m_data_lock("render_context")
     {
@@ -330,6 +333,18 @@ namespace mge::dx12 {
         m_dsv_heap->SetName(L"mge::dx12::render_context::m_dsv_heap");
         m_dsv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
             D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+
+        D3D12_DESCRIPTOR_HEAP_DESC srv_heap_desc = {};
+        srv_heap_desc.NumDescriptors = 256;
+        srv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+        srv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+        rc = m_device->CreateDescriptorHeap(&srv_heap_desc,
+                                            IID_PPV_ARGS(&m_srv_heap));
+        CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
+        m_srv_heap->SetName(L"mge::dx12::render_context::m_srv_heap");
+        m_srv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
+            D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        m_srv_next_index = 0;
     }
 
     void render_context::update_render_target_views()
@@ -573,6 +588,62 @@ namespace mge::dx12 {
         //    << "Resource copy done: " << (void*)src << " to " << (void*)dst;
     }
 
+    void render_context::copy_texture_sync(
+        ID3D12Resource*                           dst,
+        ID3D12Resource*                           src,
+        const D3D12_PLACED_SUBRESOURCE_FOOTPRINT& footprint)
+    {
+        std::lock_guard<mge::mutex> lock(m_data_lock);
+
+        D3D12_TEXTURE_COPY_LOCATION dst_location = {};
+        dst_location.pResource = dst;
+        dst_location.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+        dst_location.SubresourceIndex = 0;
+
+        D3D12_TEXTURE_COPY_LOCATION src_location = {};
+        src_location.pResource = src;
+        src_location.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+        src_location.PlacedFootprint = footprint;
+
+        m_xfer_command_list
+            ->CopyTextureRegion(&dst_location, 0, 0, 0, &src_location, nullptr);
+
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Transition.pResource = dst;
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+        barrier.Transition.StateAfter =
+            D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+        barrier.Transition.Subresource =
+            D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        m_xfer_command_list->ResourceBarrier(1, &barrier);
+        m_xfer_command_list->Close();
+        ID3D12CommandList* lists[] = {m_xfer_command_list.Get()};
+        m_command_queue->ExecuteCommandLists(1, lists);
+        wait_for_command_queue();
+
+        auto rc = m_xfer_command_allocator->Reset();
+        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+        rc =
+            m_xfer_command_list->Reset(m_xfer_command_allocator.Get(), nullptr);
+        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+    }
+
+    std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE>
+    render_context::allocate_srv()
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE cpu_handle =
+            m_srv_heap->GetCPUDescriptorHandleForHeapStart();
+        cpu_handle.ptr += m_srv_descriptor_size * m_srv_next_index;
+
+        D3D12_GPU_DESCRIPTOR_HANDLE gpu_handle =
+            m_srv_heap->GetGPUDescriptorHandleForHeapStart();
+        gpu_handle.ptr += m_srv_descriptor_size * m_srv_next_index;
+
+        ++m_srv_next_index;
+        return {cpu_handle, gpu_handle};
+    }
+
     D3D12_CPU_DESCRIPTOR_HANDLE render_context::rtv_handle(uint32_t index) const
     {
         D3D12_CPU_DESCRIPTOR_HANDLE result =
@@ -621,8 +692,7 @@ namespace mge::dx12 {
 
     mge::texture_ref render_context::create_texture(texture_type type)
     {
-        mge::texture_ref result;
-        return result;
+        return std::make_shared<dx12::texture>(*this, type);
     }
 
     void render_context::enable_debug_layer()
@@ -849,7 +919,8 @@ namespace mge::dx12 {
                                     const mge::vertex_buffer_handle& vertices,
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
-                                    mge::uniform_block*              ub) {
+                                    mge::uniform_block*              ub,
+                                    mge::texture*                    tex) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == blend_operation::NONE) {
                 draw_geometry(pass_command_list,
@@ -857,7 +928,8 @@ namespace mge::dx12 {
                               vertices.get(),
                               indices.get(),
                               state,
-                              ub);
+                              ub,
+                              tex);
             } else {
                 blend_pass_needed = true;
             }
@@ -869,13 +941,15 @@ namespace mge::dx12 {
                     const mge::vertex_buffer_handle& vertices,
                     const mge::index_buffer_handle&  indices,
                     const mge::pipeline_state&       state,
-                    mge::uniform_block*              ub) {
+                    mge::uniform_block*              ub,
+                    mge::texture*                    tex) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
                                   indices.get(),
                                   state,
-                                  ub);
+                                  ub,
+                                  tex);
                 });
         }
     }
@@ -885,7 +959,8 @@ namespace mge::dx12 {
                                        mge::vertex_buffer*        vb,
                                        mge::index_buffer*         ib,
                                        const mge::pipeline_state& state,
-                                       mge::uniform_block*        ub)
+                                       mge::uniform_block*        ub,
+                                       mge::texture*              tex)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
@@ -904,6 +979,18 @@ namespace mge::dx12 {
 
         if (ub) {
             bind_uniform_block(command_list, *dx12_program, *ub);
+        }
+
+        // Bind texture if provided
+        if (tex) {
+            ID3D12DescriptorHeap* heaps[] = {m_srv_heap.Get()};
+            command_list->SetDescriptorHeaps(1, heaps);
+            auto&    dx12_tex = static_cast<dx12::texture&>(*tex);
+            uint32_t texture_root_index =
+                static_cast<uint32_t>(dx12_program->uniform_blocks().size());
+            command_list->SetGraphicsRootDescriptorTable(
+                texture_root_index,
+                dx12_tex.srv_gpu_handle());
         }
 
         command_list->IASetPrimitiveTopology(

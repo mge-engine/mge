@@ -106,9 +106,10 @@ namespace mge {
                                const vertex_buffer_handle& vertices,
                                const index_buffer_handle&  indices,
                                const pipeline_state&       state,
-                               mge::uniform_block*         ub) {
+                               mge::uniform_block*         ub,
+                               mge::texture*               tex) {
                 m_draw_commands.push_back(
-                    draw_command{program, vertices, indices, state, ub});
+                    draw_command{program, vertices, indices, state, ub, tex});
             });
         }
         m_active = true;

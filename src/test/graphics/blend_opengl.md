@@ -66,7 +66,7 @@
   - size: 3
   - type: GL_FLOAT
   - normalized: false
-  - stride: 0
+  - stride: 12
   - offset: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
@@ -112,7 +112,7 @@
   - size: 3
   - type: GL_FLOAT
   - normalized: false
-  - stride: 0
+  - stride: 12
   - offset: 0
 - Call: glBindVertexArray
   - vaobj: _ignored_
