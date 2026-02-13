@@ -74,7 +74,8 @@ namespace mge::dx11 {
         void              draw_geometry(mge::program*       program,
                                         mge::vertex_buffer* vb,
                                         mge::index_buffer*  ib,
-                                        mge::uniform_block* ub);
+                                        mge::uniform_block* ub,
+                                        mge::texture*       tex);
         void              bind_uniform_block(mge::dx11::program& dx11_program,
                                              mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);

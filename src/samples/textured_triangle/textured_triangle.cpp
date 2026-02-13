@@ -201,10 +201,9 @@ namespace mge {
                 MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Shaders compiled");
 
             } else {
-                MGE_ERROR_TRACE(
-                    TEXTURED_TRIANGLE,
-                    "Cannot create shaders for {} render system",
-                    m_render_system->implementation_name());
+                MGE_ERROR_TRACE(TEXTURED_TRIANGLE,
+                                "Cannot create shaders for {} render system",
+                                m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
             m_program->set_shader(pixel_shader);
@@ -223,9 +222,21 @@ namespace mge {
             //   bottom-left   (-0.45, -0.5, 0.0) -> UV (0.0, 0.0)
             float vertex_data[] = {
                 // position          // texcoord
-                 0.0f,   0.5f, 0.0f, 0.5f, 1.0f,
-                 0.45f, -0.5f, 0.0f, 1.0f, 0.0f,
-                -0.45f, -0.5f, 0.0f, 0.0f, 0.0f,
+                0.0f,
+                0.5f,
+                0.0f,
+                0.5f,
+                1.0f,
+                0.45f,
+                -0.5f,
+                0.0f,
+                1.0f,
+                0.0f,
+                -0.45f,
+                -0.5f,
+                0.0f,
+                0.0f,
+                0.0f,
             };
             int triangle_indices[] = {0, 1, 2};
 
@@ -236,16 +247,16 @@ namespace mge {
                              mge::attribute_semantic::TEXCOORD);
 
             MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Create vertex buffer");
-            m_vertices = ctx.create_vertex_buffer(
-                layout,
-                sizeof(vertex_data),
-                mge::make_buffer(vertex_data));
+            m_vertices =
+                ctx.create_vertex_buffer(layout,
+                                         sizeof(vertex_data),
+                                         mge::make_buffer(vertex_data));
 
             MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Create index buffer");
-            m_indices = ctx.create_index_buffer(
-                mge::data_type::INT32,
-                sizeof(triangle_indices),
-                mge::make_buffer(triangle_indices));
+            m_indices =
+                ctx.create_index_buffer(mge::data_type::INT32,
+                                        sizeof(triangle_indices),
+                                        mge::make_buffer(triangle_indices));
 
             // Load texture from sand.png asset
             MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Loading texture");

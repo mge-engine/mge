@@ -20,8 +20,20 @@ namespace mge::dx11 {
                       const void*              data,
                       size_t                   size) override;
 
+        ID3D11ShaderResourceView* shader_resource_view() const
+        {
+            return m_shader_resource_view.get();
+        }
+
+        ID3D11SamplerState* sampler_state() const
+        {
+            return m_sampler_state.get();
+        }
+
     private:
         DXGI_FORMAT texture_format(const mge::image_format& format) const;
-        mge::com_unique_ptr<ID3D11Texture2D> m_texture;
+        mge::com_unique_ptr<ID3D11Texture2D>          m_texture;
+        mge::com_unique_ptr<ID3D11ShaderResourceView> m_shader_resource_view;
+        mge::com_unique_ptr<ID3D11SamplerState>       m_sampler_state;
     };
 } // namespace mge::dx11

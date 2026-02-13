@@ -382,30 +382,34 @@ namespace mge::dx11 {
                                                     0);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command([this, &blend_pass_needed](
-                                    program_handle             program,
-                                    vertex_buffer_handle       vertices,
-                                    index_buffer_handle        indices,
-                                    const mge::pipeline_state& state,
-                                    mge::uniform_block*        ub,
-                                    mge::texture* /*tex*/) {
-            blend_operation op = state.color_blend_operation();
-            if (op == blend_operation::NONE) {
-                if (!state.depth_write()) {
-                    ID3D11DepthStencilState* ds_state =
-                        this->depth_stencil_state(state);
-                    m_device_context->OMSetDepthStencilState(ds_state, 1);
+        p.for_each_draw_command(
+            [this, &blend_pass_needed](program_handle             program,
+                                       vertex_buffer_handle       vertices,
+                                       index_buffer_handle        indices,
+                                       const mge::pipeline_state& state,
+                                       mge::uniform_block*        ub,
+                                       mge::texture*              tex) {
+                blend_operation op = state.color_blend_operation();
+                if (op == blend_operation::NONE) {
+                    if (!state.depth_write()) {
+                        ID3D11DepthStencilState* ds_state =
+                            this->depth_stencil_state(state);
+                        m_device_context->OMSetDepthStencilState(ds_state, 1);
+                    }
+                    draw_geometry(program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  ub,
+                                  tex);
+                    if (!state.depth_write()) {
+                        m_device_context->OMSetDepthStencilState(
+                            m_depth_stencil_state.get(),
+                            1);
+                    }
+                } else {
+                    blend_pass_needed = true;
                 }
-                draw_geometry(program.get(), vertices.get(), indices.get(), ub);
-                if (!state.depth_write()) {
-                    m_device_context->OMSetDepthStencilState(
-                        m_depth_stencil_state.get(),
-                        1);
-                }
-            } else {
-                blend_pass_needed = true;
-            }
-        });
+            });
 
         if (blend_pass_needed) {
             p.for_each_draw_command([this](program_handle             program,
@@ -413,7 +417,7 @@ namespace mge::dx11 {
                                            index_buffer_handle        indices,
                                            const mge::pipeline_state& state,
                                            mge::uniform_block*        ub,
-                                           mge::texture* /*tex*/) {
+                                           mge::texture*              tex) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
                     ID3D11BlendState* blend_state_obj =
@@ -432,7 +436,8 @@ namespace mge::dx11 {
                     draw_geometry(program.get(),
                                   vertices.get(),
                                   indices.get(),
-                                  ub);
+                                  ub,
+                                  tex);
                     if (!state.depth_write()) {
                         m_device_context->OMSetDepthStencilState(
                             m_depth_stencil_state.get(),
@@ -447,7 +452,8 @@ namespace mge::dx11 {
     void render_context::draw_geometry(mge::program*       program,
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
-                                       mge::uniform_block* ub)
+                                       mge::uniform_block* ub,
+                                       mge::texture*       tex)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -507,9 +513,25 @@ namespace mge::dx11 {
         m_device_context->PSSetShader(dx11_pixel_shader->directx_pixel_shader(),
                                       nullptr,
                                       0);
+
+        // Bind texture if provided
+        if (tex) {
+            dx11::texture& dx11_tex = static_cast<dx11::texture&>(*tex);
+            ID3D11ShaderResourceView* srv = dx11_tex.shader_resource_view();
+            m_device_context->PSSetShaderResources(0, 1, &srv);
+            ID3D11SamplerState* sampler = dx11_tex.sampler_state();
+            m_device_context->PSSetSamplers(0, 1, &sampler);
+        }
+
         UINT element_count =
             static_cast<UINT>(dx11_index_buffer->element_count());
         m_device_context->DrawIndexed(element_count, 0, 0);
+
+        // Unbind texture
+        if (tex) {
+            ID3D11ShaderResourceView* null_srv = nullptr;
+            m_device_context->PSSetShaderResources(0, 1, &null_srv);
+        }
     }
 
     ID3D11BlendState*
