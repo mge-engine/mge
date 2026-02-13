@@ -91,11 +91,11 @@ namespace mge {
 
         /**
          * @brief Update rotation angle and uniform block.
-         * 
+         *
          * Called each frame via update_listener. Updates the rotation angle
          * and passes it to the shader via the uniform block. Only updates
          * uniform data - does not perform any rendering.
-         * 
+         *
          * @param cycle Frame number
          * @param delta Time since last frame in seconds
          */
@@ -137,7 +137,7 @@ namespace mge {
 
         /**
          * @brief Render the rotating triangle.
-         * 
+         *
          * Called each frame via redraw_listener. Sets up render pass,
          * binds uniform block, submits draw commands, and presents frame.
          * Separated from update logic to follow proper update/render pattern.
