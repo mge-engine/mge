@@ -3,6 +3,7 @@
 # All rights reserved.
 SET(asset_files
     red.jpg
+    sand.png
 )
 
 FOREACH(ASSET_FILE ${asset_files})
