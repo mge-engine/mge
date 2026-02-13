@@ -29,7 +29,9 @@ The following sample programs demonstrate various features of MGE:
 
 * **blackscreen** - Minimal application demonstrating basic window creation and render context setup
 * **blend** - Demonstrates additive blending with overlapping triangles using command buffer blend state
+* **depth_test** - Demonstrates depth testing with overlapping geometry
 * **triangle** - Renders a simple triangle using vertex shaders and the graphics pipeline
+* **rotating_triangle** - Demonstrates uniform buffers by passing rotation angle to shader for animated triangle rotation
 * **teapot** - Renders a 3D teapot model demonstrating mesh loading and rendering
 
 Sample programs are located in ``src/samples/`` and can be configured via JSON config files.

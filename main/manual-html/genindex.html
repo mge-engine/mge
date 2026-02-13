@@ -413,6 +413,8 @@
 </li>
       <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_bufferE">mge::command_buffer (C++ class)</a>
 </li>
+      <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_buffer18bind_uniform_blockEP13uniform_block">mge::command_buffer::bind_uniform_block (C++ function)</a>
+</li>
       <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_buffer14blend_equationE15blend_operation">mge::command_buffer::blend_equation (C++ function)</a>
 </li>
       <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_buffer14blend_functionE12blend_factor12blend_factor">mge::command_buffer::blend_function (C++ function)</a>
@@ -1031,8 +1033,6 @@
 </li>
       <li><a href="core/version.html#_CPPv4NK3mge7package5buildEv">mge::package::build (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core/version.html#_CPPv4N3mge7package3getENSt11string_viewE">mge::package::get (C++ function)</a>
 </li>
       <li><a href="core/version.html#_CPPv4NK3mge7package4nameEv">mge::package::name (C++ function)</a>
@@ -1053,6 +1053,8 @@
 </li>
       <li><a href="graphics/render_context.html#_CPPv4N3mge4passE">mge::pass (C++ class)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="graphics/render_context.html#_CPPv4N3mge4passD0Ev">mge::pass::~pass (C++ function)</a>
 </li>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge5pointE">mge::point (C++ class)</a>
@@ -1075,6 +1077,8 @@
 </li>
       <li><a href="graphics/shaders.html#_CPPv4NK3mge7program10attributesEv">mge::program::attributes (C++ function)</a>
 </li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge7program20create_uniform_blockERKNSt6stringE">mge::program::create_uniform_block (C++ function)</a>
+</li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge7program4linkEv">mge::program::link (C++ function)</a>
 </li>
       <li><a href="graphics/shaders.html#_CPPv4NK3mge7program10needs_linkEv">mge::program::needs_link (C++ function)</a>
@@ -1091,7 +1095,9 @@
 </li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniform4typeE">mge::program::uniform::type (C++ member)</a>
 </li>
-      <li><a href="graphics/shaders.html#_CPPv4N3mge7program14uniform_bufferE">mge::program::uniform_buffer (C++ struct)</a>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program22uniform_block_metadataE">mge::program::uniform_block_metadata (C++ struct)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program22uniform_block_metadata8locationE">mge::program::uniform_block_metadata::location (C++ member)</a>
 </li>
       <li><a href="graphics/shaders.html#_CPPv4NK3mge7program15uniform_buffersEv">mge::program::uniform_buffers (C++ function)</a>
 </li>
@@ -1495,6 +1501,14 @@
 </li>
       <li><a href="core/statistics.html#_CPPv4N3mge10statistics10value_typeE">mge::statistics::value_type (C++ type)</a>
 </li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge12std140_alignE6size_t6size_t">mge::std140_align (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge19std140_array_strideE17uniform_data_type">mge::std140_array_stride (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge21std140_base_alignmentE17uniform_data_type">mge::std140_base_alignment (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge16std140_type_sizeE17uniform_data_type">mge::std140_type_size (C++ function)</a>
+</li>
       <li><a href="core/tracing.html#_CPPv4N3mge17stream_trace_sinkE">mge::stream_trace_sink (C++ class)</a>
 </li>
       <li><a href="core/tracing.html#_CPPv4N3mge17stream_trace_sink7publishERK12trace_record">mge::stream_trace_sink::publish (C++ function)</a>
@@ -1680,6 +1694,36 @@
       <li><a href="core/tracing.html#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc">mge::trace_topic::trace_topic (C++ function)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4I0EN3mge9type_nameENSt11string_viewEv">mge::type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge9type_nameERKNSt9type_infoE">[1]</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_blockE">mge::uniform_block (C++ class)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4NK3mge13uniform_block4dataEv">mge::uniform_block::data (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4NK3mge13uniform_block9data_sizeEv">mge::uniform_block::data_size (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layoutE">mge::uniform_block::member_layout (C++ struct)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layout10array_sizeE">mge::uniform_block::member_layout::array_size (C++ member)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layout4nameE">mge::uniform_block::member_layout::name (C++ member)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layout6offsetE">mge::uniform_block::member_layout::offset (C++ member)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layout4sizeE">mge::uniform_block::member_layout::size (C++ member)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13member_layout4typeE">mge::uniform_block::member_layout::type (C++ member)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4NK3mge13uniform_block7membersEv">mge::uniform_block::members (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4NK3mge13uniform_block4nameEv">mge::uniform_block::name (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4I0EN3mge13uniform_block3setEvRKNSt6stringERK1T">mge::uniform_block::set (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block8set_dataERKNSt6stringEPKv6size_t">mge::uniform_block::set_data (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge13uniform_block13uniform_blockERKN7program22uniform_block_metadataE">mge::uniform_block::uniform_block (C++ function)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4NK3mge13uniform_block7versionEv">mge::uniform_block::version (C++ function)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_typeE">mge::uniform_data_type (C++ enum)</a>
 </li>

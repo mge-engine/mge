@@ -506,11 +506,25 @@ render pipeline on a graphics card.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7program15uniform_buffersEv">
-<span id="_CPPv3NK3mge7program15uniform_buffersEv"></span><span id="_CPPv2NK3mge7program15uniform_buffersEv"></span><span id="mge::program::uniform_buffersC"></span><span class="target" id="classmge_1_1program_1a0f9651460a5efec0de303e7a95636161"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uniform_buffer_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_buffers</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program15uniform_buffersEv" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3NK3mge7program15uniform_buffersEv"></span><span id="_CPPv2NK3mge7program15uniform_buffersEv"></span><span id="mge::program::uniform_buffersC"></span><span class="target" id="classmge_1_1program_1a0f08a89f502445337208ce477a94c4f9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uniform_block_metadata_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_buffers</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program15uniform_buffersEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get uniform buffer meta data. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>uniform buffers </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program20create_uniform_blockERKNSt6stringE">
+<span id="_CPPv3NK3mge7program20create_uniform_blockERKNSt6stringE"></span><span id="_CPPv2NK3mge7program20create_uniform_blockERKNSt6stringE"></span><span id="mge::program::create_uniform_block__ssCRC"></span><span class="target" id="classmge_1_1program_1a169cddf7920ee0bf4a22203bda21f5c0"></span><a class="reference internal" href="buffers.html#_CPPv4N3mge13uniform_blockE" title="mge::uniform_block"><span class="n"><span class="pre">uniform_block</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_uniform_block</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block_name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program20create_uniform_blockERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a uniform block instance from one of this program’s uniform buffers. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>block_name</strong> – name of the uniform buffer in the shader </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new <a class="reference internal" href="buffers.html#classmge_1_1uniform__block"><span class="std std-ref">uniform_block</span></a> with std140 layout </p>
 </dd>
 </dl>
 </dd></dl>
@@ -577,9 +591,18 @@ render pipeline on a graphics card.</p>
 </dd></dl>
 
 <dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge7program14uniform_bufferE">
-<span id="_CPPv3N3mge7program14uniform_bufferE"></span><span id="_CPPv2N3mge7program14uniform_bufferE"></span><span id="mge::program::uniform_buffer"></span><span class="target" id="structmge_1_1program_1_1uniform__buffer"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uniform_buffer</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program14uniform_bufferE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program22uniform_block_metadataE">
+<span id="_CPPv3N3mge7program22uniform_block_metadataE"></span><span id="_CPPv2N3mge7program22uniform_block_metadataE"></span><span id="mge::program::uniform_block_metadata"></span><span class="target" id="structmge_1_1program_1_1uniform__block__metadata"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uniform_block_metadata</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program22uniform_block_metadataE" title="Link to this definition"></a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program22uniform_block_metadata8locationE">
+<span id="_CPPv3N3mge7program22uniform_block_metadata8locationE"></span><span id="_CPPv2N3mge7program22uniform_block_metadata8locationE"></span><span id="mge::program::uniform_block_metadata::location__uint32_t"></span><span class="target" id="structmge_1_1program_1_1uniform__block__metadata_1a2d93c1d33b553aee9bf2c130a3a98cd4"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">location</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program22uniform_block_metadata8locationE" title="Link to this definition"></a><br /></dt>
+<dd><p>binding point/slot </p>
+</dd></dl>
+
+</div>
+</dd></dl>
 
 </dd></dl>
 

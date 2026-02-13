@@ -1282,9 +1282,234 @@ is a list of vertex formats, and an added attribute semantic.</p>
 </dd></dl>
 
 </section>
-<section id="constant-buffer">
-<h2>Constant Buffer<a class="headerlink" href="#constant-buffer" title="Link to this heading"></a></h2>
-<p>Constant buffers are used to provide constant data to shader programs.</p>
+<section id="uniform-block">
+<h2>Uniform Block<a class="headerlink" href="#uniform-block" title="Link to this heading"></a></h2>
+<p>Uniform blocks provide a structured way to pass uniform data to shaders with automatic
+std140 layout management. Uniform blocks are created from a program’s uniform buffer
+metadata and manage CPU-side data that is synchronized to GPU buffers.</p>
+<p>A uniform block represents a named group of uniform variables in a shader program. The
+layout follows the std140 standard to ensure consistent packing across different platforms.</p>
+<p>Uniform blocks automatically compute their layout from shader metadata.
+Access to members is type-checked, updates increase a version counter for
+efficient GPU sync.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_blockE">
+<span id="_CPPv3N3mge13uniform_blockE"></span><span id="_CPPv2N3mge13uniform_blockE"></span><span id="mge::uniform_block"></span><span class="target" id="classmge_1_1uniform__block"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uniform_block</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_blockE" title="Link to this definition"></a><br /></dt>
+<dd><p>A uniform block represents data of uniforms that is grouped together. </p>
+<p>A uniform block is created from a program’s uniform buffer metadata. The block layout follows std140 rules. Multiple block instances can be created from the same program, and one can be bound per draw call. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13uniform_blockERKN7program22uniform_block_metadataE">
+<span id="_CPPv3N3mge13uniform_block13uniform_blockERKN7program22uniform_block_metadataE"></span><span id="_CPPv2N3mge13uniform_block13uniform_blockERKN7program22uniform_block_metadataE"></span><span id="mge::uniform_block::uniform_block__program::uniform_block_metadataCR"></span><span class="target" id="classmge_1_1uniform__block_1ab46f00e5c0003acc5e7f871d0d1064a7"></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_block</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="shaders.html#_CPPv4N3mge7programE" title="mge::program"><span class="n"><span class="pre">program</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="shaders.html#_CPPv4N3mge7program22uniform_block_metadataE" title="mge::program::uniform_block_metadata"><span class="n"><span class="pre">uniform_block_metadata</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">buffer_info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13uniform_blockERKN7program22uniform_block_metadataE" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a uniform block from program uniform buffer metadata. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>buffer_info</strong> – the uniform buffer description from a linked program </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13uniform_block4nameEv">
+<span id="_CPPv3NK3mge13uniform_block4nameEv"></span><span id="_CPPv2NK3mge13uniform_block4nameEv"></span><span id="mge::uniform_block::nameC"></span><span class="target" id="classmge_1_1uniform__block_1a4582d62f0c4e3f109f1dbd666a5bad7a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13uniform_block4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Name of the uniform block. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13uniform_block9data_sizeEv">
+<span id="_CPPv3NK3mge13uniform_block9data_sizeEv"></span><span id="_CPPv2NK3mge13uniform_block9data_sizeEv"></span><span id="mge::uniform_block::data_sizeC"></span><span class="target" id="classmge_1_1uniform__block_1a12fc87eb8dcc5ff4c0d3b29200ea7189"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13uniform_block9data_sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Total byte size of the block (std140 padded). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13uniform_block4dataEv">
+<span id="_CPPv3NK3mge13uniform_block4dataEv"></span><span id="_CPPv2NK3mge13uniform_block4dataEv"></span><span id="mge::uniform_block::dataC"></span><span class="target" id="classmge_1_1uniform__block_1aba75b044977d8d5a409a9c80e03164af"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13uniform_block4dataEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to the CPU-side data buffer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13uniform_block7versionEv">
+<span id="_CPPv3NK3mge13uniform_block7versionEv"></span><span id="_CPPv2NK3mge13uniform_block7versionEv"></span><span id="mge::uniform_block::versionC"></span><span class="target" id="classmge_1_1uniform__block_1a6dfbf1c4b1a66e3f1564f54f38a627c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13uniform_block7versionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Version number, incremented on each write. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13uniform_block7membersEv">
+<span id="_CPPv3NK3mge13uniform_block7membersEv"></span><span id="_CPPv2NK3mge13uniform_block7membersEv"></span><span id="mge::uniform_block::membersC"></span><span class="target" id="classmge_1_1uniform__block_1ad802ff6148a2f44d0fb9b9cbea8bcbd9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13uniform_block13member_layoutE" title="mge::uniform_block::member_layout"><span class="n"><span class="pre">member_layout</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">members</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13uniform_block7membersEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Member layouts in the block. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block8set_dataERKNSt6stringEPKv6size_t">
+<span id="_CPPv3N3mge13uniform_block8set_dataERKNSt6stringEPKv6size_t"></span><span id="_CPPv2N3mge13uniform_block8set_dataERKNSt6stringEPKv6size_t"></span><span id="mge::uniform_block::set_data__ssCR.voidCP.s"></span><span class="target" id="classmge_1_1uniform__block_1ac942c40d98c439c7416403bc87f50149"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">member_name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13uniform_block8set_dataERKNSt6stringEPKv6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Write raw bytes to a member by name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>member_name</strong> – name of the member </p></li>
+<li><p><strong>data</strong> – pointer to the source data </p></li>
+<li><p><strong>size</strong> – size of the source data in bytes </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge13uniform_block3setEvRKNSt6stringERK1T">
+<span id="_CPPv3I0EN3mge13uniform_block3setERKNSt6stringERK1T"></span><span id="_CPPv2I0EN3mge13uniform_block3setERKNSt6stringERK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1uniform__block_1a450db388910a78812844ae912aed8cdd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">member_name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge13uniform_block3setEvRKNSt6stringERK1T" title="mge::uniform_block::set::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge13uniform_block3setEvRKNSt6stringERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Write a typed value to a member by name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – value type (must match the member’s uniform_data_type) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>member_name</strong> – name of the member </p></li>
+<li><p><strong>value</strong> – the value to write </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layoutE">
+<span id="_CPPv3N3mge13uniform_block13member_layoutE"></span><span id="_CPPv2N3mge13uniform_block13member_layoutE"></span><span id="mge::uniform_block::member_layout"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">member_layout</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layoutE" title="Link to this definition"></a><br /></dt>
+<dd><p>Layout information for a single member in the block. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layout4nameE">
+<span id="_CPPv3N3mge13uniform_block13member_layout4nameE"></span><span id="_CPPv2N3mge13uniform_block13member_layout4nameE"></span><span id="mge::uniform_block::member_layout::name__ss"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout_1a3708ac413a90b3ad8aa528c8671d6cb2"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layout4nameE" title="Link to this definition"></a><br /></dt>
+<dd><p>member name </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layout4typeE">
+<span id="_CPPv3N3mge13uniform_block13member_layout4typeE"></span><span id="_CPPv2N3mge13uniform_block13member_layout4typeE"></span><span id="mge::uniform_block::member_layout::type__uniform_data_type"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout_1a728692811a00ca9d2fe931ef20a3828c"></span><a class="reference internal" href="#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layout4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>member data type </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layout10array_sizeE">
+<span id="_CPPv3N3mge13uniform_block13member_layout10array_sizeE"></span><span id="_CPPv2N3mge13uniform_block13member_layout10array_sizeE"></span><span id="mge::uniform_block::member_layout::array_size__uint32_t"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout_1aa7ededc21c8e1c7c95d8f39b61c08170"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">array_size</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layout10array_sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>array element count (1 if scalar) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layout6offsetE">
+<span id="_CPPv3N3mge13uniform_block13member_layout6offsetE"></span><span id="_CPPv2N3mge13uniform_block13member_layout6offsetE"></span><span id="mge::uniform_block::member_layout::offset__s"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout_1a6095bedcc37982d1df29402125b2b1cd"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layout6offsetE" title="Link to this definition"></a><br /></dt>
+<dd><p>byte offset in the block (std140) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13uniform_block13member_layout4sizeE">
+<span id="_CPPv3N3mge13uniform_block13member_layout4sizeE"></span><span id="_CPPv2N3mge13uniform_block13member_layout4sizeE"></span><span id="mge::uniform_block::member_layout::size__s"></span><span class="target" id="structmge_1_1uniform__block_1_1member__layout_1a8c8d022181927a5e431a9c89282749b3"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><a class="headerlink" href="#_CPPv4N3mge13uniform_block13member_layout4sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>total byte size of this member </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<section id="usage-example">
+<h3>Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">rotating_triangle</span></code> sample demonstrates uniform block usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">After</span> <span class="n">program</span> <span class="n">linking</span><span class="p">,</span> <span class="n">get</span> <span class="n">uniform</span> <span class="n">buffer</span> <span class="n">metadata</span>
+<span class="n">const</span> <span class="n">auto</span><span class="o">&amp;</span> <span class="n">uniform_buffers</span> <span class="o">=</span> <span class="n">program</span><span class="o">-&gt;</span><span class="n">uniform_buffers</span><span class="p">();</span>
+
+<span class="o">//</span> <span class="n">Create</span> <span class="n">uniform</span> <span class="n">block</span> <span class="kn">from</span><span class="w"> </span><span class="nn">metadata</span>
+<span class="n">auto</span> <span class="n">block</span> <span class="o">=</span> <span class="n">std</span><span class="p">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">uniform_block</span><span class="o">&gt;</span><span class="p">(</span><span class="n">uniform_buffers</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+<span class="o">//</span> <span class="n">Update</span> <span class="n">uniform</span> <span class="n">values</span>
+<span class="nb">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="mf">45.0</span><span class="n">f</span><span class="p">;</span>
+<span class="n">block</span><span class="o">-&gt;</span><span class="nb">set</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="n">angle</span><span class="p">);</span>
+
+<span class="o">//</span> <span class="n">Bind</span> <span class="n">block</span> <span class="n">to</span> <span class="n">command</span> <span class="n">buffer</span> <span class="k">for</span> <span class="n">drawing</span>
+<span class="n">command_buffer</span><span class="o">.</span><span class="n">bind_uniform_block</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">());</span>
+<span class="n">command_buffer</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The uniform block is automatically uploaded to the GPU when version changes are detected.</p>
+</section>
+<section id="std140-layout">
+<h3>Std140 Layout<a class="headerlink" href="#std140-layout" title="Link to this heading"></a></h3>
+<p>MGE uses std140 layout rules for uniform blocks:</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge21std140_base_alignmentE17uniform_data_type">
+<span id="_CPPv3N3mge21std140_base_alignmentE17uniform_data_type"></span><span id="_CPPv2N3mge21std140_base_alignmentE17uniform_data_type"></span><span id="mge::std140_base_alignment__uniform_data_type"></span><span class="target" id="namespacemge_1a085e2b75ec0d48de502c9cfb0512b646"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">std140_base_alignment</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge21std140_base_alignmentE17uniform_data_type" title="Link to this definition"></a><br /></dt>
+<dd><p>std140 layout rules for uniform block members. </p>
+<p>Implements the std140 layout rules as specified in the OpenGL specification (and compatible with Vulkan/DirectX constant buffers).</p>
+<p>Key rules:<ul class="simple">
+<li><p>Scalars: base alignment = size of scalar (4 bytes for float/int)</p></li>
+<li><p>vec2: base alignment = 2N (8 bytes for float)</p></li>
+<li><p>vec3/vec4: base alignment = 4N (16 bytes for float)</p></li>
+<li><p>mat NxM (column-major): array of N column vectors, each vec of M components, each column aligned as vec4 (16 bytes for float matrices)</p></li>
+<li><p>Arrays: each element rounded up to vec4 alignment</p></li>
+<li><p>Structs: aligned to largest member alignment, rounded up to vec4</p></li>
+</ul>
+</p>
+<p>Get the std140 base alignment for a uniform data type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – the uniform data type </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>alignment in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16std140_type_sizeE17uniform_data_type">
+<span id="_CPPv3N3mge16std140_type_sizeE17uniform_data_type"></span><span id="_CPPv2N3mge16std140_type_sizeE17uniform_data_type"></span><span id="mge::std140_type_size__uniform_data_type"></span><span class="target" id="namespacemge_1ac215300753d967f7aa5449228e11605b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">std140_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16std140_type_sizeE17uniform_data_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the std140 size for a uniform data type (single element, not array). </p>
+<p>For matrices, the size is columns * column_stride where each column is padded to vec4 alignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – the uniform data type </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>size in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge19std140_array_strideE17uniform_data_type">
+<span id="_CPPv3N3mge19std140_array_strideE17uniform_data_type"></span><span id="_CPPv2N3mge19std140_array_strideE17uniform_data_type"></span><span id="mge::std140_array_stride__uniform_data_type"></span><span class="target" id="namespacemge_1a30c67fd61a6d16ae4c27c5f9eba127a2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">std140_array_stride</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge19std140_array_strideE17uniform_data_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the std140 array stride for a type. </p>
+<p>In std140, each array element is rounded up to a multiple of vec4 alignment (16 bytes for float types, 32 for double types).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – the uniform data type </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array stride in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12std140_alignE6size_t6size_t">
+<span id="_CPPv3N3mge12std140_alignE6size_t6size_t"></span><span id="_CPPv2N3mge12std140_alignE6size_t6size_t"></span><span id="mge::std140_align__s.s"></span><span class="target" id="namespacemge_1ac9b264a19f25b6ab2d6dcfb956dfca5a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">std140_align</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alignment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12std140_alignE6size_t6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Align an offset to a given alignment. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>offset</strong> – current offset </p></li>
+<li><p><strong>alignment</strong> – required alignment (must be power of 2) </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>aligned offset </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 </section>
 
