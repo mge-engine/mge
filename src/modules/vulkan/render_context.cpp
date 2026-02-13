@@ -15,6 +15,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -1089,7 +1090,7 @@ namespace mge::vulkan {
                                               &new_data.allocation,
                                               &allocation_info);
             if (result != VK_SUCCESS) {
-                // MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
+                MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
                 return;
             }
 
