@@ -21,6 +21,7 @@
     "libmagic",
     "magic-enum",
     "vulkan-memory-allocator",
+    "spirv-reflect",
     "jemalloc",
     "libffi",
     "assimp",
