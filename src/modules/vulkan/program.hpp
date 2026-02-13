@@ -39,6 +39,6 @@ namespace mge::vulkan {
                                           m_shader_stage_create_infos;
         std::vector<mge::vulkan::shader*> m_shaders;
         VkPipelineLayout                  m_pipeline_layout{VK_NULL_HANDLE};
-        VkDescriptorSetLayout             m_descriptor_set_layout{VK_NULL_HANDLE};
+        VkDescriptorSetLayout m_descriptor_set_layout{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan

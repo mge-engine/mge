@@ -243,10 +243,8 @@ namespace mge::vulkan {
         }
 
         SpvReflectShaderModule module;
-        SpvReflectResult result = spvReflectCreateShaderModule(
-            m_code.size(),
-            m_code.data(),
-            &module);
+        SpvReflectResult       result =
+            spvReflectCreateShaderModule(m_code.size(), m_code.data(), &module);
 
         if (result != SPV_REFLECT_RESULT_SUCCESS) {
             // MGE_ERROR_TRACE(VULKAN,
@@ -254,22 +252,25 @@ namespace mge::vulkan {
             return;
         }
 
-        on_leave cleanup_module([&]() { spvReflectDestroyShaderModule(&module); });
+        on_leave cleanup_module(
+            [&]() { spvReflectDestroyShaderModule(&module); });
 
         // Reflect uniform buffers (descriptor bindings)
         uint32_t binding_count = 0;
-        result = spvReflectEnumerateDescriptorBindings(&module, &binding_count, nullptr);
+        result = spvReflectEnumerateDescriptorBindings(&module,
+                                                       &binding_count,
+                                                       nullptr);
         if (result != SPV_REFLECT_RESULT_SUCCESS) {
-            // MGE_ERROR_TRACE(VULKAN, "Failed to enumerate descriptor bindings");
+            // MGE_ERROR_TRACE(VULKAN, "Failed to enumerate descriptor
+            // bindings");
             return;
         }
 
         if (binding_count > 0) {
             std::vector<SpvReflectDescriptorBinding*> bindings(binding_count);
-            result = spvReflectEnumerateDescriptorBindings(
-                &module,
-                &binding_count,
-                bindings.data());
+            result = spvReflectEnumerateDescriptorBindings(&module,
+                                                           &binding_count,
+                                                           bindings.data());
 
             if (result != SPV_REFLECT_RESULT_SUCCESS) {
                 // MGE_ERROR_TRACE(VULKAN, "Failed to get descriptor bindings");
@@ -279,26 +280,33 @@ namespace mge::vulkan {
             for (uint32_t i = 0; i < binding_count; ++i) {
                 const auto& binding = *bindings[i];
 
-                if (binding.descriptor_type == SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
+                if (binding.descriptor_type ==
+                    SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
                     mge::program::uniform_block_metadata ub_metadata;
                     ub_metadata.name = binding.type_description->type_name;
                     ub_metadata.location = binding.binding;
 
                     // Extract members from the uniform buffer
                     for (uint32_t j = 0; j < binding.block.member_count; ++j) {
-                        const auto& member = binding.block.members[j];
+                        const auto&           member = binding.block.members[j];
                         mge::program::uniform u;
                         u.name = member.name;
-                        u.type = uniform_type_from_spirv(*member.type_description);
+                        u.type =
+                            uniform_type_from_spirv(*member.type_description);
                         u.array_size = 1;
-                        for (uint32_t k = 0; k < member.type_description->traits.array.dims_count; ++k) {
-                            u.array_size *= member.type_description->traits.array.dims[k];
+                        for (uint32_t k = 0;
+                             k <
+                             member.type_description->traits.array.dims_count;
+                             ++k) {
+                            u.array_size *=
+                                member.type_description->traits.array.dims[k];
                         }
                         u.location = member.offset;
                         ub_metadata.uniforms.push_back(u);
 
                         // MGE_DEBUG_TRACE(VULKAN,
-                        //               "  Uniform block member: '{}', type: {}, offset: {}, array_size: {}",
+                        //               "  Uniform block member: '{}', type:
+                        //               {}, offset: {}, array_size: {}",
                         //               u.name,
                         //              u.type,
                         //               u.location,
@@ -307,8 +315,8 @@ namespace mge::vulkan {
 
                     uniform_buffers.push_back(ub_metadata);
                     // MGE_DEBUG_TRACE(VULKAN,
-                    //               "Uniform block: '{}', binding: {}, member_count: {}",
-                    //               ub_metadata.name,
+                    //               "Uniform block: '{}', binding: {},
+                    //               member_count: {}", ub_metadata.name,
                     //               ub_metadata.location,
                     //               binding.block.member_count);
                 }

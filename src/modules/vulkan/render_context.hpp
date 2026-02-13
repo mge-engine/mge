@@ -121,9 +121,9 @@ namespace mge::vulkan {
                            const mge::pipeline_state& state,
                            mge::uniform_block*        ub);
 
-        void bind_uniform_block(VkCommandBuffer     command_buffer,
+        void bind_uniform_block(VkCommandBuffer       command_buffer,
                                 mge::vulkan::program& vk_program,
-                                mge::uniform_block& ub);
+                                mge::uniform_block&   ub);
 
     private:
         void create_surface();
@@ -206,14 +206,17 @@ namespace mge::vulkan {
         pipeline_cache_type m_pipelines;
 
         // Uniform buffer management
-        struct uniform_buffer_data {
-            VkBuffer buffer{VK_NULL_HANDLE};
+        struct uniform_buffer_data
+        {
+            VkBuffer      buffer{VK_NULL_HANDLE};
             VmaAllocation allocation{VK_NULL_HANDLE};
-            uint64_t version{0};
-            void* mapped_data{nullptr};
+            uint64_t      version{0};
+            void*         mapped_data{nullptr};
         };
         std::map<mge::uniform_block*, uniform_buffer_data> m_uniform_buffers;
         VkDescriptorPool m_descriptor_pool{VK_NULL_HANDLE};
-        std::map<std::pair<mge::uniform_block*, VkDescriptorSetLayout>, VkDescriptorSet> m_descriptor_sets;
+        std::map<std::pair<mge::uniform_block*, VkDescriptorSetLayout>,
+                 VkDescriptorSet>
+            m_descriptor_sets;
     };
 } // namespace mge::vulkan
