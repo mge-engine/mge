@@ -10,6 +10,7 @@
 #include "shader.hpp"
 
 #include <array>
+#include <unordered_set>
 
 namespace mge::dx12 {
 
@@ -29,6 +30,16 @@ namespace mge::dx12 {
             return m_root_signature.Get();
         }
 
+        uint32_t buffer_bind_point(const std::string& name) const;
+
+        bool uses_in_vertex_shader(const std::string& name) const;
+        bool uses_in_pixel_shader(const std::string& name) const;
+
+        const uniform_block_metadata_list& uniform_blocks() const
+        {
+            return m_uniform_block_metadata;
+        }
+
     protected:
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;
@@ -39,7 +50,10 @@ namespace mge::dx12 {
 
         std::array<shader*,
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
-                                          m_shaders{};
+            m_shaders{};
+        std::array<std::unordered_set<std::string>,
+                   mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
+                                          m_shader_buffers{};
         mge::com_ptr<ID3D12RootSignature> m_root_signature;
     };
 

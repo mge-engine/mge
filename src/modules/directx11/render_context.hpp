@@ -6,12 +6,14 @@
 #include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
 namespace mge::dx11 {
 
     class render_system;
     class window;
+    class program;
 
     class render_context : public mge::render_context
     {
@@ -71,7 +73,10 @@ namespace mge::dx11 {
     private:
         void              draw_geometry(mge::program*       program,
                                         mge::vertex_buffer* vb,
-                                        mge::index_buffer*  ib);
+                                        mge::index_buffer*  ib,
+                                        mge::uniform_block* ub);
+        void              bind_uniform_block(mge::dx11::program& dx11_program,
+                                             mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);
         ID3D11DepthStencilState*
              depth_stencil_state(const mge::pipeline_state& state);
@@ -99,6 +104,10 @@ namespace mge::dx11 {
             std::unordered_map<mge::pipeline_state,
                                com_unique_ptr<ID3D11DepthStencilState>>;
         depth_stencil_state_cache_type m_depth_stencil_state_cache;
+
+        std::map<mge::uniform_block*, com_unique_ptr<ID3D11Buffer>>
+                                                m_constant_buffers;
+        std::map<mge::uniform_block*, uint64_t> m_constant_buffer_versions;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

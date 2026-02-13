@@ -15,6 +15,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -137,6 +138,7 @@ namespace mge::vulkan {
             create_framebuffers();
             create_fence();
             create_semaphores();
+            create_descriptor_pool();
 
             // For Vulkan, RenderDoc must be injected before vkCreateInstance
             // So we don't set the context programmatically - instead launch
@@ -268,6 +270,21 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        // Clean up uniform buffers
+        for (auto& [ub, data] : m_uniform_buffers) {
+            if (data.buffer != VK_NULL_HANDLE) {
+                vmaDestroyBuffer(m_allocator, data.buffer, data.allocation);
+            }
+        }
+        m_uniform_buffers.clear();
+
+        // Clean up descriptor pool
+        if (vkDestroyDescriptorPool && m_descriptor_pool) {
+            vkDestroyDescriptorPool(m_device, m_descriptor_pool, nullptr);
+            m_descriptor_pool = VK_NULL_HANDLE;
+        }
+        m_descriptor_sets.clear();
+
         if (vkDestroySemaphore) {
             if (m_image_available_semaphore) {
                 vkDestroySemaphore(m_device,
@@ -871,6 +888,27 @@ namespace mge::vulkan {
                                         &m_render_finished_semaphore));
     }
 
+    void render_context::create_descriptor_pool()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Create descriptor pool");
+
+        VkDescriptorPoolSize pool_size = {};
+        pool_size.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        pool_size.descriptorCount = 1000; // Max uniform buffers
+
+        VkDescriptorPoolCreateInfo pool_info = {};
+        pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        pool_info.poolSizeCount = 1;
+        pool_info.pPoolSizes = &pool_size;
+        pool_info.maxSets = 1000;
+        pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+
+        CHECK_VK_CALL(vkCreateDescriptorPool(m_device,
+                                             &pool_info,
+                                             nullptr,
+                                             &m_descriptor_pool));
+    }
+
     void render_context::wait_for_frame_finished()
     {
         // wait for finish of last frame
@@ -1018,11 +1056,133 @@ namespace mge::vulkan {
         return mge::image_ref();
     }
 
+    void render_context::bind_uniform_block(VkCommandBuffer command_buffer,
+                                            mge::vulkan::program& vk_program,
+                                            mge::uniform_block&   ub)
+    {
+        // Get or create uniform buffer
+        auto                 it = m_uniform_buffers.find(&ub);
+        uniform_buffer_data* ub_data = nullptr;
+
+        if (it != m_uniform_buffers.end()) {
+            ub_data = &it->second;
+        } else {
+            // Create new uniform buffer
+            size_t aligned_size = (ub.data_size() + 255) & ~255;
+
+            VkBufferCreateInfo buffer_info = {};
+            buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+            buffer_info.size = aligned_size;
+            buffer_info.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+            buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+            VmaAllocationCreateInfo alloc_info = {};
+            alloc_info.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
+            alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+            uniform_buffer_data new_data;
+            VmaAllocationInfo   allocation_info = {};
+
+            VkResult result = vmaCreateBuffer(m_allocator,
+                                              &buffer_info,
+                                              &alloc_info,
+                                              &new_data.buffer,
+                                              &new_data.allocation,
+                                              &allocation_info);
+            if (result != VK_SUCCESS) {
+                MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
+                return;
+            }
+
+            new_data.mapped_data = allocation_info.pMappedData;
+            new_data.version = 0;
+
+            m_uniform_buffers[&ub] = new_data;
+            ub_data = &m_uniform_buffers[&ub];
+        }
+
+        // Update buffer if version changed
+        if (ub_data->version != ub.version()) {
+            if (ub_data->mapped_data) {
+                memcpy(ub_data->mapped_data, ub.data(), ub.data_size());
+            }
+            ub_data->version = ub.version();
+        }
+
+        // Get or create descriptor set
+        auto desc_key = std::make_pair(&ub, vk_program.descriptor_set_layout());
+        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+        auto            desc_it = m_descriptor_sets.find(desc_key);
+
+        if (desc_it != m_descriptor_sets.end()) {
+            descriptor_set = desc_it->second;
+        } else {
+            // Allocate new descriptor set
+            VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
+            if (layout == VK_NULL_HANDLE) {
+                return; // No descriptor set layout
+            }
+
+            VkDescriptorSetAllocateInfo alloc_info = {};
+            alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+            alloc_info.descriptorPool = m_descriptor_pool;
+            alloc_info.descriptorSetCount = 1;
+            alloc_info.pSetLayouts = &layout;
+
+            VkResult result = vkAllocateDescriptorSets(m_device,
+                                                       &alloc_info,
+                                                       &descriptor_set);
+            if (result != VK_SUCCESS) {
+                // MGE_ERROR_TRACE(VULKAN, "Failed to allocate descriptor set");
+                return;
+            }
+
+            // Update descriptor set with uniform buffer
+            VkDescriptorBufferInfo buffer_info = {};
+            buffer_info.buffer = ub_data->buffer;
+            buffer_info.offset = 0;
+            buffer_info.range = ub.data_size();
+
+            // Find binding point for this uniform block
+            uint32_t binding_point = 0;
+            for (const auto& ub_metadata : vk_program.uniform_buffers()) {
+                if (ub_metadata.name == ub.name()) {
+                    binding_point = ub_metadata.location;
+                    break;
+                }
+            }
+
+            VkWriteDescriptorSet descriptor_write = {};
+            descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            descriptor_write.dstSet = descriptor_set;
+            descriptor_write.dstBinding = binding_point;
+            descriptor_write.dstArrayElement = 0;
+            descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            descriptor_write.descriptorCount = 1;
+            descriptor_write.pBufferInfo = &buffer_info;
+
+            vkUpdateDescriptorSets(m_device, 1, &descriptor_write, 0, nullptr);
+
+            m_descriptor_sets[desc_key] = descriptor_set;
+        }
+
+        // Bind descriptor set
+        vkCmdBindDescriptorSets(command_buffer,
+                                VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                vk_program.pipeline_layout(),
+                                0,
+                                1,
+                                &descriptor_set,
+                                0,
+                                nullptr);
+    }
+
     void render_context::draw_geometry(VkCommandBuffer     command_buffer,
                                        mge::program*       program,
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
-                                       const mge::pipeline_state& state)
+                                       const mge::pipeline_state& state,
+                                       mge::uniform_block*        ub)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -1036,6 +1196,11 @@ namespace mge::vulkan {
         vkCmdBindPipeline(command_buffer,
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
+
+        // Bind uniform block if present
+        if (ub) {
+            bind_uniform_block(command_buffer, *vk_program, *ub);
+        }
 
         VkDeviceSize offsets[1]{0};
         VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
@@ -1158,14 +1323,16 @@ namespace mge::vulkan {
                                     const program_handle&       program,
                                     const vertex_buffer_handle& vertex_buffer,
                                     const index_buffer_handle&  index_buffer,
-                                    const mge::pipeline_state&  state) {
+                                    const mge::pipeline_state&  state,
+                                    mge::uniform_block*         ub) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == mge::blend_operation::NONE) {
                 draw_geometry(command_buffer,
                               program.get(),
                               vertex_buffer.get(),
                               index_buffer.get(),
-                              state);
+                              state,
+                              ub);
             } else {
                 blend_pass_needed = true;
             }
@@ -1176,13 +1343,15 @@ namespace mge::vulkan {
                  command_buffer](const program_handle&       program,
                                  const vertex_buffer_handle& vertex_buffer,
                                  const index_buffer_handle&  index_buffer,
-                                 const mge::pipeline_state&  state) {
+                                 const mge::pipeline_state&  state,
+                                 mge::uniform_block*         ub) {
                     auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
                                   index_buffer.get(),
-                                  state);
+                                  state,
+                                  ub);
                 });
         }
 

@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "vulkan.hpp"
 
 #include <unordered_map>
@@ -117,7 +118,12 @@ namespace mge::vulkan {
                            mge::program*              program,
                            mge::vertex_buffer*        vb,
                            mge::index_buffer*         ib,
-                           const mge::pipeline_state& state);
+                           const mge::pipeline_state& state,
+                           mge::uniform_block*        ub);
+
+        void bind_uniform_block(VkCommandBuffer       command_buffer,
+                                mge::vulkan::program& vk_program,
+                                mge::uniform_block&   ub);
 
     private:
         void create_surface();
@@ -135,6 +141,7 @@ namespace mge::vulkan {
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
+        void create_descriptor_pool();
 
         void teardown();
         void resolve_device_functions();
@@ -197,5 +204,19 @@ namespace mge::vulkan {
         using pipeline_cache_type =
             std::unordered_map<pipeline_key_type, VkPipeline>;
         pipeline_cache_type m_pipelines;
+
+        // Uniform buffer management
+        struct uniform_buffer_data
+        {
+            VkBuffer      buffer{VK_NULL_HANDLE};
+            VmaAllocation allocation{VK_NULL_HANDLE};
+            uint64_t      version{0};
+            void*         mapped_data{nullptr};
+        };
+        std::map<mge::uniform_block*, uniform_buffer_data> m_uniform_buffers;
+        VkDescriptorPool m_descriptor_pool{VK_NULL_HANDLE};
+        std::map<std::pair<mge::uniform_block*, VkDescriptorSetLayout>,
+                 VkDescriptorSet>
+            m_descriptor_sets;
     };
 } // namespace mge::vulkan

@@ -7,6 +7,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -381,34 +382,36 @@ namespace mge::dx11 {
                                                     0);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, &blend_pass_needed](program_handle             program,
-                                       vertex_buffer_handle       vertices,
-                                       index_buffer_handle        indices,
-                                       const mge::pipeline_state& state) {
-                blend_operation op = state.color_blend_operation();
-                if (op == blend_operation::NONE) {
-                    if (!state.depth_write()) {
-                        ID3D11DepthStencilState* ds_state =
-                            this->depth_stencil_state(state);
-                        m_device_context->OMSetDepthStencilState(ds_state, 1);
-                    }
-                    draw_geometry(program.get(), vertices.get(), indices.get());
-                    if (!state.depth_write()) {
-                        m_device_context->OMSetDepthStencilState(
-                            m_depth_stencil_state.get(),
-                            1);
-                    }
-                } else {
-                    blend_pass_needed = true;
+        p.for_each_draw_command([this, &blend_pass_needed](
+                                    program_handle             program,
+                                    vertex_buffer_handle       vertices,
+                                    index_buffer_handle        indices,
+                                    const mge::pipeline_state& state,
+                                    mge::uniform_block*        ub) {
+            blend_operation op = state.color_blend_operation();
+            if (op == blend_operation::NONE) {
+                if (!state.depth_write()) {
+                    ID3D11DepthStencilState* ds_state =
+                        this->depth_stencil_state(state);
+                    m_device_context->OMSetDepthStencilState(ds_state, 1);
                 }
-            });
+                draw_geometry(program.get(), vertices.get(), indices.get(), ub);
+                if (!state.depth_write()) {
+                    m_device_context->OMSetDepthStencilState(
+                        m_depth_stencil_state.get(),
+                        1);
+                }
+            } else {
+                blend_pass_needed = true;
+            }
+        });
 
         if (blend_pass_needed) {
             p.for_each_draw_command([this](program_handle             program,
                                            vertex_buffer_handle       vertices,
                                            index_buffer_handle        indices,
-                                           const mge::pipeline_state& state) {
+                                           const mge::pipeline_state& state,
+                                           mge::uniform_block*        ub) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
                     ID3D11BlendState* blend_state_obj =
@@ -424,7 +427,10 @@ namespace mge::dx11 {
                             this->depth_stencil_state(state);
                         m_device_context->OMSetDepthStencilState(ds_state, 1);
                     }
-                    draw_geometry(program.get(), vertices.get(), indices.get());
+                    draw_geometry(program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  ub);
                     if (!state.depth_write()) {
                         m_device_context->OMSetDepthStencilState(
                             m_depth_stencil_state.get(),
@@ -438,13 +444,19 @@ namespace mge::dx11 {
 
     void render_context::draw_geometry(mge::program*       program,
                                        mge::vertex_buffer* vb,
-                                       mge::index_buffer*  ib)
+                                       mge::index_buffer*  ib,
+                                       mge::uniform_block* ub)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
         }
-        const dx11::program& dx11_prog =
-            static_cast<const dx11::program&>(*program);
+        dx11::program& dx11_prog = static_cast<dx11::program&>(*program);
+
+        // Bind uniform block if provided
+        if (ub) {
+            bind_uniform_block(dx11_prog, *ub);
+        }
+
         const dx11::shader* dx11_vertex_shader =
             static_cast<const dx11::shader*>(
                 dx11_prog.program_shader(mge::shader_type::VERTEX));
@@ -573,6 +585,59 @@ namespace mge::dx11 {
             depth_stencil_state_obj);
         m_depth_stencil_state_cache[state] = std::move(owned_ptr);
         return m_depth_stencil_state_cache[state].get();
+    }
+
+    void render_context::bind_uniform_block(mge::dx11::program& dx11_program,
+                                            mge::uniform_block& ub)
+    {
+        // Get or create the D3D11 constant buffer for this block
+        ID3D11Buffer* cbuffer = nullptr;
+        auto          it = m_constant_buffers.find(&ub);
+        if (it != m_constant_buffers.end()) {
+            cbuffer = it->second.get();
+        } else {
+            // Create a new constant buffer
+            D3D11_BUFFER_DESC cbuffer_desc = {};
+            cbuffer_desc.ByteWidth = static_cast<UINT>(ub.data_size());
+            cbuffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+            cbuffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+            cbuffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+            HRESULT rc =
+                m_device->CreateBuffer(&cbuffer_desc, nullptr, &cbuffer);
+            CHECK_HRESULT(rc, ID3D11Device, CreateBuffer);
+
+            m_constant_buffers[&ub] = mge::make_com_unique_ptr(cbuffer);
+            m_constant_buffer_versions[&ub] = 0;
+        }
+
+        // Upload data if the block version changed
+        auto& cached_version = m_constant_buffer_versions[&ub];
+        if (cached_version != ub.version()) {
+            D3D11_MAPPED_SUBRESOURCE mapped_resource;
+            HRESULT                  rc = m_device_context->Map(cbuffer,
+                                               0,
+                                               D3D11_MAP_WRITE_DISCARD,
+                                               0,
+                                               &mapped_resource);
+            CHECK_HRESULT(rc, ID3D11DeviceContext, Map);
+
+            memcpy(mapped_resource.pData, ub.data(), ub.data_size());
+            m_device_context->Unmap(cbuffer, 0);
+
+            cached_version = ub.version();
+        }
+
+        // Get the bind point for this uniform block
+        uint32_t bind_point = dx11_program.buffer_bind_point(ub.name());
+
+        // Bind the constant buffer only to shader stages that use it
+        if (dx11_program.uses_in_vertex_shader(ub.name())) {
+            m_device_context->VSSetConstantBuffers(bind_point, 1, &cbuffer);
+        }
+        if (dx11_program.uses_in_pixel_shader(ub.name())) {
+            m_device_context->PSSetConstantBuffers(bind_point, 1, &cbuffer);
+        }
     }
 
     mge::image_ref render_context::screenshot()

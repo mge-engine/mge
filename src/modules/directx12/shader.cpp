@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "shader.hpp"
 #include "error.hpp"
+#include "mge/core/on_leave.hpp"
 #include "render_context.hpp"
 
 namespace mge {
@@ -84,10 +85,104 @@ namespace mge::dx12 {
         memcpy(m_code->GetBufferPointer(), code.data(), code.size());
     }
 
-    void
-    shader::reflect(mge::program::attribute_list&      attributes,
-                    mge::program::uniform_list&        uniforms,
-                    mge::program::uniform_buffer_list& uniform_buffers) const
-    {}
+    static mge::uniform_data_type
+    data_type_of_variable(const D3D12_SHADER_TYPE_DESC& variable_type_desc)
+    {
+        switch (variable_type_desc.Type) {
+        case D3D_SVT_UINT:
+            return mge::uniform_data_type::UINT32;
+        case D3D_SVT_INT:
+            return mge::uniform_data_type::INT32;
+        case D3D_SVT_FLOAT:
+            return mge::uniform_data_type::FLOAT;
+        default:
+            MGE_THROW(dx12::error)
+                << "Unsupported variable type " << variable_type_desc.Type;
+        }
+    }
+
+    void shader::reflect(
+        mge::program::attribute_list&              attributes,
+        mge::program::uniform_list&                uniforms,
+        mge::program::uniform_block_metadata_list& uniform_buffers) const
+    {
+        if (!m_code) {
+            return;
+        }
+
+        ID3D12ShaderReflection* shader_reflection = nullptr;
+        HRESULT                 rc = D3DReflect(m_code->GetBufferPointer(),
+                                m_code->GetBufferSize(),
+                                IID_ID3D12ShaderReflection,
+                                (void**)&shader_reflection);
+        CHECK_HRESULT(rc, , D3DReflect);
+
+        on_leave delete_shader_reflection([&]() {
+            if (shader_reflection) {
+                shader_reflection->Release();
+            }
+        });
+
+        if (shader_reflection) {
+            D3D12_SHADER_DESC shader_desc = {};
+            shader_reflection->GetDesc(&shader_desc);
+
+            for (uint32_t i = 0; i < shader_desc.ConstantBuffers; ++i) {
+                ID3D12ShaderReflectionConstantBuffer* cbuffer =
+                    shader_reflection->GetConstantBufferByIndex(i);
+
+                D3D12_SHADER_BUFFER_DESC cbuffer_desc = {};
+                cbuffer->GetDesc(&cbuffer_desc);
+                mge::program::uniform_block_metadata uniform_block_metadata;
+                uniform_block_metadata.name = cbuffer_desc.Name;
+
+                D3D12_SHADER_INPUT_BIND_DESC bind_desc = {};
+                HRESULT                      bind_rc =
+                    shader_reflection->GetResourceBindingDescByName(
+                        cbuffer_desc.Name,
+                        &bind_desc);
+                if (SUCCEEDED(bind_rc)) {
+                    uniform_block_metadata.location = bind_desc.BindPoint;
+                } else {
+                    uniform_block_metadata.location = 0;
+                    MGE_WARNING_TRACE(
+                        DX12,
+                        "Could not get bind point for buffer '{}'",
+                        cbuffer_desc.Name);
+                }
+
+                for (uint32_t j = 0; j < cbuffer_desc.Variables; ++j) {
+                    ID3D12ShaderReflectionVariable* variable =
+                        cbuffer->GetVariableByIndex(j);
+                    D3D12_SHADER_VARIABLE_DESC variable_desc = {};
+                    variable->GetDesc(&variable_desc);
+                    mge::program::uniform u;
+                    u.name = variable_desc.Name;
+                    ID3D12ShaderReflectionType* variable_type =
+                        variable->GetType();
+                    D3D12_SHADER_TYPE_DESC variable_type_desc = {};
+                    variable_type->GetDesc(&variable_type_desc);
+                    u.type = data_type_of_variable(variable_type_desc);
+                    u.array_size = variable_desc.Size;
+                    uniform_block_metadata.uniforms.push_back(u);
+                }
+
+                if (uniform_block_metadata.name == "$Globals") {
+                    uniforms.insert(uniforms.begin(),
+                                    uniform_block_metadata.uniforms.begin(),
+                                    uniform_block_metadata.uniforms.end());
+                    for (size_t k = 0; k < uniforms.size(); ++k) {
+                        MGE_DEBUG_TRACE(DX12, "uniform[{}]={}", k, uniforms[k]);
+                    }
+                } else {
+                    uniform_buffers.push_back(uniform_block_metadata);
+                    MGE_DEBUG_TRACE(DX12,
+                                    "uniform_block_metadata[{}]={}",
+                                    uniform_buffers.size() - 1,
+                                    uniform_block_metadata);
+                }
+            }
+        }
+    }
 
 } // namespace mge::dx12

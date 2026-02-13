@@ -187,9 +187,9 @@ namespace mge::dx11 {
     }
 
     void
-    shader::reflect(mge::program::attribute_list&      attributes,
-                    mge::program::uniform_list&        uniforms,
-                    mge::program::uniform_buffer_list& uniform_buffers) const
+    shader::reflect(mge::program::attribute_list&              attributes,
+                    mge::program::uniform_list&                uniforms,
+                    mge::program::uniform_block_metadata_list& uniform_buffers)
     {
         ID3D11ShaderReflection* shader_reflection = nullptr;
 
@@ -225,8 +225,24 @@ namespace mge::dx11 {
 
                 D3D11_SHADER_BUFFER_DESC cbuffer_desc = {};
                 cbuffer->GetDesc(&cbuffer_desc);
-                mge::program::uniform_buffer uniform_buffer;
-                uniform_buffer.name = cbuffer_desc.Name;
+                mge::program::uniform_block_metadata uniform_block_metadata;
+                uniform_block_metadata.name = cbuffer_desc.Name;
+
+                // Get bind point for this constant buffer
+                D3D11_SHADER_INPUT_BIND_DESC bind_desc = {};
+                HRESULT                      bind_rc =
+                    shader_reflection->GetResourceBindingDescByName(
+                        cbuffer_desc.Name,
+                        &bind_desc);
+                if (SUCCEEDED(bind_rc)) {
+                    uniform_block_metadata.location = bind_desc.BindPoint;
+                } else {
+                    uniform_block_metadata.location = 0;
+                    MGE_WARNING_TRACE(
+                        DX11,
+                        "Could not get bind point for buffer '{}'",
+                        cbuffer_desc.Name);
+                }
                 for (uint32_t j = 0; j < cbuffer_desc.Variables; ++j) {
                     ID3D11ShaderReflectionVariable* variable =
                         cbuffer->GetVariableByIndex(j);
@@ -240,21 +256,22 @@ namespace mge::dx11 {
                     variable_type->GetDesc(&variable_type_desc);
                     u.type = data_type_of_variable(variable_type_desc);
                     u.array_size = variable_desc.Size;
-                    uniform_buffer.uniforms.push_back(u);
+                    uniform_block_metadata.uniforms.push_back(u);
                 }
-                if (uniform_buffer.name == "$Globals") {
+                if (uniform_block_metadata.name == "$Globals") {
                     uniforms.insert(uniforms.begin(),
-                                    uniform_buffer.uniforms.begin(),
-                                    uniform_buffer.uniforms.end());
+                                    uniform_block_metadata.uniforms.begin(),
+                                    uniform_block_metadata.uniforms.end());
                     for (size_t k = 0; k < uniforms.size(); ++k) {
                         MGE_DEBUG_TRACE(DX11, "uniform[{}]={}", i, uniforms[k]);
                     }
                 } else {
-                    uniform_buffers.push_back(uniform_buffer);
+                    uniform_buffers.push_back(uniform_block_metadata);
+                    m_uniform_buffer_names.insert(uniform_block_metadata.name);
                     MGE_DEBUG_TRACE(DX11,
-                                    "uniform_buffer[{}]={}",
+                                    "uniform_block_metadata[{}]={}",
                                     uniform_buffers.size() - 1,
-                                    uniform_buffer);
+                                    uniform_block_metadata);
                 }
             }
         }
@@ -326,5 +343,11 @@ namespace mge::dx11 {
             CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
         }
 #endif
+    }
+
+    bool shader::uses_uniform_buffer(const std::string& name) const
+    {
+        return m_uniform_buffer_names.find(name) !=
+               m_uniform_buffer_names.end();
     }
 } // namespace mge::dx11

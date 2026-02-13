@@ -200,10 +200,10 @@ namespace mge::opengl {
     }
 
 #if 0
-        bool                m_needs_link;
-        attribute_list      m_attributes;
-        uniform_list        m_uniforms;
-        uniform_buffer_list m_uniform_buffers;
+        bool                           m_needs_link;
+        attribute_list                 m_attributes;
+        uniform_list                   m_uniforms;
+        uniform_block_metadata_list    m_uniform_block_metadata;
 #endif
 
     void program::on_link()
@@ -357,8 +357,8 @@ namespace mge::opengl {
 
             m_uniforms.push_back({std::move(name),
                                   uniform_type,
-                                  static_cast<uint32_t>(location),
-                                  static_cast<uint32_t>(array_size)});
+                                  static_cast<uint32_t>(array_size),
+                                  static_cast<uint32_t>(location)});
             MGE_DEBUG_TRACE(
                 OPENGL,
                 "Uniform: '{}', type: {}, location: {}, array_size: {}",
@@ -424,8 +424,9 @@ namespace mge::opengl {
     void program::collect_uniform_buffers()
     {
         // Clear previous uniform buffers
-        m_uniform_buffers
-            .clear(); // Assuming m_uniform_buffers is the member variable
+        m_uniform_block_metadata.clear(); // Assuming m_uniform_block_metadata
+                                          // is the member variable
+        m_block_indices.clear();
 
         GLint num_uniform_blocks = 0;
         glGetProgramInterfaceiv(m_program,
@@ -480,17 +481,135 @@ namespace mge::opengl {
 
             std::string name(name_buffer.data(), name_length);
 
-            program::uniform_buffer ub;
+            // Retrieve active variable indices for this block
+            std::vector<GLint> uniform_indices(num_uniforms);
+            const GLenum       active_vars_prop[] = {GL_ACTIVE_VARIABLES};
+            glGetProgramResourceiv(m_program,
+                                   GL_UNIFORM_BLOCK,
+                                   i,
+                                   1,
+                                   active_vars_prop,
+                                   static_cast<GLsizei>(num_uniforms),
+                                   nullptr,
+                                   uniform_indices.data());
+            CHECK_OPENGL_ERROR(glGetProgramResourceiv);
+
+            program::uniform_block_metadata ub;
             ub.name = name;
-            m_uniform_buffers.push_back(ub);
+
+            // Get the block index for this uniform block
+            GLuint block_index =
+                glGetUniformBlockIndex(m_program, name.c_str());
+            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+            ub.location = (block_index != GL_INVALID_INDEX)
+                              ? static_cast<uint32_t>(block_index)
+                              : 0;
+
+            // Collect each uniform member of this block
+            const GLenum member_props[] = {GL_NAME_LENGTH,
+                                           GL_TYPE,
+                                           GL_ARRAY_SIZE};
+            const int    num_member_props =
+                sizeof(member_props) / sizeof(member_props[0]);
+            std::vector<char> member_name_buf(max_name_length);
+
+            for (GLint j = 0; j < num_uniforms; ++j) {
+                GLint member_values[num_member_props];
+                glGetProgramResourceiv(m_program,
+                                       GL_UNIFORM,
+                                       uniform_indices[j],
+                                       num_member_props,
+                                       member_props,
+                                       num_member_props,
+                                       nullptr,
+                                       member_values);
+                CHECK_OPENGL_ERROR(glGetProgramResourceiv);
+
+                GLsizei member_name_len = 0;
+                glGetProgramResourceName(
+                    m_program,
+                    GL_UNIFORM,
+                    uniform_indices[j],
+                    static_cast<GLsizei>(member_name_buf.size()),
+                    &member_name_len,
+                    member_name_buf.data());
+                CHECK_OPENGL_ERROR(glGetProgramResourceName);
+
+                std::string member_name(member_name_buf.data(),
+                                        member_name_len);
+                GLenum      gl_member_type = member_values[1];
+                GLint       member_array_size = member_values[2];
+                auto        member_type = uniform_type_from_gl(gl_member_type);
+
+                if (member_type == mge::uniform_data_type::UNKNOWN) {
+                    MGE_WARNING_TRACE(
+                        OPENGL,
+                        "Unsupported type {} for block member '{}'",
+                        gl_member_type,
+                        member_name);
+                    continue;
+                }
+
+                // Strip block name prefix (e.g. "BlockName.member")
+                auto dot_pos = member_name.find('.');
+                if (dot_pos != std::string::npos) {
+                    member_name = member_name.substr(dot_pos + 1);
+                }
+
+                // Strip array suffix
+                if (member_name.ends_with("]")) {
+                    auto bracket = member_name.find_last_of('[');
+                    if (bracket != std::string::npos) {
+                        member_name.erase(bracket);
+                    }
+                }
+
+                if (member_array_size == 0) {
+                    member_array_size = 1;
+                }
+
+                // location=0 for block members (not individually addressable)
+                ub.uniforms.push_back({std::move(member_name),
+                                       member_type,
+                                       static_cast<uint32_t>(member_array_size),
+                                       0});
+
+                MGE_DEBUG_TRACE(OPENGL,
+                                "  Block member: '{}', type: {}, "
+                                "array_size: {}",
+                                ub.uniforms.back().name,
+                                ub.uniforms.back().type,
+                                ub.uniforms.back().array_size);
+            }
+
+            m_uniform_block_metadata.push_back(std::move(ub));
 
             MGE_DEBUG_TRACE(OPENGL,
                             "Uniform block: '{}' has {} uniforms",
                             name,
                             num_uniforms);
+        }
 
-            for (GLint j = 0; j < num_uniforms; ++j) {
+        // Cache block indices
+        for (const auto& ub : m_uniform_block_metadata) {
+            GLuint index = glGetUniformBlockIndex(m_program, ub.name.c_str());
+            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+            if (index != GL_INVALID_INDEX) {
+                m_block_indices[ub.name] = index;
+                MGE_DEBUG_TRACE(OPENGL,
+                                "Cached block index {} for '{}'",
+                                index,
+                                ub.name);
             }
         }
+    }
+
+    GLuint program::block_index(const std::string& name) const
+    {
+        auto it = m_block_indices.find(name);
+        if (it != m_block_indices.end()) {
+            return it->second;
+        }
+        return GL_INVALID_INDEX;
     }
 } // namespace mge::opengl

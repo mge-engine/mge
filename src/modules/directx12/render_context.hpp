@@ -8,6 +8,7 @@
 #include "mge/core/mutex.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
@@ -129,7 +130,12 @@ namespace mge::dx12 {
                            mge::program*              program,
                            mge::vertex_buffer*        vb,
                            mge::index_buffer*         ib,
-                           const mge::pipeline_state& state);
+                           const mge::pipeline_state& state,
+                           mge::uniform_block*        ub);
+
+        void bind_uniform_block(ID3D12GraphicsCommandList* command_list,
+                                mge::dx12::program&        dx12_program,
+                                mge::uniform_block&        ub);
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,
@@ -183,7 +189,11 @@ namespace mge::dx12 {
         };
 
         draw_state m_draw_state{draw_state::NONE};
-        mge::mutex m_data_lock;
+
+        std::map<mge::uniform_block*, mge::com_ptr<ID3D12Resource>>
+                                                m_constant_buffers;
+        std::map<mge::uniform_block*, uint64_t> m_constant_buffer_versions;
+        mge::mutex                              m_data_lock;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

@@ -7,6 +7,7 @@
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
+#include "spirv-reflect/spirv_reflect.h"
 
 namespace mge {
     MGE_USE_TRACE(VULKAN);
@@ -193,4 +194,134 @@ namespace mge::vulkan {
             m_shader_module = VK_NULL_HANDLE;
         }
     }
+
+    static mge::uniform_data_type
+    uniform_type_from_spirv(const SpvReflectTypeDescription& type_desc)
+    {
+        if (type_desc.type_flags & SPV_REFLECT_TYPE_FLAG_MATRIX) {
+            if (type_desc.traits.numeric.matrix.column_count == 4 &&
+                type_desc.traits.numeric.matrix.row_count == 4) {
+                return mge::uniform_data_type::FLOAT_MAT4;
+            }
+            if (type_desc.traits.numeric.matrix.column_count == 3 &&
+                type_desc.traits.numeric.matrix.row_count == 3) {
+                return mge::uniform_data_type::FLOAT_MAT3;
+            }
+            if (type_desc.traits.numeric.matrix.column_count == 2 &&
+                type_desc.traits.numeric.matrix.row_count == 2) {
+                return mge::uniform_data_type::FLOAT_MAT2;
+            }
+        } else if (type_desc.type_flags & SPV_REFLECT_TYPE_FLAG_VECTOR) {
+            if (type_desc.traits.numeric.vector.component_count == 4) {
+                return mge::uniform_data_type::FLOAT_VEC4;
+            }
+            if (type_desc.traits.numeric.vector.component_count == 3) {
+                return mge::uniform_data_type::FLOAT_VEC3;
+            }
+            if (type_desc.traits.numeric.vector.component_count == 2) {
+                return mge::uniform_data_type::FLOAT_VEC2;
+            }
+        } else if (type_desc.type_flags & SPV_REFLECT_TYPE_FLAG_FLOAT) {
+            return mge::uniform_data_type::FLOAT;
+        } else if (type_desc.type_flags & SPV_REFLECT_TYPE_FLAG_INT) {
+            if (type_desc.traits.numeric.scalar.signedness) {
+                return mge::uniform_data_type::INT32;
+            } else {
+                return mge::uniform_data_type::UINT32;
+            }
+        }
+        return mge::uniform_data_type::UNKNOWN;
+    }
+
+    void shader::reflect(
+        mge::program::attribute_list&              attributes,
+        mge::program::uniform_list&                uniforms,
+        mge::program::uniform_block_metadata_list& uniform_buffers) const
+    {
+        if (m_code.empty()) {
+            return;
+        }
+
+        SpvReflectShaderModule module;
+        SpvReflectResult       result =
+            spvReflectCreateShaderModule(m_code.size(), m_code.data(), &module);
+
+        if (result != SPV_REFLECT_RESULT_SUCCESS) {
+            // MGE_ERROR_TRACE(VULKAN,
+            //                 "Failed to create SPIR-V reflection module");
+            return;
+        }
+
+        on_leave cleanup_module(
+            [&]() { spvReflectDestroyShaderModule(&module); });
+
+        // Reflect uniform buffers (descriptor bindings)
+        uint32_t binding_count = 0;
+        result = spvReflectEnumerateDescriptorBindings(&module,
+                                                       &binding_count,
+                                                       nullptr);
+        if (result != SPV_REFLECT_RESULT_SUCCESS) {
+            // MGE_ERROR_TRACE(VULKAN, "Failed to enumerate descriptor
+            // bindings");
+            return;
+        }
+
+        if (binding_count > 0) {
+            std::vector<SpvReflectDescriptorBinding*> bindings(binding_count);
+            result = spvReflectEnumerateDescriptorBindings(&module,
+                                                           &binding_count,
+                                                           bindings.data());
+
+            if (result != SPV_REFLECT_RESULT_SUCCESS) {
+                // MGE_ERROR_TRACE(VULKAN, "Failed to get descriptor bindings");
+                return;
+            }
+
+            for (uint32_t i = 0; i < binding_count; ++i) {
+                const auto& binding = *bindings[i];
+
+                if (binding.descriptor_type ==
+                    SPV_REFLECT_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
+                    mge::program::uniform_block_metadata ub_metadata;
+                    ub_metadata.name = binding.type_description->type_name;
+                    ub_metadata.location = binding.binding;
+
+                    // Extract members from the uniform buffer
+                    for (uint32_t j = 0; j < binding.block.member_count; ++j) {
+                        const auto&           member = binding.block.members[j];
+                        mge::program::uniform u;
+                        u.name = member.name;
+                        u.type =
+                            uniform_type_from_spirv(*member.type_description);
+                        u.array_size = 1;
+                        for (uint32_t k = 0;
+                             k <
+                             member.type_description->traits.array.dims_count;
+                             ++k) {
+                            u.array_size *=
+                                member.type_description->traits.array.dims[k];
+                        }
+                        u.location = member.offset;
+                        ub_metadata.uniforms.push_back(u);
+
+                        // MGE_DEBUG_TRACE(VULKAN,
+                        //               "  Uniform block member: '{}', type:
+                        //               {}, offset: {}, array_size: {}",
+                        //               u.name,
+                        //              u.type,
+                        //               u.location,
+                        //               u.array_size);
+                    }
+
+                    uniform_buffers.push_back(ub_metadata);
+                    // MGE_DEBUG_TRACE(VULKAN,
+                    //               "Uniform block: '{}', binding: {},
+                    //               member_count: {}", ub_metadata.name,
+                    //               ub_metadata.location,
+                    //               binding.block.member_count);
+                }
+            }
+        }
+    }
+
 } // namespace mge::vulkan

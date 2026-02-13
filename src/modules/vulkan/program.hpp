@@ -23,6 +23,11 @@ namespace mge::vulkan {
             return m_pipeline_layout;
         }
 
+        VkDescriptorSetLayout descriptor_set_layout() const noexcept
+        {
+            return m_descriptor_set_layout;
+        }
+
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(mge::shader* shader) override;
@@ -34,5 +39,6 @@ namespace mge::vulkan {
                                           m_shader_stage_create_infos;
         std::vector<mge::vulkan::shader*> m_shaders;
         VkPipelineLayout                  m_pipeline_layout{VK_NULL_HANDLE};
+        VkDescriptorSetLayout m_descriptor_set_layout{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan
