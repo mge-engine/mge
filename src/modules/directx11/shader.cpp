@@ -186,10 +186,9 @@ namespace mge::dx11 {
         }
     }
 
-    void
-    shader::reflect(mge::program::attribute_list&      attributes,
-                    mge::program::uniform_list&        uniforms,
-                    mge::program::uniform_buffer_list& uniform_buffers) const
+    void shader::reflect(mge::program::attribute_list&      attributes,
+                         mge::program::uniform_list&        uniforms,
+                         mge::program::uniform_buffer_list& uniform_buffers)
     {
         ID3D11ShaderReflection* shader_reflection = nullptr;
 
@@ -267,6 +266,7 @@ namespace mge::dx11 {
                     }
                 } else {
                     uniform_buffers.push_back(uniform_buffer);
+                    m_uniform_buffer_names.insert(uniform_buffer.name);
                     MGE_DEBUG_TRACE(DX11,
                                     "uniform_buffer[{}]={}",
                                     uniform_buffers.size() - 1,
@@ -342,5 +342,11 @@ namespace mge::dx11 {
             CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
         }
 #endif
+    }
+
+    bool shader::uses_uniform_buffer(const std::string& name) const
+    {
+        return m_uniform_buffer_names.find(name) !=
+               m_uniform_buffer_names.end();
     }
 } // namespace mge::dx11

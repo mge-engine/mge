@@ -7,6 +7,8 @@
 #include "mge/graphics/shader.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
+#include <set>
+
 namespace mge::dx11 {
     class render_context;
     class shader : public mge::shader
@@ -57,7 +59,9 @@ namespace mge::dx11 {
 
         void reflect(mge::program::attribute_list&      attributes,
                      mge::program::uniform_list&        uniforms,
-                     mge::program::uniform_buffer_list& uniform_buffers) const;
+                     mge::program::uniform_buffer_list& uniform_buffers);
+
+        bool uses_uniform_buffer(const std::string& name) const;
 
     private:
         std::string profile() const;
@@ -67,5 +71,6 @@ namespace mge::dx11 {
         shader_t                               m_shader;
         mge::com_unique_ptr<ID3DBlob>          m_code;
         mge::com_unique_ptr<ID3D11InputLayout> m_input_layout;
+        std::set<std::string>                  m_uniform_buffer_names;
     };
 } // namespace mge::dx11
