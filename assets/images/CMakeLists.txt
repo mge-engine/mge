@@ -4,6 +4,7 @@
 SET(asset_files
     red.jpg
     sand.png
+    loremipsum.png
 )
 
 FOREACH(ASSET_FILE ${asset_files})

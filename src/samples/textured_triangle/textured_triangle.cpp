@@ -216,27 +216,28 @@ namespace mge {
                                                     : "linked successfully");
 
             // Vertex data: position (vec3) + texcoord (vec2)
+            // UV convention: DX/Vulkan (V=0 at top, V=1 at bottom)
             // Triangle with UV mapping:
-            //   top vertex    (0.0, 0.5, 0.0)  -> UV (0.5, 1.0)
-            //   bottom-right  (0.45, -0.5, 0.0) -> UV (1.0, 0.0)
-            //   bottom-left   (-0.45, -0.5, 0.0) -> UV (0.0, 0.0)
+            //   top vertex    (0.0, 0.5, 0.0)  -> UV (0.5, 0.0)
+            //   bottom-right  (0.45, -0.5, 0.0) -> UV (1.0, 1.0)
+            //   bottom-left   (-0.45, -0.5, 0.0) -> UV (0.0, 1.0)
             float vertex_data[] = {
                 // position          // texcoord
                 0.0f,
                 0.5f,
                 0.0f,
                 0.5f,
-                1.0f,
+                0.0f,
                 0.45f,
                 -0.5f,
                 0.0f,
                 1.0f,
-                0.0f,
+                1.0f,
                 -0.45f,
                 -0.5f,
                 0.0f,
                 0.0f,
-                0.0f,
+                1.0f,
             };
             int triangle_indices[] = {0, 1, 2};
 
@@ -258,9 +259,9 @@ namespace mge {
                                         sizeof(triangle_indices),
                                         mge::make_buffer(triangle_indices));
 
-            // Load texture from sand.png asset
+            // Load texture from asset
             MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Loading texture");
-            mge::asset sand_asset("/images/sand.png");
+            mge::asset sand_asset("/images/loremipsum.png");
             auto       loaded = sand_asset.load();
             auto       image = std::any_cast<mge::image_ref>(loaded);
             MGE_DEBUG_TRACE(TEXTURED_TRIANGLE,
