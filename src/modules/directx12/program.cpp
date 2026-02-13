@@ -87,12 +87,46 @@ namespace mge::dx12 {
             root_parameters.push_back(param);
         }
 
+        // Descriptor table for texture SRV (t0)
+        D3D12_DESCRIPTOR_RANGE srv_range = {};
+        srv_range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+        srv_range.NumDescriptors = 1;
+        srv_range.BaseShaderRegister = 0;
+        srv_range.RegisterSpace = 0;
+        srv_range.OffsetInDescriptorsFromTableStart =
+            D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+
+        D3D12_ROOT_PARAMETER texture_param = {};
+        texture_param.ParameterType =
+            D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+        texture_param.DescriptorTable.NumDescriptorRanges = 1;
+        texture_param.DescriptorTable.pDescriptorRanges = &srv_range;
+        texture_param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+        root_parameters.push_back(texture_param);
+
+        // Static sampler for s0
+        D3D12_STATIC_SAMPLER_DESC static_sampler = {};
+        static_sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+        static_sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        static_sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        static_sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+        static_sampler.MipLODBias = 0;
+        static_sampler.MaxAnisotropy = 0;
+        static_sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+        static_sampler.BorderColor =
+            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+        static_sampler.MinLOD = 0.0f;
+        static_sampler.MaxLOD = D3D12_FLOAT32_MAX;
+        static_sampler.ShaderRegister = 0;
+        static_sampler.RegisterSpace = 0;
+        static_sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+
         D3D12_ROOT_SIGNATURE_DESC desc = {
             .NumParameters = static_cast<UINT>(root_parameters.size()),
             .pParameters =
                 root_parameters.empty() ? nullptr : root_parameters.data(),
-            .NumStaticSamplers = 0,
-            .pStaticSamplers = nullptr,
+            .NumStaticSamplers = 1,
+            .pStaticSamplers = &static_sampler,
             .Flags =
                 D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT,
         };

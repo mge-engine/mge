@@ -9,6 +9,7 @@ SET(mge_dx12_module_SOURCES
     render_context.cpp
     shader.cpp
     program.cpp
+    texture.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )
