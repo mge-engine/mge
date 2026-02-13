@@ -69,10 +69,6 @@ Index buffers are used to provide indices into vertex buffers.
 .. doxygenclass:: mge::index_buffer
     :members:
 
-Constant Buffer
-===============
-
-Constant buffers are used to provide constant data to shader programs.
 
 Uniform Block
 =============
@@ -84,16 +80,12 @@ metadata and manage CPU-side data that is synchronized to GPU buffers.
 A uniform block represents a named group of uniform variables in a shader program. The
 layout follows the std140 standard to ensure consistent packing across different platforms.
 
+Uniform blocks automatically compute their layout from shader metadata.
+Access to members is type-checked, updates increase a version counter for
+efficient GPU sync.
+
 .. doxygenclass:: mge::uniform_block
     :members:
-
-Key Features
-------------
-
-* **Automatic Layout**: Uniform blocks automatically compute std140-compliant layout from program metadata
-* **Type Safety**: Member access is type-checked via the ``set<T>()`` template method
-* **Version Tracking**: Each update increments a version counter for efficient GPU synchronization
-* **Cross-Platform**: Works consistently across OpenGL, DirectX 11, DirectX 12, and Vulkan
 
 Usage Example
 -------------
