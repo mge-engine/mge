@@ -1,6 +1,22 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+
+/**
+ * @file rotating_triangle.cpp
+ * @brief Sample demonstrating uniform buffer usage with animated rotation.
+ *
+ * This sample showcases the following MGE features:
+ * - Creating and managing uniform blocks from program metadata
+ * - Passing uniform data (rotation angle) from CPU to GPU
+ * - Computing transformations in vertex shaders
+ * - Separating update logic from rendering
+ * - Cross-platform shader support (GLSL/HLSL)
+ *
+ * The triangle rotates at 45 degrees per second around the Z-axis.
+ * Rotation is computed in the vertex shader using the angle uniform.
+ */
+
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_source.hpp"
@@ -73,6 +89,16 @@ namespace mge {
                             "Screenshot saved to /temp/screenshot.png");
         }
 
+        /**
+         * @brief Update rotation angle and uniform block.
+         * 
+         * Called each frame via update_listener. Updates the rotation angle
+         * and passes it to the shader via the uniform block. Only updates
+         * uniform data - does not perform any rendering.
+         * 
+         * @param cycle Frame number
+         * @param delta Time since last frame in seconds
+         */
         void update_rotation(uint64_t cycle, double delta)
         {
             if (m_initialized) {
@@ -94,19 +120,28 @@ namespace mge {
                 }
 
                 if (m_uniform_block) {
-                    // Update rotation angle
+                    // Update rotation angle (45 degrees per second)
                     m_rotation_angle += static_cast<float>(
                         45.0 * delta); // 45 degrees per second
                     if (m_rotation_angle >= 360.0f) {
                         m_rotation_angle -= 360.0f;
                     }
 
-                    // Pass angle to shader
+                    // Update uniform block with new angle
+                    // This increments the block's version counter, triggering
+                    // GPU buffer update on next draw
                     m_uniform_block->set("angle", m_rotation_angle);
                 }
             }
         }
 
+        /**
+         * @brief Render the rotating triangle.
+         * 
+         * Called each frame via redraw_listener. Sets up render pass,
+         * binds uniform block, submits draw commands, and presents frame.
+         * Separated from update logic to follow proper update/render pattern.
+         */
         void draw()
         {
             if (m_initialized && m_uniform_block) {
