@@ -5,6 +5,8 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/program.hpp"
 #include "opengl.hpp"
+#include <map>
+#include <string>
 
 namespace mge::opengl {
 
@@ -24,13 +26,16 @@ namespace mge::opengl {
             return m_program;
         }
 
+        GLuint block_index(const std::string& name) const;
+
     private:
         void dump_info_log();
         void collect_uniforms();
         void collect_uniform_buffers();
         void collect_attributes();
 
-        GLuint m_program;
+        GLuint                        m_program;
+        std::map<std::string, GLuint> m_block_indices;
     };
 
     inline GLuint gl_program(const mge::program& p)

@@ -396,10 +396,8 @@ namespace mge::opengl {
     void render_context::bind_uniform_block(mge::opengl::program& gl_program,
                                             mge::uniform_block&   ub)
     {
-        // Find the block index in the GL program
-        GLuint block_index = glGetUniformBlockIndex(gl_program.program_name(),
-                                                    ub.name().c_str());
-        CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+        // Get cached block index from the GL program
+        GLuint block_index = gl_program.block_index(ub.name());
         if (block_index == GL_INVALID_INDEX) {
             MGE_THROW(mge::no_such_element)
                 << "Program has no uniform block named '" << ub.name() << "'";

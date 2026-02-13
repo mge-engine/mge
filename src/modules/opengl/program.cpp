@@ -426,6 +426,7 @@ namespace mge::opengl {
         // Clear previous uniform buffers
         m_uniform_buffers
             .clear(); // Assuming m_uniform_buffers is the member variable
+        m_block_indices.clear();
 
         GLint num_uniform_blocks = 0;
         glGetProgramInterfaceiv(m_program,
@@ -580,5 +581,27 @@ namespace mge::opengl {
                             name,
                             num_uniforms);
         }
+
+        // Cache block indices
+        for (const auto& ub : m_uniform_buffers) {
+            GLuint index = glGetUniformBlockIndex(m_program, ub.name.c_str());
+            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+            if (index != GL_INVALID_INDEX) {
+                m_block_indices[ub.name] = index;
+                MGE_DEBUG_TRACE(OPENGL,
+                                "Cached block index {} for '{}'",
+                                index,
+                                ub.name);
+            }
+        }
+    }
+
+    GLuint program::block_index(const std::string& name) const
+    {
+        auto it = m_block_indices.find(name);
+        if (it != m_block_indices.end()) {
+            return it->second;
+        }
+        return GL_INVALID_INDEX;
     }
 } // namespace mge::opengl
