@@ -10,8 +10,11 @@
 #include "mge/graphics/vertex_buffer_handle.hpp"
 
 #include <tuple>
+#include <vector>
 
 namespace mge {
+
+    class uniform_block;
 
     /**
      * @brief A command buffer records rendering commands to be
@@ -76,6 +79,19 @@ namespace mge {
         }
 
         /**
+         * @brief Bind a uniform block for subsequent draw commands.
+         *
+         * The block is attached to the next draw() call. After draw(),
+         * the binding is cleared.
+         *
+         * @param block pointer to the uniform block to bind (nullptr to clear)
+         */
+        void bind_uniform_block(uniform_block* block) noexcept
+        {
+            m_current_uniform_block = block;
+        }
+
+        /**
          * @brief Record a draw command into the command buffer.
          *
          * @param program   program to use for drawing
@@ -93,7 +109,8 @@ namespace mge {
                 f(m_programs[i],
                   m_vertex_buffers[i],
                   m_index_buffers[i],
-                  m_pipeline_states[i]);
+                  m_pipeline_states[i],
+                  m_uniform_blocks[i]);
             }
         }
 
@@ -108,14 +125,17 @@ namespace mge {
             m_vertex_buffers.clear();
             m_index_buffers.clear();
             m_pipeline_states.clear();
+            m_uniform_blocks.clear();
         }
 
     private:
         pipeline_state m_current_pipeline_state{pipeline_state::DEFAULT};
+        uniform_block* m_current_uniform_block{nullptr};
 
         std::vector<pipeline_state>       m_pipeline_states;
         std::vector<program_handle>       m_programs;
         std::vector<vertex_buffer_handle> m_vertex_buffers;
         std::vector<index_buffer_handle>  m_index_buffers;
+        std::vector<uniform_block*>       m_uniform_blocks;
     };
 } // namespace mge

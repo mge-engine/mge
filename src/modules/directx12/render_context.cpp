@@ -848,7 +848,8 @@ namespace mge::dx12 {
         p.for_each_draw_command([&](const mge::program_handle&       program,
                                     const mge::vertex_buffer_handle& vertices,
                                     const mge::index_buffer_handle&  indices,
-                                    const mge::pipeline_state&       state) {
+                                    const mge::pipeline_state&       state,
+                                    mge::uniform_block* /*ub*/) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == blend_operation::NONE) {
                 draw_geometry(pass_command_list,
@@ -866,7 +867,8 @@ namespace mge::dx12 {
                 [&](const mge::program_handle&       program,
                     const mge::vertex_buffer_handle& vertices,
                     const mge::index_buffer_handle&  indices,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),

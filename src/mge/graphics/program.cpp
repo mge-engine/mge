@@ -4,6 +4,7 @@
 #include "mge/graphics/program.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 
 namespace mge {
 
@@ -66,6 +67,19 @@ namespace mge {
     {
         assert_linked();
         return m_uniform_buffers;
+    }
+
+    uniform_block
+    program::create_uniform_block(const std::string& block_name) const
+    {
+        assert_linked();
+        for (const auto& ub : m_uniform_buffers) {
+            if (ub.name == block_name) {
+                return uniform_block(ub);
+            }
+        }
+        MGE_THROW(mge::no_such_element)
+            << "Program has no uniform buffer named '" << block_name << "'";
     }
 
     void program::assert_linked() const

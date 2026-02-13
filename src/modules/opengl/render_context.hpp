@@ -7,6 +7,7 @@
 #include "mge/core/thread.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "opengl.hpp"
 #include "opengl_info.hpp"
 #include "window.hpp"
@@ -17,6 +18,7 @@ namespace mge {
         class render_system;
         class vertex_buffer;
         class index_buffer;
+        class program;
 
         class render_context : public mge::render_context
         {
@@ -66,7 +68,11 @@ namespace mge {
 
             void draw_geometry(mge::program*       program,
                                mge::vertex_buffer* vb,
-                               mge::index_buffer*  ib);
+                               mge::index_buffer*  ib,
+                               mge::uniform_block* ub);
+
+            void bind_uniform_block(mge::opengl::program& gl_program,
+                                    mge::uniform_block&   ub);
 
             mge::opengl::window*        m_window;
             HWND                        m_hwnd;
@@ -80,7 +86,9 @@ namespace mge {
             static singleton<opengl_info> s_glinfo;
 
             using vao_key = std::tuple<GLuint, GLuint>;
-            std::map<vao_key, GLuint> m_vaos;
+            std::map<vao_key, GLuint>                m_vaos;
+            std::map<mge::uniform_block*, GLuint>    m_ubos;
+            std::map<mge::uniform_block*, uint64_t>  m_ubo_versions;
         };
     } // namespace opengl
 } // namespace mge

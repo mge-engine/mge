@@ -47,7 +47,8 @@ TEST(command_buffer, for_each_verifies_single_draw)
     cb.for_each([&](const mge::program_handle&       p,
                     const mge::vertex_buffer_handle& v,
                     const mge::index_buffer_handle&  i,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
         EXPECT_EQ(p, prog);
         EXPECT_EQ(v, vb);
         EXPECT_EQ(i, ib);
@@ -74,7 +75,8 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
     cb.for_each([&](const mge::program_handle&       p,
                     const mge::vertex_buffer_handle& v,
                     const mge::index_buffer_handle&  i,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(p, prog1);
@@ -114,7 +116,8 @@ TEST(command_buffer, for_each_verifies_blend_states)
     cb.for_each([&](const mge::program_handle&       p,
                     const mge::vertex_buffer_handle& v,
                     const mge::index_buffer_handle&  i,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.color_blend_operation(),
@@ -158,7 +161,8 @@ TEST(command_buffer, depth_write_state)
     cb.for_each([&](const mge::program_handle&       p,
                     const mge::vertex_buffer_handle& v,
                     const mge::index_buffer_handle&  i,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
         ++count;
         if (count == 1) {
             EXPECT_TRUE(state.depth_write());
@@ -193,7 +197,8 @@ TEST(command_buffer, depth_test_function_state)
     cb.for_each([&](const mge::program_handle&       p,
                     const mge::vertex_buffer_handle& v,
                     const mge::index_buffer_handle&  i,
-                    const mge::pipeline_state&       state) {
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block* /*ub*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.depth_test_function(), mge::test::LESS);

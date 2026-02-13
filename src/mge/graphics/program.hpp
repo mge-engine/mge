@@ -13,10 +13,13 @@
 #include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace mge {
+
+    class uniform_block;
 
     /**
      * @brief A program represents the stages in the drawing process.
@@ -121,7 +124,14 @@ namespace mge {
          */
         const uniform_buffer_list& uniform_buffers() const;
 
-        // uniform_block_handle make_uniform_block();
+        /**
+         * @brief Create a uniform block instance from one of this program's
+         * uniform buffers.
+         *
+         * @param block_name name of the uniform buffer in the shader
+         * @return a new uniform_block with std140 layout
+         */
+        uniform_block create_uniform_block(const std::string& block_name) const;
 
     protected:
         bool                m_needs_link;

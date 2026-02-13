@@ -87,6 +87,7 @@ SET(mgegraphics_headers
     frame_debugger.hpp
     test.hpp
     update_rate.hpp
+    std140.hpp
     uniform_block.hpp
     uniform.hpp
 )

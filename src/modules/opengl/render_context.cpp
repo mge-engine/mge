@@ -9,6 +9,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -337,7 +338,8 @@ namespace mge::opengl {
 
     void render_context::draw_geometry(mge::program*       program,
                                        mge::vertex_buffer* vb,
-                                       mge::index_buffer*  ib)
+                                       mge::index_buffer*  ib,
+                                       mge::uniform_block* ub)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -351,6 +353,12 @@ namespace mge::opengl {
             static_cast<opengl::program&>(*program);
         glUseProgram(gl_program.program_name());
         CHECK_OPENGL_ERROR(glUseProgram);
+
+        // Bind uniform block if provided
+        if (ub) {
+            bind_uniform_block(gl_program, *ub);
+        }
+
         if (!vb) {
             MGE_THROW(illegal_state)
                 << "Draw command has invalid vertex buffer";
@@ -383,6 +391,60 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glBindVertexArray(0));
         glUseProgram(0);
         CHECK_OPENGL_ERROR(glUseProgram(0));
+    }
+
+    void render_context::bind_uniform_block(mge::opengl::program& gl_program,
+                                            mge::uniform_block&   ub)
+    {
+        // Find the block index in the GL program
+        GLuint block_index = glGetUniformBlockIndex(gl_program.program_name(),
+                                                    ub.name().c_str());
+        CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
+        if (block_index == GL_INVALID_INDEX) {
+            MGE_THROW(mge::no_such_element)
+                << "Program has no uniform block named '" << ub.name() << "'";
+        }
+
+        // Get or create the GL buffer object for this block
+        GLuint ubo = 0;
+        auto   it = m_ubos.find(&ub);
+        if (it != m_ubos.end()) {
+            ubo = it->second;
+        } else {
+            glGenBuffers(1, &ubo);
+            CHECK_OPENGL_ERROR(glGenBuffers);
+            glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+            CHECK_OPENGL_ERROR(glBindBuffer);
+            glBufferData(GL_UNIFORM_BUFFER,
+                         static_cast<GLsizeiptr>(ub.data_size()),
+                         nullptr,
+                         GL_DYNAMIC_DRAW);
+            CHECK_OPENGL_ERROR(glBufferData);
+            m_ubos[&ub] = ubo;
+            m_ubo_versions[&ub] = 0;
+        }
+
+        // Upload data if the block version changed
+        auto& cached_version = m_ubo_versions[&ub];
+        if (cached_version != ub.version()) {
+            glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+            CHECK_OPENGL_ERROR(glBindBuffer);
+            glBufferSubData(GL_UNIFORM_BUFFER,
+                            0,
+                            static_cast<GLsizeiptr>(ub.data_size()),
+                            ub.data());
+            CHECK_OPENGL_ERROR(glBufferSubData);
+            cached_version = ub.version();
+        }
+
+        // Bind the UBO to binding point 0 and connect the block to it
+        GLuint binding_point = 0;
+        glUniformBlockBinding(gl_program.program_name(),
+                              block_index,
+                              binding_point);
+        CHECK_OPENGL_ERROR(glUniformBlockBinding);
+        glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, ubo);
+        CHECK_OPENGL_ERROR(glBindBufferBase);
     }
 
     void render_context::render(const mge::pass& p)
@@ -430,35 +492,37 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glEnable);
 
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, &blend_pass_needed](const program_handle&       program,
-                                       const vertex_buffer_handle& vertices,
-                                       const index_buffer_handle&  indices,
-                                       const mge::pipeline_state&  state) {
-                blend_operation op = state.color_blend_operation();
-                if (op == blend_operation::NONE) {
-                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
-                    CHECK_OPENGL_ERROR(glDepthFunc);
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_FALSE);
-                        CHECK_OPENGL_ERROR(glDepthMask);
-                    }
-                    draw_geometry(program.get(), vertices.get(), indices.get());
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_TRUE);
-                        CHECK_OPENGL_ERROR(glDepthMask);
-                    }
-                } else {
-                    blend_pass_needed = true;
+        p.for_each_draw_command([this, &blend_pass_needed](
+                                    const program_handle&       program,
+                                    const vertex_buffer_handle& vertices,
+                                    const index_buffer_handle&  indices,
+                                    const mge::pipeline_state&  state,
+                                    mge::uniform_block*         ub) {
+            blend_operation op = state.color_blend_operation();
+            if (op == blend_operation::NONE) {
+                glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                CHECK_OPENGL_ERROR(glDepthFunc);
+                if (!state.depth_write()) {
+                    glDepthMask(GL_FALSE);
+                    CHECK_OPENGL_ERROR(glDepthMask);
                 }
-            });
+                draw_geometry(program.get(), vertices.get(), indices.get(), ub);
+                if (!state.depth_write()) {
+                    glDepthMask(GL_TRUE);
+                    CHECK_OPENGL_ERROR(glDepthMask);
+                }
+            } else {
+                blend_pass_needed = true;
+            }
+        });
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
             p.for_each_draw_command([this](const program_handle&       program,
                                            const vertex_buffer_handle& vertices,
                                            const index_buffer_handle&  indices,
-                                           const mge::pipeline_state&  state) {
+                                           const mge::pipeline_state&  state,
+                                           mge::uniform_block*         ub) {
                 blend_operation color_op = state.color_blend_operation();
                 blend_operation alpha_op = state.alpha_blend_operation();
                 blend_factor    color_src = state.color_blend_factor_src();
@@ -490,7 +554,10 @@ namespace mge::opengl {
                         glDepthMask(GL_FALSE);
                         CHECK_OPENGL_ERROR(glDepthMask);
                     }
-                    draw_geometry(program.get(), vertices.get(), indices.get());
+                    draw_geometry(program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  ub);
                     if (!state.depth_write()) {
                         glDepthMask(GL_TRUE);
                         CHECK_OPENGL_ERROR(glDepthMask);

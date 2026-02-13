@@ -18,6 +18,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_attribute_semantic.cpp
     test_uniform.cpp
     test_uniform_binding.cpp
+    test_uniform_block.cpp
     test_viewport.cpp
     test_shader.cpp
     test_command_buffer.cpp

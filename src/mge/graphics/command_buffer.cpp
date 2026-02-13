@@ -13,6 +13,8 @@ namespace mge {
         m_vertex_buffers.push_back(vertices);
         m_index_buffers.push_back(indices);
         m_pipeline_states.push_back(m_current_pipeline_state);
+        m_uniform_blocks.push_back(m_current_uniform_block);
+        m_current_uniform_block = nullptr;
     }
 
     void command_buffer::depth_write(bool enable) noexcept
