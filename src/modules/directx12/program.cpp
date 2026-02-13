@@ -43,7 +43,9 @@ namespace mge::dx12 {
             if (s) {
                 const dx12::shader* dx12_s =
                     static_cast<const dx12::shader*>(s);
-                dx12_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
+                dx12_s->reflect(m_attributes,
+                                m_uniforms,
+                                m_uniform_block_metadata);
             }
         }
     }

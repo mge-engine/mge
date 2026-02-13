@@ -200,10 +200,10 @@ namespace mge::opengl {
     }
 
 #if 0
-        bool                m_needs_link;
-        attribute_list      m_attributes;
-        uniform_list        m_uniforms;
-        uniform_buffer_list m_uniform_buffers;
+        bool                           m_needs_link;
+        attribute_list                 m_attributes;
+        uniform_list                   m_uniforms;
+        uniform_block_metadata_list    m_uniform_block_metadata;
 #endif
 
     void program::on_link()
@@ -424,8 +424,8 @@ namespace mge::opengl {
     void program::collect_uniform_buffers()
     {
         // Clear previous uniform buffers
-        m_uniform_buffers
-            .clear(); // Assuming m_uniform_buffers is the member variable
+        m_uniform_block_metadata.clear(); // Assuming m_uniform_block_metadata
+                                          // is the member variable
         m_block_indices.clear();
 
         GLint num_uniform_blocks = 0;
@@ -494,7 +494,7 @@ namespace mge::opengl {
                                    uniform_indices.data());
             CHECK_OPENGL_ERROR(glGetProgramResourceiv);
 
-            program::uniform_buffer ub;
+            program::uniform_block_metadata ub;
             ub.name = name;
 
             // Get the block index for this uniform block
@@ -582,7 +582,7 @@ namespace mge::opengl {
                                 ub.uniforms.back().array_size);
             }
 
-            m_uniform_buffers.push_back(std::move(ub));
+            m_uniform_block_metadata.push_back(std::move(ub));
 
             MGE_DEBUG_TRACE(OPENGL,
                             "Uniform block: '{}' has {} uniforms",
@@ -591,7 +591,7 @@ namespace mge::opengl {
         }
 
         // Cache block indices
-        for (const auto& ub : m_uniform_buffers) {
+        for (const auto& ub : m_uniform_block_metadata) {
             GLuint index = glGetUniformBlockIndex(m_program, ub.name.c_str());
             CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
             if (index != GL_INVALID_INDEX) {

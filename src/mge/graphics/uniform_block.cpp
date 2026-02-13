@@ -10,7 +10,8 @@
 
 namespace mge {
 
-    uniform_block::uniform_block(const program::uniform_buffer& buffer_info)
+    uniform_block::uniform_block(
+        const program::uniform_block_metadata& buffer_info)
         : m_name(buffer_info.name)
     {
         compute_layout(buffer_info);
@@ -54,8 +55,8 @@ namespace mge {
         return *this;
     }
 
-    void
-    uniform_block::compute_layout(const program::uniform_buffer& buffer_info)
+    void uniform_block::compute_layout(
+        const program::uniform_block_metadata& buffer_info)
     {
         m_members.clear();
         size_t offset = 0;

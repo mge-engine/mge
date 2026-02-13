@@ -84,10 +84,10 @@ namespace mge::dx12 {
         memcpy(m_code->GetBufferPointer(), code.data(), code.size());
     }
 
-    void
-    shader::reflect(mge::program::attribute_list&      attributes,
-                    mge::program::uniform_list&        uniforms,
-                    mge::program::uniform_buffer_list& uniform_buffers) const
+    void shader::reflect(
+        mge::program::attribute_list&              attributes,
+        mge::program::uniform_list&                uniforms,
+        mge::program::uniform_block_metadata_list& uniform_buffers) const
     {}
 
 } // namespace mge::dx12

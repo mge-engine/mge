@@ -43,7 +43,7 @@ namespace mge {
          * @param buffer_info the uniform buffer description from a linked
          *                    program
          */
-        uniform_block(const program::uniform_buffer& buffer_info);
+        uniform_block(const program::uniform_block_metadata& buffer_info);
 
         ~uniform_block();
 
@@ -116,7 +116,7 @@ namespace mge {
         }
 
     private:
-        void compute_layout(const program::uniform_buffer& buffer_info);
+        void compute_layout(const program::uniform_block_metadata& buffer_info);
 
         std::string                m_name;
         std::vector<member_layout> m_members;

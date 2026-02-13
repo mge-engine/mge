@@ -44,11 +44,11 @@ namespace mge::dx11 {
         for (const auto& s : m_shaders) {
             if (s) {
                 dx11::shader* dx11_s = static_cast<dx11::shader*>(s);
-                dx11_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
+                dx11_s->reflect(m_attributes, m_uniforms, m_uniform_block_metadata);
 
                 // Collect which buffers are used by this shader stage
                 auto index = mge::to_underlying(s->type());
-                for (const auto& ub : m_uniform_buffers) {
+                for (const auto& ub : m_uniform_block_metadata) {
                     if (dx11_s->uses_uniform_buffer(ub.name)) {
                         m_shader_buffers[index].insert(ub.name);
                     }
@@ -59,7 +59,7 @@ namespace mge::dx11 {
 
     uint32_t program::buffer_bind_point(const std::string& name) const
     {
-        for (const auto& ub : m_uniform_buffers) {
+        for (const auto& ub : m_uniform_block_metadata) {
             if (ub.name == name) {
                 return ub.location;
             }

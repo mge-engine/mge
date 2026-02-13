@@ -57,9 +57,10 @@ namespace mge::dx11 {
             return m_input_layout.get();
         }
 
-        void reflect(mge::program::attribute_list&      attributes,
-                     mge::program::uniform_list&        uniforms,
-                     mge::program::uniform_buffer_list& uniform_buffers);
+        void
+        reflect(mge::program::attribute_list&              attributes,
+                mge::program::uniform_list&                uniforms,
+                mge::program::uniform_block_metadata_list& uniform_buffers);
 
         bool uses_uniform_buffer(const std::string& name) const;
 

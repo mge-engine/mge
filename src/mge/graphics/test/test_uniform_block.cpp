@@ -125,7 +125,7 @@ TEST(std140, align_offsets)
 
 TEST(uniform_block, create_from_buffer_info)
 {
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "TestBlock";
     ub_info.uniforms.push_back(
         {"model", mge::uniform_data_type::FLOAT_MAT4, 1, 0});
@@ -150,10 +150,9 @@ TEST(uniform_block, create_from_buffer_info)
 
 TEST(uniform_block, set_data_increments_version)
 {
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "VersionBlock";
-    ub_info.uniforms.push_back(
-        {"value", mge::uniform_data_type::FLOAT, 1, 0});
+    ub_info.uniforms.push_back({"value", mge::uniform_data_type::FLOAT, 1, 0});
 
     mge::uniform_block block(ub_info);
     EXPECT_EQ(block.version(), 0u);
@@ -169,7 +168,7 @@ TEST(uniform_block, set_data_increments_version)
 
 TEST(uniform_block, set_typed_value)
 {
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "TypedBlock";
     ub_info.uniforms.push_back(
         {"intensity", mge::uniform_data_type::FLOAT, 1, 0});
@@ -177,22 +176,19 @@ TEST(uniform_block, set_typed_value)
     mge::uniform_block block(ub_info);
     block.set<float>("intensity", 0.75f);
 
-    const float* data =
-        reinterpret_cast<const float*>(
-            static_cast<const char*>(block.data()) +
-            block.members()[0].offset);
+    const float* data = reinterpret_cast<const float*>(
+        static_cast<const char*>(block.data()) + block.members()[0].offset);
     EXPECT_FLOAT_EQ(*data, 0.75f);
 }
 
 TEST(uniform_block, set_unknown_member_throws)
 {
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "Block";
-    ub_info.uniforms.push_back(
-        {"x", mge::uniform_data_type::FLOAT, 1, 0});
+    ub_info.uniforms.push_back({"x", mge::uniform_data_type::FLOAT, 1, 0});
 
     mge::uniform_block block(ub_info);
-    float               v = 1.0f;
+    float              v = 1.0f;
 
     EXPECT_THROW(block.set_data("nonexistent", &v, sizeof(v)),
                  mge::no_such_element);
@@ -205,7 +201,7 @@ TEST(uniform_block, layout_mixed_types)
     // vec3 at offset 16 (aligned to 16), size 12
     // mat4 at offset 32 (aligned to 16), size 64
     // total = 96, rounded to 16 = 96
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "MixedBlock";
     ub_info.uniforms.push_back(
         {"brightness", mge::uniform_data_type::FLOAT, 1, 0});
@@ -224,10 +220,9 @@ TEST(uniform_block, layout_mixed_types)
 
 TEST(uniform_block, move_construct)
 {
-    mge::program::uniform_buffer ub_info;
+    mge::program::uniform_block_metadata ub_info;
     ub_info.name = "MoveBlock";
-    ub_info.uniforms.push_back(
-        {"val", mge::uniform_data_type::FLOAT, 1, 0});
+    ub_info.uniforms.push_back({"val", mge::uniform_data_type::FLOAT, 1, 0});
 
     mge::uniform_block block1(ub_info);
     block1.set<float>("val", 3.14f);
@@ -236,7 +231,6 @@ TEST(uniform_block, move_construct)
     EXPECT_EQ(block2.name(), "MoveBlock");
     EXPECT_EQ(block2.version(), 1u);
 
-    const float* data =
-        reinterpret_cast<const float*>(block2.data());
+    const float* data = reinterpret_cast<const float*>(block2.data());
     EXPECT_FLOAT_EQ(*data, 3.14f);
 }
