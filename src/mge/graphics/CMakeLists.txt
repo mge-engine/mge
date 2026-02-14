@@ -16,7 +16,6 @@ SET(mgegraphics_sources
     hardware_buffer.cpp
     data_type.cpp
     index_buffer.cpp
-    swap_chain.cpp
     vertex_format.cpp
     vertex_layout.cpp
     vertex_buffer.cpp
@@ -58,7 +57,6 @@ SET(mgegraphics_headers
     hardware_buffer.hpp
     data_type.hpp
     index_buffer.hpp
-    swap_chain.hpp
     vertex_format.hpp
     vertex_layout.hpp
     vertex_buffer.hpp

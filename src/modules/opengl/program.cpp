@@ -372,11 +372,10 @@ namespace mge::opengl {
             // Collect sampler uniforms separately
             if (is_sampler_type(gl_type)) {
                 m_sampler_locations.push_back({name, location});
-                MGE_DEBUG_TRACE(
-                    OPENGL,
-                    "Sampler uniform: '{}', location: {}",
-                    name,
-                    location);
+                MGE_DEBUG_TRACE(OPENGL,
+                                "Sampler uniform: '{}', location: {}",
+                                name,
+                                location);
                 continue;
             }
 
