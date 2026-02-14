@@ -14,7 +14,6 @@
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/shader.hpp"
-#include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
 
 namespace mge {

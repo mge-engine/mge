@@ -161,11 +161,11 @@ namespace mge {
         // stride matCxR has C columns of R rows
         // column stride = round_up(R * scalar_size, 16) for float
         //               = round_up(R * scalar_size, 32) for double
-        case uniform_data_type::FLOAT_MAT2:   // 2 cols of vec2, stride=16
+        case uniform_data_type::FLOAT_MAT2: // 2 cols of vec2, stride=16
             return 2 * 16;
-        case uniform_data_type::FLOAT_MAT3:   // 3 cols of vec3, stride=16
+        case uniform_data_type::FLOAT_MAT3: // 3 cols of vec3, stride=16
             return 3 * 16;
-        case uniform_data_type::FLOAT_MAT4:   // 4 cols of vec4, stride=16
+        case uniform_data_type::FLOAT_MAT4: // 4 cols of vec4, stride=16
             return 4 * 16;
         case uniform_data_type::FLOAT_MAT2x3: // 2 cols of vec3, stride=16
             return 2 * 16;
@@ -180,11 +180,11 @@ namespace mge {
         case uniform_data_type::FLOAT_MAT4x3: // 4 cols of vec3, stride=16
             return 4 * 16;
 
-        case uniform_data_type::DOUBLE_MAT2:   // 2 cols of dvec2, stride=32
+        case uniform_data_type::DOUBLE_MAT2: // 2 cols of dvec2, stride=32
             return 2 * 32;
-        case uniform_data_type::DOUBLE_MAT3:   // 3 cols of dvec3, stride=32
+        case uniform_data_type::DOUBLE_MAT3: // 3 cols of dvec3, stride=32
             return 3 * 32;
-        case uniform_data_type::DOUBLE_MAT4:   // 4 cols of dvec4, stride=32
+        case uniform_data_type::DOUBLE_MAT4: // 4 cols of dvec4, stride=32
             return 4 * 32;
         case uniform_data_type::DOUBLE_MAT2x3: // 2 cols of dvec3, stride=32
             return 2 * 32;

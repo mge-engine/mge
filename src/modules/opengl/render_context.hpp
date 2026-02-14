@@ -87,9 +87,9 @@ namespace mge {
             static singleton<opengl_info> s_glinfo;
 
             using vao_key = std::tuple<GLuint, GLuint>;
-            std::map<vao_key, GLuint>                m_vaos;
-            std::map<mge::uniform_block*, GLuint>    m_ubos;
-            std::map<mge::uniform_block*, uint64_t>  m_ubo_versions;
+            std::map<vao_key, GLuint>               m_vaos;
+            std::map<mge::uniform_block*, GLuint>   m_ubos;
+            std::map<mge::uniform_block*, uint64_t> m_ubo_versions;
         };
     } // namespace opengl
 } // namespace mge

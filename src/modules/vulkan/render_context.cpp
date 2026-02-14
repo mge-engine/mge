@@ -8,7 +8,6 @@
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
-#include "swap_chain.hpp"
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"

@@ -145,9 +145,9 @@ namespace mge {
         }
 
     private:
-        pipeline_state  m_current_pipeline_state{pipeline_state::DEFAULT};
-        uniform_block*  m_current_uniform_block{nullptr};
-        mge::texture*   m_current_texture{nullptr};
+        pipeline_state m_current_pipeline_state{pipeline_state::DEFAULT};
+        uniform_block* m_current_uniform_block{nullptr};
+        mge::texture*  m_current_texture{nullptr};
 
         std::vector<pipeline_state>       m_pipeline_states;
         std::vector<program_handle>       m_programs;
