@@ -337,7 +337,7 @@ only.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14context_objectE">
 <span id="_CPPv3N3mge14context_objectE"></span><span id="_CPPv2N3mge14context_objectE"></span><span id="mge::context_object"></span><span class="target" id="classmge_1_1context__object"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">context_object</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge14context_objectE" title="Link to this definition"></a><br /></dt>
 <dd><p>An object that is valid in the context of a <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context"><span class="std std-ref"><span class="pre">render_context</span></span></a></code> like a shader program, a texture, or a buffer. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1frame__buffer"><span class="std std-ref">mge::frame_buffer</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1program"><span class="std std-ref">mge::program</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a>, <a class="reference internal" href="texture.html#classmge_1_1texture"><span class="std std-ref">mge::texture</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1frame__buffer"><span class="std std-ref">mge::frame_buffer</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1program"><span class="std std-ref">mge::program</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="texture.html#classmge_1_1texture"><span class="std std-ref">mge::texture</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -427,44 +427,10 @@ only.</p>
 
 <p>Each render context has a swap chain, a series of buffers to stabilize frame
 rates and enable presenting frames.</p>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge10swap_chainE">
-<span id="_CPPv3N3mge10swap_chainE"></span><span id="_CPPv2N3mge10swap_chainE"></span><span id="mge::swap_chain"></span><span class="target" id="classmge_1_1swap__chain"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">swap_chain</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge10swap_chainE" title="Link to this definition"></a><br /></dt>
-<dd><p>A swap chain is a series of virtual frame buffers. </p>
-<p>Commonly, a swap chain is used for frame rate stabilization by using double, or even triple buffering. </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge10swap_chain7presentEv">
-<span id="_CPPv3N3mge10swap_chain7presentEv"></span><span id="_CPPv2N3mge10swap_chain7presentEv"></span><span id="mge::swap_chain::present"></span><span class="target" id="classmge_1_1swap__chain_1aa8d78088a328ec7fb377dd4cbf6e7017"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">present</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10swap_chain7presentEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Presents the next frame buffer. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv">
-<span id="_CPPv3NK3mge10swap_chain25current_back_buffer_indexEv"></span><span id="_CPPv2NK3mge10swap_chain25current_back_buffer_indexEv"></span><span id="mge::swap_chain::current_back_buffer_indexC"></span><span class="target" id="classmge_1_1swap__chain_1a6bff40df66de5d466332d30bb8cee91e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">current_back_buffer_index</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Returns the current back buffer index. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>index of current back buffer </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge10swap_chain10screenshotEv">
-<span id="_CPPv3N3mge10swap_chain10screenshotEv"></span><span id="_CPPv2N3mge10swap_chain10screenshotEv"></span><span id="mge::swap_chain::screenshot"></span><span class="target" id="classmge_1_1swap__chain_1a70847d44b769cb41cde64074526e6561"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">image_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">screenshot</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10swap_chain10screenshotEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Take a screenshot of the current frame buffer. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>image containing the screenshot </p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::swap_chain” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
 </div>
-</dd></dl>
-
 <section id="render-pass">
 <h2>Render Pass<a class="headerlink" href="#render-pass" title="Link to this heading"></a></h2>
 <p>A pass organizes rendering commands with specific state settings for clear
