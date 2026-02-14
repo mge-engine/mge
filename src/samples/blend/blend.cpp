@@ -148,9 +148,9 @@ namespace mge {
                            "mge::dx12::render_system") {
 
                 const char* vertex_shader_hlsl = R"shader(
-                    float4 main( float4 pos : POSITION ) : SV_POSITION
+                    float4 main( float3 pos : POSITION ) : SV_POSITION
                     {
-                        return pos;
+                        return float4(pos, 1.0);
                     }
                 )shader";
 
