@@ -1,0 +1,435 @@
+# Header
+- Driver: Vulkan
+# Frames
+## Frame 1
+- Call: vkUnmapMemory
+  - device: VkDevice #1
+  - memory: VkDeviceMemory #1
+  - MapOffset: 0
+  - MapSize: 33554432
+  - MapData: _ignored_
+- Call: vkUnmapMemory
+  - device: VkDevice #1
+  - memory: VkDeviceMemory #1
+  - MapOffset: 0
+  - MapSize: 33554432
+  - MapData: _ignored_
+- Call: vkWaitForFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+  - waitAll: 1
+  - timeout: 18446744073709551615
+- Call: vkResetFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+- Call: vkBeginCommandBuffer
+  - CommandBuffer: VkCommandBuffer #1
+  - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
+  - BakedCommandBuffer: ResourceId #1
+  - device: VkDevice #1
+- Call: vkCmdBeginRenderPass
+  - commandBuffer: VkCommandBuffer #1
+  - RenderPassBegin: {sType: VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, pNext: null, renderPass: VkRenderPass #1, framebuffer: VkFramebuffer #1, renderArea: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, clearValueCount: 0, pClearValues: []}
+  - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: VkCommandBuffer #1
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: [{x: 0, y: 600, width: 800, height: -600, minDepth: 0, maxDepth: 1}]
+- Call: vkCmdSetScissor
+  - commandBuffer: VkCommandBuffer #1
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: [{offset: {x: 0, y: 0}, extent: {width: 0, height: 0}}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #1
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_COLOR_BIT, colorAttachment: 0, clearValue: {color: {float32: [0, 0, 0, 1], int32: [0, 0, 0, 1065353216], uint32: [0, 0, 0, 1065353216]}, depthStencil: {depth: 0, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdEndRenderPass
+  - commandBuffer: VkCommandBuffer #1
+- Call: vkEndCommandBuffer
+  - CommandBuffer: VkCommandBuffer #1
+  - BakedCommandBuffer: ResourceId #1
+- Call: vkQueueSubmit
+  - queue: VkQueue #1
+  - submitCount: 1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #1], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
+  - fence: VkFence #1
+- Call: vkQueuePresentKHR
+  - queue: VkQueue #1
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [0], pResults: []}
+## Frame 2
+- Call: vkWaitForFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+  - waitAll: 1
+  - timeout: 18446744073709551615
+- Call: vkResetFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+- Call: vkBeginCommandBuffer
+  - CommandBuffer: VkCommandBuffer #2
+  - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
+  - BakedCommandBuffer: ResourceId #2
+  - device: VkDevice #1
+- Call: vkCmdBeginRenderPass
+  - commandBuffer: VkCommandBuffer #2
+  - RenderPassBegin: {sType: VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, pNext: null, renderPass: VkRenderPass #1, framebuffer: VkFramebuffer #2, renderArea: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, clearValueCount: 0, pClearValues: []}
+  - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: VkCommandBuffer #2
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: [{x: 0, y: 600, width: 800, height: -600, minDepth: 0, maxDepth: 1}]
+- Call: vkCmdSetScissor
+  - commandBuffer: VkCommandBuffer #2
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: [{offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #2
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_COLOR_BIT, colorAttachment: 0, clearValue: {color: {float32: [0, 0, 0.20000000298023224, 1], int32: [0, 0, 1045220557, 1065353216], uint32: [0, 0, 1045220557, 1065353216]}, depthStencil: {depth: 0, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #2
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_DEPTH_BIT, colorAttachment: 0, clearValue: {color: {float32: [1, 0, 0, 0], int32: [1065353216, 0, 0, 0], uint32: [1065353216, 0, 0, 0]}, depthStencil: {depth: 1, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdBindPipeline
+  - commandBuffer: VkCommandBuffer #2
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: VkPipeline #1
+- Call: vkUpdateDescriptorSets
+  - device: VkDevice #1
+  - writeCount: 1
+  - pDescriptorWrites: [{sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, pNext: null, dstSet: VkDescriptorSet #1, dstBinding: 0, dstArrayElement: 0, descriptorCount: 1, descriptorType: VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, pImageInfo: [], pBufferInfo: [{buffer: VkBuffer #1, offset: 0, range: 16}], pTexelBufferView: []}]
+  - copyCount: 0
+  - pDescriptorCopies: []
+- Call: vkCmdBindDescriptorSets
+  - commandBuffer: VkCommandBuffer #2
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - layout: VkPipelineLayout #1
+  - firstSet: 0
+  - setCount: 1
+  - pDescriptorSets: [VkDescriptorSet #1]
+  - dynamicOffsetCount: 0
+  - pDynamicOffsets: []
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: VkCommandBuffer #2
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: [VkBuffer #2]
+  - pOffsets: [0]
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: VkCommandBuffer #2
+  - buffer: VkBuffer #3
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: VkCommandBuffer #2
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
+- Call: vkCmdEndRenderPass
+  - commandBuffer: VkCommandBuffer #2
+- Call: vkEndCommandBuffer
+  - CommandBuffer: VkCommandBuffer #2
+  - BakedCommandBuffer: ResourceId #2
+- Call: Internal::Coherent Mapped Memory Write
+  - device: VkDevice #1
+  - memRangeCount: 1
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 0, size: 33554432}
+  - MapData: _ignored_
+- Call: vkQueueSubmit
+  - queue: VkQueue #1
+  - submitCount: 1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
+  - fence: VkFence #1
+- Call: vkQueuePresentKHR
+  - queue: VkQueue #1
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
+## Frame 3
+- Call: vkWaitForFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+  - waitAll: 1
+  - timeout: 18446744073709551615
+- Call: vkResetFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+- Call: vkBeginCommandBuffer
+  - CommandBuffer: VkCommandBuffer #3
+  - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
+  - BakedCommandBuffer: ResourceId #3
+  - device: VkDevice #1
+- Call: vkCmdBeginRenderPass
+  - commandBuffer: VkCommandBuffer #3
+  - RenderPassBegin: {sType: VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, pNext: null, renderPass: VkRenderPass #1, framebuffer: VkFramebuffer #3, renderArea: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, clearValueCount: 0, pClearValues: []}
+  - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: VkCommandBuffer #3
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: [{x: 0, y: 600, width: 800, height: -600, minDepth: 0, maxDepth: 1}]
+- Call: vkCmdSetScissor
+  - commandBuffer: VkCommandBuffer #3
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: [{offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #3
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_COLOR_BIT, colorAttachment: 0, clearValue: {color: {float32: [0, 0, 0.20000000298023224, 1], int32: [0, 0, 1045220557, 1065353216], uint32: [0, 0, 1045220557, 1065353216]}, depthStencil: {depth: 0, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #3
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_DEPTH_BIT, colorAttachment: 0, clearValue: {color: {float32: [1, 0, 0, 0], int32: [1065353216, 0, 0, 0], uint32: [1065353216, 0, 0, 0]}, depthStencil: {depth: 1, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdBindPipeline
+  - commandBuffer: VkCommandBuffer #3
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: VkPipeline #1
+- Call: vkCmdBindDescriptorSets
+  - commandBuffer: VkCommandBuffer #3
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - layout: VkPipelineLayout #1
+  - firstSet: 0
+  - setCount: 1
+  - pDescriptorSets: [VkDescriptorSet #1]
+  - dynamicOffsetCount: 0
+  - pDynamicOffsets: []
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: VkCommandBuffer #3
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: [VkBuffer #2]
+  - pOffsets: [0]
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: VkCommandBuffer #3
+  - buffer: VkBuffer #3
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: VkCommandBuffer #3
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
+- Call: vkCmdEndRenderPass
+  - commandBuffer: VkCommandBuffer #3
+- Call: vkEndCommandBuffer
+  - CommandBuffer: VkCommandBuffer #3
+  - BakedCommandBuffer: ResourceId #3
+- Call: Internal::Coherent Mapped Memory Write
+  - device: VkDevice #1
+  - memRangeCount: 1
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MapData: _ignored_
+- Call: vkQueueSubmit
+  - queue: VkQueue #1
+  - submitCount: 1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #3], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
+  - fence: VkFence #1
+- Call: vkQueuePresentKHR
+  - queue: VkQueue #1
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [2], pResults: []}
+## Frame 4
+- Call: vkWaitForFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+  - waitAll: 1
+  - timeout: 18446744073709551615
+- Call: vkResetFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+- Call: vkBeginCommandBuffer
+  - CommandBuffer: VkCommandBuffer #1
+  - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
+  - BakedCommandBuffer: ResourceId #4
+  - device: VkDevice #1
+- Call: vkCmdBeginRenderPass
+  - commandBuffer: VkCommandBuffer #1
+  - RenderPassBegin: {sType: VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, pNext: null, renderPass: VkRenderPass #1, framebuffer: VkFramebuffer #1, renderArea: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, clearValueCount: 0, pClearValues: []}
+  - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: VkCommandBuffer #1
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: [{x: 0, y: 600, width: 800, height: -600, minDepth: 0, maxDepth: 1}]
+- Call: vkCmdSetScissor
+  - commandBuffer: VkCommandBuffer #1
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: [{offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #1
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_COLOR_BIT, colorAttachment: 0, clearValue: {color: {float32: [0, 0, 0.20000000298023224, 1], int32: [0, 0, 1045220557, 1065353216], uint32: [0, 0, 1045220557, 1065353216]}, depthStencil: {depth: 0, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #1
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_DEPTH_BIT, colorAttachment: 0, clearValue: {color: {float32: [1, 0, 0, 0], int32: [1065353216, 0, 0, 0], uint32: [1065353216, 0, 0, 0]}, depthStencil: {depth: 1, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdBindPipeline
+  - commandBuffer: VkCommandBuffer #1
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: VkPipeline #1
+- Call: vkCmdBindDescriptorSets
+  - commandBuffer: VkCommandBuffer #1
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - layout: VkPipelineLayout #1
+  - firstSet: 0
+  - setCount: 1
+  - pDescriptorSets: [VkDescriptorSet #1]
+  - dynamicOffsetCount: 0
+  - pDynamicOffsets: []
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: VkCommandBuffer #1
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: [VkBuffer #2]
+  - pOffsets: [0]
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: VkCommandBuffer #1
+  - buffer: VkBuffer #3
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: VkCommandBuffer #1
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
+- Call: vkCmdEndRenderPass
+  - commandBuffer: VkCommandBuffer #1
+- Call: vkEndCommandBuffer
+  - CommandBuffer: VkCommandBuffer #1
+  - BakedCommandBuffer: ResourceId #4
+- Call: Internal::Coherent Mapped Memory Write
+  - device: VkDevice #1
+  - memRangeCount: 1
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MapData: _ignored_
+- Call: vkQueueSubmit
+  - queue: VkQueue #1
+  - submitCount: 1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #1], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
+  - fence: VkFence #1
+- Call: vkQueuePresentKHR
+  - queue: VkQueue #1
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [0], pResults: []}
+## Frame 5
+- Call: vkWaitForFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+  - waitAll: 1
+  - timeout: 18446744073709551615
+- Call: vkResetFences
+  - device: VkDevice #1
+  - fenceCount: 1
+  - pFences: [VkFence #1]
+- Call: vkBeginCommandBuffer
+  - CommandBuffer: VkCommandBuffer #2
+  - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
+  - BakedCommandBuffer: ResourceId #5
+  - device: VkDevice #1
+- Call: vkCmdBeginRenderPass
+  - commandBuffer: VkCommandBuffer #2
+  - RenderPassBegin: {sType: VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, pNext: null, renderPass: VkRenderPass #1, framebuffer: VkFramebuffer #2, renderArea: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, clearValueCount: 0, pClearValues: []}
+  - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: VkCommandBuffer #2
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: [{x: 0, y: 600, width: 800, height: -600, minDepth: 0, maxDepth: 1}]
+- Call: vkCmdSetScissor
+  - commandBuffer: VkCommandBuffer #2
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: [{offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #2
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_COLOR_BIT, colorAttachment: 0, clearValue: {color: {float32: [0, 0, 0.20000000298023224, 1], int32: [0, 0, 1045220557, 1065353216], uint32: [0, 0, 1045220557, 1065353216]}, depthStencil: {depth: 0, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdClearAttachments
+  - commandBuffer: VkCommandBuffer #2
+  - attachmentCount: 1
+  - pAttachments: [{aspectMask: VK_IMAGE_ASPECT_DEPTH_BIT, colorAttachment: 0, clearValue: {color: {float32: [1, 0, 0, 0], int32: [1065353216, 0, 0, 0], uint32: [1065353216, 0, 0, 0]}, depthStencil: {depth: 1, stencil: 0}}}]
+  - rectCount: 1
+  - pRects: [{rect: {offset: {x: 0, y: 0}, extent: {width: 800, height: 600}}, baseArrayLayer: 0, layerCount: 1}]
+- Call: vkCmdBindPipeline
+  - commandBuffer: VkCommandBuffer #2
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: VkPipeline #1
+- Call: vkCmdBindDescriptorSets
+  - commandBuffer: VkCommandBuffer #2
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - layout: VkPipelineLayout #1
+  - firstSet: 0
+  - setCount: 1
+  - pDescriptorSets: [VkDescriptorSet #1]
+  - dynamicOffsetCount: 0
+  - pDynamicOffsets: []
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: VkCommandBuffer #2
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: [VkBuffer #2]
+  - pOffsets: [0]
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: VkCommandBuffer #2
+  - buffer: VkBuffer #3
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: VkCommandBuffer #2
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
+- Call: vkCmdEndRenderPass
+  - commandBuffer: VkCommandBuffer #2
+- Call: vkEndCommandBuffer
+  - CommandBuffer: VkCommandBuffer #2
+  - BakedCommandBuffer: ResourceId #5
+- Call: Internal::Coherent Mapped Memory Write
+  - device: VkDevice #1
+  - memRangeCount: 1
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MapData: _ignored_
+- Call: vkQueueSubmit
+  - queue: VkQueue #1
+  - submitCount: 1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
+  - fence: VkFence #1
+- Call: vkQueuePresentKHR
+  - queue: VkQueue #1
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
+
