@@ -6,7 +6,7 @@
   - Context: ID3D11DeviceContext * #1
   - pDstResource: ID3D11Resource * #1
   - DstSubresource: 0
-  - pDstBox: _ignored_
+  - pDstBox: {left: 0, top: 0, front: 0, right: 36, bottom: 1, back: 1}
   - SrcRowPitch: 0
   - SrcDepthPitch: 0
   - pSrcData: _ignored_
@@ -15,7 +15,7 @@
   - Context: ID3D11DeviceContext * #1
   - pDstResource: ID3D11Resource * #2
   - DstSubresource: 0
-  - pDstBox: _ignored_
+  - pDstBox: {left: 0, top: 0, front: 0, right: 12, bottom: 1, back: 1}
   - SrcRowPitch: 0
   - SrcDepthPitch: 0
   - pSrcData: _ignored_
@@ -23,15 +23,15 @@
 - Call: ID3D11DeviceContext::RSSetViewports
   - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
   - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: ID3D11DeviceContext * #1
   - pRenderTargetView: ID3D11RenderTargetView * #1
-  - ColorRGBA: _ignored_
+  - ColorRGBA: [0, 0, 1, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
   - Context: ID3D11DeviceContext * #1
   - pDepthStencilView: ID3D11DepthStencilView * #1
@@ -48,23 +48,23 @@
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
   - Context: ID3D11DeviceContext * #1
-  - pIndexBuffer: ID3D11Buffer * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11VertexShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11PixelShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
   - Context: ID3D11DeviceContext * #1
@@ -79,15 +79,15 @@
 - Call: ID3D11DeviceContext::RSSetViewports
   - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
   - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: ID3D11DeviceContext * #1
   - pRenderTargetView: ID3D11RenderTargetView * #1
-  - ColorRGBA: _ignored_
+  - ColorRGBA: [0, 0, 1, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
   - Context: ID3D11DeviceContext * #1
   - pDepthStencilView: ID3D11DepthStencilView * #1
@@ -104,23 +104,23 @@
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
   - Context: ID3D11DeviceContext * #1
-  - pIndexBuffer: ID3D11Buffer * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11VertexShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11PixelShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
   - Context: ID3D11DeviceContext * #1
@@ -135,15 +135,15 @@
 - Call: ID3D11DeviceContext::RSSetViewports
   - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
   - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: ID3D11DeviceContext * #1
   - pRenderTargetView: ID3D11RenderTargetView * #1
-  - ColorRGBA: _ignored_
+  - ColorRGBA: [0, 0, 1, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
   - Context: ID3D11DeviceContext * #1
   - pDepthStencilView: ID3D11DepthStencilView * #1
@@ -160,23 +160,23 @@
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
   - Context: ID3D11DeviceContext * #1
-  - pIndexBuffer: ID3D11Buffer * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11VertexShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11PixelShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
   - Context: ID3D11DeviceContext * #1
@@ -191,15 +191,15 @@
 - Call: ID3D11DeviceContext::RSSetViewports
   - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
   - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: ID3D11DeviceContext * #1
   - pRenderTargetView: ID3D11RenderTargetView * #1
-  - ColorRGBA: _ignored_
+  - ColorRGBA: [0, 0, 1, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
   - Context: ID3D11DeviceContext * #1
   - pDepthStencilView: ID3D11DepthStencilView * #1
@@ -216,23 +216,23 @@
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
   - Context: ID3D11DeviceContext * #1
-  - pIndexBuffer: ID3D11Buffer * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11VertexShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11PixelShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
   - Context: ID3D11DeviceContext * #1
@@ -247,15 +247,15 @@
 - Call: ID3D11DeviceContext::RSSetViewports
   - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
   - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: ID3D11DeviceContext * #1
   - pRenderTargetView: ID3D11RenderTargetView * #1
-  - ColorRGBA: _ignored_
+  - ColorRGBA: [0, 0, 1, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
   - Context: ID3D11DeviceContext * #1
   - pDepthStencilView: ID3D11DepthStencilView * #1
@@ -272,23 +272,23 @@
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
   - Context: ID3D11DeviceContext * #1
-  - pIndexBuffer: ID3D11Buffer * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11VertexShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
   - Context: ID3D11DeviceContext * #1
   - pShader: ID3D11PixelShader * #1
-  - ppClassInstances: _ignored_
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
   - Context: ID3D11DeviceContext * #1

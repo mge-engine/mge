@@ -5,7 +5,7 @@
 - Call: Internal::Context Configuration
   - Context: ResourceId #1
   - FBO: ResourceId #2
-  - InitParams: _ignored_
+  - InitParams: {colorBits: 32, depthBits: 24, stencilBits: 8, isSRGB: 1, multiSamples: 1, width: 800, height: 600, isYFlipped: false, renderer: None, version: None}
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null

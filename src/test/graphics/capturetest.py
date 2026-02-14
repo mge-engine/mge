@@ -60,6 +60,29 @@ class Sanitizer:
         seq = self.resource_ids[typename][raw_value]
         return f"{typename} #{seq}"
 
+    def struct_value(self, param):
+        fields = []
+        for child in param:
+            child_hidden = child.attrib.get("hidden", "false")
+            if child_hidden == "true":
+                continue
+            name = child.attrib.get("name", "unknown")
+            value = self.parameter_value(child)
+            fields.append(f"{name}: {value}")
+        return "{" + ", ".join(fields) + "}"
+
+    def array_value(self, param):
+        elements = list(param)
+        if not elements:
+            return "[]"
+        values = []
+        for child in elements:
+            child_hidden = child.attrib.get("hidden", "false")
+            if child_hidden == "true":
+                continue
+            values.append(self.parameter_value(child))
+        return "[" + ", ".join(values) + "]"
+
     def parameter_value(self, param):
         if param.tag == "float":
             return param.text
@@ -78,9 +101,9 @@ class Sanitizer:
             raw_value = param.text or "0"
             return self.resource_id_value(typename, raw_value)
         elif param.tag == "array":
-            return "_ignored_"
+            return self.array_value(param)
         elif param.tag == "struct":
-            return "_ignored_"
+            return self.struct_value(param)
         elif param.tag == "buffer":
             return "_ignored_"
         elif param.tag == "enum":
