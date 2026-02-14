@@ -3,87 +3,87 @@
 # Frames
 ## Frame 1
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
   - pViewports: _ignored_
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
   - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
   - ColorRGBA: _ignored_
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 2
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
   - pViewports: _ignored_
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
   - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
   - ColorRGBA: _ignored_
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 3
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
   - pViewports: _ignored_
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
   - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
   - ColorRGBA: _ignored_
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 4
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
   - pViewports: _ignored_
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
   - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
   - ColorRGBA: _ignored_
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 5
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
   - pViewports: _ignored_
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
   - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
   - ColorRGBA: _ignored_
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 

@@ -3,399 +3,399 @@
 # Frames
 ## Frame 1
 - Call: vkUnmapMemory
-  - device: _ignored_
-  - memory: _ignored_
+  - device: VkDevice #1
+  - memory: VkDeviceMemory #1
   - MapOffset: 0
   - MapSize: 33554432
   - MapData: _ignored_
 - Call: vkUnmapMemory
-  - device: _ignored_
-  - memory: _ignored_
+  - device: VkDevice #1
+  - memory: VkDeviceMemory #1
   - MapOffset: 0
   - MapSize: 33554432
   - MapData: _ignored_
 - Call: vkWaitForFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
 - Call: vkBeginCommandBuffer
-  - CommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #1
   - BeginInfo: _ignored_
-  - BakedCommandBuffer: _ignored_
-  - device: _ignored_
+  - BakedCommandBuffer: ResourceId #1
+  - device: VkDevice #1
 - Call: vkCmdBeginRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
 - Call: vkCmdSetViewport
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstViewport: 0
   - viewportCount: 1
   - pViewports: _ignored_
 - Call: vkCmdSetScissor
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstScissor: 0
   - scissorCount: 1
   - pScissors: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdBindPipeline
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
-  - pipeline: _ignored_
+  - pipeline: VkPipeline #1
 - Call: vkCmdBindVertexBuffers
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstBinding: 0
   - bindingCount: 1
   - pBuffers: _ignored_
   - pOffsets: _ignored_
 - Call: vkCmdBindIndexBuffer
-  - commandBuffer: _ignored_
-  - buffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
+  - buffer: VkBuffer #1
   - offset: 0
   - indexType: VK_INDEX_TYPE_UINT32
 - Call: vkCmdDrawIndexed
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - indexCount: 3
   - instanceCount: 1
   - firstIndex: 0
   - vertexOffset: 0
   - firstInstance: 1
 - Call: vkCmdEndRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
 - Call: vkEndCommandBuffer
-  - CommandBuffer: _ignored_
-  - BakedCommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #1
+  - BakedCommandBuffer: ResourceId #1
 - Call: vkQueueSubmit
-  - queue: _ignored_
+  - queue: VkQueue #1
   - submitCount: 1
   - pSubmits: _ignored_
-  - fence: _ignored_
+  - fence: VkFence #1
 - Call: vkQueuePresentKHR
-  - queue: _ignored_
+  - queue: VkQueue #1
   - PresentInfo: _ignored_
 ## Frame 2
 - Call: vkWaitForFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
 - Call: vkBeginCommandBuffer
-  - CommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #2
   - BeginInfo: _ignored_
-  - BakedCommandBuffer: _ignored_
-  - device: _ignored_
+  - BakedCommandBuffer: ResourceId #2
+  - device: VkDevice #1
 - Call: vkCmdBeginRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
 - Call: vkCmdSetViewport
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstViewport: 0
   - viewportCount: 1
   - pViewports: _ignored_
 - Call: vkCmdSetScissor
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstScissor: 0
   - scissorCount: 1
   - pScissors: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdBindPipeline
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
-  - pipeline: _ignored_
+  - pipeline: VkPipeline #1
 - Call: vkCmdBindVertexBuffers
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstBinding: 0
   - bindingCount: 1
   - pBuffers: _ignored_
   - pOffsets: _ignored_
 - Call: vkCmdBindIndexBuffer
-  - commandBuffer: _ignored_
-  - buffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
+  - buffer: VkBuffer #1
   - offset: 0
   - indexType: VK_INDEX_TYPE_UINT32
 - Call: vkCmdDrawIndexed
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - indexCount: 3
   - instanceCount: 1
   - firstIndex: 0
   - vertexOffset: 0
   - firstInstance: 1
 - Call: vkCmdEndRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
 - Call: vkEndCommandBuffer
-  - CommandBuffer: _ignored_
-  - BakedCommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #2
+  - BakedCommandBuffer: ResourceId #2
 - Call: vkQueueSubmit
-  - queue: _ignored_
+  - queue: VkQueue #1
   - submitCount: 1
   - pSubmits: _ignored_
-  - fence: _ignored_
+  - fence: VkFence #1
 - Call: vkQueuePresentKHR
-  - queue: _ignored_
+  - queue: VkQueue #1
   - PresentInfo: _ignored_
 ## Frame 3
 - Call: vkWaitForFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
 - Call: vkBeginCommandBuffer
-  - CommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #3
   - BeginInfo: _ignored_
-  - BakedCommandBuffer: _ignored_
-  - device: _ignored_
+  - BakedCommandBuffer: ResourceId #3
+  - device: VkDevice #1
 - Call: vkCmdBeginRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
 - Call: vkCmdSetViewport
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - firstViewport: 0
   - viewportCount: 1
   - pViewports: _ignored_
 - Call: vkCmdSetScissor
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - firstScissor: 0
   - scissorCount: 1
   - pScissors: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdBindPipeline
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
-  - pipeline: _ignored_
+  - pipeline: VkPipeline #1
 - Call: vkCmdBindVertexBuffers
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - firstBinding: 0
   - bindingCount: 1
   - pBuffers: _ignored_
   - pOffsets: _ignored_
 - Call: vkCmdBindIndexBuffer
-  - commandBuffer: _ignored_
-  - buffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
+  - buffer: VkBuffer #1
   - offset: 0
   - indexType: VK_INDEX_TYPE_UINT32
 - Call: vkCmdDrawIndexed
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
   - indexCount: 3
   - instanceCount: 1
   - firstIndex: 0
   - vertexOffset: 0
   - firstInstance: 1
 - Call: vkCmdEndRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #3
 - Call: vkEndCommandBuffer
-  - CommandBuffer: _ignored_
-  - BakedCommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #3
+  - BakedCommandBuffer: ResourceId #3
 - Call: vkQueueSubmit
-  - queue: _ignored_
+  - queue: VkQueue #1
   - submitCount: 1
   - pSubmits: _ignored_
-  - fence: _ignored_
+  - fence: VkFence #1
 - Call: vkQueuePresentKHR
-  - queue: _ignored_
+  - queue: VkQueue #1
   - PresentInfo: _ignored_
 ## Frame 4
 - Call: vkWaitForFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
 - Call: vkBeginCommandBuffer
-  - CommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #1
   - BeginInfo: _ignored_
-  - BakedCommandBuffer: _ignored_
-  - device: _ignored_
+  - BakedCommandBuffer: ResourceId #4
+  - device: VkDevice #1
 - Call: vkCmdBeginRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
 - Call: vkCmdSetViewport
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstViewport: 0
   - viewportCount: 1
   - pViewports: _ignored_
 - Call: vkCmdSetScissor
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstScissor: 0
   - scissorCount: 1
   - pScissors: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdBindPipeline
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
-  - pipeline: _ignored_
+  - pipeline: VkPipeline #1
 - Call: vkCmdBindVertexBuffers
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - firstBinding: 0
   - bindingCount: 1
   - pBuffers: _ignored_
   - pOffsets: _ignored_
 - Call: vkCmdBindIndexBuffer
-  - commandBuffer: _ignored_
-  - buffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
+  - buffer: VkBuffer #1
   - offset: 0
   - indexType: VK_INDEX_TYPE_UINT32
 - Call: vkCmdDrawIndexed
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
   - indexCount: 3
   - instanceCount: 1
   - firstIndex: 0
   - vertexOffset: 0
   - firstInstance: 1
 - Call: vkCmdEndRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #1
 - Call: vkEndCommandBuffer
-  - CommandBuffer: _ignored_
-  - BakedCommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #1
+  - BakedCommandBuffer: ResourceId #4
 - Call: vkQueueSubmit
-  - queue: _ignored_
+  - queue: VkQueue #1
   - submitCount: 1
   - pSubmits: _ignored_
-  - fence: _ignored_
+  - fence: VkFence #1
 - Call: vkQueuePresentKHR
-  - queue: _ignored_
+  - queue: VkQueue #1
   - PresentInfo: _ignored_
 ## Frame 5
 - Call: vkWaitForFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
-  - device: _ignored_
+  - device: VkDevice #1
   - fenceCount: 1
   - pFences: _ignored_
 - Call: vkBeginCommandBuffer
-  - CommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #2
   - BeginInfo: _ignored_
-  - BakedCommandBuffer: _ignored_
-  - device: _ignored_
+  - BakedCommandBuffer: ResourceId #5
+  - device: VkDevice #1
 - Call: vkCmdBeginRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
 - Call: vkCmdSetViewport
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstViewport: 0
   - viewportCount: 1
   - pViewports: _ignored_
 - Call: vkCmdSetScissor
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstScissor: 0
   - scissorCount: 1
   - pScissors: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdClearAttachments
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - attachmentCount: 1
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
 - Call: vkCmdBindPipeline
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
-  - pipeline: _ignored_
+  - pipeline: VkPipeline #1
 - Call: vkCmdBindVertexBuffers
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - firstBinding: 0
   - bindingCount: 1
   - pBuffers: _ignored_
   - pOffsets: _ignored_
 - Call: vkCmdBindIndexBuffer
-  - commandBuffer: _ignored_
-  - buffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
+  - buffer: VkBuffer #1
   - offset: 0
   - indexType: VK_INDEX_TYPE_UINT32
 - Call: vkCmdDrawIndexed
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
   - indexCount: 3
   - instanceCount: 1
   - firstIndex: 0
   - vertexOffset: 0
   - firstInstance: 1
 - Call: vkCmdEndRenderPass
-  - commandBuffer: _ignored_
+  - commandBuffer: VkCommandBuffer #2
 - Call: vkEndCommandBuffer
-  - CommandBuffer: _ignored_
-  - BakedCommandBuffer: _ignored_
+  - CommandBuffer: VkCommandBuffer #2
+  - BakedCommandBuffer: ResourceId #5
 - Call: vkQueueSubmit
-  - queue: _ignored_
+  - queue: VkQueue #1
   - submitCount: 1
   - pSubmits: _ignored_
-  - fence: _ignored_
+  - fence: VkFence #1
 - Call: vkQueuePresentKHR
-  - queue: _ignored_
+  - queue: VkQueue #1
   - PresentInfo: _ignored_
 
