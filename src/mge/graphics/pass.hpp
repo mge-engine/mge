@@ -12,7 +12,6 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
 
-
 namespace mge {
 
     /**
@@ -148,12 +147,12 @@ namespace mge {
 
         struct draw_command
         {
-            program_handle              program;
-            vertex_buffer_handle        vertices;
-            index_buffer_handle         indices;
-            mge::pipeline_state         state;
-            mge::uniform_block*         uniform_block{nullptr};
-            mge::texture*               texture{nullptr};
+            program_handle       program;
+            vertex_buffer_handle vertices;
+            index_buffer_handle  indices;
+            mge::pipeline_state  state;
+            mge::uniform_block*  uniform_block{nullptr};
+            mge::texture*        texture{nullptr};
         };
 
         std::vector<draw_command> m_draw_commands;

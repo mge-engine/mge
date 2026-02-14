@@ -13,7 +13,6 @@
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
-#include "swap_chain.hpp"
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 
@@ -362,8 +361,7 @@ namespace mge::opengl {
 
         // Bind texture if provided
         if (tex) {
-            mge::opengl::texture& gl_tex =
-                static_cast<opengl::texture&>(*tex);
+            mge::opengl::texture& gl_tex = static_cast<opengl::texture&>(*tex);
             glActiveTexture(GL_TEXTURE0);
             CHECK_OPENGL_ERROR(glActiveTexture);
             glBindTexture(GL_TEXTURE_2D, gl_tex.texture_name());
@@ -510,34 +508,34 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glEnable);
 
         bool blend_pass_needed = false;
-        p.for_each_draw_command([this, &blend_pass_needed](
-                                    const program_handle&       program,
-                                    const vertex_buffer_handle& vertices,
-                                    const index_buffer_handle&  indices,
-                                    const mge::pipeline_state&  state,
-                                    mge::uniform_block*         ub,
-                                    mge::texture*               tex) {
-            blend_operation op = state.color_blend_operation();
-            if (op == blend_operation::NONE) {
-                glDepthFunc(depth_test_to_gl(state.depth_test_function()));
-                CHECK_OPENGL_ERROR(glDepthFunc);
-                if (!state.depth_write()) {
-                    glDepthMask(GL_FALSE);
-                    CHECK_OPENGL_ERROR(glDepthMask);
+        p.for_each_draw_command(
+            [this, &blend_pass_needed](const program_handle&       program,
+                                       const vertex_buffer_handle& vertices,
+                                       const index_buffer_handle&  indices,
+                                       const mge::pipeline_state&  state,
+                                       mge::uniform_block*         ub,
+                                       mge::texture*               tex) {
+                blend_operation op = state.color_blend_operation();
+                if (op == blend_operation::NONE) {
+                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                    CHECK_OPENGL_ERROR(glDepthFunc);
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_FALSE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
+                    draw_geometry(program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  ub,
+                                  tex);
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_TRUE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
+                } else {
+                    blend_pass_needed = true;
                 }
-                draw_geometry(program.get(),
-                              vertices.get(),
-                              indices.get(),
-                              ub,
-                              tex);
-                if (!state.depth_write()) {
-                    glDepthMask(GL_TRUE);
-                    CHECK_OPENGL_ERROR(glDepthMask);
-                }
-            } else {
-                blend_pass_needed = true;
-            }
-        });
+            });
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
@@ -631,8 +629,7 @@ namespace mge::opengl {
         for (const auto& f : layout.formats()) {
             glEnableVertexAttribArray(index);
             CHECK_OPENGL_ERROR(glEnableVertexAttribArray);
-            auto offset =
-                reinterpret_cast<const void*>(layout.offset(index));
+            auto offset = reinterpret_cast<const void*>(layout.offset(index));
             switch (f.type()) {
             case mge::data_type::FLOAT:
                 glVertexAttribPointer(index,
