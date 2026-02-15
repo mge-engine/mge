@@ -1570,8 +1570,18 @@ namespace mge::vulkan {
             VK_POLYGON_MODE_FILL; // fill the polygon drawn
         rasterization_state_create_info.lineWidth = 1.0f;
 
-        rasterization_state_create_info.cullMode =
-            VK_CULL_MODE_NONE; // cull back faces
+        mge::cull_mode cull = state.cull_mode();
+        switch (cull) {
+        case mge::cull_mode::NONE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_NONE;
+            break;
+        case mge::cull_mode::CLOCKWISE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_FRONT_BIT;
+            break;
+        case mge::cull_mode::COUNTER_CLOCKWISE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_BACK_BIT;
+            break;
+        }
         rasterization_state_create_info.frontFace =
             VK_FRONT_FACE_CLOCKWISE; // clockwise front face
 

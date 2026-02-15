@@ -33,4 +33,9 @@ namespace mge {
         m_current_pipeline_state.set_depth_test_function(func);
     }
 
+    void command_buffer::cull_face(mge::cull_mode mode) noexcept
+    {
+        m_current_pipeline_state.set_cull_mode(mode);
+    }
+
 } // namespace mge

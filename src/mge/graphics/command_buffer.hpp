@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/cull_mode.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pipeline_state.hpp"
@@ -34,6 +35,13 @@ namespace mge {
 
         void depth_write(bool enable) noexcept;
         void depth_test_function(test func) noexcept;
+
+        /**
+         * @brief Set face culling mode for subsequent draw commands.
+         *
+         * @param mode culling mode (NONE, CLOCKWISE, or COUNTER_CLOCKWISE)
+         */
+        void cull_face(mge::cull_mode mode) noexcept;
 
         /**
          * @brief Set the blend state to opaque (no blending).

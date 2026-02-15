@@ -80,7 +80,9 @@ namespace mge::dx11 {
                                              mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);
         ID3D11DepthStencilState*
-             depth_stencil_state(const mge::pipeline_state& state);
+        depth_stencil_state(const mge::pipeline_state& state);
+        ID3D11RasterizerState*
+             rasterizer_state(const mge::pipeline_state& state);
         void create_swap_chain();
 
         mge::dx11::render_system&              m_render_system;
@@ -105,6 +107,11 @@ namespace mge::dx11 {
             std::unordered_map<mge::pipeline_state,
                                com_unique_ptr<ID3D11DepthStencilState>>;
         depth_stencil_state_cache_type m_depth_stencil_state_cache;
+
+        using rasterizer_state_cache_type =
+            std::unordered_map<mge::pipeline_state,
+                               com_unique_ptr<ID3D11RasterizerState>>;
+        rasterizer_state_cache_type m_rasterizer_state_cache;
 
         std::map<mge::uniform_block*, com_unique_ptr<ID3D11Buffer>>
                                                 m_constant_buffers;
