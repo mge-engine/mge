@@ -161,12 +161,12 @@ namespace mge {
             [this](key k, key_action action, const modifier& m) -> bool {
                 return handle_key_action(k, action, m);
             });
-        m_mouse_action_handler_key = handler.add_mouse_action_handler(
-            [this](uint32_t        button,
-                   mouse_action    action,
-                   const modifier& m,
-                   uint32_t        x,
-                   uint32_t        y) -> bool {
+        m_mouse_action_handler_key =
+            handler.add_mouse_action_handler([this](uint32_t        button,
+                                                    mouse_action    action,
+                                                    const modifier& m,
+                                                    uint32_t        x,
+                                                    uint32_t        y) -> bool {
                 return handle_mouse_action(button, action, m, x, y);
             });
         m_mouse_move_handler_key = handler.add_mouse_move_handler(
@@ -213,11 +213,59 @@ namespace mge {
         }
     }
 
-    bool immediate_ui::handle_key_action(key          k,
-                                         key_action   action,
-                                         const modifier& m)
+    bool
+    immediate_ui::handle_key_action(key k, key_action action, const modifier& m)
     {
-        // Consume all input when attached
+        nk_input_begin(m_context);
+
+        bool down =
+            (action == key_action::PRESS || action == key_action::REPEAT);
+
+        // Map MGE keys to Nuklear keys
+        switch (k) {
+        case key::BACKSPACE:
+            nk_input_key(m_context, NK_KEY_BACKSPACE, down);
+            break;
+        case key::DELETE_KEY:
+            nk_input_key(m_context, NK_KEY_DEL, down);
+            break;
+        case key::ENTER:
+            nk_input_key(m_context, NK_KEY_ENTER, down);
+            break;
+        case key::TAB:
+            nk_input_key(m_context, NK_KEY_TAB, down);
+            break;
+        case key::CURSOR_UP:
+            nk_input_key(m_context, NK_KEY_UP, down);
+            break;
+        case key::CURSOR_DOWN:
+            nk_input_key(m_context, NK_KEY_DOWN, down);
+            break;
+        case key::CURSOR_LEFT:
+            nk_input_key(m_context, NK_KEY_LEFT, down);
+            break;
+        case key::CURSOR_RIGHT:
+            nk_input_key(m_context, NK_KEY_RIGHT, down);
+            break;
+        case key::HOME:
+            nk_input_key(m_context, NK_KEY_TEXT_START, down);
+            break;
+        case key::END:
+            nk_input_key(m_context, NK_KEY_TEXT_END, down);
+            break;
+        default:
+            break;
+        }
+
+        // Handle modifier keys
+        if (m.test(modifier_value::SHIFT)) {
+            nk_input_key(m_context, NK_KEY_SHIFT, down);
+        }
+        if (m.test(modifier_value::CONTROL)) {
+            nk_input_key(m_context, NK_KEY_CTRL, down);
+        }
+
+        nk_input_end(m_context);
         return true;
     }
 
@@ -227,25 +275,61 @@ namespace mge {
                                            uint32_t        x,
                                            uint32_t        y)
     {
-        // Consume all input when attached
+        nk_input_begin(m_context);
+
+        bool down = (action == mouse_action::PRESS);
+
+        // Map button index to Nuklear button enum
+        nk_buttons nk_button;
+        switch (button) {
+        case 0:
+            nk_button = NK_BUTTON_LEFT;
+            break;
+        case 1:
+            nk_button = NK_BUTTON_RIGHT;
+            break;
+        case 2:
+            nk_button = NK_BUTTON_MIDDLE;
+            break;
+        default:
+            nk_input_end(m_context);
+            return true;
+        }
+
+        nk_input_button(m_context,
+                        nk_button,
+                        static_cast<int>(x),
+                        static_cast<int>(y),
+                        down);
+
+        nk_input_end(m_context);
         return true;
     }
 
     bool immediate_ui::handle_mouse_move(uint32_t x, uint32_t y)
     {
-        // Consume all input when attached
+        nk_input_begin(m_context);
+        nk_input_motion(m_context, static_cast<int>(x), static_cast<int>(y));
+        nk_input_end(m_context);
         return true;
     }
 
     bool immediate_ui::handle_character(uint32_t ch)
     {
-        // Consume all input when attached
+        nk_input_begin(m_context);
+        nk_input_unicode(m_context, ch);
+        nk_input_end(m_context);
         return true;
     }
 
     bool immediate_ui::handle_mouse_wheel(int32_t x, int32_t y)
     {
-        // Consume all input when attached
+        nk_input_begin(m_context);
+        struct nk_vec2 scroll;
+        scroll.x = static_cast<float>(x);
+        scroll.y = static_cast<float>(y);
+        nk_input_scroll(m_context, scroll);
+        nk_input_end(m_context);
         return true;
     }
 
