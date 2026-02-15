@@ -24,11 +24,7 @@ namespace mge {
     static void* nk_mge_alloc(nk_handle unused, void* old, nk_size size)
     {
         (void)unused;
-        (void)old;
-        if (size == 0) {
-            return nullptr;
-        }
-        return mge::malloc(size);
+        return mge::realloc(old, size);
     }
 
     static void nk_mge_free(nk_handle unused, void* ptr)
