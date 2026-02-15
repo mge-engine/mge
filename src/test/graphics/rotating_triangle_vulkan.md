@@ -149,7 +149,7 @@
 - Call: Internal::Coherent Mapped Memory Write
   - device: VkDevice #1
   - memRangeCount: 1
-  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 0, size: 33554432}
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 0}
   - MapData: _ignored_
 - Call: vkQueueSubmit
   - queue: VkQueue #1
@@ -240,7 +240,7 @@
 - Call: Internal::Coherent Mapped Memory Write
   - device: VkDevice #1
   - memRangeCount: 1
-  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64}
   - MapData: _ignored_
 - Call: vkQueueSubmit
   - queue: VkQueue #1
@@ -331,7 +331,7 @@
 - Call: Internal::Coherent Mapped Memory Write
   - device: VkDevice #1
   - memRangeCount: 1
-  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64}
   - MapData: _ignored_
 - Call: vkQueueSubmit
   - queue: VkQueue #1
@@ -422,7 +422,7 @@
 - Call: Internal::Coherent Mapped Memory Write
   - device: VkDevice #1
   - memRangeCount: 1
-  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64, size: 3}
+  - MemRange: {sType: VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE, pNext: null, memory: VkDeviceMemory #1, offset: 64}
   - MapData: _ignored_
 - Call: vkQueueSubmit
   - queue: VkQueue #1
