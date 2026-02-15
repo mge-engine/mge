@@ -3,11 +3,11 @@
 # All rights reserved.
 
 SET(MGEUI_TEST_SOURCES
-    test_ui.cpp
+    test_immediate.cpp
 )
 
 MGE_TEST(
     TARGET      test_ui
     SOURCES     ${MGEUI_TEST_SOURCES}
-    LIBRARIES   mgecore mgeui
+    LIBRARIES   mgecore mgeui mgegraphics mgeasset
 )

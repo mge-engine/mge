@@ -3,12 +3,12 @@
 # All rights reserved.
 
 SET(mgeui_sources
-   ui.cpp
+   immediate.cpp
 )
 
 SET(mgeui_headers
     dllexport.hpp
-    ui_context.hpp
+    immediate.hpp
 )
 
 
