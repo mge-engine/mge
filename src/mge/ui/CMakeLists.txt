@@ -19,5 +19,5 @@ MGE_LIBRARY(
     ${mgeui_sources}
     ${mgeui_headers}
 )
-TARGET_LINK_LIBRARIES(mgeui mgecore nuklear boost-all)
+TARGET_LINK_LIBRARIES(mgeui mgecore mgeinput nuklear boost-all)
 ADD_SUBDIRECTORY(test)

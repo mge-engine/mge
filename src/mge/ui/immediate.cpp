@@ -5,6 +5,11 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/input/input_handler.hpp"
+#include "mge/input/key.hpp"
+#include "mge/input/key_action.hpp"
+#include "mge/input/modifier.hpp"
+#include "mge/input/mouse_action.hpp"
 
 #define NK_INCLUDE_FIXED_TYPES
 
@@ -79,6 +84,7 @@ namespace mge {
 
     immediate_ui::~immediate_ui()
     {
+        detach();
         if (m_context) {
             nk_free(m_context);
             delete m_context;
@@ -145,6 +151,102 @@ namespace mge {
     bool immediate_ui::slider(float min, float& value, float max, float step)
     {
         return nk_slider_float(m_context, min, &value, max, step) != 0;
+    }
+
+    void immediate_ui::attach(input_handler& handler)
+    {
+        detach();
+        m_input_handler = &handler;
+        m_key_action_handler_key = handler.add_key_action_handler(
+            [this](key k, key_action action, const modifier& m) -> bool {
+                return handle_key_action(k, action, m);
+            });
+        m_mouse_action_handler_key = handler.add_mouse_action_handler(
+            [this](uint32_t        button,
+                   mouse_action    action,
+                   const modifier& m,
+                   uint32_t        x,
+                   uint32_t        y) -> bool {
+                return handle_mouse_action(button, action, m, x, y);
+            });
+        m_mouse_move_handler_key = handler.add_mouse_move_handler(
+            [this](uint32_t x, uint32_t y) -> bool {
+                return handle_mouse_move(x, y);
+            });
+        m_character_handler_key = handler.add_character_handler(
+            [this](uint32_t ch) -> bool { return handle_character(ch); });
+        m_mouse_wheel_handler_key = handler.add_mouse_wheel_handler(
+            [this](int32_t x, int32_t y) -> bool {
+                return handle_mouse_wheel(x, y);
+            });
+    }
+
+    void immediate_ui::detach()
+    {
+        if (m_input_handler) {
+            if (m_key_action_handler_key) {
+                m_input_handler->remove_key_action_handler(
+                    m_key_action_handler_key);
+                m_key_action_handler_key = 0;
+            }
+            if (m_mouse_action_handler_key) {
+                m_input_handler->remove_mouse_action_handler(
+                    m_mouse_action_handler_key);
+                m_mouse_action_handler_key = 0;
+            }
+            if (m_mouse_move_handler_key) {
+                m_input_handler->remove_mouse_move_handler(
+                    m_mouse_move_handler_key);
+                m_mouse_move_handler_key = 0;
+            }
+            if (m_character_handler_key) {
+                m_input_handler->remove_character_handler(
+                    m_character_handler_key);
+                m_character_handler_key = 0;
+            }
+            if (m_mouse_wheel_handler_key) {
+                m_input_handler->remove_mouse_wheel_handler(
+                    m_mouse_wheel_handler_key);
+                m_mouse_wheel_handler_key = 0;
+            }
+            m_input_handler = nullptr;
+        }
+    }
+
+    bool immediate_ui::handle_key_action(key          k,
+                                         key_action   action,
+                                         const modifier& m)
+    {
+        // Consume all input when attached
+        return true;
+    }
+
+    bool immediate_ui::handle_mouse_action(uint32_t        button,
+                                           mouse_action    action,
+                                           const modifier& m,
+                                           uint32_t        x,
+                                           uint32_t        y)
+    {
+        // Consume all input when attached
+        return true;
+    }
+
+    bool immediate_ui::handle_mouse_move(uint32_t x, uint32_t y)
+    {
+        // Consume all input when attached
+        return true;
+    }
+
+    bool immediate_ui::handle_character(uint32_t ch)
+    {
+        // Consume all input when attached
+        return true;
+    }
+
+    bool immediate_ui::handle_mouse_wheel(int32_t x, int32_t y)
+    {
+        // Consume all input when attached
+        return true;
     }
 
 } // namespace mge

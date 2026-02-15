@@ -4,12 +4,19 @@
 #pragma once
 
 #include "mge/core/memory.hpp"
+#include "mge/input/key.hpp"
+#include "mge/input/key_action.hpp"
+#include "mge/input/modifier.hpp"
+#include "mge/input/mouse_action.hpp"
 #include "mge/ui/dllexport.hpp"
+
+#include <cstdint>
 
 struct nk_context;
 struct nk_user_font;
 
 namespace mge {
+    class input_handler;
 
     MGE_DECLARE_REF(immediate_ui);
 
@@ -51,6 +58,22 @@ namespace mge {
          * Must be called after all UI commands for the frame.
          */
         void frame();
+
+        /**
+         * @brief Attach to input handler
+         *
+         * Captures all input events from the handler.
+         *
+         * @param handler input handler to attach to
+         */
+        void attach(input_handler& handler);
+
+        /**
+         * @brief Detach from input handler
+         *
+         * Stops capturing input events.
+         */
+        void detach();
 
         /**
          * @brief Begin a window
@@ -114,9 +137,25 @@ namespace mge {
     private:
         void start_frame();
 
-        nk_context*   m_context;
-        nk_user_font* m_font;
-        bool          m_in_frame{false};
+        bool handle_key_action(key k, key_action action, const modifier& m);
+        bool handle_mouse_action(uint32_t        button,
+                                 mouse_action    action,
+                                 const modifier& m,
+                                 uint32_t        x,
+                                 uint32_t        y);
+        bool handle_mouse_move(uint32_t x, uint32_t y);
+        bool handle_character(uint32_t ch);
+        bool handle_mouse_wheel(int32_t x, int32_t y);
+
+        nk_context*    m_context;
+        nk_user_font*  m_font;
+        bool           m_in_frame{false};
+        input_handler* m_input_handler{nullptr};
+        uint32_t       m_key_action_handler_key{0};
+        uint32_t       m_mouse_action_handler_key{0};
+        uint32_t       m_mouse_move_handler_key{0};
+        uint32_t       m_character_handler_key{0};
+        uint32_t       m_mouse_wheel_handler_key{0};
     };
 
 } // namespace mge
