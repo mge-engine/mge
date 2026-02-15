@@ -517,6 +517,17 @@ namespace mge::opengl {
                                        mge::texture*               tex) {
                 blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
+                    mge::cull_mode cull = state.cull_mode();
+                    if (cull != mge::cull_mode::NONE) {
+                        glEnable(GL_CULL_FACE);
+                        CHECK_OPENGL_ERROR(glEnable);
+                        if (cull == mge::cull_mode::CLOCKWISE) {
+                            glCullFace(GL_FRONT);
+                        } else {
+                            glCullFace(GL_BACK);
+                        }
+                        CHECK_OPENGL_ERROR(glCullFace);
+                    }
                     glDepthFunc(depth_test_to_gl(state.depth_test_function()));
                     CHECK_OPENGL_ERROR(glDepthFunc);
                     if (!state.depth_write()) {
@@ -531,6 +542,10 @@ namespace mge::opengl {
                     if (!state.depth_write()) {
                         glDepthMask(GL_TRUE);
                         CHECK_OPENGL_ERROR(glDepthMask);
+                    }
+                    if (cull != mge::cull_mode::NONE) {
+                        glDisable(GL_CULL_FACE);
+                        CHECK_OPENGL_ERROR(glDisable);
                     }
                 } else {
                     blend_pass_needed = true;
@@ -552,6 +567,17 @@ namespace mge::opengl {
                 blend_factor    alpha_src = state.alpha_blend_factor_src();
                 blend_factor    alpha_dst = state.alpha_blend_factor_dst();
                 if (color_op != blend_operation::NONE) {
+                    mge::cull_mode cull = state.cull_mode();
+                    if (cull != mge::cull_mode::NONE) {
+                        glEnable(GL_CULL_FACE);
+                        CHECK_OPENGL_ERROR(glEnable);
+                        if (cull == mge::cull_mode::CLOCKWISE) {
+                            glCullFace(GL_FRONT);
+                        } else {
+                            glCullFace(GL_BACK);
+                        }
+                        CHECK_OPENGL_ERROR(glCullFace);
+                    }
                     glDepthFunc(depth_test_to_gl(state.depth_test_function()));
                     CHECK_OPENGL_ERROR(glDepthFunc);
                     if (color_op == alpha_op && color_src == alpha_src &&
@@ -574,6 +600,10 @@ namespace mge::opengl {
                     }
                     if (!state.depth_write()) {
                         glDepthMask(GL_FALSE);
+                        if (cull != mge::cull_mode::NONE) {
+                            glDisable(GL_CULL_FACE);
+                            CHECK_OPENGL_ERROR(glDisable);
+                        }
                         CHECK_OPENGL_ERROR(glDepthMask);
                     }
                     draw_geometry(program.get(),

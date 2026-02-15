@@ -6,6 +6,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/blend_factor.hpp"
 #include "mge/graphics/blend_operation.hpp"
+#include "mge/graphics/cull_mode.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/test.hpp"
 
@@ -369,6 +370,31 @@ namespace mge {
             if (depth_bits & DEPTH_TEST_ALWAYS)
                 return mge::test::ALWAYS;
             return mge::test::LESS; // default
+        }
+
+        void set_cull_mode(mge::cull_mode mode) noexcept
+        {
+            m_flags &= ~(CULL_CLOCK_WISE | CULL_COUNTER_CLOCK_WISE);
+            switch (mode) {
+            case mge::cull_mode::CLOCKWISE:
+                m_flags |= CULL_CLOCK_WISE;
+                break;
+            case mge::cull_mode::COUNTER_CLOCKWISE:
+                m_flags |= CULL_COUNTER_CLOCK_WISE;
+                break;
+            case mge::cull_mode::NONE:
+                // no flags set
+                break;
+            }
+        }
+
+        mge::cull_mode cull_mode() const noexcept
+        {
+            if (m_flags & CULL_CLOCK_WISE)
+                return mge::cull_mode::CLOCKWISE;
+            if (m_flags & CULL_COUNTER_CLOCK_WISE)
+                return mge::cull_mode::COUNTER_CLOCKWISE;
+            return mge::cull_mode::NONE;
         }
 
     private:

@@ -2,8 +2,6 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
-FIND_PACKAGE(unofficial-spirv-reflect CONFIG REQUIRED)
-
 ADD_CUSTOM_COMMAND(OUTPUT vulkan_dump.h
     COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py" "${Vulkan_INCLUDE_DIRS}/../share/vulkan/registry/vk.xml" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py"
