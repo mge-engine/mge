@@ -90,6 +90,7 @@ namespace mge {
             std::map<vao_key, GLuint>               m_vaos;
             std::map<mge::uniform_block*, GLuint>   m_ubos;
             std::map<mge::uniform_block*, uint64_t> m_ubo_versions;
+            bool m_conservative_rasterization_supported{false};
         };
     } // namespace opengl
 } // namespace mge

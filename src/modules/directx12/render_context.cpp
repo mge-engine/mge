@@ -1129,6 +1129,10 @@ namespace mge::dx12 {
                        ps.code()->GetBufferSize()};
 
         pso_desc.RasterizerState = m_rasterizer_desc;
+        if (state.test(pipeline_state::CONSERVATIVE_RASTERIZATION)) {
+            pso_desc.RasterizerState.ConservativeRaster =
+                D3D12_CONSERVATIVE_RASTERIZATION_MODE_ON;
+        }
         if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;
         } else {
