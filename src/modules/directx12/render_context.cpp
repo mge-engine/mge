@@ -1128,11 +1128,24 @@ namespace mge::dx12 {
         pso_desc.PS = {ps.code()->GetBufferPointer(),
                        ps.code()->GetBufferSize()};
 
-        pso_desc.RasterizerState = m_rasterizer_desc;
+        D3D12_RASTERIZER_DESC rasterizer_desc = m_rasterizer_desc;
+        mge::cull_mode        cull = state.cull_mode();
+        switch (cull) {
+        case mge::cull_mode::NONE:
+            rasterizer_desc.CullMode = D3D12_CULL_MODE_NONE;
+            break;
+        case mge::cull_mode::CLOCKWISE:
+            rasterizer_desc.CullMode = D3D12_CULL_MODE_FRONT;
+            break;
+        case mge::cull_mode::COUNTER_CLOCKWISE:
+            rasterizer_desc.CullMode = D3D12_CULL_MODE_BACK;
+            break;
+        }
         if (state.test(pipeline_state::CONSERVATIVE_RASTERIZATION)) {
-            pso_desc.RasterizerState.ConservativeRaster =
+            rasterizer_desc.ConservativeRaster =
                 D3D12_CONSERVATIVE_RASTERIZATION_MODE_ON;
         }
+        pso_desc.RasterizerState = rasterizer_desc;
         if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;
         } else {

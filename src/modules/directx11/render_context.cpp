@@ -381,34 +381,36 @@ namespace mge::dx11 {
                                                     0);
         }
         bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, &blend_pass_needed](program_handle             program,
-                                       vertex_buffer_handle       vertices,
-                                       index_buffer_handle        indices,
-                                       const mge::pipeline_state& state,
-                                       mge::uniform_block*        ub,
-                                       mge::texture*              tex) {
-                blend_operation op = state.color_blend_operation();
-                if (op == blend_operation::NONE) {
-                    if (!state.depth_write()) {
-                        ID3D11DepthStencilState* ds_state =
-                            this->depth_stencil_state(state);
-                        m_device_context->OMSetDepthStencilState(ds_state, 1);
-                    }
-                    draw_geometry(program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  ub,
-                                  tex);
-                    if (!state.depth_write()) {
-                        m_device_context->OMSetDepthStencilState(
-                            m_depth_stencil_state.get(),
-                            1);
-                    }
-                } else {
-                    blend_pass_needed = true;
+        p.for_each_draw_command([this, &blend_pass_needed](
+                                    program_handle             program,
+                                    vertex_buffer_handle       vertices,
+                                    index_buffer_handle        indices,
+                                    const mge::pipeline_state& state,
+                                    mge::uniform_block*        ub,
+                                    mge::texture*              tex) {
+            blend_operation op = state.color_blend_operation();
+            if (op == blend_operation::NONE) {
+                ID3D11RasterizerState* rs_state = this->rasterizer_state(state);
+                m_device_context->RSSetState(rs_state);
+                if (!state.depth_write()) {
+                    ID3D11DepthStencilState* ds_state =
+                        this->depth_stencil_state(state);
+                    m_device_context->OMSetDepthStencilState(ds_state, 1);
                 }
-            });
+                draw_geometry(program.get(),
+                              vertices.get(),
+                              indices.get(),
+                              ub,
+                              tex);
+                if (!state.depth_write()) {
+                    m_device_context->OMSetDepthStencilState(
+                        m_depth_stencil_state.get(),
+                        1);
+                }
+            } else {
+                blend_pass_needed = true;
+            }
+        });
 
         if (blend_pass_needed) {
             p.for_each_draw_command([this](program_handle             program,
@@ -419,6 +421,10 @@ namespace mge::dx11 {
                                            mge::texture*              tex) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
+                    ID3D11RasterizerState* rs_state =
+                        this->rasterizer_state(state);
+                    m_device_context->RSSetState(rs_state);
+
                     ID3D11BlendState* blend_state_obj =
                         this->blend_state(state);
 
@@ -661,6 +667,48 @@ namespace mge::dx11 {
         if (dx11_program.uses_in_pixel_shader(ub.name())) {
             m_device_context->PSSetConstantBuffers(bind_point, 1, &cbuffer);
         }
+    }
+
+    ID3D11RasterizerState*
+    render_context::rasterizer_state(const mge::pipeline_state& state)
+    {
+        auto it = m_rasterizer_state_cache.find(state);
+        if (it != m_rasterizer_state_cache.end()) {
+            return it->second.get();
+        }
+
+        D3D11_RASTERIZER_DESC rasterizer_desc = {};
+        rasterizer_desc.FillMode = D3D11_FILL_SOLID;
+        rasterizer_desc.FrontCounterClockwise = FALSE;
+        rasterizer_desc.DepthBias = 0;
+        rasterizer_desc.DepthBiasClamp = 0.0f;
+        rasterizer_desc.SlopeScaledDepthBias = 0.0f;
+        rasterizer_desc.DepthClipEnable = TRUE;
+        rasterizer_desc.ScissorEnable = TRUE;
+        rasterizer_desc.MultisampleEnable = FALSE;
+        rasterizer_desc.AntialiasedLineEnable = FALSE;
+
+        mge::cull_mode mode = state.cull_mode();
+        switch (mode) {
+        case mge::cull_mode::NONE:
+            rasterizer_desc.CullMode = D3D11_CULL_NONE;
+            break;
+        case mge::cull_mode::CLOCKWISE:
+            rasterizer_desc.CullMode = D3D11_CULL_FRONT;
+            break;
+        case mge::cull_mode::COUNTER_CLOCKWISE:
+            rasterizer_desc.CullMode = D3D11_CULL_BACK;
+            break;
+        }
+
+        ID3D11RasterizerState* rasterizer_state_obj = nullptr;
+        HRESULT rc = m_device->CreateRasterizerState(&rasterizer_desc,
+                                                     &rasterizer_state_obj);
+        CHECK_HRESULT(rc, ID3D11Device, CreateRasterizerState);
+
+        com_unique_ptr<ID3D11RasterizerState> owned_ptr(rasterizer_state_obj);
+        m_rasterizer_state_cache[state] = std::move(owned_ptr);
+        return m_rasterizer_state_cache[state].get();
     }
 
     mge::image_ref render_context::screenshot()
