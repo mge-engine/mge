@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mgeui_sources
+   common.cpp
    immediate.cpp
 )
 

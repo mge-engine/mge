@@ -5,6 +5,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/input/input_handler.hpp"
 #include "mge/input/key.hpp"
@@ -29,6 +30,7 @@
 #endif
 
 namespace mge {
+    MGE_USE_TRACE(UI);
 
     static void* nk_mge_alloc(nk_handle unused, void* old, nk_size size)
     {
@@ -70,7 +72,8 @@ namespace mge {
         , m_font_atlas(new nk_font_atlas())
     {
         // Initialize font atlas with custom allocator
-        nk_font_atlas_init(m_font_atlas, nk_allocator_instance::instance->get());
+        nk_font_atlas_init(m_font_atlas,
+                           nk_allocator_instance::instance->get());
 
         // Begin font atlas baking
         nk_font_atlas_begin(m_font_atlas);
@@ -79,15 +82,20 @@ namespace mge {
         nk_font* font = nk_font_atlas_add_default(m_font_atlas, 13.0f, nullptr);
 
         // Bake font atlas
-        int width, height;
-        const void* image = nk_font_atlas_bake(m_font_atlas, &width, &height, NK_FONT_ATLAS_RGBA32);
-        
+        int         width, height;
+        const void* image = nk_font_atlas_bake(m_font_atlas,
+                                               &width,
+                                               &height,
+                                               NK_FONT_ATLAS_RGBA32);
+
         // End font atlas baking (pass null texture for now)
         nk_font_atlas_end(m_font_atlas, nk_handle_ptr(nullptr), nullptr);
 
         // Initialize context with allocator and font
-        nk_init(m_context, nk_allocator_instance::instance->get(), &font->handle);
-        
+        nk_init(m_context,
+                nk_allocator_instance::instance->get(),
+                &font->handle);
+
         start_frame();
     }
 
@@ -176,7 +184,7 @@ namespace mge {
         // 2. Create shader program for UI rendering
         // 3. Upload font texture
         // 4. Iterate through draw commands and submit to pass
-        
+
         // For now, just mark pass as touched so it renders
         pass.touch();
     }
@@ -244,6 +252,11 @@ namespace mge {
     bool
     immediate_ui::handle_key_action(key k, key_action action, const modifier& m)
     {
+        MGE_DEBUG_TRACE(UI,
+                        "Key action: key={}, action={}",
+                        static_cast<int>(k),
+                        static_cast<int>(action));
+
         nk_input_begin(m_context);
 
         bool down =
