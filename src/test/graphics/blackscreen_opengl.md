@@ -3,12 +3,12 @@
 # Frames
 ## Frame 1
 - Call: Internal::Context Configuration
-  - Context: _ignored_
-  - FBO: _ignored_
-  - InitParams: _ignored_
+  - Context: ResourceId #1
+  - FBO: ResourceId #2
+  - InitParams: {colorBits: 32, depthBits: 24, stencilBits: 8, isSRGB: 1, multiSamples: 1, width: 800, height: 600, isYFlipped: false, renderer: None, version: None}
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -37,7 +37,7 @@
 ## Frame 2
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -66,7 +66,7 @@
 ## Frame 3
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -95,7 +95,7 @@
 ## Frame 4
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -124,7 +124,7 @@
 ## Frame 5
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0

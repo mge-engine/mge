@@ -36,6 +36,8 @@ class Sanitizer:
         self.frame = 0
         self.frame_call = 0
         self.output_file = output_file
+        self.resource_ids = {}      # typename -> {raw_value -> sequence_number}
+        self.resource_counters = {} # typename -> next sequence number
 
     def output(self, line=""):
         self.output_lines.append(line)
@@ -45,6 +47,41 @@ class Sanitizer:
         for child in header_elem:
             if child.tag == "driver":
                 self.output(f"- Driver: {child.text}")
+
+    def resource_id_value(self, typename, raw_value):
+        if raw_value == "0":
+            return "null"
+        if typename not in self.resource_ids:
+            self.resource_ids[typename] = {}
+            self.resource_counters[typename] = 0
+        if raw_value not in self.resource_ids[typename]:
+            self.resource_counters[typename] += 1
+            self.resource_ids[typename][raw_value] = self.resource_counters[typename]
+        seq = self.resource_ids[typename][raw_value]
+        return f"{typename} #{seq}"
+
+    def struct_value(self, param):
+        fields = []
+        for child in param:
+            child_hidden = child.attrib.get("hidden", "false")
+            if child_hidden == "true":
+                continue
+            name = child.attrib.get("name", "unknown")
+            value = self.parameter_value(child)
+            fields.append(f"{name}: {value}")
+        return "{" + ", ".join(fields) + "}"
+
+    def array_value(self, param):
+        elements = list(param)
+        if not elements:
+            return "[]"
+        values = []
+        for child in elements:
+            child_hidden = child.attrib.get("hidden", "false")
+            if child_hidden == "true":
+                continue
+            values.append(self.parameter_value(child))
+        return "[" + ", ".join(values) + "]"
 
     def parameter_value(self, param):
         if param.tag == "float":
@@ -60,11 +97,13 @@ class Sanitizer:
         elif param.tag == "bool":
             return param.text
         elif param.tag == "ResourceId":
-            return "_ignored_"
+            typename = param.get("typename", "ResourceId")
+            raw_value = param.text or "0"
+            return self.resource_id_value(typename, raw_value)
         elif param.tag == "array":
-            return "_ignored_"
+            return self.array_value(param)
         elif param.tag == "struct":
-            return "_ignored_"
+            return self.struct_value(param)
         elif param.tag == "buffer":
             return "_ignored_"
         elif param.tag == "enum":

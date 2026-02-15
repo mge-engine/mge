@@ -3,247 +3,247 @@
 # Frames
 ## Frame 1
 - Call: ID3D12CommandQueue::Signal
-  - pQueue: _ignored_
-  - pFence: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
+  - pFence: ID3D12Fence * #1
   - Value: 1
 - Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
+  - BakedCommandList: ID3D12GraphicsCommandList * #1
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - pAllocator: ID3D12CommandAllocator * #1
+  - pInitialState: null
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_COMMON, StateAfter: D3D12_RESOURCE_STATE_RENDER_TARGET}}]
 - Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
+  - pRenderTargetDescriptors: [{type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}]
+  - pDepthStencilDescriptor: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 0, Resource: ID3D12Resource * #2, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
 - Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 0, bottom: 0}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
+  - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
-  - pRects: _ignored_
+  - pRects: []
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_RENDER_TARGET, StateAfter: D3D12_RESOURCE_STATE_COMMON}}]
 - Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - BakedCommandList: ID3D12GraphicsCommandList * #1
 - Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
   - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
+  - ppCommandLists: [ID3D12CommandList * #1]
+  - DebugMessages: []
 - Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
+  - PresentedBackbuffer: ID3D12Resource * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 2
 - Call: ID3D12CommandQueue::Signal
-  - pQueue: _ignored_
-  - pFence: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
+  - pFence: ID3D12Fence * #1
   - Value: 2
 - Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
+  - BakedCommandList: ID3D12GraphicsCommandList * #3
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - pAllocator: ID3D12CommandAllocator * #1
+  - pInitialState: null
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #3, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_COMMON, StateAfter: D3D12_RESOURCE_STATE_RENDER_TARGET}}]
 - Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
+  - pRenderTargetDescriptors: [{type: RTV, heap: ID3D12DescriptorHeap * #1, index: 1, Resource: ID3D12Resource * #3, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}]
+  - pDepthStencilDescriptor: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 1, Resource: ID3D12Resource * #4, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
 - Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
+  - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 1, Resource: ID3D12Resource * #3, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
-  - pRects: _ignored_
+  - pRects: []
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #3, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_RENDER_TARGET, StateAfter: D3D12_RESOURCE_STATE_COMMON}}]
 - Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - BakedCommandList: ID3D12GraphicsCommandList * #3
 - Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
   - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
+  - ppCommandLists: [ID3D12CommandList * #1]
+  - DebugMessages: []
 - Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
+  - PresentedBackbuffer: ID3D12Resource * #3
   - SyncInterval: 0
   - Flags: 0
 ## Frame 3
 - Call: ID3D12CommandQueue::Signal
-  - pQueue: _ignored_
-  - pFence: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
+  - pFence: ID3D12Fence * #1
   - Value: 3
 - Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
+  - BakedCommandList: ID3D12GraphicsCommandList * #4
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - pAllocator: ID3D12CommandAllocator * #1
+  - pInitialState: null
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_COMMON, StateAfter: D3D12_RESOURCE_STATE_RENDER_TARGET}}]
 - Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
+  - pRenderTargetDescriptors: [{type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}]
+  - pDepthStencilDescriptor: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 0, Resource: ID3D12Resource * #2, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
 - Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
+  - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
-  - pRects: _ignored_
+  - pRects: []
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_RENDER_TARGET, StateAfter: D3D12_RESOURCE_STATE_COMMON}}]
 - Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - BakedCommandList: ID3D12GraphicsCommandList * #4
 - Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
   - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
+  - ppCommandLists: [ID3D12CommandList * #1]
+  - DebugMessages: []
 - Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
+  - PresentedBackbuffer: ID3D12Resource * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 4
 - Call: ID3D12CommandQueue::Signal
-  - pQueue: _ignored_
-  - pFence: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
+  - pFence: ID3D12Fence * #1
   - Value: 4
 - Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
+  - BakedCommandList: ID3D12GraphicsCommandList * #5
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - pAllocator: ID3D12CommandAllocator * #1
+  - pInitialState: null
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #3, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_COMMON, StateAfter: D3D12_RESOURCE_STATE_RENDER_TARGET}}]
 - Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
+  - pRenderTargetDescriptors: [{type: RTV, heap: ID3D12DescriptorHeap * #1, index: 1, Resource: ID3D12Resource * #3, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}]
+  - pDepthStencilDescriptor: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 1, Resource: ID3D12Resource * #4, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
 - Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
+  - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 1, Resource: ID3D12Resource * #3, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
-  - pRects: _ignored_
+  - pRects: []
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #3, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_RENDER_TARGET, StateAfter: D3D12_RESOURCE_STATE_COMMON}}]
 - Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - BakedCommandList: ID3D12GraphicsCommandList * #5
 - Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
   - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
+  - ppCommandLists: [ID3D12CommandList * #1]
+  - DebugMessages: []
 - Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
+  - PresentedBackbuffer: ID3D12Resource * #3
   - SyncInterval: 0
   - Flags: 0
 ## Frame 5
 - Call: ID3D12CommandQueue::Signal
-  - pQueue: _ignored_
-  - pFence: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
+  - pFence: ID3D12Fence * #1
   - Value: 5
 - Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
+  - BakedCommandList: ID3D12GraphicsCommandList * #6
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - pAllocator: ID3D12CommandAllocator * #1
+  - pInitialState: null
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_COMMON, StateAfter: D3D12_RESOURCE_STATE_RENDER_TARGET}}]
 - Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
+  - pRenderTargetDescriptors: [{type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}]
+  - pDepthStencilDescriptor: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 0, Resource: ID3D12Resource * #2, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
 - Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
+  - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #1, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
-  - pRects: _ignored_
+  - pRects: []
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
+  - pCommandList: ID3D12GraphicsCommandList * #2
   - NumBarriers: 1
-  - pBarriers: _ignored_
+  - pBarriers: [{Type: D3D12_RESOURCE_BARRIER_TYPE_TRANSITION, Flags: D3D12_RESOURCE_BARRIER_FLAG_NONE, Transition: {pResource: ID3D12Resource * #1, Subresource: All Subresources, StateBefore: D3D12_RESOURCE_STATE_RENDER_TARGET, StateAfter: D3D12_RESOURCE_STATE_COMMON}}]
 - Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
+  - CommandList: ID3D12GraphicsCommandList * #2
+  - BakedCommandList: ID3D12GraphicsCommandList * #6
 - Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
+  - pQueue: ID3D12CommandQueue * #1
   - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
+  - ppCommandLists: [ID3D12CommandList * #1]
+  - DebugMessages: []
 - Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
+  - PresentedBackbuffer: ID3D12Resource * #1
   - SyncInterval: 0
   - Flags: 0
 

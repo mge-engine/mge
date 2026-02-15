@@ -3,629 +3,629 @@
 # Frames
 ## Frame 1
 - Call: ID3D11DeviceContext::UpdateSubresource
-  - Context: _ignored_
-  - pDstResource: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDstResource: ID3D11Resource * #1
   - DstSubresource: 0
-  - pDstBox: _ignored_
+  - pDstBox: {left: 0, top: 0, front: 0, right: 36, bottom: 1, back: 1}
   - SrcRowPitch: 0
   - SrcDepthPitch: 0
   - pSrcData: _ignored_
   - SourceDataLength: 36
 - Call: ID3D11DeviceContext::UpdateSubresource
-  - Context: _ignored_
-  - pDstResource: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDstResource: ID3D11Resource * #2
   - DstSubresource: 0
-  - pDstBox: _ignored_
+  - pDstBox: {left: 0, top: 0, front: 0, right: 36, bottom: 1, back: 1}
   - SrcRowPitch: 0
   - SrcDepthPitch: 0
   - pSrcData: _ignored_
   - SourceDataLength: 36
 - Call: ID3D11DeviceContext::UpdateSubresource
-  - Context: _ignored_
-  - pDstResource: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDstResource: ID3D11Resource * #3
   - DstSubresource: 0
-  - pDstBox: _ignored_
+  - pDstBox: {left: 0, top: 0, front: 0, right: 12, bottom: 1, back: 1}
   - SrcRowPitch: 0
   - SrcDepthPitch: 0
   - pSrcData: _ignored_
   - SourceDataLength: 12
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
-  - Context: _ignored_
-  - pDepthStencilView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilView: ID3D11DepthStencilView * #1
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #3]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: null
+  - BlendFactor: []
   - SampleMask: 4294967295
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 2
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
-  - Context: _ignored_
-  - pDepthStencilView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilView: ID3D11DepthStencilView * #1
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #3]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: null
+  - BlendFactor: []
   - SampleMask: 4294967295
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 3
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
-  - Context: _ignored_
-  - pDepthStencilView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilView: ID3D11DepthStencilView * #1
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #3]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: null
+  - BlendFactor: []
   - SampleMask: 4294967295
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 4
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
-  - Context: _ignored_
-  - pDepthStencilView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilView: ID3D11DepthStencilView * #1
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #3]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: null
+  - BlendFactor: []
   - SampleMask: 4294967295
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 ## Frame 5
 - Call: ID3D11DeviceContext::RSSetViewports
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumViewports: 1
-  - pViewports: _ignored_
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
 - Call: ID3D11DeviceContext::RSSetScissors
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - NumRects: 1
-  - pRects: _ignored_
+  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
 - Call: ID3D11DeviceContext::ClearRenderTargetView
-  - Context: _ignored_
-  - pRenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
 - Call: ID3D11DeviceContext::ClearDepthStencilView
-  - Context: _ignored_
-  - pDepthStencilView: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilView: ID3D11DepthStencilView * #1
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #1]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: ID3D11BlendState * #1
+  - BlendFactor: [0, 0, 0, 0]
   - SampleMask: 4294967295
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #1
   - StencilRef: 1
 - Call: ID3D11DeviceContext::IASetInputLayout
-  - Context: _ignored_
-  - pInputLayout: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pInputLayout: ID3D11InputLayout * #1
 - Call: ID3D11DeviceContext::IASetPrimitiveTopology
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - Topology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 - Call: ID3D11DeviceContext::IASetVertexBuffers
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
-  - ppVertexBuffers: _ignored_
-  - pStrides: _ignored_
-  - pOffsets: _ignored_
+  - ppVertexBuffers: [ID3D11Buffer * #3]
+  - pStrides: [12]
+  - pOffsets: [0]
 - Call: ID3D11DeviceContext::IASetIndexBuffer
-  - Context: _ignored_
-  - pIndexBuffer: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pIndexBuffer: ID3D11Buffer * #2
   - Format: DXGI_FORMAT_R32_UINT
   - Offset: 0
 - Call: ID3D11DeviceContext::VSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11VertexShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::PSSetShader
-  - Context: _ignored_
-  - pShader: _ignored_
-  - ppClassInstances: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pShader: ID3D11PixelShader * #1
+  - ppClassInstances: []
   - NumClassInstances: 0
 - Call: ID3D11DeviceContext::DrawIndexed
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - IndexCount: 3
   - StartIndexLocation: 0
   - BaseVertexLocation: 0
 - Call: ID3D11DeviceContext::OMSetDepthStencilState
-  - Context: _ignored_
-  - pDepthStencilState: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pDepthStencilState: ID3D11DepthStencilState * #2
   - StencilRef: 1
 - Call: ID3D11DeviceContext::OMSetBlendState
-  - Context: _ignored_
-  - pBlendState: _ignored_
-  - BlendFactor: _ignored_
+  - Context: ID3D11DeviceContext * #1
+  - pBlendState: null
+  - BlendFactor: []
   - SampleMask: 4294967295
 - Call: IDXGISwapChain::Present
-  - Context: _ignored_
+  - Context: ID3D11DeviceContext * #1
   - SyncInterval: 0
   - Flags: 0
 
