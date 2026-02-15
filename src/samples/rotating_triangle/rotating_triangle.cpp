@@ -60,13 +60,16 @@ namespace mge {
             m_window = m_render_system->create_window();
             m_window->set_close_listener([&] { set_quit(); });
             m_window->set_key_action_handler(
-                [&](mge::key k, mge::key_action a, mge::modifier m) {
+                [&](mge::key k, mge::key_action a, mge::modifier m) -> bool {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                        return true;
                     }
                     if (a == mge::key_action::PRESS && k == mge::key::P) {
                         screenshot();
+                        return true;
                     }
+                    return false;
                 });
 
             add_update_listener(

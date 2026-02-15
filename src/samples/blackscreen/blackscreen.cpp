@@ -27,10 +27,12 @@ namespace mge {
                 set_quit();
             });
             m_window->set_key_action_handler(
-                [&](mge::key k, mge::key_action a, mge::modifier m) {
+                [&](mge::key k, mge::key_action a, mge::modifier m) -> bool {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                        return true;
                     }
+                    return false;
                 });
 
             add_redraw_listener([&](uint64_t cycle, double delta) {

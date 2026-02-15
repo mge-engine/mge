@@ -25,34 +25,39 @@ namespace mge {
     public:
         /**
          * Handler function for mouse actions.
+         * @return true if event was consumed, false otherwise
          */
-        using mouse_action_handler = std::function<void(uint32_t        button,
+        using mouse_action_handler = std::function<bool(uint32_t        button,
                                                         mouse_action    action,
                                                         const modifier& m,
                                                         uint32_t        x,
                                                         uint32_t        y)>;
         /**
          * Handler function for mouse movement.
+         * @return true if event was consumed, false otherwise
          */
-        using mouse_move_handler = std::function<void(uint32_t x, uint32_t y)>;
+        using mouse_move_handler = std::function<bool(uint32_t x, uint32_t y)>;
 
         /**
          * Handler function for keyboard actions.
+         * @return true if event was consumed, false otherwise
          */
         using key_action_handler =
-            std::function<void(key k, key_action action, const modifier& m)>;
+            std::function<bool(key k, key_action action, const modifier& m)>;
 
         /**
          * Handler function for character input.
+         * @return true if event was consumed, false otherwise
          */
-        using character_handler = std::function<void(uint32_t character)>;
+        using character_handler = std::function<bool(uint32_t character)>;
 
         /**
          * Handler function for mouse wheel input.
          * @param x horizontal wheel movement
          * @param y vertical wheel movement
+         * @return true if event was consumed, false otherwise
          */
-        using mouse_wheel_handler = std::function<void(int32_t x, int32_t y)>;
+        using mouse_wheel_handler = std::function<bool(int32_t x, int32_t y)>;
 
     protected:
         /**
@@ -141,8 +146,9 @@ namespace mge {
          * @param action action
          * @param x mouse x position
          * @param y mouse y position
+         * @return true if event was consumed, false otherwise
          */
-        void on_mouse_action(uint32_t     button,
+        bool on_mouse_action(uint32_t     button,
                              mouse_action action,
                              uint32_t     x,
                              uint32_t     y);
@@ -151,30 +157,34 @@ namespace mge {
          *
          * @param k       key of the action
          * @param action  key action
+         * @return true if event was consumed, false otherwise
          */
-        void on_key_action(key k, key_action action);
+        bool on_key_action(key k, key_action action);
         /**
          * @brief Method to be called on mouse move.
          *
          * @param x new mouse x position
          * @param y new mouse y position
+         * @return true if event was consumed, false otherwise
          */
-        void on_mouse_move(uint32_t x, uint32_t y);
+        bool on_mouse_move(uint32_t x, uint32_t y);
 
         /**
          * @brief Method to be called on mouse wheel movement.
          *
          * @param x horizontal wheel movement
          * @param y vertical wheel movement
+         * @return true if event was consumed, false otherwise
          */
-        void on_mouse_wheel(int32_t x, int32_t y);
+        bool on_mouse_wheel(int32_t x, int32_t y);
 
         /**
          * @brief Method to be called when a character is input.
          *
          * @param ch input character
+         * @return true if event was consumed, false otherwise
          */
-        void on_character(uint32_t ch);
+        bool on_character(uint32_t ch);
 
     private:
         void update_key_state(key k, key_action action);

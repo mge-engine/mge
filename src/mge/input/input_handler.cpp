@@ -62,7 +62,7 @@ namespace mge {
         m_character_handler = nullptr;
     }
 
-    void input_handler::on_mouse_action(uint32_t     button,
+    bool input_handler::on_mouse_action(uint32_t     button,
                                         mouse_action action,
                                         uint32_t     x,
                                         uint32_t     y)
@@ -74,44 +74,58 @@ namespace mge {
             m_input_state.mouse().release(button);
         }
         if (m_mouse_action_handler) {
-            m_mouse_action_handler(button, action, current_modifier(), x, y);
+            return m_mouse_action_handler(button,
+                                          action,
+                                          current_modifier(),
+                                          x,
+                                          y);
         }
+        return false;
     }
 
-    void input_handler::on_mouse_move(uint32_t x, uint32_t y)
+    bool input_handler::on_mouse_move(uint32_t x, uint32_t y)
     {
         m_input_state.mouse().move(x, y);
         if (m_mouse_move_handler) {
-            m_mouse_move_handler(x, y);
+            return m_mouse_move_handler(x, y);
         }
+        return false;
     }
 
-    void input_handler::on_mouse_wheel(int32_t x, int32_t y)
+    bool input_handler::on_mouse_wheel(int32_t x, int32_t y)
     {
         m_input_state.mouse().wheel(x, y);
         if (m_mouse_wheel_handler) {
-            m_mouse_wheel_handler(x, y);
+            return m_mouse_wheel_handler(x, y);
         }
+        return false;
     }
 
-    void input_handler::on_character(uint32_t ch)
+    bool input_handler::on_character(uint32_t ch)
     {
         if (m_character_handler) {
-            m_character_handler(ch);
+            return m_character_handler(ch);
         }
+        return false;
     }
 
-    void input_handler::on_key_action(key k, key_action action)
+    bool input_handler::on_key_action(key k, key_action action)
     {
         update_key_state(k, action);
         if (m_key_action_handler) {
-            m_key_action_handler(k, action, current_modifier());
+            return m_key_action_handler(k, action, current_modifier());
         }
+        return false;
     }
 
     const modifier& input_handler::current_modifier() const
     {
         return m_input_state.keyboard().current_modifier();
+    }
+
+    const input_state& input_handler::state() const
+    {
+        return m_input_state;
     }
 
     void input_handler::update_key_state(key k, key_action action)
