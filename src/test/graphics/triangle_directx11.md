@@ -38,6 +38,9 @@
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
+- Call: ID3D11DeviceContext::RSSetState
+  - Context: ID3D11DeviceContext * #1
+  - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -94,6 +97,9 @@
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
+- Call: ID3D11DeviceContext::RSSetState
+  - Context: ID3D11DeviceContext * #1
+  - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -150,6 +156,9 @@
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
+- Call: ID3D11DeviceContext::RSSetState
+  - Context: ID3D11DeviceContext * #1
+  - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -206,6 +215,9 @@
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
+- Call: ID3D11DeviceContext::RSSetState
+  - Context: ID3D11DeviceContext * #1
+  - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -262,6 +274,9 @@
   - ClearFlags: D3D11_CLEAR_DEPTH
   - Depth: 1
   - Stencil: 0
+- Call: ID3D11DeviceContext::RSSetState
+  - Context: ID3D11DeviceContext * #1
+  - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1

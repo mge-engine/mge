@@ -1106,6 +1106,10 @@ namespace mge::vulkan {
         if (ub_data->version != ub.version()) {
             if (ub_data->mapped_data) {
                 memcpy(ub_data->mapped_data, ub.data(), ub.data_size());
+                CHECK_VK_CALL(vmaFlushAllocation(m_allocator,
+                                                 ub_data->allocation,
+                                                 0,
+                                                 ub.data_size()));
             }
             ub_data->version = ub.version();
         }
