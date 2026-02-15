@@ -14,6 +14,7 @@
 
 struct nk_context;
 struct nk_user_font;
+struct nk_font_atlas;
 
 namespace mge {
     class input_handler;
@@ -148,7 +149,7 @@ namespace mge {
         bool handle_mouse_wheel(int32_t x, int32_t y);
 
         nk_context*    m_context;
-        nk_user_font*  m_font;
+        nk_font_atlas* m_font_atlas;
         bool           m_in_frame{false};
         input_handler* m_input_handler{nullptr};
         uint32_t       m_key_action_handler_key{0};

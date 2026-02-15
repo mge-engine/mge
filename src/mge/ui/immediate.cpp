@@ -12,6 +12,9 @@
 #include "mge/input/mouse_action.hpp"
 
 #define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
 
 #ifdef _MSC_VER
 #    pragma warning(push)
@@ -61,24 +64,29 @@ namespace mge {
 
     mge::singleton<nk_allocator_instance> nk_allocator_instance::instance;
 
-    static float
-    dummy_font_width(nk_handle handle, float h, const char* text, int len)
-    {
-        (void)handle;
-        (void)h;
-        (void)text;
-        return len * 10.0f; // Simple fixed-width font for testing
-    }
-
     immediate_ui::immediate_ui()
         : m_context(new nk_context())
-        , m_font(new nk_user_font())
+        , m_font_atlas(new nk_font_atlas())
     {
-        m_font->userdata = nk_handle_ptr(nullptr);
-        m_font->height = 14.0f;
-        m_font->width = dummy_font_width;
+        // Initialize font atlas with custom allocator
+        nk_font_atlas_init(m_font_atlas, nk_allocator_instance::instance->get());
 
-        nk_init(m_context, nk_allocator_instance::instance->get(), m_font);
+        // Begin font atlas baking
+        nk_font_atlas_begin(m_font_atlas);
+
+        // Add default font at 13px
+        nk_font* font = nk_font_atlas_add_default(m_font_atlas, 13.0f, nullptr);
+
+        // Bake font atlas
+        int width, height;
+        const void* image = nk_font_atlas_bake(m_font_atlas, &width, &height, NK_FONT_ATLAS_RGBA32);
+        
+        // End font atlas baking (pass null texture for now)
+        nk_font_atlas_end(m_font_atlas, nk_handle_ptr(nullptr), nullptr);
+
+        // Initialize context with allocator and font
+        nk_init(m_context, nk_allocator_instance::instance->get(), &font->handle);
+        
         start_frame();
     }
 
@@ -90,9 +98,10 @@ namespace mge {
             delete m_context;
             m_context = nullptr;
         }
-        if (m_font) {
-            delete m_font;
-            m_font = nullptr;
+        if (m_font_atlas) {
+            nk_font_atlas_clear(m_font_atlas);
+            delete m_font_atlas;
+            m_font_atlas = nullptr;
         }
     }
 
