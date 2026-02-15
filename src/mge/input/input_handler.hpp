@@ -24,6 +24,11 @@ namespace mge {
     {
     public:
         /**
+         * Key type for handler registration.
+         */
+        using key_type = uint32_t;
+
+        /**
          * Handler function for mouse actions.
          * @return true if event was consumed, false otherwise
          */
@@ -75,33 +80,64 @@ namespace mge {
         virtual ~input_handler();
 
         /**
-         * Sets the handler used to dispatch mouse actions.
+         * Adds a handler for mouse actions.
          * @param handler mouse action handler
+         * @return key for later removal
          */
-        void set_mouse_action_handler(const mouse_action_handler& handler);
+        key_type add_mouse_action_handler(const mouse_action_handler& handler);
         /**
-         * Sets the handler used to dispatch mouse movement.
+         * Adds a handler for mouse movement.
          * @param handler mouse movement handler
+         * @return key for later removal
          */
-        void set_mouse_move_handler(const mouse_move_handler& handler);
+        key_type add_mouse_move_handler(const mouse_move_handler& handler);
 
         /**
-         * Sets the handler used to dispatch mouse wheel input.
+         * Adds a handler for mouse wheel input.
          * @param handler mouse wheel handler
+         * @return key for later removal
          */
-        void set_mouse_wheel_handler(const mouse_wheel_handler& handler);
+        key_type add_mouse_wheel_handler(const mouse_wheel_handler& handler);
 
         /**
-         * Sets the handler used to dispatch key actions.
+         * Adds a handler for key actions.
          * @param handler key action handler
+         * @return key for later removal
          */
-        void set_key_action_handler(const key_action_handler& handler);
+        key_type add_key_action_handler(const key_action_handler& handler);
 
         /**
-         * Sets the handler used to dispatch character input.
+         * Adds a handler for character input.
          * @param handler character input handler
+         * @return key for later removal
          */
-        void set_character_handler(const character_handler& handler);
+        key_type add_character_handler(const character_handler& handler);
+
+        /**
+         * Removes a mouse action handler.
+         * @param key handler key returned from add_mouse_action_handler
+         */
+        void remove_mouse_action_handler(key_type key);
+        /**
+         * Removes a mouse move handler.
+         * @param key handler key returned from add_mouse_move_handler
+         */
+        void remove_mouse_move_handler(key_type key);
+        /**
+         * Removes a mouse wheel handler.
+         * @param key handler key returned from add_mouse_wheel_handler
+         */
+        void remove_mouse_wheel_handler(key_type key);
+        /**
+         * Removes a key action handler.
+         * @param key handler key returned from add_key_action_handler
+         */
+        void remove_key_action_handler(key_type key);
+        /**
+         * Removes a character handler.
+         * @param key handler key returned from add_character_handler
+         */
+        void remove_character_handler(key_type key);
 
         /**
          * @brief Clears the mouse action handler.
@@ -189,11 +225,12 @@ namespace mge {
     private:
         void update_key_state(key k, key_action action);
 
-        mouse_action_handler m_mouse_action_handler;
-        mouse_move_handler   m_mouse_move_handler;
-        mouse_wheel_handler  m_mouse_wheel_handler;
-        key_action_handler   m_key_action_handler;
-        character_handler    m_character_handler;
+        std::map<key_type, mouse_action_handler> m_mouse_action_handlers;
+        std::map<key_type, mouse_move_handler>   m_mouse_move_handlers;
+        std::map<key_type, mouse_wheel_handler>  m_mouse_wheel_handlers;
+        std::map<key_type, key_action_handler>   m_key_action_handlers;
+        std::map<key_type, character_handler>    m_character_handlers;
+        key_type                                 m_next_key{0};
 
     protected:
         input_state m_input_state;
