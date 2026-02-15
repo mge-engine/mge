@@ -117,6 +117,34 @@
 <p>They are used to record commands that will be sent to the GPU. In a multi-threaded
 application, command buffers can be recorded on multiple threads and then submitted
 to the GPU on a single thread.</p>
+<section id="pipeline-state">
+<h2>Pipeline State<a class="headerlink" href="#pipeline-state" title="Link to this heading"></a></h2>
+<p>The pipeline state encapsulates all configuration for the graphics rendering pipeline,
+including depth/stencil testing, blending, rasterization, face culling, and other
+rendering parameters.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pipeline_state</span></code> class uses a compact bitfield representation to efficiently
+store all state flags and parameters. Command buffers maintain a current pipeline
+state that is captured with each draw call.</p>
+<p>Key state components controlled by pipeline state:</p>
+<ul class="simple">
+<li><p><strong>Depth testing</strong>: Comparison function and write enable</p></li>
+<li><p><strong>Blending</strong>: Operations and factors for color/alpha composition</p></li>
+<li><p><strong>Face culling</strong>: Which triangle faces to discard</p></li>
+<li><p><strong>Primitive topology</strong>: Triangle list, strip, line list, or points</p></li>
+<li><p><strong>Color write mask</strong>: Which color channels to write</p></li>
+<li><p><strong>Stencil operations</strong>: Stencil testing and operations</p></li>
+<li><p><strong>Depth bias</strong>: For shadow mapping and Z-fighting prevention</p></li>
+</ul>
+<p>The command buffer provides convenient methods to configure common state changes,
+which internally update the current pipeline state.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14pipeline_stateE">
+<span id="_CPPv3N3mge14pipeline_stateE"></span><span id="_CPPv2N3mge14pipeline_stateE"></span><span id="mge::pipeline_state"></span><span class="target" id="classmge_1_1pipeline__state"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pipeline_state</span></span></span><a class="headerlink" href="#_CPPv4N3mge14pipeline_stateE" title="Link to this definition"></a><br /></dt>
+<dd><p>Pipeline state configuration for graphics rendering. </p>
+<p>Encapsulates graphics pipeline state including depth/stencil, blending, rasterization, topology, MSAA, and other render state. </p>
+</dd></dl>
+
+</section>
 <section id="blend-state">
 <h2>Blend State<a class="headerlink" href="#blend-state" title="Link to this heading"></a></h2>
 <p>Command buffers support configuring blend state for transparency and compositing effects.
@@ -143,12 +171,72 @@ colors are combined.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmd</span><span class="o">.</span><span class="n">blend_opaque</span><span class="p">();</span>
 </pre></div>
 </div>
+</section>
+<section id="face-culling">
+<h2>Face Culling<a class="headerlink" href="#face-culling" title="Link to this heading"></a></h2>
+<p>Face culling is a rendering optimization that discards triangles (faces) based on their
+orientation relative to the camera. This is commonly used to avoid rendering the back
+faces of solid objects, improving performance.</p>
+<p>Culling mode determines which faces are discarded:</p>
+<ul class="simple">
+<li><p><strong>NONE</strong>: No culling - both front and back faces are rendered (default)</p></li>
+<li><p><strong>CLOCKWISE</strong>: Cull clockwise-facing triangles</p></li>
+<li><p><strong>COUNTER_CLOCKWISE</strong>: Cull counter-clockwise-facing triangles</p></li>
+</ul>
+<p>The winding order of a triangle is determined by the order of its vertices when viewed
+from the camera. Typically, counter-clockwise culling is used to hide back faces of
+models with counter-clockwise front faces.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">command_buffer</span> <span class="n">cmd</span><span class="p">;</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">cull_face</span><span class="p">(</span><span class="n">cull_mode</span><span class="p">::</span><span class="n">COUNTER_CLOCKWISE</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Cull</span> <span class="n">back</span> <span class="n">faces</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To disable culling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmd</span><span class="o">.</span><span class="n">cull_face</span><span class="p">(</span><span class="n">cull_mode</span><span class="p">::</span><span class="n">NONE</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="depth-testing">
+<h2>Depth Testing<a class="headerlink" href="#depth-testing" title="Link to this heading"></a></h2>
+<p>Depth testing determines which fragments are visible based on their depth values,
+enabling proper rendering of 3D scenes with occluded geometry.</p>
+<p>The depth test compares the fragment’s depth with the depth buffer value using
+a comparison function. If the test passes, the fragment is rendered and optionally
+the depth buffer is updated.</p>
+<p>Example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">command_buffer</span> <span class="n">cmd</span><span class="p">;</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">depth_test_function</span><span class="p">(</span><span class="n">test</span><span class="p">::</span><span class="n">LESS</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Standard</span> <span class="n">depth</span> <span class="n">test</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">depth_write</span><span class="p">(</span><span class="n">true</span><span class="p">);</span>                <span class="o">//</span> <span class="n">Enable</span> <span class="n">depth</span> <span class="n">writes</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Example for transparent objects (read depth, don’t write):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmd</span><span class="o">.</span><span class="n">depth_test_function</span><span class="p">(</span><span class="n">test</span><span class="p">::</span><span class="n">LESS</span><span class="p">);</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">depth_write</span><span class="p">(</span><span class="n">false</span><span class="p">);</span>  <span class="o">//</span> <span class="n">Don</span><span class="s1">&#39;t write to depth buffer</span>
+<span class="n">cmd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_bufferE">
 <span id="_CPPv3N3mge14command_bufferE"></span><span id="_CPPv2N3mge14command_bufferE"></span><span id="mge::command_buffer"></span><span class="target" id="classmge_1_1command__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">command_buffer</span></span></span><a class="headerlink" href="#_CPPv4N3mge14command_bufferE" title="Link to this definition"></a><br /></dt>
 <dd><p>A command buffer records rendering commands to be submitted to a render context. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer9cull_faceEN3mge9cull_modeE">
+<span id="_CPPv3N3mge14command_buffer9cull_faceEN3mge9cull_modeE"></span><span id="_CPPv2N3mge14command_buffer9cull_faceEN3mge9cull_modeE"></span><span id="mge::command_buffer::cull_face__mge::cull_mode"></span><span class="target" id="classmge_1_1command__buffer_1af0c4b106cd7755ef407d9eda130769ec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cull_face</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">cull_mode</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge14command_buffer9cull_faceEN3mge9cull_modeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set face culling mode for subsequent draw commands. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> – culling mode (NONE, CLOCKWISE, or COUNTER_CLOCKWISE) </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer12blend_opaqueEv">
 <span id="_CPPv3N3mge14command_buffer12blend_opaqueEv"></span><span id="_CPPv2N3mge14command_buffer12blend_opaqueEv"></span><span id="mge::command_buffer::blend_opaque"></span><span class="target" id="classmge_1_1command__buffer_1ab1ad1efbbd0225046c056a2356cee59b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">blend_opaque</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer12blend_opaqueEv" title="Link to this definition"></a><br /></dt>
@@ -223,6 +311,13 @@ colors are combined.</p>
 </dd></dl>
 
 </div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp">
+<span class="target" id="classmge_1_1pipeline__state"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pipeline_state</span></span></span><br /></dt>
+<dd><p>Pipeline state configuration for graphics rendering. </p>
+<p>Encapsulates graphics pipeline state including depth/stencil, blending, rasterization, topology, MSAA, and other render state. </p>
 </dd></dl>
 
 <dl class="cpp enum-class">
@@ -391,6 +486,57 @@ colors are combined.</p>
 <span id="_CPPv3N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE"></span><span id="_CPPv2N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE"></span><span class="target" id="namespacemge_1a6762f8221471ed96e07388ff1bfe4b24a719bbe74905414513bd3c49d86563aa9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ONE_MINUS_SRC1_ALPHA</span></span></span><a class="headerlink" href="#_CPPv4N3mge12blend_factor20ONE_MINUS_SRC1_ALPHAE" title="Link to this definition"></a><br /></dt>
 <dd><p>Factor is (1 - secondary source alpha) </p>
 </dd></dl>
+
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenenum: Cannot find enum “mge::cull_mode” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4testE">
+<span id="_CPPv3N3mge4testE"></span><span id="_CPPv2N3mge4testE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">test</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge4testE" title="Link to this definition"></a><br /></dt>
+<dd><p>Test conditions used in pipeline setup. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test5NEVERE">
+<span id="_CPPv3N3mge4test5NEVERE"></span><span id="_CPPv2N3mge4test5NEVERE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a443475558f0168dff92ecde26b98ae5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NEVER</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test5NEVERE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test4LESSE">
+<span id="_CPPv3N3mge4test4LESSE"></span><span id="_CPPv2N3mge4test4LESSE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a1798e8c3621ca53d9e3a80d257306000"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LESS</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test4LESSE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test5EQUALE">
+<span id="_CPPv3N3mge4test5EQUALE"></span><span id="_CPPv2N3mge4test5EQUALE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a969f331a87d8c958473c32b4d0e61a44"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">EQUAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test5EQUALE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test10LESS_EQUALE">
+<span id="_CPPv3N3mge4test10LESS_EQUALE"></span><span id="_CPPv2N3mge4test10LESS_EQUALE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a8b4a5cd69b217bf93b054ada7f49abd4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LESS_EQUAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test10LESS_EQUALE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test7GREATERE">
+<span id="_CPPv3N3mge4test7GREATERE"></span><span id="_CPPv2N3mge4test7GREATERE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5ae7e72355289e404b762d4cf88824d23b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GREATER</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test7GREATERE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test9NOT_EQUALE">
+<span id="_CPPv3N3mge4test9NOT_EQUALE"></span><span id="_CPPv2N3mge4test9NOT_EQUALE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a4ea2d378cdec20f59330f113297bc1ce"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NOT_EQUAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test9NOT_EQUALE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test13GREATER_EQUALE">
+<span id="_CPPv3N3mge4test13GREATER_EQUALE"></span><span id="_CPPv2N3mge4test13GREATER_EQUALE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5a87e6b203bf40967d37a33f9a4438561a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GREATER_EQUAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test13GREATER_EQUALE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4test6ALWAYSE">
+<span id="_CPPv3N3mge4test6ALWAYSE"></span><span id="_CPPv2N3mge4test6ALWAYSE"></span><span class="target" id="namespacemge_1ae0d8e7586d958feb944eeca8f74774e5af3fc827ade4b968e50406496907ef962"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALWAYS</span></span></span><a class="headerlink" href="#_CPPv4N3mge4test6ALWAYSE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
