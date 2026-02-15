@@ -5,6 +5,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/input/input_handler.hpp"
 #include "mge/input/key.hpp"
 #include "mge/input/key_action.hpp"
@@ -160,6 +161,19 @@ namespace mge {
     bool immediate_ui::slider(float min, float& value, float max, float step)
     {
         return nk_slider_float(m_context, min, &value, max, step) != 0;
+    }
+
+    void immediate_ui::draw(mge::pass& pass)
+    {
+        // TODO: Implement Nuklear rendering
+        // This requires:
+        // 1. Convert Nuklear draw commands to vertex/index buffers
+        // 2. Create shader program for UI rendering
+        // 3. Upload font texture
+        // 4. Iterate through draw commands and submit to pass
+        
+        // For now, just mark pass as touched so it renders
+        pass.touch();
     }
 
     void immediate_ui::attach(input_handler& handler)

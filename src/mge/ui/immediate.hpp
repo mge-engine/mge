@@ -9,6 +9,7 @@
 #include "mge/input/modifier.hpp"
 #include "mge/input/mouse_action.hpp"
 #include "mge/ui/dllexport.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 
 #include <cstdint>
 
@@ -18,6 +19,7 @@ struct nk_font_atlas;
 
 namespace mge {
     class input_handler;
+    class pass;
 
     MGE_DECLARE_REF(immediate_ui);
 
@@ -134,6 +136,13 @@ namespace mge {
          * @return true if value changed
          */
         bool slider(float min, float& value, float max, float step);
+
+        /**
+         * @brief Draw UI to render pass
+         *
+         * @param pass render pass to draw to
+         */
+        void draw(mge::pass& pass);
 
     private:
         void start_frame();
