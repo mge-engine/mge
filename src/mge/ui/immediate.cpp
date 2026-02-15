@@ -2,10 +2,11 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/ui/immediate.hpp"
+#include "mge/core/memory.hpp"
+#include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 
 #define NK_INCLUDE_FIXED_TYPES
-#define NK_INCLUDE_DEFAULT_ALLOCATOR
 
 #ifdef _MSC_VER
 #    pragma warning(push)
@@ -19,6 +20,45 @@
 #endif
 
 namespace mge {
+
+    static void* nk_mge_alloc(nk_handle unused, void* old, nk_size size)
+    {
+        (void)unused;
+        (void)old;
+        if (size == 0) {
+            return nullptr;
+        }
+        return mge::malloc(size);
+    }
+
+    static void nk_mge_free(nk_handle unused, void* ptr)
+    {
+        (void)unused;
+        mge::free(ptr);
+    }
+
+    class nk_allocator_instance
+    {
+    public:
+        nk_allocator_instance()
+        {
+            m_allocator.userdata = nk_handle_ptr(nullptr);
+            m_allocator.alloc = nk_mge_alloc;
+            m_allocator.free = nk_mge_free;
+        }
+
+        nk_allocator* get()
+        {
+            return &m_allocator;
+        }
+
+        static mge::singleton<nk_allocator_instance> instance;
+
+    private:
+        nk_allocator m_allocator;
+    };
+
+    mge::singleton<nk_allocator_instance> nk_allocator_instance::instance;
 
     static float
     dummy_font_width(nk_handle handle, float h, const char* text, int len)
@@ -36,7 +76,8 @@ namespace mge {
         m_font->userdata = nk_handle_ptr(nullptr);
         m_font->height = 14.0f;
         m_font->width = dummy_font_width;
-        nk_init_default(m_context, m_font);
+
+        nk_init(m_context, nk_allocator_instance::instance->get(), m_font);
         start_frame();
     }
 
