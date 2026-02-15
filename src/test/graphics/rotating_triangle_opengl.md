@@ -3,12 +3,12 @@
 # Frames
 ## Frame 1
 - Call: Internal::Context Configuration
-  - Context: _ignored_
-  - FBO: _ignored_
-  - InitParams: _ignored_
+  - Context: ResourceId #1
+  - FBO: ResourceId #2
+  - InitParams: {colorBits: 32, depthBits: 24, stencilBits: 8, isSRGB: 1, multiSamples: 1, width: 800, height: 600, isYFlipped: false, renderer: None, version: None}
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -37,7 +37,7 @@
 ## Frame 2
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -67,45 +67,45 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: _ignored_
+  - program: GLResource #1
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBufferData
-  - buffer: _ignored_
+  - buffer: GLResource #2
   - bytesize: 16
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBufferSubData
-  - buffer: _ignored_
+  - buffer: GLResource #2
   - offset: 0
   - bytesize: 16
   - data: _ignored_
 - Call: glUniformBlockBinding
-  - program: _ignored_
+  - program: GLResource #1
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
 - Call: glBindBuffer
   - target: GL_ARRAY_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #4
 - Call: glBindBuffer
   - target: GL_ELEMENT_ARRAY_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #5
 - Call: glEnableVertexAttribArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
   - index: 0
 - Call: glVertexAttribPointer
-  - vaobj: _ignored_
-  - buffer: _ignored_
+  - vaobj: GLResource #3
+  - buffer: GLResource #4
   - index: 0
   - size: 3
   - type: GL_FLOAT
@@ -113,25 +113,25 @@
   - stride: 12
   - offset: 0
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #6
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #6
 - Call: glUseProgram
-  - program: _ignored_
+  - program: null
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 3
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -161,41 +161,41 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: _ignored_
+  - program: GLResource #1
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBufferSubData
-  - buffer: _ignored_
+  - buffer: GLResource #2
   - offset: 0
   - bytesize: 16
   - data: _ignored_
 - Call: glUniformBlockBinding
-  - program: _ignored_
+  - program: GLResource #1
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #6
 - Call: glUseProgram
-  - program: _ignored_
+  - program: null
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 4
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -225,41 +225,41 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: _ignored_
+  - program: GLResource #1
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBufferSubData
-  - buffer: _ignored_
+  - buffer: GLResource #2
   - offset: 0
   - bytesize: 16
   - data: _ignored_
 - Call: glUniformBlockBinding
-  - program: _ignored_
+  - program: GLResource #1
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #6
 - Call: glUseProgram
-  - program: _ignored_
+  - program: null
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 5
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
-  - framebuffer: _ignored_
+  - framebuffer: null
 - Call: glViewport
   - x: 0
   - y: 0
@@ -289,34 +289,34 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: _ignored_
+  - program: GLResource #1
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBufferSubData
-  - buffer: _ignored_
+  - buffer: GLResource #2
   - offset: 0
   - bytesize: 16
   - data: _ignored_
 - Call: glUniformBlockBinding
-  - program: _ignored_
+  - program: GLResource #1
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: _ignored_
+  - buffer: GLResource #2
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #3
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: _ignored_
+  - vaobj: GLResource #6
 - Call: glUseProgram
-  - program: _ignored_
+  - program: null
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers

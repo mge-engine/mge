@@ -15,6 +15,4 @@ TARGET_LINK_LIBRARIES(rotating_triangle
     mgemath)
 
 MGE_CAPTURE_TEST(TARGET rotating_triangle
-                 RENDER_SYSTEMS opengl)
-                 
-                 #directx11 directx12 vulkan)
+                 RENDER_SYSTEMS opengl directx11 directx12 vulkan)

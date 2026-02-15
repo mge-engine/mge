@@ -1141,6 +1141,10 @@ namespace mge::dx12 {
             rasterizer_desc.CullMode = D3D12_CULL_MODE_BACK;
             break;
         }
+        if (state.test(pipeline_state::CONSERVATIVE_RASTERIZATION)) {
+            rasterizer_desc.ConservativeRaster =
+                D3D12_CONSERVATIVE_RASTERIZATION_MODE_ON;
+        }
         pso_desc.RasterizerState = rasterizer_desc;
         if (blend_operation::NONE == state.color_blend_operation()) {
             pso_desc.BlendState = m_blend_desc_no_blend;

@@ -145,6 +145,15 @@ namespace mge::opengl {
         init_gl3w();
         collect_opengl_info();
 
+        // Check for conservative rasterization support
+        const auto& exts = gl_info().extensions;
+        m_conservative_rasterization_supported =
+            exts.find("GL_NV_conservative_raster") != exts.end() ||
+            exts.find("GL_INTEL_conservative_rasterization") != exts.end();
+        if (m_conservative_rasterization_supported) {
+            MGE_INFO_TRACE(OPENGL, "Conservative rasterization supported");
+        }
+
         // Set clip control to keep OpenGL Y orientation while using 0..1 depth
         // - GL_LOWER_LEFT: keep OpenGL viewport origin
         // - GL_ZERO_TO_ONE: depth range [0,1] (matches DirectX/Vulkan)
@@ -507,6 +516,13 @@ namespace mge::opengl {
         glEnable(GL_DEPTH_TEST);
         CHECK_OPENGL_ERROR(glEnable);
 
+#ifndef GL_CONSERVATIVE_RASTERIZATION_NV
+#    define GL_CONSERVATIVE_RASTERIZATION_NV 0x9346
+#endif
+#ifndef GL_CONSERVATIVE_RASTERIZATION_INTEL
+#    define GL_CONSERVATIVE_RASTERIZATION_INTEL 0x9346
+#endif
+
         bool blend_pass_needed = false;
         p.for_each_draw_command(
             [this, &blend_pass_needed](const program_handle&       program,
@@ -534,11 +550,22 @@ namespace mge::opengl {
                         glDepthMask(GL_FALSE);
                         CHECK_OPENGL_ERROR(glDepthMask);
                     }
+                    bool conservative_raster_enabled =
+                        m_conservative_rasterization_supported &&
+                        state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
+                    if (conservative_raster_enabled) {
+                        glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glEnable);
+                    }
                     draw_geometry(program.get(),
                                   vertices.get(),
                                   indices.get(),
                                   ub,
                                   tex);
+                    if (conservative_raster_enabled) {
+                        glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glDisable);
+                    }
                     if (!state.depth_write()) {
                         glDepthMask(GL_TRUE);
                         CHECK_OPENGL_ERROR(glDepthMask);
@@ -606,11 +633,22 @@ namespace mge::opengl {
                         }
                         CHECK_OPENGL_ERROR(glDepthMask);
                     }
+                    bool conservative_raster_enabled =
+                        m_conservative_rasterization_supported &&
+                        state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
+                    if (conservative_raster_enabled) {
+                        glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glEnable);
+                    }
                     draw_geometry(program.get(),
                                   vertices.get(),
                                   indices.get(),
                                   ub,
                                   tex);
+                    if (conservative_raster_enabled) {
+                        glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glDisable);
+                    }
                     if (!state.depth_write()) {
                         glDepthMask(GL_TRUE);
                         CHECK_OPENGL_ERROR(glDepthMask);

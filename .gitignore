@@ -3,6 +3,7 @@
 # All rights reserved.
 
 build*/**/*
+**/__pycache__
 .vscode/*
 .vs
 mge.files

@@ -11,7 +11,7 @@
   - Resource: ID3D12Resource * #1
   - Subresource: 0
   - MappedData: _ignored_
-  - range: {Begin: 0, End: 60}
+  - range: {Begin: 0, End: 36}
 - Call: ID3D12GraphicsCommandList::CopyResource
   - pCommandList: ID3D12GraphicsCommandList * #2
   - pDstResource: ID3D12Resource * #2
@@ -31,7 +31,7 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 2
+  - Value: 1
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #3
   - CommandList: ID3D12GraphicsCommandList * #2
@@ -61,11 +61,11 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 3
+  - Value: 2
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 4
+  - Value: 3
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #4
   - CommandList: ID3D12GraphicsCommandList * #5
@@ -87,53 +87,13 @@
 - Call: ID3D12GraphicsCommandList::RSSetScissorRects
   - pCommandList: ID3D12GraphicsCommandList * #5
   - NumRects: 1
-  - pRects: [{left: 0, top: 0, right: 800, bottom: 600}]
+  - pRects: [{left: 0, top: 0, right: 0, bottom: 0}]
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RenderTargetView: {type: RTV, heap: ID3D12DescriptorHeap * #1, index: 0, Resource: ID3D12Resource * #5, Descriptor: {Format: DXGI_FORMAT_UNKNOWN, ViewDimension: D3D12_RTV_DIMENSION_UNKNOWN}}
-  - ColorRGBA: [0, 0, 0.20000000298023224, 1]
+  - ColorRGBA: [0, 0, 0, 1]
   - NumRects: 0
   - pRects: []
-- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - DepthStencilView: {type: DSV, heap: ID3D12DescriptorHeap * #2, index: 0, Resource: ID3D12Resource * #6, Descriptor: {Format: DXGI_FORMAT_D24_UNORM_S8_UINT, Flags: D3D12_DSV_FLAG_NONE, ViewDimension: D3D12_DSV_DIMENSION_TEXTURE2D, Texture2D: {MipSlice: 0}}}
-  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
-  - Depth: 1
-  - Stencil: 0
-  - NumRects: 0
-  - pRects: []
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - pRootSignature: ID3D12RootSignature * #1
-- Call: ID3D12GraphicsCommandList::SetPipelineState
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - pPipelineState: ID3D12PipelineState * #1
-- Call: ID3D12GraphicsCommandList::SetDescriptorHeaps
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - NumDescriptorHeaps: 1
-  - ppDescriptorHeaps: [ID3D12DescriptorHeap * #3]
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - RootParameterIndex: 0
-  - BaseDescriptor: {heap: ResourceId #1, index: 0}
-- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - StartSlot: 0
-  - NumViews: 1
-  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 60, StrideInBytes: 20}]
-- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - pView: {BufferLocation: {Buffer: ResourceId #3, Offset: 0}, SizeInBytes: 12, Format: DXGI_FORMAT_R32_UINT}
-- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - IndexCountPerInstance: 3
-  - InstanceCount: 1
-  - StartIndexLocation: 0
-  - BaseVertexLocation: 0
-  - StartInstanceLocation: 0
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
   - pCommandList: ID3D12GraphicsCommandList * #5
   - NumBarriers: 1
@@ -154,7 +114,7 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 5
+  - Value: 4
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #6
   - CommandList: ID3D12GraphicsCommandList * #5
@@ -197,14 +157,15 @@
 - Call: ID3D12GraphicsCommandList::SetPipelineState
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pPipelineState: ID3D12PipelineState * #1
-- Call: ID3D12GraphicsCommandList::SetDescriptorHeaps
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - NumDescriptorHeaps: 1
-  - ppDescriptorHeaps: [ID3D12DescriptorHeap * #3]
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+- Call: ID3D12Resource::Unmap
+  - Resource: ID3D12Resource * #9
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: {Begin: 0, End: 256}
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootConstantBufferView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RootParameterIndex: 0
-  - BaseDescriptor: {heap: ResourceId #1, index: 0}
+  - BufferLocation: {Buffer: ResourceId #1, Offset: 0}
 - Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
   - pCommandList: ID3D12GraphicsCommandList * #5
   - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
@@ -212,7 +173,7 @@
   - pCommandList: ID3D12GraphicsCommandList * #5
   - StartSlot: 0
   - NumViews: 1
-  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 60, StrideInBytes: 20}]
+  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 36, StrideInBytes: 12}]
 - Call: ID3D12GraphicsCommandList::IASetIndexBuffer
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pView: {BufferLocation: {Buffer: ResourceId #3, Offset: 0}, SizeInBytes: 12, Format: DXGI_FORMAT_R32_UINT}
@@ -243,7 +204,7 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 6
+  - Value: 5
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #7
   - CommandList: ID3D12GraphicsCommandList * #5
@@ -286,14 +247,15 @@
 - Call: ID3D12GraphicsCommandList::SetPipelineState
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pPipelineState: ID3D12PipelineState * #1
-- Call: ID3D12GraphicsCommandList::SetDescriptorHeaps
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - NumDescriptorHeaps: 1
-  - ppDescriptorHeaps: [ID3D12DescriptorHeap * #3]
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+- Call: ID3D12Resource::Unmap
+  - Resource: ID3D12Resource * #9
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: {Begin: 0, End: 256}
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootConstantBufferView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RootParameterIndex: 0
-  - BaseDescriptor: {heap: ResourceId #1, index: 0}
+  - BufferLocation: {Buffer: ResourceId #1, Offset: 0}
 - Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
   - pCommandList: ID3D12GraphicsCommandList * #5
   - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
@@ -301,7 +263,7 @@
   - pCommandList: ID3D12GraphicsCommandList * #5
   - StartSlot: 0
   - NumViews: 1
-  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 60, StrideInBytes: 20}]
+  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 36, StrideInBytes: 12}]
 - Call: ID3D12GraphicsCommandList::IASetIndexBuffer
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pView: {BufferLocation: {Buffer: ResourceId #3, Offset: 0}, SizeInBytes: 12, Format: DXGI_FORMAT_R32_UINT}
@@ -332,7 +294,7 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 7
+  - Value: 6
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #8
   - CommandList: ID3D12GraphicsCommandList * #5
@@ -375,14 +337,15 @@
 - Call: ID3D12GraphicsCommandList::SetPipelineState
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pPipelineState: ID3D12PipelineState * #1
-- Call: ID3D12GraphicsCommandList::SetDescriptorHeaps
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - NumDescriptorHeaps: 1
-  - ppDescriptorHeaps: [ID3D12DescriptorHeap * #3]
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+- Call: ID3D12Resource::Unmap
+  - Resource: ID3D12Resource * #9
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: {Begin: 0, End: 256}
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootConstantBufferView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RootParameterIndex: 0
-  - BaseDescriptor: {heap: ResourceId #1, index: 0}
+  - BufferLocation: {Buffer: ResourceId #1, Offset: 0}
 - Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
   - pCommandList: ID3D12GraphicsCommandList * #5
   - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
@@ -390,7 +353,7 @@
   - pCommandList: ID3D12GraphicsCommandList * #5
   - StartSlot: 0
   - NumViews: 1
-  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 60, StrideInBytes: 20}]
+  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 36, StrideInBytes: 12}]
 - Call: ID3D12GraphicsCommandList::IASetIndexBuffer
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pView: {BufferLocation: {Buffer: ResourceId #3, Offset: 0}, SizeInBytes: 12, Format: DXGI_FORMAT_R32_UINT}
@@ -421,7 +384,7 @@
 - Call: ID3D12CommandQueue::Signal
   - pQueue: ID3D12CommandQueue * #1
   - pFence: ID3D12Fence * #1
-  - Value: 8
+  - Value: 7
 - Call: ID3D12GraphicsCommandList::Reset
   - BakedCommandList: ID3D12GraphicsCommandList * #9
   - CommandList: ID3D12GraphicsCommandList * #5
@@ -464,14 +427,15 @@
 - Call: ID3D12GraphicsCommandList::SetPipelineState
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pPipelineState: ID3D12PipelineState * #1
-- Call: ID3D12GraphicsCommandList::SetDescriptorHeaps
-  - pCommandList: ID3D12GraphicsCommandList * #5
-  - NumDescriptorHeaps: 1
-  - ppDescriptorHeaps: [ID3D12DescriptorHeap * #3]
-- Call: ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+- Call: ID3D12Resource::Unmap
+  - Resource: ID3D12Resource * #9
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: {Begin: 0, End: 256}
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootConstantBufferView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RootParameterIndex: 0
-  - BaseDescriptor: {heap: ResourceId #1, index: 0}
+  - BufferLocation: {Buffer: ResourceId #1, Offset: 0}
 - Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
   - pCommandList: ID3D12GraphicsCommandList * #5
   - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
@@ -479,7 +443,7 @@
   - pCommandList: ID3D12GraphicsCommandList * #5
   - StartSlot: 0
   - NumViews: 1
-  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 60, StrideInBytes: 20}]
+  - pViews: [{BufferLocation: {Buffer: ResourceId #2, Offset: 0}, SizeInBytes: 36, StrideInBytes: 12}]
 - Call: ID3D12GraphicsCommandList::IASetIndexBuffer
   - pCommandList: ID3D12GraphicsCommandList * #5
   - pView: {BufferLocation: {Buffer: ResourceId #3, Offset: 0}, SizeInBytes: 12, Format: DXGI_FORMAT_R32_UINT}
