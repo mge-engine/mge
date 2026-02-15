@@ -112,6 +112,11 @@ namespace mge {
         m_in_frame = true;
     }
 
+    void immediate_ui::begin_frame()
+    {
+        nk_input_begin(m_context);
+    }
+
     void immediate_ui::frame()
     {
         if (!m_in_frame) {
