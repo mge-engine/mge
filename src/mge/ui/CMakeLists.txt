@@ -4,12 +4,12 @@
 
 SET(mgeui_sources
    common.cpp
-   immediate.cpp
+   ui.cpp
 )
 
 SET(mgeui_headers
     dllexport.hpp
-    immediate.hpp
+    ui.hpp
 )
 
 

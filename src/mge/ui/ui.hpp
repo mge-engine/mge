@@ -4,12 +4,13 @@
 #pragma once
 
 #include "mge/core/memory.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/input/key.hpp"
 #include "mge/input/key_action.hpp"
 #include "mge/input/modifier.hpp"
 #include "mge/input/mouse_action.hpp"
 #include "mge/ui/dllexport.hpp"
-#include "mge/graphics/graphics_fwd.hpp"
+
 
 #include <cstdint>
 
@@ -21,7 +22,7 @@ namespace mge {
     class input_handler;
     class pass;
 
-    MGE_DECLARE_REF(immediate_ui);
+    MGE_DECLARE_REF(ui);
 
     /**
      * @brief Immediate mode UI using nuklear library
@@ -30,23 +31,23 @@ namespace mge {
      * This is a wrapper around the nuklear library that fits into the
      * MGE framework.
      */
-    class MGEUI_EXPORT immediate_ui
+    class MGEUI_EXPORT ui
     {
     public:
         /**
          * @brief Construct immediate UI context
          */
-        immediate_ui();
+        ui();
 
         /**
          * @brief Destructor
          */
-        ~immediate_ui();
+        ~ui();
 
-        immediate_ui(const immediate_ui&) = delete;
-        immediate_ui& operator=(const immediate_ui&) = delete;
-        immediate_ui(immediate_ui&&) = delete;
-        immediate_ui& operator=(immediate_ui&&) = delete;
+        ui(const ui&) = delete;
+        ui& operator=(const ui&) = delete;
+        ui(ui&&) = delete;
+        ui& operator=(ui&&) = delete;
 
         /**
          * @brief Begin new frame

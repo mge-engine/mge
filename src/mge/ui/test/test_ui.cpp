@@ -1,26 +1,26 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "mge/ui/immediate.hpp"
+#include "mge/ui/ui.hpp"
 #include "test/googletest.hpp"
 
 namespace mge {
 
-    TEST(immediate_ui, creation)
+    TEST(ui, creation)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
         EXPECT_NE(ui, nullptr);
     }
 
-    TEST(immediate_ui, frame_lifecycle)
+    TEST(ui, frame_lifecycle)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
         EXPECT_NO_THROW(ui->frame());
     }
 
-    TEST(immediate_ui, window_lifecycle)
+    TEST(ui, window_lifecycle)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
 
         bool window_visible = ui->begin_window("Test Window", 0, 0, 200, 200);
         // Window may or may not be visible initially
@@ -30,9 +30,9 @@ namespace mge {
         ui->frame();
     }
 
-    TEST(immediate_ui, button_widget)
+    TEST(ui, button_widget)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             bool clicked = ui->button("Test Button");
@@ -44,9 +44,9 @@ namespace mge {
         ui->frame();
     }
 
-    TEST(immediate_ui, checkbox_widget)
+    TEST(ui, checkbox_widget)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             bool checked = false;
@@ -57,9 +57,9 @@ namespace mge {
         ui->frame();
     }
 
-    TEST(immediate_ui, slider_widget)
+    TEST(ui, slider_widget)
     {
-        auto ui = std::make_shared<immediate_ui>();
+        auto ui = std::make_shared<mge::ui>();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             float value = 50.0f;

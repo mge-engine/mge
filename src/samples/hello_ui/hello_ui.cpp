@@ -8,7 +8,7 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/window.hpp"
 #include "mge/input/input_handler.hpp"
-#include "mge/ui/immediate.hpp"
+#include "mge/ui/ui.hpp"
 
 namespace mge {
     MGE_DEFINE_TRACE(HELLO_UI);
@@ -36,7 +36,7 @@ namespace mge {
                     return false;
                 });
 
-            m_ui = std::make_shared<immediate_ui>();
+            m_ui = std::make_shared<ui>();
             m_ui->attach(*m_window);
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
@@ -84,7 +84,7 @@ namespace mge {
     private:
         render_system_ref m_render_system;
         window_ref        m_window;
-        immediate_ui_ref  m_ui;
+        ui_ref            m_ui;
         int               m_click_count = 0;
     };
 

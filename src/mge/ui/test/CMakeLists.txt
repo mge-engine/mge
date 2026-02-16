@@ -3,7 +3,7 @@
 # All rights reserved.
 
 SET(MGEUI_TEST_SOURCES
-    test_immediate.cpp
+    test_ui.cpp
 )
 
 MGE_TEST(

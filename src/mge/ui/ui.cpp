@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "mge/ui/immediate.hpp"
+#include "mge/ui/ui.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
@@ -67,7 +67,7 @@ namespace mge {
 
     mge::singleton<nk_allocator_instance> nk_allocator_instance::instance;
 
-    immediate_ui::immediate_ui()
+    ui::ui()
         : m_context(new nk_context())
         , m_font_atlas(new nk_font_atlas())
     {
@@ -99,7 +99,7 @@ namespace mge {
         start_frame();
     }
 
-    immediate_ui::~immediate_ui()
+    ui::~ui()
     {
         detach();
         if (m_context) {
@@ -114,18 +114,18 @@ namespace mge {
         }
     }
 
-    void immediate_ui::start_frame()
+    void ui::start_frame()
     {
         nk_clear(m_context);
         m_in_frame = true;
     }
 
-    void immediate_ui::begin_frame()
+    void ui::begin_frame()
     {
         nk_input_begin(m_context);
     }
 
-    void immediate_ui::frame()
+    void ui::frame()
     {
         if (!m_in_frame) {
             MGE_THROW(mge::illegal_state)
@@ -135,12 +135,12 @@ namespace mge {
         start_frame();
     }
 
-    bool immediate_ui::begin_window(const char* title,
-                                    float       x,
-                                    float       y,
-                                    float       width,
-                                    float       height,
-                                    uint32_t    flags)
+    bool ui::begin_window(const char* title,
+                          float       x,
+                          float       y,
+                          float       width,
+                          float       height,
+                          uint32_t    flags)
     {
         return nk_begin(m_context,
                         title,
@@ -148,22 +148,22 @@ namespace mge {
                         static_cast<nk_flags>(flags)) != 0;
     }
 
-    void immediate_ui::end_window()
+    void ui::end_window()
     {
         nk_end(m_context);
     }
 
-    bool immediate_ui::button(const char* label)
+    bool ui::button(const char* label)
     {
         return nk_button_label(m_context, label) != 0;
     }
 
-    void immediate_ui::label(const char* text, uint32_t alignment)
+    void ui::label(const char* text, uint32_t alignment)
     {
         nk_label(m_context, text, static_cast<nk_flags>(alignment));
     }
 
-    bool immediate_ui::checkbox(const char* label, bool& active)
+    bool ui::checkbox(const char* label, bool& active)
     {
         int state = active ? 1 : 0;
         int result = nk_checkbox_label(m_context, label, &state);
@@ -171,12 +171,12 @@ namespace mge {
         return result != 0;
     }
 
-    bool immediate_ui::slider(float min, float& value, float max, float step)
+    bool ui::slider(float min, float& value, float max, float step)
     {
         return nk_slider_float(m_context, min, &value, max, step) != 0;
     }
 
-    void immediate_ui::draw(mge::pass& pass)
+    void ui::draw(mge::pass& pass)
     {
         // TODO: Implement Nuklear rendering
         // This requires:
@@ -189,7 +189,7 @@ namespace mge {
         pass.touch();
     }
 
-    void immediate_ui::attach(input_handler& handler)
+    void ui::attach(input_handler& handler)
     {
         detach();
         m_input_handler = &handler;
@@ -217,7 +217,7 @@ namespace mge {
             });
     }
 
-    void immediate_ui::detach()
+    void ui::detach()
     {
         if (m_input_handler) {
             if (m_key_action_handler_key) {
@@ -249,8 +249,7 @@ namespace mge {
         }
     }
 
-    bool
-    immediate_ui::handle_key_action(key k, key_action action, const modifier& m)
+    bool ui::handle_key_action(key k, key_action action, const modifier& m)
     {
         MGE_DEBUG_TRACE(UI,
                         "Key action: key={}, action={}",
@@ -310,11 +309,11 @@ namespace mge {
         return true;
     }
 
-    bool immediate_ui::handle_mouse_action(uint32_t        button,
-                                           mouse_action    action,
-                                           const modifier& m,
-                                           uint32_t        x,
-                                           uint32_t        y)
+    bool ui::handle_mouse_action(uint32_t        button,
+                                 mouse_action    action,
+                                 const modifier& m,
+                                 uint32_t        x,
+                                 uint32_t        y)
     {
         nk_input_begin(m_context);
 
@@ -347,7 +346,7 @@ namespace mge {
         return true;
     }
 
-    bool immediate_ui::handle_mouse_move(uint32_t x, uint32_t y)
+    bool ui::handle_mouse_move(uint32_t x, uint32_t y)
     {
         nk_input_begin(m_context);
         nk_input_motion(m_context, static_cast<int>(x), static_cast<int>(y));
@@ -355,7 +354,7 @@ namespace mge {
         return true;
     }
 
-    bool immediate_ui::handle_character(uint32_t ch)
+    bool ui::handle_character(uint32_t ch)
     {
         nk_input_begin(m_context);
         nk_input_unicode(m_context, ch);
@@ -363,7 +362,7 @@ namespace mge {
         return true;
     }
 
-    bool immediate_ui::handle_mouse_wheel(int32_t x, int32_t y)
+    bool ui::handle_mouse_wheel(int32_t x, int32_t y)
     {
         nk_input_begin(m_context);
         struct nk_vec2 scroll;
