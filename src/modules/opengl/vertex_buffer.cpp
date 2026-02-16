@@ -39,7 +39,7 @@ namespace mge::opengl {
         glNamedBufferData(m_buffer,
                           mge::checked_cast<GLsizeiptr>(data_size),
                           data,
-                          GL_STATIC_DRAW);
+                          GL_DYNAMIC_DRAW);
         CHECK_OPENGL_ERROR(glNamedBufferData);
         set_ready(true);
     }
