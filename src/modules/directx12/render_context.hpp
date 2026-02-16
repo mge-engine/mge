@@ -146,7 +146,9 @@ namespace mge::dx12 {
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
                            mge::uniform_block*        ub,
-                           mge::texture*              tex);
+                           mge::texture*              tex,
+                           uint32_t                   index_count = 0,
+                           uint32_t                   index_offset = 0);
 
         void bind_uniform_block(ID3D12GraphicsCommandList* command_list,
                                 mge::dx12::program&        dx12_program,

@@ -387,7 +387,9 @@ namespace mge::dx11 {
                                     index_buffer_handle        indices,
                                     const mge::pipeline_state& state,
                                     mge::uniform_block*        ub,
-                                    mge::texture*              tex) {
+                                    mge::texture*              tex,
+                                    uint32_t                   index_count,
+                                    uint32_t                   index_offset) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
                 ID3D11RasterizerState* rs_state = this->rasterizer_state(state);
@@ -401,7 +403,9 @@ namespace mge::dx11 {
                               vertices.get(),
                               indices.get(),
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
                 if (!state.depth_write()) {
                     m_device_context->OMSetDepthStencilState(
                         m_depth_stencil_state.get(),
@@ -418,7 +422,9 @@ namespace mge::dx11 {
                                            index_buffer_handle        indices,
                                            const mge::pipeline_state& state,
                                            mge::uniform_block*        ub,
-                                           mge::texture*              tex) {
+                                           mge::texture*              tex,
+                                           uint32_t index_count,
+                                           uint32_t index_offset) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
                     ID3D11RasterizerState* rs_state =
@@ -442,7 +448,9 @@ namespace mge::dx11 {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                     if (!state.depth_write()) {
                         m_device_context->OMSetDepthStencilState(
                             m_depth_stencil_state.get(),
@@ -458,7 +466,9 @@ namespace mge::dx11 {
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
                                        mge::uniform_block* ub,
-                                       mge::texture*       tex)
+                                       mge::texture*       tex,
+                                       uint32_t            index_count,
+                                       uint32_t            index_offset)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -505,7 +515,23 @@ namespace mge::dx11 {
         const dx11::index_buffer* dx11_index_buffer =
             static_cast<const dx11::index_buffer*>(ib);
         ID3D11Buffer* ib_buffer = dx11_index_buffer->buffer();
-        m_device_context->IASetIndexBuffer(ib_buffer, DXGI_FORMAT_R32_UINT, 0);
+
+        DXGI_FORMAT index_format;
+        switch (dx11_index_buffer->element_type()) {
+        case mge::data_type::UINT16:
+            index_format = DXGI_FORMAT_R16_UINT;
+            break;
+        case mge::data_type::INT32:
+        case mge::data_type::UINT32:
+            index_format = DXGI_FORMAT_R32_UINT;
+            break;
+        default:
+            MGE_THROW(mge::illegal_state)
+                << "Unsupported index buffer type: "
+                << static_cast<int>(dx11_index_buffer->element_type());
+        }
+
+        m_device_context->IASetIndexBuffer(ib_buffer, index_format, 0);
 
         m_device_context->VSSetShader(
             dx11_vertex_shader->directx_vertex_shader(),
@@ -529,8 +555,10 @@ namespace mge::dx11 {
         }
 
         UINT element_count =
-            static_cast<UINT>(dx11_index_buffer->element_count());
-        m_device_context->DrawIndexed(element_count, 0, 0);
+            index_count > 0
+                ? index_count
+                : static_cast<UINT>(dx11_index_buffer->element_count());
+        m_device_context->DrawIndexed(element_count, index_offset, 0);
 
         // Unbind texture
         if (tex) {

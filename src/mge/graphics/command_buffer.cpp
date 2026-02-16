@@ -7,7 +7,9 @@ namespace mge {
 
     void command_buffer::draw(const program_handle&       program,
                               const vertex_buffer_handle& vertices,
-                              const index_buffer_handle&  indices)
+                              const index_buffer_handle&  indices,
+                              uint32_t                    index_count,
+                              uint32_t                    index_offset)
     {
         m_programs.push_back(program);
         m_vertex_buffers.push_back(vertices);
@@ -15,6 +17,8 @@ namespace mge {
         m_pipeline_states.push_back(m_current_pipeline_state);
         m_uniform_blocks.push_back(m_current_uniform_block);
         m_textures.push_back(m_current_texture);
+        m_index_counts.push_back(index_count);
+        m_index_offsets.push_back(index_offset);
         m_current_uniform_block = nullptr;
         m_current_texture = nullptr;
     }

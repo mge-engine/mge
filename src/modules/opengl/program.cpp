@@ -506,6 +506,10 @@ namespace mge::opengl {
                                 &max_name_length);
         CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_MAX_NAME_LENGTH));
 
+        MGE_DEBUG_TRACE(OPENGL,
+                        "Max uniform block name length: {}",
+                        max_name_length);
+
         std::vector<char> name_buffer(max_name_length);
 
         MGE_DEBUG_TRACE(OPENGL,
@@ -563,12 +567,23 @@ namespace mge::opengl {
                               : 0;
 
             // Collect each uniform member of this block
+            GLint max_uniform_name_length = 0;
+            glGetProgramInterfaceiv(m_program,
+                                    GL_UNIFORM,
+                                    GL_MAX_NAME_LENGTH,
+                                    &max_uniform_name_length);
+            CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_MAX_NAME_LENGTH));
+
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Max uniform (member) name length: {}",
+                            max_uniform_name_length);
+
             const GLenum member_props[] = {GL_NAME_LENGTH,
                                            GL_TYPE,
                                            GL_ARRAY_SIZE};
             const int    num_member_props =
                 sizeof(member_props) / sizeof(member_props[0]);
-            std::vector<char> member_name_buf(max_name_length);
+            std::vector<char> member_name_buf(max_uniform_name_length);
 
             for (GLint j = 0; j < num_uniforms; ++j) {
                 GLint member_values[num_member_props];
@@ -597,6 +612,11 @@ namespace mge::opengl {
                 GLenum      gl_member_type = member_values[1];
                 GLint       member_array_size = member_values[2];
                 auto        member_type = uniform_type_from_gl(gl_member_type);
+
+                MGE_DEBUG_TRACE(OPENGL,
+                                "  Raw member name: '{}' (length: {})",
+                                member_name,
+                                member_name_len);
 
                 if (member_type == mge::uniform_data_type::UNKNOWN) {
                     MGE_WARNING_TRACE(

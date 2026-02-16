@@ -120,7 +120,9 @@ namespace mge::vulkan {
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
                            mge::uniform_block*        ub,
-                           mge::texture*              tex);
+                           mge::texture*              tex,
+                           uint32_t                   index_count = 0,
+                           uint32_t                   index_offset = 0);
 
         void bind_uniform_block(VkCommandBuffer       command_buffer,
                                 mge::vulkan::program& vk_program,

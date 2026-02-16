@@ -32,10 +32,9 @@ namespace mge {
         if (!data || data->empty()) {
             return;
         }
-        if (data->size() != size()) {
-            MGE_THROW(illegal_state)
-                << "Data size " << data->size()
-                << " does not match buffer size " << size();
+        if (data->size() > size()) {
+            MGE_THROW(illegal_state) << "Data size " << data->size()
+                                     << " exceeds buffer size " << size();
         }
         auto self = this;
         context().prepare_frame(

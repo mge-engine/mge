@@ -919,7 +919,9 @@ namespace mge::dx12 {
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
                                     mge::uniform_block*              ub,
-                                    mge::texture*                    tex) {
+                                    mge::texture*                    tex,
+                                    uint32_t index_count,
+                                    uint32_t index_offset) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == blend_operation::NONE) {
                 draw_geometry(pass_command_list,
@@ -928,7 +930,9 @@ namespace mge::dx12 {
                               indices.get(),
                               state,
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
             } else {
                 blend_pass_needed = true;
             }
@@ -941,14 +945,18 @@ namespace mge::dx12 {
                     const mge::index_buffer_handle&  indices,
                     const mge::pipeline_state&       state,
                     mge::uniform_block*              ub,
-                    mge::texture*                    tex) {
+                    mge::texture*                    tex,
+                    uint32_t                         index_count,
+                    uint32_t                         index_offset) {
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
                                   indices.get(),
                                   state,
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                 });
         }
     }
@@ -959,7 +967,9 @@ namespace mge::dx12 {
                                        mge::index_buffer*         ib,
                                        const mge::pipeline_state& state,
                                        mge::uniform_block*        ub,
-                                       mge::texture*              tex)
+                                       mge::texture*              tex,
+                                       uint32_t                   index_count,
+                                       uint32_t                   index_offset)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
@@ -998,12 +1008,10 @@ namespace mge::dx12 {
         command_list->IASetVertexBuffers(0, 1, &(dx12_vertices->view()));
         auto dx12_indices = static_cast<dx12::index_buffer*>(ib);
         command_list->IASetIndexBuffer(&(dx12_indices->view()));
-        command_list->DrawIndexedInstanced(
-            static_cast<UINT>(dx12_indices->element_count()),
-            1,
-            0,
-            0,
-            0);
+        UINT count = index_count > 0
+                         ? index_count
+                         : static_cast<UINT>(dx12_indices->element_count());
+        command_list->DrawIndexedInstanced(count, 1, index_offset, 0, 0);
     }
 
     void

@@ -1267,7 +1267,9 @@ namespace mge::vulkan {
                                        mge::index_buffer*  ib,
                                        const mge::pipeline_state& state,
                                        mge::uniform_block*        ub,
-                                       mge::texture*              tex)
+                                       mge::texture*              tex,
+                                       uint32_t                   index_count,
+                                       uint32_t                   index_offset)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -1299,13 +1301,11 @@ namespace mge::vulkan {
                              vk_index_buffer->vk_buffer(),
                              0,
                              vk_index_buffer->vk_index_type());
-        vkCmdDrawIndexed(
-            command_buffer,
-            static_cast<uint32_t>(vk_index_buffer->element_count()),
-            1,
-            0,
-            0,
-            1);
+        uint32_t count =
+            index_count > 0
+                ? index_count
+                : static_cast<uint32_t>(vk_index_buffer->element_count());
+        vkCmdDrawIndexed(command_buffer, count, 1, index_offset, 0, 1);
     }
 
     void render_context::render(const mge::pass& p)
@@ -1415,7 +1415,9 @@ namespace mge::vulkan {
                                     const index_buffer_handle&  index_buffer,
                                     const mge::pipeline_state&  state,
                                     mge::uniform_block*         ub,
-                                    mge::texture*               tex) {
+                                    mge::texture*               tex,
+                                    uint32_t                    index_count,
+                                    uint32_t                    index_offset) {
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == mge::blend_operation::NONE) {
                 draw_geometry(command_buffer,
@@ -1424,7 +1426,9 @@ namespace mge::vulkan {
                               index_buffer.get(),
                               state,
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
             } else {
                 blend_pass_needed = true;
             }
@@ -1437,7 +1441,9 @@ namespace mge::vulkan {
                                  const index_buffer_handle&  index_buffer,
                                  const mge::pipeline_state&  state,
                                  mge::uniform_block*         ub,
-                                 mge::texture*               tex) {
+                                 mge::texture*               tex,
+                                 uint32_t                    index_count,
+                                 uint32_t                    index_offset) {
                     auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
@@ -1445,7 +1451,9 @@ namespace mge::vulkan {
                                   index_buffer.get(),
                                   state,
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                 });
         }
 

@@ -1,11 +1,13 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/test/mock_program.hpp"
 #include "mge/graphics/test/mock_render_context.hpp"
 #include "mge/graphics/test/mock_render_system.hpp"
+#include "mge/graphics/test/mock_shader.hpp"
+#include "mge/graphics/test/mock_texture.hpp"
 #include "mge/ui/ui.hpp"
 #include "test/googletest.hpp"
-
 
 namespace mge {
 
@@ -14,19 +16,48 @@ namespace mge {
     protected:
         void SetUp() override
         {
+            using ::testing::_;
+            using ::testing::Return;
+
             m_render_system = std::make_shared<MOCK_render_system>();
             m_render_context =
                 std::make_shared<MOCK_render_context>(*m_render_system);
+
+            // Create a mock texture that will be used by UI constructor
+            m_mock_texture =
+                std::make_shared<MOCK_texture>(*m_render_context,
+                                               mge::texture_type::TYPE_2D);
+
+            // Return this texture whenever create_texture is called
+            EXPECT_CALL(*m_render_context, create_texture(_))
+                .WillRepeatedly(Return(m_mock_texture));
+
+            // Allow any texture set_data calls without failure
+            EXPECT_CALL(*m_mock_texture, set_data(_, _, _, _))
+                .Times(::testing::AtLeast(0));
+
+            // Return nullptr for shaders/programs/buffers - handles will be
+            // invalid but won't crash
+            EXPECT_CALL(*m_render_context, on_create_shader(_))
+                .WillRepeatedly(Return(nullptr));
+            EXPECT_CALL(*m_render_context, on_create_program())
+                .WillRepeatedly(Return(nullptr));
+            EXPECT_CALL(*m_render_context, on_create_vertex_buffer(_, _))
+                .WillRepeatedly(Return(nullptr));
+            EXPECT_CALL(*m_render_context, on_create_index_buffer(_, _))
+                .WillRepeatedly(Return(nullptr));
         }
 
         void TearDown() override
         {
+            m_mock_texture.reset();
             m_render_context.reset();
             m_render_system.reset();
         }
 
         std::shared_ptr<MOCK_render_system>  m_render_system;
         std::shared_ptr<MOCK_render_context> m_render_context;
+        std::shared_ptr<MOCK_texture>        m_mock_texture;
     };
 
     TEST_F(ui_test, creation)

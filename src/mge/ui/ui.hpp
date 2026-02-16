@@ -5,6 +5,10 @@
 
 #include "mge/core/memory.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/index_buffer_handle.hpp"
+#include "mge/graphics/program_handle.hpp"
+#include "mge/graphics/vertex_buffer_handle.hpp"
+#include "mge/graphics/vertex_layout.hpp"
 #include "mge/input/key.hpp"
 #include "mge/input/key_action.hpp"
 #include "mge/input/modifier.hpp"
@@ -16,10 +20,14 @@
 struct nk_context;
 struct nk_user_font;
 struct nk_font_atlas;
+struct nk_buffer;
+struct nk_convert_config;
+struct nk_draw_null_texture;
 
 namespace mge {
     class input_handler;
     class pass;
+    class uniform_block;
 
     MGE_DECLARE_REF(ui);
 
@@ -104,6 +112,14 @@ namespace mge {
         void end_window();
 
         /**
+         * @brief Set dynamic row layout
+         *
+         * @param height row height
+         * @param cols number of columns
+         */
+        void layout_row_dynamic(float height, int cols);
+
+        /**
          * @brief Create a button
          *
          * @param label button label
@@ -140,6 +156,15 @@ namespace mge {
         bool slider(float min, float& value, float max, float step);
 
         /**
+         * @brief Create an editable text field
+         *
+         * @param buffer text buffer
+         * @param max_length maximum text length
+         * @return current text length
+         */
+        int edit_string(char* buffer, int* length, int max_length);
+
+        /**
          * @brief Draw UI to render pass
          *
          * @param pass render pass to draw to
@@ -169,6 +194,19 @@ namespace mge {
         uint32_t        m_mouse_move_handler_key{0};
         uint32_t        m_character_handler_key{0};
         uint32_t        m_mouse_wheel_handler_key{0};
+
+        // Rendering resources
+        texture_ref           m_font_texture;
+        program_handle        m_ui_program;
+        vertex_buffer_handle  m_vertex_buffer;
+        index_buffer_handle   m_index_buffer;
+        vertex_layout         m_vertex_layout;
+        uniform_block*        m_uniform_block{nullptr};
+        nk_buffer*            m_commands{nullptr};
+        nk_buffer*            m_vertices{nullptr};
+        nk_buffer*            m_indices{nullptr};
+        nk_convert_config*    m_convert_config{nullptr};
+        nk_draw_null_texture* m_null_texture{nullptr};
     };
 
 } // namespace mge

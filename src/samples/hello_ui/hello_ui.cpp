@@ -59,8 +59,10 @@ namespace mge {
             m_ui->begin_frame();
 
             if (m_ui->begin_window("Hello Window", 50, 50, 300, 200)) {
+                m_ui->layout_row_dynamic(30, 1);
                 m_ui->label("Welcome to MGE Immediate UI!");
 
+                m_ui->layout_row_dynamic(30, 1);
                 if (m_ui->button("Hello World")) {
                     m_click_count++;
                     MGE_INFO_TRACE(HELLO_UI,
@@ -68,9 +70,15 @@ namespace mge {
                                    m_click_count);
                 }
 
+                m_ui->layout_row_dynamic(30, 1);
                 std::string count_label =
                     "Button clicks: " + std::to_string(m_click_count);
                 m_ui->label(count_label.c_str());
+
+                m_ui->layout_row_dynamic(30, 1);
+                m_ui->edit_string(m_text_buffer,
+                                  &m_text_length,
+                                  sizeof(m_text_buffer));
 
                 m_ui->end_window();
             }
@@ -86,6 +94,8 @@ namespace mge {
         window_ref        m_window;
         ui_ref            m_ui;
         int               m_click_count = 0;
+        char              m_text_buffer[256] = "Type here...";
+        int               m_text_length = 12;
     };
 
     MGE_REGISTER_IMPLEMENTATION(hello_ui, mge::application, hello_ui);

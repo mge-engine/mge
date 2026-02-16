@@ -49,7 +49,9 @@ TEST(command_buffer, for_each_verifies_single_draw)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/) {
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/) {
         EXPECT_EQ(p, prog);
         EXPECT_EQ(v, vb);
         EXPECT_EQ(i, ib);
@@ -78,7 +80,9 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/) {
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(p, prog1);
@@ -120,7 +124,9 @@ TEST(command_buffer, for_each_verifies_blend_states)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/) {
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.color_blend_operation(),
@@ -166,7 +172,9 @@ TEST(command_buffer, depth_write_state)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/) {
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/) {
         ++count;
         if (count == 1) {
             EXPECT_TRUE(state.depth_write());
@@ -203,7 +211,9 @@ TEST(command_buffer, depth_test_function_state)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/) {
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.depth_test_function(), mge::test::LESS);

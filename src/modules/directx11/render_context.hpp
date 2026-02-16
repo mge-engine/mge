@@ -75,7 +75,9 @@ namespace mge::dx11 {
                                         mge::vertex_buffer* vb,
                                         mge::index_buffer*  ib,
                                         mge::uniform_block* ub,
-                                        mge::texture*       tex);
+                                        mge::texture*       tex,
+                                        uint32_t            index_count = 0,
+                                        uint32_t            index_offset = 0);
         void              bind_uniform_block(mge::dx11::program& dx11_program,
                                              mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);
