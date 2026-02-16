@@ -244,6 +244,12 @@ namespace mge {
         }
     }
 
+    index_buffer_handle render_context::create_index_buffer(data_type dt,
+                                                            size_t    data_size)
+    {
+        return create_index_buffer(dt, data_size, buffer_ref());
+    }
+
     vertex_buffer_handle render_context::create_vertex_buffer(
         const vertex_layout& layout, size_t data_size, const buffer_ref& data)
     {
@@ -265,6 +271,13 @@ namespace mge {
         } else {
             return vertex_buffer_handle();
         }
+    }
+
+    vertex_buffer_handle
+    render_context::create_vertex_buffer(const vertex_layout& layout,
+                                         size_t               data_size)
+    {
+        return create_vertex_buffer(layout, data_size, buffer_ref());
     }
 
     frame_buffer_handle render_context::create_frame_buffer()

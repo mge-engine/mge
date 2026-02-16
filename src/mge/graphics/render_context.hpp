@@ -58,9 +58,25 @@ namespace mge {
         virtual void on_destroy_index_buffer(index_buffer* ib);
 
     public:
+        /**
+         * @brief Create an index buffer with initial data.
+         * @param dt            index buffer data type
+         * @param data_size     size in bytes
+         * @param data          initial data
+         * @return created index buffer handle
+         */
         index_buffer_handle create_index_buffer(data_type         dt,
                                                 size_t            data_size,
                                                 const buffer_ref& data);
+
+        /**
+         * @brief Create an empty index buffer.
+         * Requires set_data() to be called before use.
+         * @param dt            index buffer data type
+         * @param data_size     size in bytes
+         * @return created index buffer handle
+         */
+        index_buffer_handle create_index_buffer(data_type dt, size_t data_size);
 
     protected:
         /**
@@ -82,15 +98,25 @@ namespace mge {
 
     public:
         /**
-         * @brief Create a vertex buffer object.
+         * @brief Create a vertex buffer object with initial data.
          * @param layout    vertex buffer layout
          * @param data_size size in bytes
          * @param data      initial data
-         * @return created vertex buffer
+         * @return created vertex buffer handle
          */
         vertex_buffer_handle create_vertex_buffer(const vertex_layout& layout,
                                                   size_t            data_size,
                                                   const buffer_ref& data);
+
+        /**
+         * @brief Create an empty vertex buffer.
+         * Requires set_data() to be called before use.
+         * @param layout    vertex buffer layout
+         * @param data_size size in bytes
+         * @return created vertex buffer handle
+         */
+        vertex_buffer_handle create_vertex_buffer(const vertex_layout& layout,
+                                                  size_t data_size);
 
     protected:
         /**
