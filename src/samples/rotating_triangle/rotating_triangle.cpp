@@ -8,6 +8,7 @@
  *
  * This sample showcases the following MGE features:
  * - Creating and managing uniform blocks from program metadata
+ * - Global uniform auto-wiring (angle uniform automatically syncs to block)
  * - Passing uniform data (rotation angle) from CPU to GPU
  * - Computing transformations in vertex shaders
  * - Separating update logic from rendering
@@ -15,6 +16,8 @@
  *
  * The triangle rotates at 45 degrees per second around the Z-axis.
  * Rotation is computed in the vertex shader using the angle uniform.
+ * The angle uniform is declared globally and automatically synchronized
+ * to any uniform block containing an 'angle' member.
  */
 
 #include "mge/application/application.hpp"
@@ -28,6 +31,7 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/topology.hpp"
+#include "mge/graphics/uniform.hpp"
 #include "mge/graphics/uniform_block.hpp"
 #include "mge/graphics/window.hpp"
 #include "mge/math/glm.hpp"
@@ -130,10 +134,11 @@ namespace mge {
                         m_rotation_angle -= 360.0f;
                     }
 
-                    // Update uniform block with new angle
-                    // This increments the block's version counter, triggering
-                    // GPU buffer update on next draw
-                    m_uniform_block->set("angle", m_rotation_angle);
+                    // Update global uniform - automatically syncs to uniform
+                    // block The global uniform system matches by name and
+                    // copies the value to any uniform block member named
+                    // "angle" before each draw
+                    m_angle_uniform = m_rotation_angle;
                 }
             }
         }
@@ -297,6 +302,7 @@ namespace mge {
         index_buffer_handle            m_indices;
         std::unique_ptr<uniform_block> m_uniform_block;
         float                          m_rotation_angle{0.0f};
+        uniform<float> m_angle_uniform{"angle"}; // Global uniform
     };
 
     MGE_REGISTER_IMPLEMENTATION(rotating_triangle,

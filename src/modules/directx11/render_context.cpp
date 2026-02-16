@@ -619,6 +619,9 @@ namespace mge::dx11 {
     void render_context::bind_uniform_block(mge::dx11::program& dx11_program,
                                             mge::uniform_block& ub)
     {
+        // Sync values from global uniforms
+        ub.sync_from_globals();
+
         // Get or create the D3D11 constant buffer for this block
         ID3D11Buffer* cbuffer = nullptr;
         auto          it = m_constant_buffers.find(&ub);

@@ -3,6 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/enum.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include <bitset>
 #include <iostream>
@@ -181,4 +183,36 @@ namespace mge {
         std::bitset<bitset_size()> m_bits;
     };
 
+} // namespace mge
+
+template <typename E, E M>
+struct fmt::formatter<mge::enum_set<E, M>>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::enum_set<E, M>& es, FormatContext& ctx) const
+    {
+        bool first = true;
+        for (auto value : mge::enum_values<E>()) {
+            if (static_cast<std::underlying_type_t<E>>(value) <
+                    static_cast<std::underlying_type_t<E>>(M) &&
+                es.test(value)) {
+                if (!first) {
+                    fmt::format_to(ctx.out(), "|");
+                }
+                fmt::format_to(ctx.out(), "{}", value);
+                first = false;
+            }
+        }
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    template <typename E, E M>
+    inline std::ostream& operator<<(std::ostream& os, const enum_set<E, M>& es)
+    {
+        fmt::print(os, "{}", es);
+        return os;
+    }
 } // namespace mge

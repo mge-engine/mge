@@ -38,7 +38,7 @@ AND USES THE FEWEST TOKENS POSSIBLE.
   - Enable at runtime: `$env:MGE_TRACE_ENABLED=1; $env:MGE_TRACE_TO_STDOUT=1`
 
 ### Dependencies
-  - use vcpkg ([vcpkg.json](vcpkg.json))
+  - use vcpkg ([vcpkg.json](../vcpkg.json))
 
 ## Build & Test Workflow
 
@@ -53,10 +53,10 @@ ctest --output-on-failure --test-dir build
 
 ### CMake Structure
 - use CMakePresets.json for settings
-- **Custom macros**: [cmake/modules/macros/](cmake/modules/macros/)
+- **Custom macros**: [cmake/modules/macros/](../cmake/modules/macros/)
   - `MGE_LIBRARY()`: library with auto-defined `BUILD_<TARGET>` flags
   - `MGE_TEST()`: Google Test integration with display/headless env handling
-  - Tests requiring display use `NEEDSDISPLAY` flag (see [cmake/modules/macros/test.cmake](cmake/modules/macros/test.cmake))
+  - Tests requiring display use `NEEDSDISPLAY` flag (see [../cmake/modules/macros/test.cmake](../cmake/modules/macros/test.cmake))
 
 ### Module Development
 Modules are built as `MODULE` or `SHARED` libraries:
@@ -76,7 +76,7 @@ They export component implementations discoverable at runtime.
 - Avoid common suffixes like `_type` (use C++ standard library naming where applicable)
 
 ### Code Style
-Enforced by [.clang-format](.clang-format):
+Enforced by [.clang-format](../.clang-format):
 - 4 spaces, no tabs
 - Pointer/reference left-aligned: `Type* ptr`, `Type& ref`
 - Braces: Allman style for classes/functions, K&R for control flow
@@ -100,7 +100,7 @@ namespace mge {
 ### Testing
 - Unit tests use Google Test via `MGE_TEST()` macro in `src/test/`
 - Test structure: `src/test/<component>/test_<feature>.cpp`
-- Example: `TEST(benchmark, memory_cycle) { ... }` in [src/test/test/test_benchmark.cpp](src/test/test/test_benchmark.cpp)
+- Example: `TEST(benchmark, memory_cycle) { ... }` in [src/test/test/test_benchmark.cpp](../src/test/test/test_benchmark.cpp)
 
 ### Sample Tests
 - in `src/samples` directory

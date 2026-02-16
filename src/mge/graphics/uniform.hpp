@@ -36,6 +36,47 @@ namespace mge {
             return m_version;
         }
 
+        /**
+         * @brief Get the name of the uniform.
+         */
+        const std::string_view& name() const noexcept
+        {
+            return m_name;
+        }
+
+        /**
+         * @brief Get the type of the uniform value.
+         */
+        virtual uniform_data_type type() const noexcept = 0;
+
+        /**
+         * @brief Get a pointer to the uniform value data.
+         */
+        virtual const void* data() const noexcept = 0;
+
+        /**
+         * @brief Get the size of the uniform value in bytes.
+         */
+        virtual size_t data_size() const noexcept = 0;
+
+        /**
+         * @brief Find a global uniform by name.
+         *
+         * @param name the uniform name
+         * @return pointer to the uniform, or nullptr if not found
+         */
+        static uniform_base* find(const std::string_view& name);
+
+        /**
+         * @brief Get the current generation of the uniform registry.
+         *
+         * The generation is incremented each time a uniform is registered
+         * or unregistered, allowing consumers to detect registry changes.
+         *
+         * @return the current registry generation number
+         */
+        static uint64_t registry_generation();
+
     protected:
         std::string_view m_name; //!< name of the uniform
         uint64_t m_version{0};   //!< version number for tracking changes to the
@@ -53,21 +94,26 @@ namespace mge {
             : uniform_base(name)
         {}
 
-        constexpr uniform_data_type type() const noexcept
+        uniform_data_type type() const noexcept override
         {
             return uniform_data_type_of<T>::value;
         }
 
-        inline T& operator=(const T& value) noexcept
+        const void* data() const noexcept override
         {
-            if constexpr (std::is_integral_v<T> ||
-                          std::is_floating_point_v<T>) {
-                if (m_value != value) {
-                    m_value = value;
-                }
-                ++m_version;
-                return m_value;
-            }
+            return &m_value;
+        }
+
+        size_t data_size() const noexcept override
+        {
+            return sizeof(T);
+        }
+
+        inline uniform<T>& operator=(const T& value) noexcept
+        {
+            m_value = value;
+            ++m_version;
+            return *this;
         }
 
         T m_value; //!< value of the uniform
