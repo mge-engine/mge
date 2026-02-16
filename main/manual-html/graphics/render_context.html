@@ -124,9 +124,44 @@ has a 1:1 relationship with the window.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tRK10buffer_ref">
+<span id="_CPPv3N3mge14render_context19create_index_bufferE9data_type6size_tRK10buffer_ref"></span><span id="_CPPv2N3mge14render_context19create_index_bufferE9data_type6size_tRK10buffer_ref"></span><span id="mge::render_context::create_index_buffer__data_type.s.buffer_refCR"></span><span class="target" id="classmge_1_1render__context_1aa98ed4d71e8cc8c22f09bb859d3b51c9"></span><span class="n"><span class="pre">index_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_index_buffer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="buffers.html#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">buffer_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tRK10buffer_ref" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an index buffer with initial data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> – index buffer data type </p></li>
+<li><p><strong>data_size</strong> – size in bytes </p></li>
+<li><p><strong>data</strong> – initial data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created index buffer handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_t">
+<span id="_CPPv3N3mge14render_context19create_index_bufferE9data_type6size_t"></span><span id="_CPPv2N3mge14render_context19create_index_bufferE9data_type6size_t"></span><span id="mge::render_context::create_index_buffer__data_type.s"></span><span class="target" id="classmge_1_1render__context_1a4e617226f79699dcaef359e5699a409f"></span><span class="n"><span class="pre">index_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_index_buffer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="buffers.html#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an empty index buffer. Requires set_data() to be called before use. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> – index buffer data type </p></li>
+<li><p><strong>data_size</strong> – size in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created index buffer handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tRK10buffer_ref">
 <span id="_CPPv3N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tRK10buffer_ref"></span><span id="_CPPv2N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tRK10buffer_ref"></span><span id="mge::render_context::create_vertex_buffer__vertex_layoutCR.s.buffer_refCR"></span><span class="target" id="classmge_1_1render__context_1a3ea1c0ab00b7671bf9a1df76e032d0ea"></span><span class="n"><span class="pre">vertex_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_vertex_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="buffers.html#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">buffer_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tRK10buffer_ref" title="Link to this definition"></a><br /></dt>
-<dd><p>Create a vertex buffer object. </p>
+<dd><p>Create a vertex buffer object with initial data. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -136,7 +171,24 @@ has a 1:1 relationship with the window.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>created vertex buffer </p>
+<dd class="field-even"><p>created vertex buffer handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_t">
+<span id="_CPPv3N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_t"></span><span id="_CPPv2N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_t"></span><span id="mge::render_context::create_vertex_buffer__vertex_layoutCR.s"></span><span class="target" id="classmge_1_1render__context_1adc5b9e6dcd5c02a47090cdf588cb4234"></span><span class="n"><span class="pre">vertex_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_vertex_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="buffers.html#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Create an empty vertex buffer. Requires set_data() to be called before use. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layout</strong> – vertex buffer layout </p></li>
+<li><p><strong>data_size</strong> – size in bytes </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created vertex buffer handle </p>
 </dd>
 </dl>
 </dd></dl>
