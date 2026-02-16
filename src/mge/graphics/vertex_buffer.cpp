@@ -2,6 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/vertex_buffer.hpp"
+#include "mge/core/buffer.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/render_context.hpp"
 
 namespace mge {
@@ -22,6 +24,21 @@ namespace mge {
     size_t vertex_buffer::element_count() const
     {
         return size() / m_layout.binary_size();
+    }
+
+    void vertex_buffer::set_data(const buffer_ref& data)
+    {
+        if (!data || data->empty()) {
+            return;
+        }
+        if (data->size() != size()) {
+            MGE_THROW(illegal_state)
+                << "Data size " << data->size()
+                << " does not match buffer size " << size();
+        }
+        auto self = this;
+        context().prepare_frame(
+            [self, data]() { self->on_set_data(data->data(), data->size()); });
     }
 
 } // namespace mge

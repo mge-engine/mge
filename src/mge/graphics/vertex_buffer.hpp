@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
 #include "mge/graphics/hardware_buffer.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
@@ -42,6 +43,14 @@ namespace mge {
          * @return number of elements (vertices)
          */
         size_t element_count() const;
+
+        /**
+         * @brief Set the data of the vertex buffer.
+         * The actual data transfer will be deferred to prepare frame time.
+         *
+         * @param data Buffer containing the data to set
+         */
+        void set_data(const buffer_ref& data);
 
     private:
         vertex_layout m_layout;

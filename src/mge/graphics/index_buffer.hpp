@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/hardware_buffer.hpp"
 
@@ -39,6 +40,14 @@ namespace mge {
          * @return number of elements
          */
         size_t element_count() const;
+
+        /**
+         * @brief Set the data of the index buffer.
+         * The actual data transfer will be deferred to prepare frame time.
+         *
+         * @param data Buffer containing the data to set
+         */
+        void set_data(const buffer_ref& data);
 
         /**
          * @brief Destroy the index buffer.
