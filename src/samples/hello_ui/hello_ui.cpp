@@ -36,7 +36,7 @@ namespace mge {
                     return false;
                 });
 
-            m_ui = std::make_shared<ui>();
+            m_ui = std::make_shared<ui>(m_window->render_context());
             m_ui->attach(*m_window);
 
             add_redraw_listener([&](uint64_t cycle, double delta) {

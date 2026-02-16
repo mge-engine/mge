@@ -67,8 +67,9 @@ namespace mge {
 
     mge::singleton<nk_allocator_instance> nk_allocator_instance::instance;
 
-    ui::ui()
-        : m_context(new nk_context())
+    ui::ui(render_context& context)
+        : m_render_context(&context)
+        , m_context(new nk_context())
         , m_font_atlas(new nk_font_atlas())
     {
         // Initialize font atlas with custom allocator

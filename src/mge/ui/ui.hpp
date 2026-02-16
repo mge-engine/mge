@@ -11,7 +11,6 @@
 #include "mge/input/mouse_action.hpp"
 #include "mge/ui/dllexport.hpp"
 
-
 #include <cstdint>
 
 struct nk_context;
@@ -36,8 +35,10 @@ namespace mge {
     public:
         /**
          * @brief Construct immediate UI context
+         *
+         * @param context render context
          */
-        ui();
+        ui(render_context& context);
 
         /**
          * @brief Destructor
@@ -158,15 +159,16 @@ namespace mge {
         bool handle_character(uint32_t ch);
         bool handle_mouse_wheel(int32_t x, int32_t y);
 
-        nk_context*    m_context;
-        nk_font_atlas* m_font_atlas;
-        bool           m_in_frame{false};
-        input_handler* m_input_handler{nullptr};
-        uint32_t       m_key_action_handler_key{0};
-        uint32_t       m_mouse_action_handler_key{0};
-        uint32_t       m_mouse_move_handler_key{0};
-        uint32_t       m_character_handler_key{0};
-        uint32_t       m_mouse_wheel_handler_key{0};
+        render_context* m_render_context;
+        nk_context*     m_context;
+        nk_font_atlas*  m_font_atlas;
+        bool            m_in_frame{false};
+        input_handler*  m_input_handler{nullptr};
+        uint32_t        m_key_action_handler_key{0};
+        uint32_t        m_mouse_action_handler_key{0};
+        uint32_t        m_mouse_move_handler_key{0};
+        uint32_t        m_character_handler_key{0};
+        uint32_t        m_mouse_wheel_handler_key{0};
     };
 
 } // namespace mge
