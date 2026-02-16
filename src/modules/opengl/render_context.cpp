@@ -423,6 +423,9 @@ namespace mge::opengl {
     void render_context::bind_uniform_block(mge::opengl::program& gl_program,
                                             mge::uniform_block&   ub)
     {
+        // Sync values from global uniforms
+        ub.sync_from_globals();
+
         // Get cached block index from the GL program
         GLuint block_index = gl_program.block_index(ub.name());
         if (block_index == GL_INVALID_INDEX) {

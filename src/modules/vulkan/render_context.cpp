@@ -1061,6 +1061,9 @@ namespace mge::vulkan {
                                             mge::vulkan::program& vk_program,
                                             mge::uniform_block&   ub)
     {
+        // Sync values from global uniforms
+        ub.sync_from_globals();
+
         // Get or create uniform buffer
         auto                 it = m_uniform_buffers.find(&ub);
         uniform_buffer_data* ub_data = nullptr;
