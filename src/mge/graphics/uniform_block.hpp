@@ -115,14 +115,40 @@ namespace mge {
             set_data(member_name, &value, sizeof(T));
         }
 
+        /**
+         * @brief Synchronize values from global uniforms.
+         *
+         * For each member in this block, looks up a matching global uniform
+         * by name and copies its value if the type matches. Type mismatches
+         * are logged as warnings and ignored.
+         */
+        void sync_from_globals();
+
     private:
+        /**
+         * @brief Cached lookup info for a global uniform.
+         */
+        struct uniform_cache
+        {
+            uniform_base* uniform{nullptr}; //!< pointer to global uniform
+            const void*   data{nullptr};    //!< cached data pointer
+            uint64_t      last_version{0};  //!< last synced version
+            size_t        data_size{0};     //!< cached data size
+            bool          checked{false};   //!< whether lookup was attempted
+        };
+
         void compute_layout(const program::uniform_block_metadata& buffer_info);
+        void ensure_uniform_cache();
+        void update_uniform_cache();
 
         std::string                m_name;
         std::vector<member_layout> m_members;
         void*                      m_data{nullptr};
         size_t                     m_data_size{0};
         uint64_t                   m_version{0};
+        std::vector<uniform_cache> m_uniform_cache; //!< cached uniform lookups
+        uint64_t m_cache_registry_generation{0}; //!< registry generation when
+                                                 //!< cache was built
     };
 
 } // namespace mge

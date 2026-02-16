@@ -4,11 +4,14 @@
 #include "mge/graphics/uniform_block.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
+#include "mge/graphics/uniform.hpp"
 
 #include <algorithm>
 #include <cstring>
 
 namespace mge {
+    MGE_USE_TRACE(GRAPHICS);
 
     uniform_block::uniform_block(
         const program::uniform_block_metadata& buffer_info)
@@ -33,6 +36,8 @@ namespace mge {
         , m_data(other.m_data)
         , m_data_size(other.m_data_size)
         , m_version(other.m_version)
+        , m_uniform_cache(std::move(other.m_uniform_cache))
+        , m_cache_registry_generation(other.m_cache_registry_generation)
     {
         other.m_data = nullptr;
         other.m_data_size = 0;
@@ -49,6 +54,8 @@ namespace mge {
             m_data = other.m_data;
             m_data_size = other.m_data_size;
             m_version = other.m_version;
+            m_uniform_cache = std::move(other.m_uniform_cache);
+            m_cache_registry_generation = other.m_cache_registry_generation;
             other.m_data = nullptr;
             other.m_data_size = 0;
         }
@@ -109,6 +116,98 @@ namespace mge {
 
         std::memcpy(static_cast<char*>(m_data) + it->offset, data, size);
         ++m_version;
+    }
+
+    void uniform_block::ensure_uniform_cache()
+    {
+        uint64_t current_generation = uniform_base::registry_generation();
+
+        if (!m_uniform_cache.empty() &&
+            m_cache_registry_generation == current_generation) {
+            return;
+        }
+
+        // Reset checked flags when registry changed to re-verify all uniforms
+        if (m_cache_registry_generation != current_generation) {
+            for (auto& cache : m_uniform_cache) {
+                cache.checked = false;
+            }
+        }
+
+        update_uniform_cache();
+        m_cache_registry_generation = current_generation;
+    }
+
+    void uniform_block::update_uniform_cache()
+    {
+        if (m_uniform_cache.empty()) {
+            m_uniform_cache.resize(m_members.size());
+        }
+
+        for (size_t i = 0; i < m_members.size(); ++i) {
+            const auto& member = m_members[i];
+            auto&       cache = m_uniform_cache[i];
+
+            // Skip if already checked in this generation
+            if (cache.checked) {
+                continue;
+            }
+
+            uniform_base* global_uniform = uniform_base::find(member.name);
+            cache.checked = true;
+
+            if (!global_uniform) {
+                cache.uniform = nullptr;
+                continue;
+            }
+
+            if (global_uniform->type() != member.type) {
+                MGE_WARNING_TRACE(
+                    GRAPHICS,
+                    "Type mismatch for uniform '{}': global={}, block={}",
+                    member.name,
+                    static_cast<int>(global_uniform->type()),
+                    static_cast<int>(member.type));
+                cache.uniform = nullptr;
+                continue;
+            }
+
+            cache.uniform = global_uniform;
+            cache.data = global_uniform->data();
+            cache.data_size = global_uniform->data_size();
+            cache.last_version = 0; // Force initial sync
+        }
+    }
+
+    void uniform_block::sync_from_globals()
+    {
+        ensure_uniform_cache();
+
+        bool changed = false;
+        for (size_t i = 0; i < m_members.size(); ++i) {
+            const auto& member = m_members[i];
+            auto&       cache = m_uniform_cache[i];
+
+            if (!cache.uniform) {
+                continue;
+            }
+
+            uint64_t current_version = cache.uniform->version();
+            if (current_version == cache.last_version) {
+                continue;
+            }
+
+            // Copy value from global uniform to block member
+            std::memcpy(static_cast<char*>(m_data) + member.offset,
+                        cache.data,
+                        cache.data_size);
+            cache.last_version = current_version;
+            changed = true;
+        }
+
+        if (changed) {
+            ++m_version;
+        }
     }
 
 } // namespace mge

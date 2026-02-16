@@ -1011,6 +1011,9 @@ namespace mge::dx12 {
                                        mge::dx12::program&        dx12_program,
                                        mge::uniform_block&        ub)
     {
+        // Sync values from global uniforms
+        ub.sync_from_globals();
+
         ID3D12Resource* cbuffer = nullptr;
         auto            it = m_constant_buffers.find(&ub);
         if (it != m_constant_buffers.end()) {
