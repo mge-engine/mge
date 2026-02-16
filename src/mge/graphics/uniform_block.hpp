@@ -130,11 +130,11 @@ namespace mge {
          */
         struct uniform_cache
         {
-            uniform_base* uniform{nullptr};   //!< pointer to global uniform
-            const void*   data{nullptr};       //!< cached data pointer
-            uint64_t      last_version{0};     //!< last synced version
-            size_t        data_size{0};        //!< cached data size
-            bool          checked{false};      //!< whether lookup was attempted
+            uniform_base* uniform{nullptr}; //!< pointer to global uniform
+            const void*   data{nullptr};    //!< cached data pointer
+            uint64_t      last_version{0};  //!< last synced version
+            size_t        data_size{0};     //!< cached data size
+            bool          checked{false};   //!< whether lookup was attempted
         };
 
         void compute_layout(const program::uniform_block_metadata& buffer_info);
