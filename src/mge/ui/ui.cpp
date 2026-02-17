@@ -439,6 +439,26 @@ namespace mge {
         nk_layout_row_dynamic(m_context, height, cols);
     }
 
+    void ui::layout_row_static(float height, int item_width, int cols)
+    {
+        nk_layout_row_static(m_context, height, item_width, cols);
+    }
+
+    void ui::layout_row_begin(float height, int cols)
+    {
+        nk_layout_row_begin(m_context, NK_DYNAMIC, height, cols);
+    }
+
+    void ui::layout_row_push(float value)
+    {
+        nk_layout_row_push(m_context, value);
+    }
+
+    void ui::layout_row_end()
+    {
+        nk_layout_row_end(m_context);
+    }
+
     bool ui::button(const char* label)
     {
         return nk_button_label(m_context, label) != 0;
@@ -449,6 +469,24 @@ namespace mge {
         nk_label(m_context, text, static_cast<nk_flags>(alignment));
     }
 
+    void ui::label_colored(const char* text,
+                           uint32_t    alignment,
+                           uint8_t     r,
+                           uint8_t     g,
+                           uint8_t     b,
+                           uint8_t     a)
+    {
+        nk_label_colored(m_context,
+                         text,
+                         static_cast<nk_flags>(alignment),
+                         nk_rgba(r, g, b, a));
+    }
+
+    void ui::label_wrap(const char* text)
+    {
+        nk_label_wrap(m_context, text);
+    }
+
     bool ui::checkbox(const char* label, bool& active)
     {
         int state = active ? 1 : 0;
@@ -457,9 +495,64 @@ namespace mge {
         return result != 0;
     }
 
+    bool ui::option(const char* label, bool active)
+    {
+        return nk_option_label(m_context, label, active ? 1 : 0) != 0;
+    }
+
+    bool ui::selectable(const char* label,
+                        uint32_t    alignment,
+                        bool&       selected)
+    {
+        int val = selected ? 1 : 0;
+        int result =
+            nk_selectable_label(m_context,
+                                label,
+                                static_cast<nk_flags>(alignment),
+                                &val);
+        selected = val != 0;
+        return result != 0;
+    }
+
     bool ui::slider(float min, float& value, float max, float step)
     {
         return nk_slider_float(m_context, min, &value, max, step) != 0;
+    }
+
+    bool ui::slider_int(int min, int& value, int max, int step)
+    {
+        return nk_slider_int(m_context, min, &value, max, step) != 0;
+    }
+
+    bool ui::progress(size_t& current, size_t max, bool modifiable)
+    {
+        nk_size cur = static_cast<nk_size>(current);
+        int     result =
+            nk_progress(m_context, &cur, static_cast<nk_size>(max),
+                        modifiable ? nk_true : nk_false);
+        current = static_cast<size_t>(cur);
+        return result != 0;
+    }
+
+    void ui::property_int(const char* name,
+                          int         min,
+                          int&        val,
+                          int         max,
+                          int         step,
+                          float       inc_per_pixel)
+    {
+        nk_property_int(m_context, name, min, &val, max, step, inc_per_pixel);
+    }
+
+    void ui::property_float(const char* name,
+                            float       min,
+                            float&      val,
+                            float       max,
+                            float       step,
+                            float       inc_per_pixel)
+    {
+        nk_property_float(m_context, name, min, &val, max, step,
+                          inc_per_pixel);
     }
 
     int ui::edit_string(char* buffer, int* length, int max_length)
@@ -470,6 +563,123 @@ namespace mge {
                               length,
                               max_length,
                               nk_filter_default);
+    }
+
+    int ui::combo(const char* const* items,
+                  int                count,
+                  int                selected,
+                  int                item_height,
+                  float              width,
+                  float              height)
+    {
+        return nk_combo(m_context,
+                        items,
+                        count,
+                        selected,
+                        item_height,
+                        nk_vec2(width, height));
+    }
+
+    void ui::spacing(int cols)
+    {
+        nk_spacing(m_context, cols);
+    }
+
+    void ui::separator(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+    {
+        nk_rule_horizontal(m_context, nk_rgba(r, g, b, a), nk_true);
+    }
+
+    bool ui::begin_group(const char* title, uint32_t flags)
+    {
+        return nk_group_begin(m_context, title,
+                              static_cast<nk_flags>(flags)) != 0;
+    }
+
+    void ui::end_group()
+    {
+        nk_group_end(m_context);
+    }
+
+    bool ui::tree_push(const char* title, bool initially_open)
+    {
+        return nk_tree_push_hashed(
+                   m_context,
+                   NK_TREE_TAB,
+                   title,
+                   initially_open ? NK_MAXIMIZED : NK_MINIMIZED,
+                   title,
+                   static_cast<int>(strlen(title)),
+                   0) != 0;
+    }
+
+    void ui::tree_pop()
+    {
+        nk_tree_pop(m_context);
+    }
+
+    bool ui::begin_popup(int         type,
+                         const char* title,
+                         uint32_t    flags,
+                         float       x,
+                         float       y,
+                         float       width,
+                         float       height)
+    {
+        return nk_popup_begin(
+                   m_context,
+                   static_cast<enum nk_popup_type>(type),
+                   title,
+                   static_cast<nk_flags>(flags),
+                   nk_rect(x, y, width, height)) != 0;
+    }
+
+    void ui::close_popup()
+    {
+        nk_popup_close(m_context);
+    }
+
+    void ui::end_popup()
+    {
+        nk_popup_end(m_context);
+    }
+
+    void ui::tooltip(const char* text)
+    {
+        nk_tooltip(m_context, text);
+    }
+
+    void ui::menubar_begin()
+    {
+        nk_menubar_begin(m_context);
+    }
+
+    void ui::menubar_end()
+    {
+        nk_menubar_end(m_context);
+    }
+
+    bool ui::menu_begin(const char* label,
+                        uint32_t    alignment,
+                        float       width,
+                        float       height)
+    {
+        return nk_menu_begin_label(m_context,
+                                   label,
+                                   static_cast<nk_flags>(alignment),
+                                   nk_vec2(width, height)) != 0;
+    }
+
+    bool ui::menu_item(const char* label, uint32_t alignment)
+    {
+        return nk_menu_item_label(m_context,
+                                  label,
+                                  static_cast<nk_flags>(alignment)) != 0;
+    }
+
+    void ui::menu_end()
+    {
+        nk_menu_end(m_context);
     }
 
     void ui::draw(mge::pass& pass)

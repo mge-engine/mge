@@ -111,6 +111,8 @@ namespace mge {
          */
         void end_window();
 
+        // ---- Layout ----
+
         /**
          * @brief Set dynamic row layout
          *
@@ -118,6 +120,37 @@ namespace mge {
          * @param cols number of columns
          */
         void layout_row_dynamic(float height, int cols);
+
+        /**
+         * @brief Set static row layout
+         *
+         * @param height row height
+         * @param item_width width of each item
+         * @param cols number of columns
+         */
+        void layout_row_static(float height, int item_width, int cols);
+
+        /**
+         * @brief Begin custom row layout
+         *
+         * @param height row height
+         * @param cols number of columns
+         */
+        void layout_row_begin(float height, int cols);
+
+        /**
+         * @brief Push column width ratio in custom row layout
+         *
+         * @param value width ratio or pixel width
+         */
+        void layout_row_push(float value);
+
+        /**
+         * @brief End custom row layout
+         */
+        void layout_row_end();
+
+        // ---- Widgets ----
 
         /**
          * @brief Create a button
@@ -136,6 +169,30 @@ namespace mge {
         void label(const char* text, uint32_t alignment = 0);
 
         /**
+         * @brief Create a colored label
+         *
+         * @param text label text
+         * @param alignment text alignment
+         * @param r red
+         * @param g green
+         * @param b blue
+         * @param a alpha
+         */
+        void label_colored(const char* text,
+                           uint32_t    alignment,
+                           uint8_t     r,
+                           uint8_t     g,
+                           uint8_t     b,
+                           uint8_t     a = 255);
+
+        /**
+         * @brief Create a word-wrapping label
+         *
+         * @param text label text
+         */
+        void label_wrap(const char* text);
+
+        /**
          * @brief Create a checkbox
          *
          * @param label checkbox label
@@ -145,7 +202,30 @@ namespace mge {
         bool checkbox(const char* label, bool& active);
 
         /**
-         * @brief Create a slider
+         * @brief Create a radio button (option)
+         *
+         * Only one in a group should be active.
+         *
+         * @param label option label
+         * @param active whether this option is currently selected
+         * @return true if this option is now selected
+         */
+        bool option(const char* label, bool active);
+
+        /**
+         * @brief Create a selectable label
+         *
+         * @param label selectable text
+         * @param alignment text alignment
+         * @param selected selection state (in/out)
+         * @return true if selection state changed
+         */
+        bool selectable(const char* label,
+                        uint32_t    alignment,
+                        bool&       selected);
+
+        /**
+         * @brief Create a float slider
          *
          * @param min minimum value
          * @param value current value
@@ -156,13 +236,222 @@ namespace mge {
         bool slider(float min, float& value, float max, float step);
 
         /**
+         * @brief Create an integer slider
+         *
+         * @param min minimum value
+         * @param value current value
+         * @param max maximum value
+         * @param step step size
+         * @return true if value changed
+         */
+        bool slider_int(int min, int& value, int max, int step);
+
+        /**
+         * @brief Create a progress bar
+         *
+         * @param current current value (in/out)
+         * @param max maximum value
+         * @param modifiable whether user can modify
+         * @return true if value changed
+         */
+        bool progress(size_t& current, size_t max, bool modifiable);
+
+        /**
+         * @brief Create an integer property widget
+         *
+         * @param name property name (displayed as label)
+         * @param min minimum value
+         * @param val current value (in/out)
+         * @param max maximum value
+         * @param step step per increment
+         * @param inc_per_pixel increment per pixel when dragging
+         */
+        void property_int(const char* name,
+                          int         min,
+                          int&        val,
+                          int         max,
+                          int         step,
+                          float       inc_per_pixel);
+
+        /**
+         * @brief Create a float property widget
+         *
+         * @param name property name (displayed as label)
+         * @param min minimum value
+         * @param val current value (in/out)
+         * @param max maximum value
+         * @param step step per increment
+         * @param inc_per_pixel increment per pixel when dragging
+         */
+        void property_float(const char* name,
+                            float       min,
+                            float&      val,
+                            float       max,
+                            float       step,
+                            float       inc_per_pixel);
+
+        /**
          * @brief Create an editable text field
          *
          * @param buffer text buffer
+         * @param length current text length (in/out)
          * @param max_length maximum text length
-         * @return current text length
+         * @return edit state flags
          */
         int edit_string(char* buffer, int* length, int max_length);
+
+        /**
+         * @brief Create a combo box (dropdown)
+         *
+         * @param items array of item labels
+         * @param count number of items
+         * @param selected currently selected index
+         * @param item_height height of each item
+         * @param width popup width
+         * @param height popup height
+         * @return selected index
+         */
+        int combo(const char* const* items,
+                  int                count,
+                  int                selected,
+                  int                item_height,
+                  float              width,
+                  float              height);
+
+        // ---- Spacing / Separators ----
+
+        /**
+         * @brief Add empty spacing columns
+         *
+         * @param cols number of empty columns
+         */
+        void spacing(int cols);
+
+        /**
+         * @brief Add horizontal rule separator
+         *
+         * @param r red
+         * @param g green
+         * @param b blue
+         * @param a alpha
+         */
+        void separator(uint8_t r,
+                       uint8_t g,
+                       uint8_t b,
+                       uint8_t a = 255);
+
+        // ---- Groups ----
+
+        /**
+         * @brief Begin a scrollable group
+         *
+         * @param title group title
+         * @param flags group flags
+         * @return true if group content should be rendered
+         */
+        bool begin_group(const char* title, uint32_t flags);
+
+        /**
+         * @brief End current group
+         */
+        void end_group();
+
+        // ---- Tree ----
+
+        /**
+         * @brief Push a tree node
+         *
+         * @param title node title
+         * @param initially_open initial collapse state
+         * @return true if node is expanded
+         */
+        bool tree_push(const char* title, bool initially_open = true);
+
+        /**
+         * @brief Pop current tree node
+         */
+        void tree_pop();
+
+        // ---- Popup ----
+
+        /**
+         * @brief Begin a popup window
+         *
+         * @param type 0 = static, 1 = dynamic
+         * @param title popup title
+         * @param flags popup flags
+         * @param x x position
+         * @param y y position
+         * @param width popup width
+         * @param height popup height
+         * @return true if popup is visible
+         */
+        bool begin_popup(int         type,
+                         const char* title,
+                         uint32_t    flags,
+                         float       x,
+                         float       y,
+                         float       width,
+                         float       height);
+
+        /**
+         * @brief Close current popup
+         */
+        void close_popup();
+
+        /**
+         * @brief End current popup
+         */
+        void end_popup();
+
+        // ---- Tooltip ----
+
+        /**
+         * @brief Show simple tooltip text
+         *
+         * @param text tooltip text
+         */
+        void tooltip(const char* text);
+
+        // ---- Menubar ----
+
+        /**
+         * @brief Begin menubar
+         */
+        void menubar_begin();
+
+        /**
+         * @brief End menubar
+         */
+        void menubar_end();
+
+        /**
+         * @brief Begin a menu
+         *
+         * @param label menu title
+         * @param alignment text alignment
+         * @param width menu popup width
+         * @param height menu popup height
+         * @return true if menu is open
+         */
+        bool menu_begin(const char* label,
+                        uint32_t    alignment,
+                        float       width,
+                        float       height);
+
+        /**
+         * @brief Create a menu item
+         *
+         * @param label item label
+         * @param alignment text alignment
+         * @return true if item was clicked
+         */
+        bool menu_item(const char* label, uint32_t alignment = 0);
+
+        /**
+         * @brief End current menu
+         */
+        void menu_end();
 
         /**
          * @brief Draw UI to render pass

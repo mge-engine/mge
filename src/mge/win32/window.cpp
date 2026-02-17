@@ -261,9 +261,13 @@ namespace mge {
                 return mge::key::KP_8;
             case VK_NUMPAD9:
                 return mge::key::KP_9;
+            case VK_BACK:
+                return mge::key::BACKSPACE;
+            case VK_TAB:
+                return mge::key::TAB;
             case VK_ESCAPE:
                 return mge::key::ESCAPE;
-            case 13:
+            case VK_RETURN:
                 return mge::key::ENTER;
             }
 
