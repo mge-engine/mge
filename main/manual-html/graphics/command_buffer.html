@@ -296,6 +296,25 @@ the depth buffer is updated.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer11set_scissorERKN3mge9rectangleE">
+<span id="_CPPv3N3mge14command_buffer11set_scissorERKN3mge9rectangleE"></span><span id="_CPPv2N3mge14command_buffer11set_scissorERKN3mge9rectangleE"></span><span id="mge::command_buffer::set_scissor__mge::rectangleCR"></span><span class="target" id="classmge_1_1command__buffer_1af49d89da70a0e2f3b2a3345c55a38253"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_scissor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge9rectangleE" title="mge::rectangle"><span class="n"><span class="pre">rectangle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge14command_buffer11set_scissorERKN3mge9rectangleE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the scissor rectangle for subsequent draw commands. </p>
+<p>The scissor rectangle is sticky and persists across draw calls until changed or cleared. A zero-area rectangle (the default) means the pass-level scissor is used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – scissor rectangle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer13clear_scissorEv">
+<span id="_CPPv3N3mge14command_buffer13clear_scissorEv"></span><span id="_CPPv2N3mge14command_buffer13clear_scissorEv"></span><span id="mge::command_buffer::clear_scissor"></span><span class="target" id="classmge_1_1command__buffer_1ae43bed4cf73a1543a0efd5a52e652803"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_scissor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge14command_buffer13clear_scissorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Clear the per-draw scissor rectangle. </p>
+<p>Resets to the zero-area sentinel, meaning subsequent draws will use the pass-level scissor. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle">
 <span id="_CPPv3N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle"></span><span id="_CPPv2N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle"></span><span id="mge::command_buffer::draw__program_handleCR.vertex_buffer_handleCR.index_buffer_handleCR"></span><span class="target" id="classmge_1_1command__buffer_1a1f9e8df114b884b8751ce4a3b811153d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">draw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">program_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">program</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">vertex_buffer_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vertices</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">index_buffer_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">indices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle" title="Link to this definition"></a><br /></dt>
 <dd><p>Record a draw command into the command buffer. </p>
