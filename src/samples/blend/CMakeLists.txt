@@ -13,5 +13,4 @@ TARGET_LINK_LIBRARIES(blend
     mgegraphics
     mgeasset)
 
-MGE_CAPTURE_TEST(TARGET blend
-                 RENDER_SYSTEMS opengl directx11 directx12 vulkan)
+MGE_CAPTURE_TEST(TARGET blend)
