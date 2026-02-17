@@ -62,31 +62,48 @@ namespace mge {
         viewport& operator=(const viewport&) = default;
         viewport& operator=(viewport&&) = default;
 
-        void set_rect(float x_,
-                      float y_,
-                      float width_,
-                      float height_)
+        /**
+         * @brief Set the viewport rectangle.
+         *
+         * @param x_ left x coordinate
+         * @param y_ top y coordinate
+         * @param width_ viewport width
+         * @param height_ viewport height
+         */
+        void set_rect(float x_, float y_, float width_, float height_)
         {
-            x         = x_;
-            y         = y_;
-            width     = width_;
-            height    = height_;
+            x = x_;
+            y = y_;
+            width = width_;
+            height = height_;
         }
 
+        /**
+         * @brief Set the viewport rectangle from an extent.
+         *
+         * Sets origin to (0, 0) and size from the extent.
+         *
+         * @param ext extent defining width and height
+         */
         void set_rect(const mge::extent& ext)
         {
-            x         = 0.0f;
-            y         = 0.0f;
-            width     = static_cast<float>(ext.width);
-            height    = static_cast<float>(ext.height);
+            x = 0.0f;
+            y = 0.0f;
+            width = static_cast<float>(ext.width);
+            height = static_cast<float>(ext.height);
         }
 
+        /**
+         * @brief Set the viewport rectangle from a rectangle.
+         *
+         * @param rect source rectangle
+         */
         void set_rect(const mge::rectangle& rect)
         {
-            x         = static_cast<float>(rect.left);
-            y         = static_cast<float>(rect.top);
-            width     = static_cast<float>(rect.width());
-            height    = static_cast<float>(rect.height());
+            x = static_cast<float>(rect.left);
+            y = static_cast<float>(rect.top);
+            width = static_cast<float>(rect.width());
+            height = static_cast<float>(rect.height());
         }
 
         /**

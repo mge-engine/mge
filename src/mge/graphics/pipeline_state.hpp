@@ -166,11 +166,22 @@ namespace mge {
             return m_flags < other.m_flags;
         }
 
+        /**
+         * @brief Raw flag bits of the pipeline state.
+         *
+         * @return raw flags value
+         */
         uint64_t raw() const noexcept
         {
             return m_flags;
         }
 
+        /**
+         * @brief Set a pipeline state flag.
+         *
+         * @param flag flag bits to set
+         * @throws illegal_argument if flag contains invalid bits
+         */
         void set(uint64_t flag)
         {
             if ((flag & ~ALL_VALID_BITS) != 0) {
@@ -180,6 +191,12 @@ namespace mge {
             m_flags |= flag;
         }
 
+        /**
+         * @brief Clear a pipeline state flag.
+         *
+         * @param flag flag bits to clear
+         * @throws illegal_argument if flag contains invalid bits
+         */
         void clear(uint64_t flag)
         {
             if ((flag & ~ALL_VALID_BITS) != 0) {
@@ -189,26 +206,51 @@ namespace mge {
             m_flags &= ~flag;
         }
 
+        /**
+         * @brief Test whether a flag is set.
+         *
+         * @param flag flag bits to test
+         * @return true if all bits in flag are set
+         */
         bool test(uint64_t flag) const noexcept
         {
             return (m_flags & flag) != 0;
         }
 
+        /**
+         * @brief Check if no flags are set.
+         *
+         * @return true if state is empty
+         */
         bool empty() const noexcept
         {
             return m_flags == 0;
         }
 
+        /**
+         * @brief Clear all flags to zero.
+         */
         void clear() noexcept
         {
             m_flags = 0;
         }
 
+        /**
+         * @brief Check if this state includes all flags of another state.
+         *
+         * @param other state to check against
+         * @return true if all flags in other are also set in this
+         */
         bool includes(const pipeline_state& other) const noexcept
         {
             return (m_flags & other.m_flags) == other.m_flags;
         }
 
+        /**
+         * @brief Set the color blend operation.
+         *
+         * @param op blend operation
+         */
         void set_color_blend_operation(blend_operation op) noexcept
         {
             m_flags &= ~COLOR_BLEND_OPERATION_MASK;
@@ -217,6 +259,11 @@ namespace mge {
                 COLOR_BLEND_OPERATION_MASK;
         }
 
+        /**
+         * @brief Get the color blend operation.
+         *
+         * @return blend operation
+         */
         blend_operation color_blend_operation() const noexcept
         {
             return static_cast<blend_operation>(
@@ -224,6 +271,12 @@ namespace mge {
                 COLOR_BLEND_OPERATION_SHIFT);
         }
 
+        /**
+         * @brief Set source and destination color blend factors.
+         *
+         * @param src source blend factor
+         * @param dst destination blend factor
+         */
         void set_color_blend_factors(blend_factor src,
                                      blend_factor dst) noexcept
         {
@@ -237,6 +290,11 @@ namespace mge {
                 COLOR_BLEND_FACTOR_DST_MASK;
         }
 
+        /**
+         * @brief Get the source color blend factor.
+         *
+         * @return source blend factor
+         */
         blend_factor color_blend_factor_src() const noexcept
         {
             return static_cast<blend_factor>(
@@ -244,6 +302,11 @@ namespace mge {
                 COLOR_BLEND_FACTOR_SRC_SHIFT);
         }
 
+        /**
+         * @brief Get the destination color blend factor.
+         *
+         * @return destination blend factor
+         */
         blend_factor color_blend_factor_dst() const noexcept
         {
             return static_cast<blend_factor>(
@@ -251,6 +314,11 @@ namespace mge {
                 COLOR_BLEND_FACTOR_DST_SHIFT);
         }
 
+        /**
+         * @brief Set the alpha blend operation.
+         *
+         * @param op blend operation
+         */
         void set_alpha_blend_operation(blend_operation op) noexcept
         {
             m_flags &= ~ALPHA_BLEND_OPERATION_MASK;
@@ -259,6 +327,11 @@ namespace mge {
                 ALPHA_BLEND_OPERATION_MASK;
         }
 
+        /**
+         * @brief Get the alpha blend operation.
+         *
+         * @return blend operation
+         */
         blend_operation alpha_blend_operation() const noexcept
         {
             return static_cast<blend_operation>(
@@ -266,6 +339,12 @@ namespace mge {
                 ALPHA_BLEND_OPERATION_SHIFT);
         }
 
+        /**
+         * @brief Set source and destination alpha blend factors.
+         *
+         * @param src source blend factor
+         * @param dst destination blend factor
+         */
         void set_alpha_blend_factors(blend_factor src,
                                      blend_factor dst) noexcept
         {
@@ -279,6 +358,11 @@ namespace mge {
                 ALPHA_BLEND_FACTOR_DST_MASK;
         }
 
+        /**
+         * @brief Get the source alpha blend factor.
+         *
+         * @return source blend factor
+         */
         blend_factor alpha_blend_factor_src() const noexcept
         {
             return static_cast<blend_factor>(
@@ -286,6 +370,11 @@ namespace mge {
                 ALPHA_BLEND_FACTOR_SRC_SHIFT);
         }
 
+        /**
+         * @brief Get the destination alpha blend factor.
+         *
+         * @return destination blend factor
+         */
         blend_factor alpha_blend_factor_dst() const noexcept
         {
             return static_cast<blend_factor>(
@@ -293,18 +382,34 @@ namespace mge {
                 ALPHA_BLEND_FACTOR_DST_SHIFT);
         }
 
+        /**
+         * @brief Set both color and alpha blend operations.
+         *
+         * @param op blend operation
+         */
         void set_blend_operation(blend_operation op) noexcept
         {
             set_color_blend_operation(op);
             set_alpha_blend_operation(op);
         }
 
+        /**
+         * @brief Set both color and alpha blend factors.
+         *
+         * @param src source blend factor
+         * @param dst destination blend factor
+         */
         void set_blend_factors(blend_factor src, blend_factor dst) noexcept
         {
             set_color_blend_factors(src, dst);
             set_alpha_blend_factors(src, dst);
         }
 
+        /**
+         * @brief Enable or disable depth buffer writes.
+         *
+         * @param enable true to enable depth writes
+         */
         void depth_write(bool enable) noexcept
         {
             if (enable) {
@@ -314,11 +419,21 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Check whether depth writes are enabled.
+         *
+         * @return true if depth writes enabled
+         */
         bool depth_write() const noexcept
         {
             return test(DEPTH_WRITE);
         }
 
+        /**
+         * @brief Set the depth test comparison function.
+         *
+         * @param func comparison function
+         */
         void set_depth_test_function(mge::test func) noexcept
         {
             m_flags &= ~DEPTH_TEST_MASK;
@@ -350,6 +465,11 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Get the depth test comparison function.
+         *
+         * @return comparison function (defaults to LESS)
+         */
         mge::test depth_test_function() const noexcept
         {
             uint64_t depth_bits = m_flags & DEPTH_TEST_MASK;
@@ -372,6 +492,11 @@ namespace mge {
             return mge::test::LESS; // default
         }
 
+        /**
+         * @brief Set the face culling mode.
+         *
+         * @param mode cull mode
+         */
         void set_cull_mode(mge::cull_mode mode) noexcept
         {
             m_flags &= ~(CULL_CLOCK_WISE | CULL_COUNTER_CLOCK_WISE);
@@ -388,6 +513,11 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Get the face culling mode.
+         *
+         * @return cull mode
+         */
         mge::cull_mode cull_mode() const noexcept
         {
             if (m_flags & CULL_CLOCK_WISE)

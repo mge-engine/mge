@@ -94,16 +94,31 @@ namespace mge {
             : uniform_base(name)
         {}
 
+        /**
+         * @brief Uniform data type.
+         *
+         * @return data type of this uniform
+         */
         uniform_data_type type() const noexcept override
         {
             return uniform_data_type_of<T>::value;
         }
 
+        /**
+         * @brief Pointer to the uniform value.
+         *
+         * @return pointer to stored value
+         */
         const void* data() const noexcept override
         {
             return &m_value;
         }
 
+        /**
+         * @brief Size of the uniform value in bytes.
+         *
+         * @return size in bytes
+         */
         size_t data_size() const noexcept override
         {
             return sizeof(T);

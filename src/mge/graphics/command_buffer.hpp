@@ -33,7 +33,18 @@ namespace mge {
         command_buffer& operator=(const command_buffer&) = delete;
         command_buffer& operator=(command_buffer&&) = default;
 
+        /**
+         * @brief Enable or disable writing to the depth buffer.
+         *
+         * @param enable true to enable depth writes, false to disable
+         */
         void depth_write(bool enable) noexcept;
+
+        /**
+         * @brief Set the depth test comparison function.
+         *
+         * @param func comparison function used for depth testing
+         */
         void depth_test_function(test func) noexcept;
 
         /**
@@ -124,6 +135,16 @@ namespace mge {
                   const vertex_buffer_handle& vertices,
                   const index_buffer_handle&  indices);
 
+        /**
+         * @brief Iterate over all recorded draw commands.
+         *
+         * Calls @c f for each recorded draw command with the program,
+         * vertex buffer, index buffer, pipeline state, uniform block,
+         * and texture.
+         *
+         * @tparam F callable type
+         * @param f callable invoked for each draw command
+         */
         template <typename F> void for_each(F&& f) const
         {
             auto count = m_programs.size();
@@ -137,11 +158,19 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Check whether the command buffer has no recorded commands.
+         *
+         * @return true if no draw commands have been recorded
+         */
         bool empty() const noexcept
         {
             return m_programs.empty();
         }
 
+        /**
+         * @brief Clear all recorded draw commands.
+         */
         void clear() noexcept
         {
             m_programs.clear();

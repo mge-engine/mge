@@ -39,6 +39,11 @@ namespace mge {
             return width != e.width || height != e.height;
         }
 
+        /**
+         * @brief Compute the area of the extent.
+         *
+         * @return area in pixels (width * height)
+         */
         size_t area() const noexcept
         {
             return static_cast<size_t>(width) * static_cast<size_t>(height);

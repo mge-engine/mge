@@ -29,10 +29,13 @@ namespace mge {
 
         virtual ~memory_image();
 
+        /** @copydoc image::data() */
         void* data() const override;
 
+        /** @copydoc image::data_span() */
         std::span<uint8_t> data_span() const override;
 
+        /** @copydoc image::binary_size() */
         size_t binary_size() const override;
 
     private:

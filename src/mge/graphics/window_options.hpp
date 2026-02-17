@@ -56,8 +56,22 @@ namespace mge {
 
         ~window_options() = default;
 
+        /**
+         * @brief Set a window option.
+         *
+         * @param o option to set
+         * @param value true to enable, false to disable
+         * @return reference to this
+         */
         window_options& set_option(option o, bool value = true);
-        bool            option_set(option o) const;
+
+        /**
+         * @brief Check whether a window option is set.
+         *
+         * @param o option to check
+         * @return true if option is set
+         */
+        bool option_set(option o) const;
 
         /**
          * Standard window options.
