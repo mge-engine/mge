@@ -4,6 +4,7 @@
 #pragma once
 #include "dx12.hpp"
 #include "error.hpp"
+#include "input_layout_cache.hpp"
 #include "mge/config.hpp"
 #include "mge/core/mutex.hpp"
 #include "mge/graphics/rectangle.hpp"
@@ -124,8 +125,10 @@ namespace mge::dx12 {
         }
 
         const mge::com_ptr<ID3D12PipelineState>&
-        static_pipeline_state(mge::dx12::program*        program,
-                              const mge::pipeline_state& state);
+        static_pipeline_state(
+            mge::dx12::program*                         program,
+            const mge::pipeline_state&                  state,
+            const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout);
 
     private:
         void enable_debug_layer();
@@ -149,6 +152,9 @@ namespace mge::dx12 {
                            mge::texture*              tex,
                            uint32_t                   index_count = 0,
                            uint32_t                   index_offset = 0);
+
+        const std::vector<D3D12_INPUT_ELEMENT_DESC>&
+        input_layout_from_vertex_buffer(mge::vertex_buffer* vb);
 
         void bind_uniform_block(ID3D12GraphicsCommandList* command_list,
                                 mge::dx12::program&        dx12_program,
@@ -189,6 +195,8 @@ namespace mge::dx12 {
 
         std::map<pipeline_state_key, mge::com_ptr<ID3D12PipelineState>>
             m_program_pipeline_states;
+
+        input_layout_cache m_input_layout_cache;
 
         D3D12_VIEWPORT m_viewport;
         D3D12_RECT     m_scissor_rect;
