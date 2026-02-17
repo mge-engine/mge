@@ -36,16 +36,33 @@ namespace mge {
             EXPECT_CALL(*m_mock_texture, set_data(_, _, _, _))
                 .Times(::testing::AtLeast(0));
 
-            // Return nullptr for shaders/programs/buffers - handles will be
-            // invalid but won't crash
+            // Return mock shaders and program objects
             EXPECT_CALL(*m_render_context, on_create_shader(_))
-                .WillRepeatedly(Return(nullptr));
+                .WillRepeatedly([this](mge::shader_type t) {
+                    auto s = new MOCK_shader(*m_render_context, t);
+                    ::testing::Mock::AllowLeak(s);
+                    EXPECT_CALL(*s, on_compile(::testing::_)).Times(1);
+                    EXPECT_CALL(*s, on_set_code(::testing::_))
+                        .Times(::testing::AnyNumber());
+                    return s;
+                });
             EXPECT_CALL(*m_render_context, on_create_program())
-                .WillRepeatedly(Return(nullptr));
+                .WillRepeatedly([this]() {
+                    auto p = new MOCK_program(*m_render_context);
+                    ::testing::Mock::AllowLeak(p);
+                    EXPECT_CALL(*p, on_set_shader(::testing::_))
+                        .Times(::testing::AnyNumber());
+                    EXPECT_CALL(*p, on_link()).Times(::testing::AnyNumber());
+                    return p;
+                });
             EXPECT_CALL(*m_render_context, on_create_vertex_buffer(_, _))
                 .WillRepeatedly(Return(nullptr));
             EXPECT_CALL(*m_render_context, on_create_index_buffer(_, _))
                 .WillRepeatedly(Return(nullptr));
+            EXPECT_CALL(*m_render_context, on_destroy_shader(_))
+                .Times(::testing::AnyNumber());
+            EXPECT_CALL(*m_render_context, on_destroy_program(_))
+                .Times(::testing::AnyNumber());
         }
 
         void TearDown() override
@@ -69,12 +86,14 @@ namespace mge {
     TEST_F(ui_test, frame_lifecycle)
     {
         auto ui = std::make_shared<mge::ui>(*m_render_context);
+        ui->begin_frame();
         EXPECT_NO_THROW(ui->frame());
     }
 
     TEST_F(ui_test, window_lifecycle)
     {
         auto ui = std::make_shared<mge::ui>(*m_render_context);
+        ui->begin_frame();
 
         bool window_visible = ui->begin_window("Test Window", 0, 0, 200, 200);
         // Window may or may not be visible initially
@@ -87,6 +106,7 @@ namespace mge {
     TEST_F(ui_test, button_widget)
     {
         auto ui = std::make_shared<mge::ui>(*m_render_context);
+        ui->begin_frame();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             bool clicked = ui->button("Test Button");
@@ -101,6 +121,7 @@ namespace mge {
     TEST_F(ui_test, checkbox_widget)
     {
         auto ui = std::make_shared<mge::ui>(*m_render_context);
+        ui->begin_frame();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             bool checked = false;
@@ -114,6 +135,7 @@ namespace mge {
     TEST_F(ui_test, slider_widget)
     {
         auto ui = std::make_shared<mge::ui>(*m_render_context);
+        ui->begin_frame();
 
         if (ui->begin_window("Test Window", 0, 0, 200, 200)) {
             float value = 50.0f;

@@ -500,16 +500,13 @@ namespace mge {
         return nk_option_label(m_context, label, active ? 1 : 0) != 0;
     }
 
-    bool ui::selectable(const char* label,
-                        uint32_t    alignment,
-                        bool&       selected)
+    bool ui::selectable(const char* label, uint32_t alignment, bool& selected)
     {
         int val = selected ? 1 : 0;
-        int result =
-            nk_selectable_label(m_context,
-                                label,
-                                static_cast<nk_flags>(alignment),
-                                &val);
+        int result = nk_selectable_label(m_context,
+                                         label,
+                                         static_cast<nk_flags>(alignment),
+                                         &val);
         selected = val != 0;
         return result != 0;
     }
@@ -527,9 +524,10 @@ namespace mge {
     bool ui::progress(size_t& current, size_t max, bool modifiable)
     {
         nk_size cur = static_cast<nk_size>(current);
-        int     result =
-            nk_progress(m_context, &cur, static_cast<nk_size>(max),
-                        modifiable ? nk_true : nk_false);
+        int     result = nk_progress(m_context,
+                                 &cur,
+                                 static_cast<nk_size>(max),
+                                 modifiable ? nk_true : nk_false);
         current = static_cast<size_t>(cur);
         return result != 0;
     }
@@ -551,8 +549,7 @@ namespace mge {
                             float       step,
                             float       inc_per_pixel)
     {
-        nk_property_float(m_context, name, min, &val, max, step,
-                          inc_per_pixel);
+        nk_property_float(m_context, name, min, &val, max, step, inc_per_pixel);
     }
 
     int ui::edit_string(char* buffer, int* length, int max_length)
@@ -592,8 +589,8 @@ namespace mge {
 
     bool ui::begin_group(const char* title, uint32_t flags)
     {
-        return nk_group_begin(m_context, title,
-                              static_cast<nk_flags>(flags)) != 0;
+        return nk_group_begin(m_context, title, static_cast<nk_flags>(flags)) !=
+               0;
     }
 
     void ui::end_group()
@@ -603,14 +600,13 @@ namespace mge {
 
     bool ui::tree_push(const char* title, bool initially_open)
     {
-        return nk_tree_push_hashed(
-                   m_context,
-                   NK_TREE_TAB,
-                   title,
-                   initially_open ? NK_MAXIMIZED : NK_MINIMIZED,
-                   title,
-                   static_cast<int>(strlen(title)),
-                   0) != 0;
+        return nk_tree_push_hashed(m_context,
+                                   NK_TREE_TAB,
+                                   title,
+                                   initially_open ? NK_MAXIMIZED : NK_MINIMIZED,
+                                   title,
+                                   static_cast<int>(strlen(title)),
+                                   0) != 0;
     }
 
     void ui::tree_pop()
@@ -626,12 +622,11 @@ namespace mge {
                          float       width,
                          float       height)
     {
-        return nk_popup_begin(
-                   m_context,
-                   static_cast<enum nk_popup_type>(type),
-                   title,
-                   static_cast<nk_flags>(flags),
-                   nk_rect(x, y, width, height)) != 0;
+        return nk_popup_begin(m_context,
+                              static_cast<enum nk_popup_type>(type),
+                              title,
+                              static_cast<nk_flags>(flags),
+                              nk_rect(x, y, width, height)) != 0;
     }
 
     void ui::close_popup()

@@ -220,9 +220,7 @@ namespace mge {
          * @param selected selection state (in/out)
          * @return true if selection state changed
          */
-        bool selectable(const char* label,
-                        uint32_t    alignment,
-                        bool&       selected);
+        bool selectable(const char* label, uint32_t alignment, bool& selected);
 
         /**
          * @brief Create a float slider
@@ -335,10 +333,7 @@ namespace mge {
          * @param b blue
          * @param a alpha
          */
-        void separator(uint8_t r,
-                       uint8_t g,
-                       uint8_t b,
-                       uint8_t a = 255);
+        void separator(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 
         // ---- Groups ----
 
