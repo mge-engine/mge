@@ -100,6 +100,17 @@ namespace mge {
                    static_cast<uint64_t>(height());
         }
 
+        inline bool operator==(const rectangle& other) const
+        {
+            return left == other.left && top == other.top &&
+                   right == other.right && bottom == other.bottom;
+        }
+
+        inline bool operator!=(const rectangle& other) const
+        {
+            return !(*this == other);
+        }
+
         uint32_t left{0};
         uint32_t top{0};
         uint32_t right{0};

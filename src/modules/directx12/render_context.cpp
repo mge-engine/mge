@@ -913,13 +913,25 @@ namespace mge::dx12 {
                 0,
                 nullptr);
         }
-        bool blend_pass_needed = false;
+        bool           blend_pass_needed = false;
+        mge::rectangle current_scissor = p.scissor();
         p.for_each_draw_command([&](const mge::program_handle&       program,
                                     const mge::vertex_buffer_handle& vertices,
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
                                     mge::uniform_block*              ub,
-                                    mge::texture*                    tex) {
+                                    mge::texture*                    tex,
+                                    const mge::rectangle& cmd_scissor) {
+            const auto& effective =
+                cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+            if (effective != current_scissor) {
+                D3D12_RECT sr = {static_cast<LONG>(effective.left),
+                                 static_cast<LONG>(effective.top),
+                                 static_cast<LONG>(effective.right),
+                                 static_cast<LONG>(effective.bottom)};
+                pass_command_list->RSSetScissorRects(1, &sr);
+                current_scissor = effective;
+            }
             auto blend_operation = state.color_blend_operation();
             if (blend_operation == blend_operation::NONE) {
                 draw_geometry(pass_command_list,
@@ -941,7 +953,18 @@ namespace mge::dx12 {
                     const mge::index_buffer_handle&  indices,
                     const mge::pipeline_state&       state,
                     mge::uniform_block*              ub,
-                    mge::texture*                    tex) {
+                    mge::texture*                    tex,
+                    const mge::rectangle&            cmd_scissor) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        D3D12_RECT sr = {static_cast<LONG>(effective.left),
+                                         static_cast<LONG>(effective.top),
+                                         static_cast<LONG>(effective.right),
+                                         static_cast<LONG>(effective.bottom)};
+                        pass_command_list->RSSetScissorRects(1, &sr);
+                        current_scissor = effective;
+                    }
                     draw_geometry(pass_command_list,
                                   program.get(),
                                   vertices.get(),
