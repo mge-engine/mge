@@ -485,7 +485,7 @@ namespace mge {
                               static_cast<uint32_t>(sy),
                               static_cast<uint32_t>(sx + sw),
                               static_cast<uint32_t>(sy + sh));
-            pass.set_scissor(scissor);
+            cmd.set_scissor(scissor);
 
             // Bind texture (font or custom)
             if (nk_cmd->texture.ptr) {

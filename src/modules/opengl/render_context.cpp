@@ -519,8 +519,9 @@ namespace mge::opengl {
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 
+        GLint wh = static_cast<GLint>(window_height());
         glScissor(static_cast<const GLint>(p.scissor().left),
-                  static_cast<const GLint>(p.scissor().top),
+                  wh - static_cast<const GLint>(p.scissor().bottom),
                   static_cast<const GLsizei>(p.scissor().width()),
                   static_cast<const GLsizei>(p.scissor().height()));
         CHECK_OPENGL_ERROR(glScissor);
@@ -543,6 +544,9 @@ namespace mge::opengl {
         glEnable(GL_DEPTH_TEST);
         CHECK_OPENGL_ERROR(glEnable);
 
+        glEnable(GL_SCISSOR_TEST);
+        CHECK_OPENGL_ERROR(glEnable);
+
 #ifndef GL_CONSERVATIVE_RASTERIZATION_NV
 #    define GL_CONSERVATIVE_RASTERIZATION_NV 0x9346
 #endif
@@ -553,6 +557,7 @@ namespace mge::opengl {
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
         p.for_each_draw_command([this,
+                                 wh,
                                  &blend_pass_needed,
                                  &current_scissor,
                                  &p](const program_handle&       program,
@@ -570,7 +575,7 @@ namespace mge::opengl {
                     cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                 if (effective != current_scissor) {
                     glScissor(static_cast<const GLint>(effective.left),
-                              static_cast<const GLint>(effective.top),
+                              wh - static_cast<const GLint>(effective.bottom),
                               static_cast<const GLsizei>(effective.width()),
                               static_cast<const GLsizei>(effective.height()));
                     current_scissor = effective;
@@ -625,7 +630,7 @@ namespace mge::opengl {
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command([this, &current_scissor, &p](
+            p.for_each_draw_command([this, wh, &current_scissor, &p](
                                         const program_handle&       program,
                                         const vertex_buffer_handle& vertices,
                                         const index_buffer_handle&  indices,
@@ -647,7 +652,8 @@ namespace mge::opengl {
                     if (effective != current_scissor) {
                         glScissor(
                             static_cast<const GLint>(effective.left),
-                            static_cast<const GLint>(effective.top),
+                            wh -
+                                static_cast<const GLint>(effective.bottom),
                             static_cast<const GLsizei>(effective.width()),
                             static_cast<const GLsizei>(effective.height()));
                         current_scissor = effective;
@@ -718,6 +724,9 @@ namespace mge::opengl {
             glDisable(GL_BLEND);
             CHECK_OPENGL_ERROR(glDisable);
         }
+
+        glDisable(GL_SCISSOR_TEST);
+        CHECK_OPENGL_ERROR(glDisable);
 
         glDisable(GL_DEPTH_TEST);
         CHECK_OPENGL_ERROR(glDisable);
