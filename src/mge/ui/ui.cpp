@@ -22,6 +22,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_format.hpp"
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/test.hpp"
@@ -182,18 +183,27 @@ namespace mge {
             m_render_context->create_shader(shader_type::FRAGMENT);
 
         // Detect shader language from render system capabilities
-        const auto& caps = m_render_context->render_system().system_capabilities();
+        const auto& caps =
+            m_render_context->render_system().system_capabilities();
         const auto& languages = caps.shader_languages();
+        const auto& formats = caps.shader_formats();
         bool        use_hlsl = false;
+        bool        use_spirv = false;
         for (const auto& lang : languages) {
             if (lang.name() == "hlsl") {
                 use_hlsl = true;
                 break;
             }
         }
+        for (const auto& fmt : formats) {
+            if (fmt.name() == "spirv") {
+                use_spirv = true;
+                break;
+            }
+        }
 
         if (use_hlsl) {
-            // HLSL shaders for DirectX 11
+            // HLSL shaders for DirectX 11/12
             const char* vertex_shader_hlsl = R"shader(
                 cbuffer UBO : register(b0) {
                     float4x4 projection;
@@ -237,8 +247,46 @@ namespace mge {
 
             vertex_shader->compile(vertex_shader_hlsl);
             fragment_shader->compile(fragment_shader_hlsl);
+        } else if (use_spirv) {
+            // Vulkan shaders (GLSL 450 with Vulkan bindings)
+            const char* vertex_shader_vk = R"shader(
+                #version 450
+                layout(location = 0) in vec2 position;
+                layout(location = 1) in vec2 texcoord;
+                layout(location = 2) in vec4 color;
+
+                layout(location = 0) out vec2 frag_texcoord;
+                layout(location = 1) out vec4 frag_color;
+
+                layout(binding = 0) uniform UBO {
+                    mat4 projection;
+                };
+
+                void main() {
+                    frag_texcoord = texcoord;
+                    frag_color = color;
+                    gl_Position = projection * vec4(position, 0.0, 1.0);
+                }
+            )shader";
+
+            const char* fragment_shader_vk = R"shader(
+                #version 450
+                layout(location = 0) in vec2 frag_texcoord;
+                layout(location = 1) in vec4 frag_color;
+
+                layout(location = 0) out vec4 out_color;
+
+                layout(binding = 1) uniform sampler2D tex;
+
+                void main() {
+                    out_color = frag_color * texture(tex, frag_texcoord);
+                }
+            )shader";
+
+            vertex_shader->compile(vertex_shader_vk);
+            fragment_shader->compile(fragment_shader_vk);
         } else {
-            // OpenGL/Vulkan shaders (GLSL)
+            // OpenGL shaders (GLSL 330 core)
             const char* vertex_shader_glsl = R"shader(
                 #version 330 core
                 layout(location = 0) in vec2 position;
@@ -547,6 +595,7 @@ namespace mge {
             cmd.set_scissor(scissor);
 
             // Bind texture (font or custom)
+            cmd.bind_uniform_block(m_uniform_block);
             if (nk_cmd->texture.ptr) {
                 texture* tex = reinterpret_cast<texture*>(nk_cmd->texture.ptr);
                 cmd.bind_texture(tex);
