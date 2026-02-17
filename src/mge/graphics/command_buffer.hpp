@@ -7,6 +7,7 @@
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/program_handle.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/test.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 
@@ -114,6 +115,31 @@ namespace mge {
         }
 
         /**
+         * @brief Set the scissor rectangle for subsequent draw commands.
+         *
+         * The scissor rectangle is sticky and persists across draw calls
+         * until changed or cleared. A zero-area rectangle (the default)
+         * means the pass-level scissor is used.
+         *
+         * @param r scissor rectangle
+         */
+        void set_scissor(const mge::rectangle& r) noexcept
+        {
+            m_current_scissor_rect = r;
+        }
+
+        /**
+         * @brief Clear the per-draw scissor rectangle.
+         *
+         * Resets to the zero-area sentinel, meaning subsequent draws
+         * will use the pass-level scissor.
+         */
+        void clear_scissor() noexcept
+        {
+            m_current_scissor_rect = mge::rectangle{};
+        }
+
+        /**
          * @brief Record a draw command into the command buffer.
          *
          * @param program   program to use for drawing
@@ -133,7 +159,8 @@ namespace mge {
                   m_index_buffers[i],
                   m_pipeline_states[i],
                   m_uniform_blocks[i],
-                  m_textures[i]);
+                  m_textures[i],
+                  m_scissor_rects[i]);
             }
         }
 
@@ -150,12 +177,14 @@ namespace mge {
             m_pipeline_states.clear();
             m_uniform_blocks.clear();
             m_textures.clear();
+            m_scissor_rects.clear();
         }
 
     private:
         pipeline_state m_current_pipeline_state{pipeline_state::DEFAULT};
         uniform_block* m_current_uniform_block{nullptr};
         mge::texture*  m_current_texture{nullptr};
+        mge::rectangle m_current_scissor_rect{};
 
         std::vector<pipeline_state>       m_pipeline_states;
         std::vector<program_handle>       m_programs;
@@ -163,5 +192,6 @@ namespace mge {
         std::vector<index_buffer_handle>  m_index_buffers;
         std::vector<uniform_block*>       m_uniform_blocks;
         std::vector<mge::texture*>        m_textures;
+        std::vector<mge::rectangle>       m_scissor_rects;
     };
 } // namespace mge

@@ -124,7 +124,8 @@ namespace mge {
                   cmd.indices,
                   cmd.state,
                   cmd.uniform_block,
-                  cmd.texture);
+                  cmd.texture,
+                  cmd.scissor);
             }
         }
 
@@ -153,6 +154,7 @@ namespace mge {
             mge::pipeline_state  state;
             mge::uniform_block*  uniform_block{nullptr};
             mge::texture*        texture{nullptr};
+            mge::rectangle       scissor{};
         };
 
         std::vector<draw_command> m_draw_commands;

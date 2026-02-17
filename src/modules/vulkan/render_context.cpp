@@ -1408,36 +1408,68 @@ namespace mge::vulkan {
                                   1,
                                   &clear_rect);
         }
-        bool blend_pass_needed = false;
-        p.for_each_draw_command([this, command_buffer, &blend_pass_needed](
-                                    const program_handle&       program,
-                                    const vertex_buffer_handle& vertex_buffer,
-                                    const index_buffer_handle&  index_buffer,
-                                    const mge::pipeline_state&  state,
-                                    mge::uniform_block*         ub,
-                                    mge::texture*               tex) {
-            auto blend_operation = state.color_blend_operation();
-            if (blend_operation == mge::blend_operation::NONE) {
-                draw_geometry(command_buffer,
-                              program.get(),
-                              vertex_buffer.get(),
-                              index_buffer.get(),
-                              state,
-                              ub,
-                              tex);
-            } else {
-                blend_pass_needed = true;
-            }
-        });
+        bool           blend_pass_needed = false;
+        mge::rectangle current_scissor = p.scissor();
+        p.for_each_draw_command(
+            [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
+                const program_handle&       program,
+                const vertex_buffer_handle& vertex_buffer,
+                const index_buffer_handle&  index_buffer,
+                const mge::pipeline_state&  state,
+                mge::uniform_block*         ub,
+                mge::texture*               tex,
+                const mge::rectangle&       cmd_scissor) {
+                const auto& effective =
+                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                if (effective != current_scissor) {
+                    VkRect2D vk_scissor{};
+                    vk_scissor.offset = {static_cast<int32_t>(effective.left),
+                                         static_cast<int32_t>(effective.top)};
+                    vk_scissor.extent = {
+                        static_cast<uint32_t>(effective.right - effective.left),
+                        static_cast<uint32_t>(effective.bottom -
+                                              effective.top)};
+                    vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
+                    current_scissor = effective;
+                }
+                auto blend_operation = state.color_blend_operation();
+                if (blend_operation == mge::blend_operation::NONE) {
+                    draw_geometry(command_buffer,
+                                  program.get(),
+                                  vertex_buffer.get(),
+                                  index_buffer.get(),
+                                  state,
+                                  ub,
+                                  tex);
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
         if (blend_pass_needed) {
             p.for_each_draw_command(
-                [this,
-                 command_buffer](const program_handle&       program,
-                                 const vertex_buffer_handle& vertex_buffer,
-                                 const index_buffer_handle&  index_buffer,
-                                 const mge::pipeline_state&  state,
-                                 mge::uniform_block*         ub,
-                                 mge::texture*               tex) {
+                [this, command_buffer, &current_scissor, &p](
+                    const program_handle&       program,
+                    const vertex_buffer_handle& vertex_buffer,
+                    const index_buffer_handle&  index_buffer,
+                    const mge::pipeline_state&  state,
+                    mge::uniform_block*         ub,
+                    mge::texture*               tex,
+                    const mge::rectangle&       cmd_scissor) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        VkRect2D vk_scissor{};
+                        vk_scissor.offset = {
+                            static_cast<int32_t>(effective.left),
+                            static_cast<int32_t>(effective.top)};
+                        vk_scissor.extent = {
+                            static_cast<uint32_t>(effective.right -
+                                                  effective.left),
+                            static_cast<uint32_t>(effective.bottom -
+                                                  effective.top)};
+                        vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
+                        current_scissor = effective;
+                    }
                     auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
