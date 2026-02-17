@@ -26,7 +26,7 @@ namespace mge::dx12 {
     public:
         static constexpr uint32_t buffer_count = 2;
 
-        render_context(render_system& render_system, window& window_);
+        render_context(mge::dx12::render_system& render_system, window& window_);
         virtual ~render_context();
 
         void initialize();
@@ -160,7 +160,7 @@ namespace mge::dx12 {
                                  LPCSTR                 description,
                                  void*                  context);
 
-        render_system&     m_render_system;
+        mge::dx12::render_system& m_render_system;
         mge::dx12::window& m_window;
 
         mge::com_ptr<ID3D12Debug>                 m_debug;

@@ -115,8 +115,8 @@ namespace mge::vulkan {
         }
     }
 
-    render_context::render_context(render_system& render_system_,
-                                   window&        window_)
+    render_context::render_context(mge::vulkan::render_system& render_system_,
+                                   window&                     window_)
         : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_.shared_from_this())
         , m_window(window_)

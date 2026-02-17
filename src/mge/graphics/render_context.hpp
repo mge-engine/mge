@@ -186,6 +186,16 @@ namespace mge {
         }
 
         /**
+         * @brief Get the render system this context belongs to.
+         *
+         * @return render system
+         */
+        mge::render_system& render_system() const noexcept
+        {
+            return m_render_system;
+        }
+
+        /**
          * @brief Get the default viewport for this render context.
          *
          * @return default viewport

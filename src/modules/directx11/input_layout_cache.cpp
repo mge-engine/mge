@@ -109,6 +109,14 @@ namespace mge::dx11 {
                 MGE_THROW(illegal_argument)
                     << "Unsupported uint format size: " << format.size();
             }
+        case data_type::UINT8:
+            switch (format.size()) {
+            case 4:
+                return DXGI_FORMAT_R8G8B8A8_UNORM;
+            default:
+                MGE_THROW(illegal_argument)
+                    << "Unsupported uint8 format size: " << format.size();
+            }
         default:
             MGE_THROW(illegal_argument)
                 << "Unsupported format type: " << format.type();

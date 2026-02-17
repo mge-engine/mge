@@ -511,19 +511,20 @@ namespace mge::dx11 {
         const dx11::shader* dx11_vertex_shader =
             static_cast<const dx11::shader*>(
                 dx11_prog.program_shader(mge::shader_type::VERTEX));
-        ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
-        if (input_layout == nullptr) {
-            MGE_THROW(mge::illegal_state)
-                << "No input layout for vertex shader";
-        }
-        m_device_context->IASetInputLayout(input_layout);
-        m_device_context->IASetPrimitiveTopology(
-            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         if (!vb) {
             MGE_THROW(illegal_state)
                 << "Draw command has no vertex buffer assigned";
         }
+
+        // Create input layout from vertex buffer's actual layout
+        ID3D11InputLayout* input_layout = get_or_create_input_layout(
+            vb->layout(),
+            dx11_vertex_shader->code());
+        m_device_context->IASetInputLayout(input_layout);
+        m_device_context->IASetPrimitiveTopology(
+            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
         const dx11::vertex_buffer* dx11_vertex_buffer =
             static_cast<const dx11::vertex_buffer*>(vb);
         UINT element_size =
@@ -773,6 +774,37 @@ namespace mge::dx11 {
     mge::image_ref render_context::screenshot()
     {
         return mge::image_ref();
+    }
+
+    ID3D11InputLayout* render_context::get_or_create_input_layout(
+        const mge::vertex_layout& layout,
+        ID3DBlob*                 shader_code)
+    {
+        // Search cache for existing match
+        for (auto& entry : m_cached_input_layouts) {
+            if (entry.layout == layout && entry.shader_blob == shader_code) {
+                return entry.input_layout.get();
+            }
+        }
+
+        // Create input element descriptions from vertex layout
+        D3D11_INPUT_ELEMENT_DESC* descs = m_input_layout_cache.get(layout);
+
+        // Create input layout
+        ID3D11InputLayout* input_layout = nullptr;
+        HRESULT            rc = m_device->CreateInputLayout(
+            descs,
+            static_cast<UINT>(layout.size()),
+            shader_code->GetBufferPointer(),
+            shader_code->GetBufferSize(),
+            &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+
+        m_cached_input_layouts.push_back(
+            {layout,
+             shader_code,
+             mge::make_com_unique_ptr(input_layout)});
+        return input_layout;
     }
 
     void render_context::on_frame_present()

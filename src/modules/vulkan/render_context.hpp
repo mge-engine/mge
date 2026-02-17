@@ -18,7 +18,7 @@ namespace mge::vulkan {
     class render_context : public mge::render_context
     {
     public:
-        render_context(render_system& render_system_, window& window_);
+        render_context(mge::vulkan::render_system& render_system_, window& window_);
         ~render_context();
 
         mge::index_buffer*  on_create_index_buffer(data_type dt,
@@ -170,7 +170,7 @@ namespace mge::vulkan {
             DRAW_FINISHED // drawing finished, submit & present
         };
 
-        std::shared_ptr<render_system> m_render_system;
+        std::shared_ptr<mge::vulkan::render_system> m_render_system;
         window&                        m_window;
         VkSurfaceKHR                   m_surface{VK_NULL_HANDLE};
         VkDevice                       m_device{VK_NULL_HANDLE};
