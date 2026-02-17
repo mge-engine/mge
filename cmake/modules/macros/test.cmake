@@ -158,6 +158,11 @@ FUNCTION(MGE_CAPTURE_TEST)
                     --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
+            SET_TESTS_PROPERTIES(
+                test_${MGE_CAPTURE_TEST_TARGET}_capture_${RENDER_SYSTEM}
+                PROPERTIES
+                    RESOURCE_LOCK "gpu_capture"
+            )
             ADD_CUSTOM_TARGET(capture-${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}
                 COMMAND "${Python3_EXECUTABLE}" 
                     "${CMAKE_BINARY_DIR}/capturetest.py"
