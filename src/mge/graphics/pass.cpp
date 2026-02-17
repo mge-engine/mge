@@ -109,7 +109,8 @@ namespace mge {
                                mge::uniform_block*         ub,
                                mge::texture*               tex,
                                uint32_t                    index_count,
-                               uint32_t                    index_offset) {
+                               uint32_t                    index_offset,
+                               const mge::rectangle&       scissor) {
                 m_draw_commands.push_back(draw_command{program,
                                                        vertices,
                                                        indices,
@@ -117,7 +118,8 @@ namespace mge {
                                                        ub,
                                                        tex,
                                                        index_count,
-                                                       index_offset});
+                                                       index_offset,
+                                                       scissor});
             });
         }
         m_active = true;

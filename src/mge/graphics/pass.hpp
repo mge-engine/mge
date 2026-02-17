@@ -126,7 +126,8 @@ namespace mge {
                   cmd.uniform_block,
                   cmd.texture,
                   cmd.index_count,
-                  cmd.index_offset);
+                  cmd.index_offset,
+                  cmd.scissor);
             }
         }
 
@@ -157,6 +158,7 @@ namespace mge {
             mge::texture*        texture{nullptr};
             uint32_t             index_count{0};
             uint32_t             index_offset{0};
+            mge::rectangle       scissor{};
         };
 
         std::vector<draw_command> m_draw_commands;

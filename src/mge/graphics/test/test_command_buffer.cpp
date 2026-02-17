@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mock_render_context.hpp"
 #include "test/googletest.hpp"
 
@@ -51,7 +52,8 @@ TEST(command_buffer, for_each_verifies_single_draw)
                     mge::uniform_block* /*ub*/,
                     mge::texture* /*tex*/,
                     uint32_t /*index_count*/,
-                    uint32_t /*index_offset*/) {
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& /*scissor*/) {
         EXPECT_EQ(p, prog);
         EXPECT_EQ(v, vb);
         EXPECT_EQ(i, ib);
@@ -82,7 +84,8 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
                     mge::uniform_block* /*ub*/,
                     mge::texture* /*tex*/,
                     uint32_t /*index_count*/,
-                    uint32_t /*index_offset*/) {
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& /*scissor*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(p, prog1);
@@ -126,7 +129,8 @@ TEST(command_buffer, for_each_verifies_blend_states)
                     mge::uniform_block* /*ub*/,
                     mge::texture* /*tex*/,
                     uint32_t /*index_count*/,
-                    uint32_t /*index_offset*/) {
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& /*scissor*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.color_blend_operation(),
@@ -174,7 +178,8 @@ TEST(command_buffer, depth_write_state)
                     mge::uniform_block* /*ub*/,
                     mge::texture* /*tex*/,
                     uint32_t /*index_count*/,
-                    uint32_t /*index_offset*/) {
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& /*scissor*/) {
         ++count;
         if (count == 1) {
             EXPECT_TRUE(state.depth_write());
@@ -213,7 +218,8 @@ TEST(command_buffer, depth_test_function_state)
                     mge::uniform_block* /*ub*/,
                     mge::texture* /*tex*/,
                     uint32_t /*index_count*/,
-                    uint32_t /*index_offset*/) {
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& /*scissor*/) {
         ++count;
         if (count == 1) {
             EXPECT_EQ(state.depth_test_function(), mge::test::LESS);
@@ -226,4 +232,86 @@ TEST(command_buffer, depth_test_function_state)
         }
     });
     EXPECT_EQ(count, 4);
+}
+
+TEST(command_buffer, scissor_default_is_zero_area)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog, vb, ib);
+
+    cb.for_each(
+        [&](const mge::program_handle& /*p*/,
+            const mge::vertex_buffer_handle& /*v*/,
+            const mge::index_buffer_handle& /*i*/,
+            const mge::pipeline_state& /*state*/,
+            mge::uniform_block* /*ub*/,
+            mge::texture* /*tex*/,
+            uint32_t /*index_count*/,
+            uint32_t /*index_offset*/,
+            const mge::rectangle& scissor) { EXPECT_EQ(scissor.area(), 0u); });
+}
+
+TEST(command_buffer, set_scissor_persists_across_draws)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    mge::rectangle sr{10, 20, 110, 120};
+    cb.set_scissor(sr);
+    cb.draw(prog, vb, ib);
+    cb.draw(prog, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle& /*p*/,
+                    const mge::vertex_buffer_handle& /*v*/,
+                    const mge::index_buffer_handle& /*i*/,
+                    const mge::pipeline_state& /*state*/,
+                    mge::uniform_block* /*ub*/,
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& scissor) {
+        EXPECT_EQ(scissor, sr);
+        ++count;
+    });
+    EXPECT_EQ(count, 2u);
+}
+
+TEST(command_buffer, clear_scissor_resets)
+{
+    mge::command_buffer       cb;
+    mge::program_handle       prog;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    mge::rectangle sr{10, 20, 110, 120};
+    cb.set_scissor(sr);
+    cb.draw(prog, vb, ib);
+    cb.clear_scissor();
+    cb.draw(prog, vb, ib);
+
+    size_t count = 0;
+    cb.for_each([&](const mge::program_handle& /*p*/,
+                    const mge::vertex_buffer_handle& /*v*/,
+                    const mge::index_buffer_handle& /*i*/,
+                    const mge::pipeline_state& /*state*/,
+                    mge::uniform_block* /*ub*/,
+                    mge::texture* /*tex*/,
+                    uint32_t /*index_count*/,
+                    uint32_t /*index_offset*/,
+                    const mge::rectangle& scissor) {
+        ++count;
+        if (count == 1) {
+            EXPECT_EQ(scissor, sr);
+        } else if (count == 2) {
+            EXPECT_EQ(scissor.area(), 0u);
+        }
+    });
+    EXPECT_EQ(count, 2u);
 }

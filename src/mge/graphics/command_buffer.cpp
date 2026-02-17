@@ -19,6 +19,7 @@ namespace mge {
         m_textures.push_back(m_current_texture);
         m_index_counts.push_back(index_count);
         m_index_offsets.push_back(index_offset);
+        m_scissor_rects.push_back(m_current_scissor_rect);
         m_current_uniform_block = nullptr;
         m_current_texture = nullptr;
     }

@@ -147,6 +147,8 @@ class Sanitizer:
                 self.frame_call = 0 
             elif chunk_name == "Internal::End of Capture":
                 self.frame = 0
+            elif chunk_name.startswith("Internal::"):
+                pass  # Skip RenderDoc internal calls (non-deterministic)
             else:
                 if self.frame > 0:
                     self.frame_chunk(chunk)

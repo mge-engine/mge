@@ -13,5 +13,4 @@ TARGET_LINK_LIBRARIES(triangle
     mgegraphics
     mgeasset)
 
-MGE_CAPTURE_TEST(TARGET triangle
-                 RENDER_SYSTEMS opengl directx11 directx12 vulkan)
+MGE_CAPTURE_TEST(TARGET triangle)

@@ -380,18 +380,33 @@ namespace mge::dx11 {
                                                     p.clear_depth_value(),
                                                     0);
         }
-        bool blend_pass_needed = false;
-        p.for_each_draw_command([this, &blend_pass_needed](
-                                    program_handle             program,
-                                    vertex_buffer_handle       vertices,
-                                    index_buffer_handle        indices,
-                                    const mge::pipeline_state& state,
-                                    mge::uniform_block*        ub,
-                                    mge::texture*              tex,
-                                    uint32_t                   index_count,
-                                    uint32_t                   index_offset) {
+        bool           blend_pass_needed = false;
+        mge::rectangle current_scissor = p.scissor();
+        p.for_each_draw_command([this,
+                                 &blend_pass_needed,
+                                 &current_scissor,
+                                 &p](program_handle             program,
+                                     vertex_buffer_handle       vertices,
+                                     index_buffer_handle        indices,
+                                     const mge::pipeline_state& state,
+                                     mge::uniform_block*        ub,
+                                     mge::texture*              tex,
+                                     uint32_t                   index_count,
+                                     uint32_t                   index_offset,
+                                     const mge::rectangle&      cmd_scissor) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
+                const auto& effective =
+                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                if (effective != current_scissor) {
+                    D3D11_RECT sr = {
+                        .left = static_cast<LONG>(effective.left),
+                        .top = static_cast<LONG>(effective.top),
+                        .right = static_cast<LONG>(effective.right),
+                        .bottom = static_cast<LONG>(effective.bottom)};
+                    m_device_context->RSSetScissorRects(1, &sr);
+                    current_scissor = effective;
+                }
                 ID3D11RasterizerState* rs_state = this->rasterizer_state(state);
                 m_device_context->RSSetState(rs_state);
                 if (!state.depth_write()) {
@@ -417,16 +432,29 @@ namespace mge::dx11 {
         });
 
         if (blend_pass_needed) {
-            p.for_each_draw_command([this](program_handle             program,
-                                           vertex_buffer_handle       vertices,
-                                           index_buffer_handle        indices,
-                                           const mge::pipeline_state& state,
-                                           mge::uniform_block*        ub,
-                                           mge::texture*              tex,
-                                           uint32_t index_count,
-                                           uint32_t index_offset) {
+            p.for_each_draw_command([this, &current_scissor, &p](
+                                        program_handle             program,
+                                        vertex_buffer_handle       vertices,
+                                        index_buffer_handle        indices,
+                                        const mge::pipeline_state& state,
+                                        mge::uniform_block*        ub,
+                                        mge::texture*              tex,
+                                        uint32_t                   index_count,
+                                        uint32_t                   index_offset,
+                                        const mge::rectangle& cmd_scissor) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        D3D11_RECT sr = {
+                            .left = static_cast<LONG>(effective.left),
+                            .top = static_cast<LONG>(effective.top),
+                            .right = static_cast<LONG>(effective.right),
+                            .bottom = static_cast<LONG>(effective.bottom)};
+                        m_device_context->RSSetScissorRects(1, &sr);
+                        current_scissor = effective;
+                    }
                     ID3D11RasterizerState* rs_state =
                         this->rasterizer_state(state);
                     m_device_context->RSSetState(rs_state);

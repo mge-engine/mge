@@ -13,5 +13,4 @@ TARGET_LINK_LIBRARIES(depth_test
     mgegraphics
     mgeasset)
 
-MGE_CAPTURE_TEST(TARGET depth_test
-                 RENDER_SYSTEMS opengl directx11 directx12 vulkan)
+MGE_CAPTURE_TEST(TARGET depth_test)

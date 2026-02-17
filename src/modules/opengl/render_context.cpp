@@ -550,76 +550,91 @@ namespace mge::opengl {
 #    define GL_CONSERVATIVE_RASTERIZATION_INTEL 0x9346
 #endif
 
-        bool blend_pass_needed = false;
-        p.for_each_draw_command(
-            [this, &blend_pass_needed](const program_handle&       program,
-                                       const vertex_buffer_handle& vertices,
-                                       const index_buffer_handle&  indices,
-                                       const mge::pipeline_state&  state,
-                                       mge::uniform_block*         ub,
-                                       mge::texture*               tex,
-                                       uint32_t                    index_count,
-                                       uint32_t index_offset) {
-                blend_operation op = state.color_blend_operation();
-                if (op == blend_operation::NONE) {
-                    mge::cull_mode cull = state.cull_mode();
-                    if (cull != mge::cull_mode::NONE) {
-                        glEnable(GL_CULL_FACE);
-                        CHECK_OPENGL_ERROR(glEnable);
-                        if (cull == mge::cull_mode::CLOCKWISE) {
-                            glCullFace(GL_FRONT);
-                        } else {
-                            glCullFace(GL_BACK);
-                        }
-                        CHECK_OPENGL_ERROR(glCullFace);
-                    }
-                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
-                    CHECK_OPENGL_ERROR(glDepthFunc);
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_FALSE);
-                        CHECK_OPENGL_ERROR(glDepthMask);
-                    }
-                    bool conservative_raster_enabled =
-                        m_conservative_rasterization_supported &&
-                        state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
-                    if (conservative_raster_enabled) {
-                        glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                        CHECK_OPENGL_ERROR(glEnable);
-                    }
-                    draw_geometry(program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  ub,
-                                  tex,
-                                  index_count,
-                                  index_offset);
-                    if (conservative_raster_enabled) {
-                        glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                        CHECK_OPENGL_ERROR(glDisable);
-                    }
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_TRUE);
-                        CHECK_OPENGL_ERROR(glDepthMask);
-                    }
-                    if (cull != mge::cull_mode::NONE) {
-                        glDisable(GL_CULL_FACE);
-                        CHECK_OPENGL_ERROR(glDisable);
-                    }
-                } else {
-                    blend_pass_needed = true;
+        bool           blend_pass_needed = false;
+        mge::rectangle current_scissor = p.scissor();
+        p.for_each_draw_command([this,
+                                 &blend_pass_needed,
+                                 &current_scissor,
+                                 &p](const program_handle&       program,
+                                     const vertex_buffer_handle& vertices,
+                                     const index_buffer_handle&  indices,
+                                     const mge::pipeline_state&  state,
+                                     mge::uniform_block*         ub,
+                                     mge::texture*               tex,
+                                     uint32_t                    index_count,
+                                     uint32_t                    index_offset,
+                                     const mge::rectangle&       cmd_scissor) {
+            blend_operation op = state.color_blend_operation();
+            if (op == blend_operation::NONE) {
+                const auto& effective =
+                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                if (effective != current_scissor) {
+                    glScissor(static_cast<const GLint>(effective.left),
+                              static_cast<const GLint>(effective.top),
+                              static_cast<const GLsizei>(effective.width()),
+                              static_cast<const GLsizei>(effective.height()));
+                    current_scissor = effective;
                 }
-            });
+                mge::cull_mode cull = state.cull_mode();
+                if (cull != mge::cull_mode::NONE) {
+                    glEnable(GL_CULL_FACE);
+                    CHECK_OPENGL_ERROR(glEnable);
+                    if (cull == mge::cull_mode::CLOCKWISE) {
+                        glCullFace(GL_FRONT);
+                    } else {
+                        glCullFace(GL_BACK);
+                    }
+                    CHECK_OPENGL_ERROR(glCullFace);
+                }
+                glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                CHECK_OPENGL_ERROR(glDepthFunc);
+                if (!state.depth_write()) {
+                    glDepthMask(GL_FALSE);
+                    CHECK_OPENGL_ERROR(glDepthMask);
+                }
+                bool conservative_raster_enabled =
+                    m_conservative_rasterization_supported &&
+                    state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
+                if (conservative_raster_enabled) {
+                    glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                    CHECK_OPENGL_ERROR(glEnable);
+                }
+                draw_geometry(program.get(),
+                              vertices.get(),
+                              indices.get(),
+                              ub,
+                              tex,
+                              index_count,
+                              index_offset);
+                if (conservative_raster_enabled) {
+                    glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                    CHECK_OPENGL_ERROR(glDisable);
+                }
+                if (!state.depth_write()) {
+                    glDepthMask(GL_TRUE);
+                    CHECK_OPENGL_ERROR(glDepthMask);
+                }
+                if (cull != mge::cull_mode::NONE) {
+                    glDisable(GL_CULL_FACE);
+                    CHECK_OPENGL_ERROR(glDisable);
+                }
+            } else {
+                blend_pass_needed = true;
+            }
+        });
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command([this](const program_handle&       program,
-                                           const vertex_buffer_handle& vertices,
-                                           const index_buffer_handle&  indices,
-                                           const mge::pipeline_state&  state,
-                                           mge::uniform_block*         ub,
-                                           mge::texture*               tex,
-                                           uint32_t index_count,
-                                           uint32_t index_offset) {
+            p.for_each_draw_command([this, &current_scissor, &p](
+                                        const program_handle&       program,
+                                        const vertex_buffer_handle& vertices,
+                                        const index_buffer_handle&  indices,
+                                        const mge::pipeline_state&  state,
+                                        mge::uniform_block*         ub,
+                                        mge::texture*               tex,
+                                        uint32_t                    index_count,
+                                        uint32_t              index_offset,
+                                        const mge::rectangle& cmd_scissor) {
                 blend_operation color_op = state.color_blend_operation();
                 blend_operation alpha_op = state.alpha_blend_operation();
                 blend_factor    color_src = state.color_blend_factor_src();
@@ -627,6 +642,16 @@ namespace mge::opengl {
                 blend_factor    alpha_src = state.alpha_blend_factor_src();
                 blend_factor    alpha_dst = state.alpha_blend_factor_dst();
                 if (color_op != blend_operation::NONE) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        glScissor(
+                            static_cast<const GLint>(effective.left),
+                            static_cast<const GLint>(effective.top),
+                            static_cast<const GLsizei>(effective.width()),
+                            static_cast<const GLsizei>(effective.height()));
+                        current_scissor = effective;
+                    }
                     mge::cull_mode cull = state.cull_mode();
                     if (cull != mge::cull_mode::NONE) {
                         glEnable(GL_CULL_FACE);
