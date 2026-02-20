@@ -7,6 +7,7 @@
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/parameter.hpp"
+#include "message_id.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
@@ -806,7 +807,7 @@ namespace mge::dx12 {
                             "DirectX12 Debug [{}] ({}) ID: {} - {}",
                             message_severity(severity),
                             message_category(category),
-                            id,
+                            message_id_name(id),
                             description);
             break;
         case D3D12_MESSAGE_SEVERITY_ERROR:
@@ -814,7 +815,7 @@ namespace mge::dx12 {
                             "DirectX12 Debug [{}] ({}) ID: {} - {}",
                             message_severity(severity),
                             message_category(category),
-                            id,
+                            message_id_name(id),
                             description);
             break;
         case D3D12_MESSAGE_SEVERITY_WARNING:
@@ -822,7 +823,7 @@ namespace mge::dx12 {
                               "DirectX12 Debug [{}] ({}) ID: {} - {}",
                               message_severity(severity),
                               message_category(category),
-                              id,
+                              message_id_name(id),
                               description);
             break;
         case D3D12_MESSAGE_SEVERITY_INFO:
@@ -831,7 +832,7 @@ namespace mge::dx12 {
                            "DirectX12 Debug [{}] ({}) ID: {} - {}",
                            message_severity(severity),
                            message_category(category),
-                           id,
+                           message_id_name(id),
                            description);
             break;
         }

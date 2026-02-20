@@ -6,6 +6,7 @@ SET(mge_dx12_module_SOURCES
     window.cpp
     error.cpp
     input_layout_cache.cpp
+    message_id.cpp
     render_system.cpp
     render_context.cpp
     shader.cpp
