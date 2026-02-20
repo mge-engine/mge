@@ -36,6 +36,8 @@
 #include "mge/input/key_action.hpp"
 #include "mge/input/modifier.hpp"
 #include "mge/input/mouse_action.hpp"
+#include "mge/math/mat.hpp"
+
 
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_FONT_BAKING
@@ -700,7 +702,6 @@ namespace mge {
 
     void ui::draw(mge::pass& pass)
     {
-
         // Create uniform block on first draw after program linking completes
         if (!m_uniform_block && !m_ui_program->needs_link()) {
             const auto& uniform_buffers = m_ui_program->uniform_buffers();
@@ -713,23 +714,10 @@ namespace mge {
                 float vp_height = static_cast<float>(extent.height);
 
                 // Orthographic projection: screen space (0,0 top-left) -> NDC
-                float ortho[16] = {2.0f / vp_width,
-                                   0.0f,
-                                   0.0f,
-                                   0.0f,
-                                   0.0f,
-                                   -2.0f / vp_height,
-                                   0.0f,
-                                   0.0f,
-                                   0.0f,
-                                   0.0f,
-                                   -1.0f,
-                                   0.0f,
-                                   -1.0f,
-                                   1.0f,
-                                   0.0f,
-                                   1.0f};
-                m_uniform_block->set_data("projection", ortho, sizeof(ortho));
+                fmat4 proj = mge::ortho(0.0f, vp_width, vp_height, 0.0f);
+                m_uniform_block->set_data("projection",
+                                          glm::value_ptr(proj),
+                                          sizeof(proj));
             }
         }
 
