@@ -59,6 +59,22 @@
 namespace mge {
     MGE_USE_TRACE(UI);
 
+    static nk_flags to_nk_flags(const ui_window_flags& flags)
+    {
+        const auto& bits = static_cast<
+            const std::bitset<static_cast<size_t>(ui_window_flag::MAX)>&>(
+            flags);
+        return static_cast<nk_flags>(bits.to_ulong());
+    }
+
+    static nk_flags to_nk_flags(const ui_alignment& flags)
+    {
+        const auto& bits = static_cast<
+            const std::bitset<static_cast<size_t>(ui_alignment_flag::MAX)>&>(
+            flags);
+        return static_cast<nk_flags>(bits.to_ulong());
+    }
+
     static void* nk_mge_alloc(nk_handle unused, void* old, nk_size size)
     {
         (void)unused;
@@ -416,17 +432,17 @@ namespace mge {
         m_in_frame = false;
     }
 
-    bool ui::begin_window(const char* title,
-                          float       x,
-                          float       y,
-                          float       width,
-                          float       height,
-                          uint32_t    flags)
+    bool ui::begin_window(const char*     title,
+                          float           x,
+                          float           y,
+                          float           width,
+                          float           height,
+                          ui_window_flags flags)
     {
         return nk_begin(m_context,
                         title,
                         nk_rect(x, y, width, height),
-                        static_cast<nk_flags>(flags)) != 0;
+                        to_nk_flags(flags)) != 0;
     }
 
     void ui::end_window()
@@ -464,21 +480,21 @@ namespace mge {
         return nk_button_label(m_context, label) != 0;
     }
 
-    void ui::label(const char* text, uint32_t alignment)
+    void ui::label(const char* text, ui_alignment alignment)
     {
-        nk_label(m_context, text, static_cast<nk_flags>(alignment));
+        nk_label(m_context, text, to_nk_flags(alignment));
     }
 
-    void ui::label_colored(const char* text,
-                           uint32_t    alignment,
-                           uint8_t     r,
-                           uint8_t     g,
-                           uint8_t     b,
-                           uint8_t     a)
+    void ui::label_colored(const char*  text,
+                           ui_alignment alignment,
+                           uint8_t      r,
+                           uint8_t      g,
+                           uint8_t      b,
+                           uint8_t      a)
     {
         nk_label_colored(m_context,
                          text,
-                         static_cast<nk_flags>(alignment),
+                         to_nk_flags(alignment),
                          nk_rgba(r, g, b, a));
     }
 
@@ -500,13 +516,12 @@ namespace mge {
         return nk_option_label(m_context, label, active ? 1 : 0) != 0;
     }
 
-    bool ui::selectable(const char* label, uint32_t alignment, bool& selected)
+    bool
+    ui::selectable(const char* label, ui_alignment alignment, bool& selected)
     {
         int val = selected ? 1 : 0;
-        int result = nk_selectable_label(m_context,
-                                         label,
-                                         static_cast<nk_flags>(alignment),
-                                         &val);
+        int result =
+            nk_selectable_label(m_context, label, to_nk_flags(alignment), &val);
         selected = val != 0;
         return result != 0;
     }
@@ -552,14 +567,22 @@ namespace mge {
         nk_property_float(m_context, name, min, &val, max, step, inc_per_pixel);
     }
 
-    int ui::edit_string(char* buffer, int* length, int max_length)
+    ui_edit_events ui::edit_string(char* buffer, int* length, int max_length)
     {
-        return nk_edit_string(m_context,
-                              NK_EDIT_SIMPLE,
-                              buffer,
-                              length,
-                              max_length,
-                              nk_filter_default);
+        nk_flags       result = nk_edit_string(m_context,
+                                         NK_EDIT_SIMPLE,
+                                         buffer,
+                                         length,
+                                         max_length,
+                                         nk_filter_default);
+        ui_edit_events events;
+        for (uint32_t i = 0; i < static_cast<uint32_t>(ui_edit_event_flag::MAX);
+             ++i) {
+            if (result & (1u << i)) {
+                events.set(static_cast<ui_edit_event_flag>(i));
+            }
+        }
+        return events;
     }
 
     int ui::combo(const char* const* items,
@@ -587,10 +610,9 @@ namespace mge {
         nk_rule_horizontal(m_context, nk_rgba(r, g, b, a), nk_true);
     }
 
-    bool ui::begin_group(const char* title, uint32_t flags)
+    bool ui::begin_group(const char* title, ui_window_flags flags)
     {
-        return nk_group_begin(m_context, title, static_cast<nk_flags>(flags)) !=
-               0;
+        return nk_group_begin(m_context, title, to_nk_flags(flags)) != 0;
     }
 
     void ui::end_group()
@@ -654,22 +676,21 @@ namespace mge {
         nk_menubar_end(m_context);
     }
 
-    bool ui::menu_begin(const char* label,
-                        uint32_t    alignment,
-                        float       width,
-                        float       height)
+    bool ui::menu_begin(const char*  label,
+                        ui_alignment alignment,
+                        float        width,
+                        float        height)
     {
         return nk_menu_begin_label(m_context,
                                    label,
-                                   static_cast<nk_flags>(alignment),
+                                   to_nk_flags(alignment),
                                    nk_vec2(width, height)) != 0;
     }
 
-    bool ui::menu_item(const char* label, uint32_t alignment)
+    bool ui::menu_item(const char* label, ui_alignment alignment)
     {
-        return nk_menu_item_label(m_context,
-                                  label,
-                                  static_cast<nk_flags>(alignment)) != 0;
+        return nk_menu_item_label(m_context, label, to_nk_flags(alignment)) !=
+               0;
     }
 
     void ui::menu_end()

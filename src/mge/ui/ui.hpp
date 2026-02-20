@@ -15,6 +15,8 @@
 #include "mge/input/mouse_action.hpp"
 #include "mge/ui/dllexport.hpp"
 
+#include "mge/core/enum_set.hpp"
+
 #include <cstdint>
 
 struct nk_context;
@@ -28,6 +30,76 @@ namespace mge {
     class input_handler;
     class pass;
     class uniform_block;
+
+    /**
+     * @brief Window flag values for begin_window and begin_group.
+     *
+     * Corresponds to nuklear nk_panel_flags.
+     */
+    enum class ui_window_flag : uint32_t
+    {
+        BORDER = 0,           //!< Draw border around the window.
+        MOVABLE = 1,          //!< Window can be moved by dragging.
+        SCALABLE = 2,         //!< Window can be resized.
+        CLOSABLE = 3,         //!< Window has a close button.
+        MINIMIZABLE = 4,      //!< Window has a minimize button.
+        NO_SCROLLBAR = 5,     //!< Disable scrollbar.
+        TITLE = 6,            //!< Show title bar.
+        SCROLL_AUTO_HIDE = 7, //!< Auto-hide scrollbar when inactive.
+        BACKGROUND = 8,       //!< Render as background window.
+        SCALE_LEFT = 9,       //!< Scale from left side.
+        NO_INPUT = 10,        //!< Ignore all input.
+        MAX = 11              //!< Sentinel value.
+    };
+
+    /**
+     * @brief Set of window flags.
+     */
+    using ui_window_flags = enum_set<ui_window_flag, ui_window_flag::MAX>;
+
+    /**
+     * @brief Text alignment flag values.
+     *
+     * Corresponds to nuklear nk_text_align. Combine horizontal
+     * and vertical flags to specify alignment.
+     */
+    enum class ui_alignment_flag : uint32_t
+    {
+        LEFT = 0,     //!< Align text to left.
+        CENTERED = 1, //!< Center text horizontally.
+        RIGHT = 2,    //!< Align text to right.
+        TOP = 3,      //!< Align text to top.
+        MIDDLE = 4,   //!< Center text vertically.
+        BOTTOM = 5,   //!< Align text to bottom.
+        MAX = 6       //!< Sentinel value.
+    };
+
+    /**
+     * @brief Set of text alignment flags.
+     */
+    using ui_alignment = enum_set<ui_alignment_flag, ui_alignment_flag::MAX>;
+
+    /**
+     * @brief Edit event flag values.
+     *
+     * Returned by edit_string to indicate widget state.
+     * Corresponds to nuklear nk_edit_events.
+     */
+    enum class ui_edit_event_flag : uint32_t
+    {
+        ACTIVE = 0,      //!< Widget is currently being modified.
+        INACTIVE = 1,    //!< Widget is not active.
+        ACTIVATED = 2,   //!< Widget went from inactive to active.
+        DEACTIVATED = 3, //!< Widget went from active to inactive.
+        COMMITTED = 4,   //!< Widget received enter and lost focus.
+        MAX = 5          //!< Sentinel value.
+    };
+
+    /**
+     * @brief Set of edit event flags.
+     */
+    using ui_edit_events =
+        enum_set<ui_edit_event_flag, ui_edit_event_flag::MAX>;
 
     MGE_DECLARE_REF(ui);
 
@@ -96,15 +168,15 @@ namespace mge {
          * @param y y position
          * @param width window width
          * @param height window height
-         * @param flags window flags (nuklear flags)
+         * @param flags window flags
          * @return true if window is visible and should be rendered
          */
-        bool begin_window(const char* title,
-                          float       x,
-                          float       y,
-                          float       width,
-                          float       height,
-                          uint32_t    flags = 0);
+        bool begin_window(const char*     title,
+                          float           x,
+                          float           y,
+                          float           width,
+                          float           height,
+                          ui_window_flags flags = ui_window_flags());
 
         /**
          * @brief End current window
@@ -166,7 +238,7 @@ namespace mge {
          * @param text label text
          * @param alignment text alignment
          */
-        void label(const char* text, uint32_t alignment = 0);
+        void label(const char* text, ui_alignment alignment = ui_alignment());
 
         /**
          * @brief Create a colored label
@@ -178,12 +250,12 @@ namespace mge {
          * @param b blue
          * @param a alpha
          */
-        void label_colored(const char* text,
-                           uint32_t    alignment,
-                           uint8_t     r,
-                           uint8_t     g,
-                           uint8_t     b,
-                           uint8_t     a = 255);
+        void label_colored(const char*  text,
+                           ui_alignment alignment,
+                           uint8_t      r,
+                           uint8_t      g,
+                           uint8_t      b,
+                           uint8_t      a = 255);
 
         /**
          * @brief Create a word-wrapping label
@@ -220,7 +292,8 @@ namespace mge {
          * @param selected selection state (in/out)
          * @return true if selection state changed
          */
-        bool selectable(const char* label, uint32_t alignment, bool& selected);
+        bool
+        selectable(const char* label, ui_alignment alignment, bool& selected);
 
         /**
          * @brief Create a float slider
@@ -294,9 +367,9 @@ namespace mge {
          * @param buffer text buffer
          * @param length current text length (in/out)
          * @param max_length maximum text length
-         * @return edit state flags
+         * @return edit event flags indicating widget state
          */
-        int edit_string(char* buffer, int* length, int max_length);
+        ui_edit_events edit_string(char* buffer, int* length, int max_length);
 
         /**
          * @brief Create a combo box (dropdown)
@@ -344,7 +417,7 @@ namespace mge {
          * @param flags group flags
          * @return true if group content should be rendered
          */
-        bool begin_group(const char* title, uint32_t flags);
+        bool begin_group(const char* title, ui_window_flags flags);
 
         /**
          * @brief End current group
@@ -429,10 +502,10 @@ namespace mge {
          * @param height menu popup height
          * @return true if menu is open
          */
-        bool menu_begin(const char* label,
-                        uint32_t    alignment,
-                        float       width,
-                        float       height);
+        bool menu_begin(const char*  label,
+                        ui_alignment alignment,
+                        float        width,
+                        float        height);
 
         /**
          * @brief Create a menu item
@@ -441,7 +514,8 @@ namespace mge {
          * @param alignment text alignment
          * @return true if item was clicked
          */
-        bool menu_item(const char* label, uint32_t alignment = 0);
+        bool menu_item(const char*  label,
+                       ui_alignment alignment = ui_alignment());
 
         /**
          * @brief End current menu
