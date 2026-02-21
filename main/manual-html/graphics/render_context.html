@@ -363,6 +363,24 @@ has a 1:1 relationship with the window.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge14render_context14destroy_objectEv8uint16_t8uint16_t8uint32_t">
+<span id="_CPPv3I0EN3mge14render_context14destroy_objectE8uint16_t8uint16_t8uint32_t"></span><span id="_CPPv2I0EN3mge14render_context14destroy_objectE8uint16_t8uint16_t8uint32_t"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1render__context_1a828b375c30e0a590d98ed08da6b6eead"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy_object</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span>, <span class="n"><span class="pre">uint16_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">flags</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">object_index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge14render_context14destroy_objectEv8uint16_t8uint16_t8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Destroy a context object by type and index. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – object type (shader, program, etc.) </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>index</strong> – object type index </p></li>
+<li><p><strong>flags</strong> – object flags </p></li>
+<li><p><strong>object_index</strong> – index into the object storage </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType">
 <span id="_CPPv3I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span id="_CPPv2I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/metaprogramming.html#_CPPv4I0EN3mge8callableE" title="mge::callable"><span class="n"><span class="pre">callable</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActionType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1render__context_1add43372292182fce05340755ea90c3ee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prepare_frame</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="mge::render_context::prepare_frame::ActionType"><span class="n"><span class="pre">ActionType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">action</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="Link to this definition"></a><br /></dt>
 <dd><p>Prepare the frame by registering an action to be called before rendering the frame. </p>
@@ -516,6 +534,262 @@ operations, viewports, and scissor rectangles.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge4passD0Ev">
 <span id="_CPPv3N3mge4passD0Ev"></span><span id="_CPPv2N3mge4passD0Ev"></span><span id="mge::pass::~pass"></span><span class="target" id="classmge_1_1pass_1a3e2144f474140f20d76433021f35e46e"></span><span class="sig-name descname"><span class="n"><span class="pre">~pass</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4passD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Default destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass8set_rectERKN3mge9rectangleE">
+<span id="_CPPv3N3mge4pass8set_rectERKN3mge9rectangleE"></span><span id="_CPPv2N3mge4pass8set_rectERKN3mge9rectangleE"></span><span id="mge::pass::set_rect__mge::rectangleCR"></span><span class="target" id="classmge_1_1pass_1aadc8e395993c47b0a0652d1b53fb76f7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_rect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge9rectangleE" title="mge::rectangle"><span class="n"><span class="pre">rectangle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass8set_rectERKN3mge9rectangleE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the render target rectangle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – rectangle defining the render area </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass12set_viewportERKN3mge8viewportE">
+<span id="_CPPv3N3mge4pass12set_viewportERKN3mge8viewportE"></span><span id="_CPPv2N3mge4pass12set_viewportERKN3mge8viewportE"></span><span id="mge::pass::set_viewport__mge::viewportCR"></span><span class="target" id="classmge_1_1pass_1abe8b505c88c659167543763dd7690e37"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_viewport</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge8viewportE" title="mge::viewport"><span class="n"><span class="pre">viewport</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass12set_viewportERKN3mge8viewportE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the viewport for this pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> – viewport to use </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass16default_viewportEv">
+<span id="_CPPv3N3mge4pass16default_viewportEv"></span><span id="_CPPv2N3mge4pass16default_viewportEv"></span><span id="mge::pass::default_viewport"></span><span class="target" id="classmge_1_1pass_1adbeeaa6ccc11dd9925cabf72a1ed3616"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_viewport</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass16default_viewportEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the viewport to the full render target size. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass11set_scissorERKN3mge9rectangleE">
+<span id="_CPPv3N3mge4pass11set_scissorERKN3mge9rectangleE"></span><span id="_CPPv2N3mge4pass11set_scissorERKN3mge9rectangleE"></span><span id="mge::pass::set_scissor__mge::rectangleCR"></span><span class="target" id="classmge_1_1pass_1af023bc933223c7556512d19d48354f68"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_scissor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge9rectangleE" title="mge::rectangle"><span class="n"><span class="pre">rectangle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass11set_scissorERKN3mge9rectangleE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the scissor rectangle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – scissor rectangle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass15default_scissorEv">
+<span id="_CPPv3N3mge4pass15default_scissorEv"></span><span id="_CPPv2N3mge4pass15default_scissorEv"></span><span id="mge::pass::default_scissor"></span><span class="target" id="classmge_1_1pass_1a0690214d905b65fae46ae4da4b9bac3c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_scissor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass15default_scissorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the scissor rectangle to the full render target size. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass11clear_colorERK10rgba_color">
+<span id="_CPPv3N3mge4pass11clear_colorERK10rgba_color"></span><span id="_CPPv2N3mge4pass11clear_colorERK10rgba_color"></span><span id="mge::pass::clear_color__rgba_colorCR"></span><span class="target" id="classmge_1_1pass_1a28db815a0ccabd3701f98e1d0890bfce"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">color</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass11clear_colorERK10rgba_color" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the clear color and enable color clearing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>color</strong> – color to clear the color buffer to </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass19disable_clear_colorEv">
+<span id="_CPPv3N3mge4pass19disable_clear_colorEv"></span><span id="_CPPv2N3mge4pass19disable_clear_colorEv"></span><span id="mge::pass::disable_clear_color"></span><span class="target" id="classmge_1_1pass_1abd65cf8521f7a6b3aa70f3cbbb7b3c7d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_clear_color</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass19disable_clear_colorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable color buffer clearing for this pass. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass11clear_depthEf">
+<span id="_CPPv3N3mge4pass11clear_depthEf"></span><span id="_CPPv2N3mge4pass11clear_depthEf"></span><span id="mge::pass::clear_depth__float"></span><span class="target" id="classmge_1_1pass_1acf8cef46a80fcc46cb22cc2379f272f7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_depth</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">depth</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass11clear_depthEf" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the clear depth value and enable depth clearing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>depth</strong> – depth value to clear to </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass19disable_clear_depthEv">
+<span id="_CPPv3N3mge4pass19disable_clear_depthEv"></span><span id="_CPPv2N3mge4pass19disable_clear_depthEv"></span><span id="mge::pass::disable_clear_depth"></span><span class="target" id="classmge_1_1pass_1a7d922e1ffdc791801f1dcecb12318d4f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_clear_depth</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass19disable_clear_depthEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable depth buffer clearing for this pass. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass13clear_stencilE7int32_t">
+<span id="_CPPv3N3mge4pass13clear_stencilE7int32_t"></span><span id="_CPPv2N3mge4pass13clear_stencilE7int32_t"></span><span id="mge::pass::clear_stencil__int32_t"></span><span class="target" id="classmge_1_1pass_1a649be713c6f794be0fe4482e45e1c637"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_stencil</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stencil</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass13clear_stencilE7int32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the clear stencil value and enable stencil clearing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stencil</strong> – stencil value to clear to </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass21disable_clear_stencilEv">
+<span id="_CPPv3N3mge4pass21disable_clear_stencilEv"></span><span id="_CPPv2N3mge4pass21disable_clear_stencilEv"></span><span id="mge::pass::disable_clear_stencil"></span><span class="target" id="classmge_1_1pass_1a1fd616089866ce7448375b790e34a39b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable_clear_stencil</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass21disable_clear_stencilEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Disable stencil buffer clearing for this pass. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass16set_frame_bufferERK19frame_buffer_handle">
+<span id="_CPPv3N3mge4pass16set_frame_bufferERK19frame_buffer_handle"></span><span id="_CPPv2N3mge4pass16set_frame_bufferERK19frame_buffer_handle"></span><span id="mge::pass::set_frame_buffer__frame_buffer_handleCR"></span><span class="target" id="classmge_1_1pass_1a8520f2d1bfd4bde14e69affbc8348c13"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_frame_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">frame_buffer_handle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">fb</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge4pass16set_frame_bufferERK19frame_buffer_handle" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the frame buffer to render into. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fb</strong> – frame buffer handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass5resetEv">
+<span id="_CPPv3N3mge4pass5resetEv"></span><span id="_CPPv2N3mge4pass5resetEv"></span><span id="mge::pass::reset"></span><span class="target" id="classmge_1_1pass_1a9df2fcba67048ade150fe7f1f37fe011"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass5resetEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Reset this pass to its initial state. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass5touchEv">
+<span id="_CPPv3N3mge4pass5touchEv"></span><span id="_CPPv2N3mge4pass5touchEv"></span><span id="mge::pass::touch"></span><span class="target" id="classmge_1_1pass_1a4c110bf7235b947974ce679d1afff1c9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">touch</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass5touchEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Mark this pass as active without submitting commands. </p>
+<p>Used to trigger pass execution (e.g. clear operations) even when no draw commands are submitted. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass6activeEv">
+<span id="_CPPv3NK3mge4pass6activeEv"></span><span id="_CPPv2NK3mge4pass6activeEv"></span><span id="mge::pass::activeC"></span><span class="target" id="classmge_1_1pass_1a681966239500945b9831f603b83e62ae"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">active</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass6activeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether this pass has been activated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the pass has pending work </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass8viewportEv">
+<span id="_CPPv3NK3mge4pass8viewportEv"></span><span id="_CPPv2NK3mge4pass8viewportEv"></span><span id="mge::pass::viewportC"></span><span class="target" id="classmge_1_1pass_1ac2b1ac9f43ba92cb748fd38a8d42953b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge8viewportE" title="mge::viewport"><span class="n"><span class="pre">viewport</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">viewport</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass8viewportEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current viewport of this pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>viewport reference </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass7scissorEv">
+<span id="_CPPv3NK3mge4pass7scissorEv"></span><span id="_CPPv2NK3mge4pass7scissorEv"></span><span id="mge::pass::scissorC"></span><span class="target" id="classmge_1_1pass_1a30440f232bcbd2cc0e977fc180b40697"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge9rectangleE" title="mge::rectangle"><span class="n"><span class="pre">rectangle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">scissor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass7scissorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current scissor rectangle of this pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>scissor rectangle reference </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass17clear_color_valueEv">
+<span id="_CPPv3NK3mge4pass17clear_color_valueEv"></span><span id="_CPPv2NK3mge4pass17clear_color_valueEv"></span><span id="mge::pass::clear_color_valueC"></span><span class="target" id="classmge_1_1pass_1a86d728c262cfb5bc6ae0f3cf9d9af2b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">clear_color_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass17clear_color_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current clear color value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>clear color </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass17clear_depth_valueEv">
+<span id="_CPPv3NK3mge4pass17clear_depth_valueEv"></span><span id="_CPPv2NK3mge4pass17clear_depth_valueEv"></span><span id="mge::pass::clear_depth_valueC"></span><span class="target" id="classmge_1_1pass_1a963f1959981f198e7e2c7f2376ca5f30"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_depth_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass17clear_depth_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current clear depth value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>clear depth </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass19clear_stencil_valueEv">
+<span id="_CPPv3NK3mge4pass19clear_stencil_valueEv"></span><span id="_CPPv2NK3mge4pass19clear_stencil_valueEv"></span><span id="mge::pass::clear_stencil_valueC"></span><span class="target" id="classmge_1_1pass_1a3db76808e160c978610ecfab27ca8846"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_stencil_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass19clear_stencil_valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current clear stencil value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>clear stencil value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass19clear_color_enabledEv">
+<span id="_CPPv3NK3mge4pass19clear_color_enabledEv"></span><span id="_CPPv2NK3mge4pass19clear_color_enabledEv"></span><span id="mge::pass::clear_color_enabledC"></span><span class="target" id="classmge_1_1pass_1acbe2188ac171d2a36f8f19bbec0d9235"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_color_enabled</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass19clear_color_enabledEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether color clearing is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if color buffer will be cleared </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass19clear_depth_enabledEv">
+<span id="_CPPv3NK3mge4pass19clear_depth_enabledEv"></span><span id="_CPPv2NK3mge4pass19clear_depth_enabledEv"></span><span id="mge::pass::clear_depth_enabledC"></span><span class="target" id="classmge_1_1pass_1ab9cb83ae519e3442d16d1f84ef2662b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_depth_enabled</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass19clear_depth_enabledEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether depth clearing is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if depth buffer will be cleared </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass21clear_stencil_enabledEv">
+<span id="_CPPv3NK3mge4pass21clear_stencil_enabledEv"></span><span id="_CPPv2NK3mge4pass21clear_stencil_enabledEv"></span><span id="mge::pass::clear_stencil_enabledC"></span><span class="target" id="classmge_1_1pass_1a4821d0e23cb895d60142c89c732d4be9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_stencil_enabled</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass21clear_stencil_enabledEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether stencil clearing is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if stencil buffer will be cleared </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4pass12frame_bufferEv">
+<span id="_CPPv3NK3mge4pass12frame_bufferEv"></span><span id="_CPPv2NK3mge4pass12frame_bufferEv"></span><span id="mge::pass::frame_bufferC"></span><span class="target" id="classmge_1_1pass_1a7b49a2dd93e23f36ba8d27477ecc919d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">frame_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_buffer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge4pass12frame_bufferEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Current frame buffer of this pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frame buffer handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4pass6submitERK14command_buffer">
+<span id="_CPPv3N3mge4pass6submitERK14command_buffer"></span><span id="_CPPv2N3mge4pass6submitERK14command_buffer"></span><span id="mge::pass::submit__command_bufferCR"></span><span class="target" id="classmge_1_1pass_1a606b8dbbd275dacca548366fb37ac2e7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">submit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge4pass6submitERK14command_buffer" title="mge::pass::submit::command_buffer"><span class="n"><span class="pre">command_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">command_buffer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4pass6submitERK14command_buffer" title="Link to this definition"></a><br /></dt>
+<dd><p>Submit a command buffer for execution in this pass. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>command_buffer</strong> – command buffer containing draw commands </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK3mge4pass21for_each_draw_commandEvRR1F">
+<span id="_CPPv3I0ENK3mge4pass21for_each_draw_commandERR1F"></span><span id="_CPPv2I0ENK3mge4pass21for_each_draw_commandERR1F"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">F</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1pass_1a21e7a9dbe43f47fb3a031674f05cce56"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">for_each_draw_command</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0ENK3mge4pass21for_each_draw_commandEvRR1F" title="mge::pass::for_each_draw_command::F"><span class="n"><span class="pre">F</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK3mge4pass21for_each_draw_commandEvRR1F" title="Link to this definition"></a><br /></dt>
+<dd><p>Iterate over all submitted draw commands. </p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">f</span></code> for each draw command with the program, vertex buffer, index buffer, pipeline state, uniform block, and texture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>F</strong> – callable type </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>f</strong> – callable invoked for each draw command </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
