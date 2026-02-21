@@ -18,7 +18,8 @@ namespace mge::vulkan {
     class render_context : public mge::render_context
     {
     public:
-        render_context(render_system& render_system_, window& window_);
+        render_context(mge::vulkan::render_system& render_system_,
+                       window&                     window_);
         ~render_context();
 
         mge::index_buffer*  on_create_index_buffer(data_type dt,
@@ -120,7 +121,9 @@ namespace mge::vulkan {
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
                            mge::uniform_block*        ub,
-                           mge::texture*              tex);
+                           mge::texture*              tex,
+                           uint32_t                   index_count = 0,
+                           uint32_t                   index_offset = 0);
 
         void bind_uniform_block(VkCommandBuffer       command_buffer,
                                 mge::vulkan::program& vk_program,
@@ -128,7 +131,15 @@ namespace mge::vulkan {
 
         void bind_texture(VkCommandBuffer       command_buffer,
                           mge::vulkan::program& vk_program,
-                          mge::texture*         tex);
+                          mge::texture*         tex,
+                          mge::uniform_block*   ub = nullptr);
+
+        VkDescriptorSet prepare_uniform_block(mge::vulkan::program& vk_program,
+                                              mge::uniform_block&   ub);
+
+        VkDescriptorSet prepare_texture(mge::vulkan::program& vk_program,
+                                        mge::texture*         tex,
+                                        mge::uniform_block*   ub);
 
     private:
         void create_surface();
@@ -168,17 +179,17 @@ namespace mge::vulkan {
             DRAW_FINISHED // drawing finished, submit & present
         };
 
-        std::shared_ptr<render_system> m_render_system;
-        window&                        m_window;
-        VkSurfaceKHR                   m_surface{VK_NULL_HANDLE};
-        VkDevice                       m_device{VK_NULL_HANDLE};
-        VmaAllocator                   m_allocator{VK_NULL_HANDLE};
-        VkQueue                        m_queue{VK_NULL_HANDLE};
-        VkRenderPass                   m_render_pass{VK_NULL_HANDLE};
-        VkCommandPool                  m_graphics_command_pool{VK_NULL_HANDLE};
-        VkSemaphore m_image_available_semaphore{VK_NULL_HANDLE};
-        VkSemaphore m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence     m_frame_finished_fence{VK_NULL_HANDLE};
+        std::shared_ptr<mge::vulkan::render_system> m_render_system;
+        window&                                     m_window;
+        VkSurfaceKHR                                m_surface{VK_NULL_HANDLE};
+        VkDevice                                    m_device{VK_NULL_HANDLE};
+        VmaAllocator                                m_allocator{VK_NULL_HANDLE};
+        VkQueue                                     m_queue{VK_NULL_HANDLE};
+        VkRenderPass  m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool m_graphics_command_pool{VK_NULL_HANDLE};
+        VkSemaphore   m_image_available_semaphore{VK_NULL_HANDLE};
+        VkSemaphore   m_render_finished_semaphore{VK_NULL_HANDLE};
+        VkFence       m_frame_finished_fence{VK_NULL_HANDLE};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
@@ -220,8 +231,8 @@ namespace mge::vulkan {
         };
         std::map<mge::uniform_block*, uniform_buffer_data> m_uniform_buffers;
         VkDescriptorPool m_descriptor_pool{VK_NULL_HANDLE};
-        std::map<std::pair<mge::uniform_block*, VkDescriptorSetLayout>,
-                 VkDescriptorSet>
-            m_descriptor_sets;
+        using descriptor_set_key = std::
+            tuple<mge::uniform_block*, mge::texture*, VkDescriptorSetLayout>;
+        std::map<descriptor_set_key, VkDescriptorSet> m_descriptor_sets;
     };
 } // namespace mge::vulkan

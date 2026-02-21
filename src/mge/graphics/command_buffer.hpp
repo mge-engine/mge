@@ -145,10 +145,14 @@ namespace mge {
          * @param program   program to use for drawing
          * @param vertices  vertex buffer to use
          * @param indices   index buffer to use
+         * @param index_count number of indices to draw (0 = all)
+         * @param index_offset offset in index buffer (in indices, not bytes)
          */
         void draw(const program_handle&       program,
                   const vertex_buffer_handle& vertices,
-                  const index_buffer_handle&  indices);
+                  const index_buffer_handle&  indices,
+                  uint32_t                    index_count = 0,
+                  uint32_t                    index_offset = 0);
 
         template <typename F> void for_each(F&& f) const
         {
@@ -160,6 +164,8 @@ namespace mge {
                   m_pipeline_states[i],
                   m_uniform_blocks[i],
                   m_textures[i],
+                  m_index_counts[i],
+                  m_index_offsets[i],
                   m_scissor_rects[i]);
             }
         }
@@ -177,6 +183,8 @@ namespace mge {
             m_pipeline_states.clear();
             m_uniform_blocks.clear();
             m_textures.clear();
+            m_index_counts.clear();
+            m_index_offsets.clear();
             m_scissor_rects.clear();
         }
 
@@ -192,6 +200,8 @@ namespace mge {
         std::vector<index_buffer_handle>  m_index_buffers;
         std::vector<uniform_block*>       m_uniform_blocks;
         std::vector<mge::texture*>        m_textures;
+        std::vector<uint32_t>             m_index_counts;
+        std::vector<uint32_t>             m_index_offsets;
         std::vector<mge::rectangle>       m_scissor_rects;
     };
 } // namespace mge

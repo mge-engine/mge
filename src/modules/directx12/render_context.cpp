@@ -922,6 +922,8 @@ namespace mge::dx12 {
                                     const mge::pipeline_state&       state,
                                     mge::uniform_block*              ub,
                                     mge::texture*                    tex,
+                                    uint32_t              index_count,
+                                    uint32_t              index_offset,
                                     const mge::rectangle& cmd_scissor) {
             const auto& effective =
                 cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
@@ -941,7 +943,9 @@ namespace mge::dx12 {
                               indices.get(),
                               state,
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
             } else {
                 blend_pass_needed = true;
             }
@@ -955,6 +959,8 @@ namespace mge::dx12 {
                     const mge::pipeline_state&       state,
                     mge::uniform_block*              ub,
                     mge::texture*                    tex,
+                    uint32_t                         index_count,
+                    uint32_t                         index_offset,
                     const mge::rectangle&            cmd_scissor) {
                     const auto& effective =
                         cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
@@ -972,7 +978,9 @@ namespace mge::dx12 {
                                   indices.get(),
                                   state,
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                 });
         }
     }
@@ -983,7 +991,9 @@ namespace mge::dx12 {
                                        mge::index_buffer*         ib,
                                        const mge::pipeline_state& state,
                                        mge::uniform_block*        ub,
-                                       mge::texture*              tex)
+                                       mge::texture*              tex,
+                                       uint32_t                   index_count,
+                                       uint32_t                   index_offset)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
@@ -991,7 +1001,16 @@ namespace mge::dx12 {
                 << "Draw command has no program assigned";
         }
 
-        const auto& pipeline_state = static_pipeline_state(dx12_program, state);
+        if (!vb) {
+            MGE_THROW(illegal_state)
+                << "Draw command has no vertex buffer assigned";
+        }
+
+        // Create input layout from vertex buffer's actual layout
+        const auto& il = input_layout_from_vertex_buffer(vb);
+
+        const auto& pipeline_state =
+            static_pipeline_state(dx12_program, state, il);
         if (!pipeline_state.Get()) {
             MGE_THROW(mge::illegal_state)
                 << "Failed to get pipeline state for program";
@@ -1022,12 +1041,10 @@ namespace mge::dx12 {
         command_list->IASetVertexBuffers(0, 1, &(dx12_vertices->view()));
         auto dx12_indices = static_cast<dx12::index_buffer*>(ib);
         command_list->IASetIndexBuffer(&(dx12_indices->view()));
-        command_list->DrawIndexedInstanced(
-            static_cast<UINT>(dx12_indices->element_count()),
-            1,
-            0,
-            0,
-            0);
+        UINT count = index_count > 0
+                         ? index_count
+                         : static_cast<UINT>(dx12_indices->element_count());
+        command_list->DrawIndexedInstanced(count, 1, index_offset, 0, 0);
     }
 
     void
@@ -1128,11 +1145,20 @@ namespace mge::dx12 {
         m_draw_state = draw_state::NONE;
     }
 
-    const mge::com_ptr<ID3D12PipelineState>&
-    render_context::static_pipeline_state(mge::dx12::program*        program,
-                                          const mge::pipeline_state& state)
+    const std::vector<D3D12_INPUT_ELEMENT_DESC>&
+    render_context::input_layout_from_vertex_buffer(mge::vertex_buffer* vb)
     {
-        pipeline_state_key key = std::make_tuple(program, state);
+        return m_input_layout_cache.get(vb->layout());
+    }
+
+    const mge::com_ptr<ID3D12PipelineState>&
+    render_context::static_pipeline_state(
+        mge::dx12::program*                         program,
+        const mge::pipeline_state&                  state,
+        const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout)
+    {
+        pipeline_state_key key =
+            std::make_tuple(static_cast<void*>(program), state);
 
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
@@ -1148,7 +1174,9 @@ namespace mge::dx12 {
         auto& ps = dx12_shader(*ps_ptr);
         auto  root_signature = program->root_signature();
         D3D12_GRAPHICS_PIPELINE_STATE_DESC pso_desc = {};
-        pso_desc.InputLayout = {vs.input_layout(), vs.input_layout_count()};
+        pso_desc.InputLayout = {
+            input_layout.data(),
+            static_cast<UINT>(input_layout.size())};
         pso_desc.pRootSignature = root_signature;
         pso_desc.VS = {vs.code()->GetBufferPointer(),
                        vs.code()->GetBufferSize()};

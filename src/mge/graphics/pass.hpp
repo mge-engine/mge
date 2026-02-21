@@ -125,6 +125,8 @@ namespace mge {
                   cmd.state,
                   cmd.uniform_block,
                   cmd.texture,
+                  cmd.index_count,
+                  cmd.index_offset,
                   cmd.scissor);
             }
         }
@@ -154,6 +156,8 @@ namespace mge {
             mge::pipeline_state  state;
             mge::uniform_block*  uniform_block{nullptr};
             mge::texture*        texture{nullptr};
+            uint32_t             index_count{0};
+            uint32_t             index_offset{0};
             mge::rectangle       scissor{};
         };
 

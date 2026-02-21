@@ -70,7 +70,9 @@ namespace mge {
                                mge::vertex_buffer* vb,
                                mge::index_buffer*  ib,
                                mge::uniform_block* ub,
-                               mge::texture*       tex);
+                               mge::texture*       tex,
+                               uint32_t            index_count = 0,
+                               uint32_t            index_offset = 0);
 
             void bind_uniform_block(mge::opengl::program& gl_program,
                                     mge::uniform_block&   ub);

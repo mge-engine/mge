@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "input_layout_cache.hpp"
 #include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -18,7 +19,7 @@ namespace mge::dx11 {
     class render_context : public mge::render_context
     {
     public:
-        render_context(render_system& system, window& window_);
+        render_context(mge::dx11::render_system& system, window& window_);
         virtual ~render_context();
         void initialize();
 
@@ -75,15 +76,20 @@ namespace mge::dx11 {
                                         mge::vertex_buffer* vb,
                                         mge::index_buffer*  ib,
                                         mge::uniform_block* ub,
-                                        mge::texture*       tex);
+                                        mge::texture*       tex,
+                                        uint32_t            index_count = 0,
+                                        uint32_t            index_offset = 0);
         void              bind_uniform_block(mge::dx11::program& dx11_program,
                                              mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);
         ID3D11DepthStencilState*
         depth_stencil_state(const mge::pipeline_state& state);
         ID3D11RasterizerState*
-             rasterizer_state(const mge::pipeline_state& state);
-        void create_swap_chain();
+                           rasterizer_state(const mge::pipeline_state& state);
+        void               create_swap_chain();
+        ID3D11InputLayout* get_or_create_input_layout(
+            const mge::vertex_layout& layout,
+            ID3DBlob*                 shader_code);
 
         mge::dx11::render_system&              m_render_system;
         mge::dx11::window&                     m_window;
@@ -116,6 +122,16 @@ namespace mge::dx11 {
         std::map<mge::uniform_block*, com_unique_ptr<ID3D11Buffer>>
                                                 m_constant_buffers;
         std::map<mge::uniform_block*, uint64_t> m_constant_buffer_versions;
+
+        input_layout_cache m_input_layout_cache;
+
+        struct input_layout_entry
+        {
+            mge::vertex_layout                     layout;
+            ID3DBlob*                              shader_blob;
+            com_unique_ptr<ID3D11InputLayout>       input_layout;
+        };
+        std::vector<input_layout_entry> m_cached_input_layouts;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

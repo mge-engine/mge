@@ -23,6 +23,12 @@ namespace mge::vulkan {
                 return VK_FORMAT_R32G32B32A32_SFLOAT;
             }
         }
+        if (fmt.type() == mge::data_type::UINT8) {
+            switch (fmt.size()) {
+            case 4:
+                return VK_FORMAT_R8G8B8A8_UNORM;
+            }
+        }
         return VK_FORMAT_UNDEFINED;
     }
 

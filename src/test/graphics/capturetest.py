@@ -38,6 +38,7 @@ class Sanitizer:
         self.output_file = output_file
         self.resource_ids = {}      # typename -> {raw_value -> sequence_number}
         self.resource_counters = {} # typename -> next sequence number
+        self.current_chunk_name = "" # Track current chunk for conditional filtering
 
     def output(self, line=""):
         self.output_lines.append(line)
@@ -67,6 +68,10 @@ class Sanitizer:
             if child_hidden == "true":
                 continue
             name = child.attrib.get("name", "unknown")
+            # Skip size field in Vulkan memory writes (non-deterministic in RenderDoc)
+            if (self.current_chunk_name == "Internal::Coherent Mapped Memory Write" and 
+                name == "size"):
+                continue
             value = self.parameter_value(child)
             fields.append(f"{name}: {value}")
         return "{" + ", ".join(fields) + "}"
@@ -124,6 +129,7 @@ class Sanitizer:
             self.output(f"## Frame {self.frame}")
         self.frame_call += 1
         chunk_name = chunk.attrib.get("name", "unknown")
+        self.current_chunk_name = chunk_name  # Track for filtering
         self.output(f"- Call: {chunk_name}")
         for param in chunk:
             self.parameter(param)

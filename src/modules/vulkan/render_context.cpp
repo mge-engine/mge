@@ -115,8 +115,8 @@ namespace mge::vulkan {
         }
     }
 
-    render_context::render_context(render_system& render_system_,
-                                   window&        window_)
+    render_context::render_context(mge::vulkan::render_system& render_system_,
+                                   window&                     window_)
         : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_.shared_from_this())
         , m_window(window_)
@@ -1061,6 +1061,23 @@ namespace mge::vulkan {
                                             mge::vulkan::program& vk_program,
                                             mge::uniform_block&   ub)
     {
+        VkDescriptorSet descriptor_set = prepare_uniform_block(vk_program, ub);
+        if (descriptor_set != VK_NULL_HANDLE) {
+            vkCmdBindDescriptorSets(command_buffer,
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    vk_program.pipeline_layout(),
+                                    0,
+                                    1,
+                                    &descriptor_set,
+                                    0,
+                                    nullptr);
+        }
+    }
+
+    VkDescriptorSet
+    render_context::prepare_uniform_block(mge::vulkan::program& vk_program,
+                                          mge::uniform_block&   ub)
+    {
         // Sync values from global uniforms
         ub.sync_from_globals();
 
@@ -1095,7 +1112,7 @@ namespace mge::vulkan {
                                               &allocation_info);
             if (result != VK_SUCCESS) {
                 MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
-                return;
+                return VK_NULL_HANDLE;
             }
 
             new_data.mapped_data = allocation_info.pMappedData;
@@ -1118,7 +1135,9 @@ namespace mge::vulkan {
         }
 
         // Get or create descriptor set
-        auto desc_key = std::make_pair(&ub, vk_program.descriptor_set_layout());
+        auto            desc_key = std::make_tuple(&ub,
+                                        static_cast<mge::texture*>(nullptr),
+                                        vk_program.descriptor_set_layout());
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
         auto            desc_it = m_descriptor_sets.find(desc_key);
 
@@ -1128,7 +1147,7 @@ namespace mge::vulkan {
             // Allocate new descriptor set
             VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
             if (layout == VK_NULL_HANDLE) {
-                return; // No descriptor set layout
+                return VK_NULL_HANDLE;
             }
 
             VkDescriptorSetAllocateInfo alloc_info = {};
@@ -1141,8 +1160,7 @@ namespace mge::vulkan {
                                                        &alloc_info,
                                                        &descriptor_set);
             if (result != VK_SUCCESS) {
-                // MGE_ERROR_TRACE(VULKAN, "Failed to allocate descriptor set");
-                return;
+                return VK_NULL_HANDLE;
             }
 
             // Update descriptor set with uniform buffer
@@ -1174,40 +1192,55 @@ namespace mge::vulkan {
             m_descriptor_sets[desc_key] = descriptor_set;
         }
 
-        // Bind descriptor set
-        vkCmdBindDescriptorSets(command_buffer,
-                                VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                vk_program.pipeline_layout(),
-                                0,
-                                1,
-                                &descriptor_set,
-                                0,
-                                nullptr);
+        return descriptor_set;
     }
 
     void render_context::bind_texture(VkCommandBuffer       command_buffer,
                                       mge::vulkan::program& vk_program,
-                                      mge::texture*         tex)
+                                      mge::texture*         tex,
+                                      mge::uniform_block*   ub)
+    {
+        VkDescriptorSet descriptor_set = prepare_texture(vk_program, tex, ub);
+        if (descriptor_set != VK_NULL_HANDLE) {
+            vkCmdBindDescriptorSets(command_buffer,
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    vk_program.pipeline_layout(),
+                                    0,
+                                    1,
+                                    &descriptor_set,
+                                    0,
+                                    nullptr);
+        }
+    }
+
+    VkDescriptorSet
+    render_context::prepare_texture(mge::vulkan::program& vk_program,
+                                    mge::texture*         tex,
+                                    mge::uniform_block*   ub)
     {
         if (!tex) {
-            return;
+            return VK_NULL_HANDLE;
         }
 
         auto* vk_tex = static_cast<mge::vulkan::texture*>(tex);
 
         const auto& sampler_bindings = vk_program.sampler_bindings();
         if (sampler_bindings.empty()) {
-            return;
+            return VK_NULL_HANDLE;
         }
 
         VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
         if (layout == VK_NULL_HANDLE) {
-            return;
+            return VK_NULL_HANDLE;
         }
 
-        // Use a key based on texture pointer and descriptor set layout
+        // Reuse the descriptor set from prepare_uniform_block if available,
+        // so both UBO and sampler bindings are on the same set.
+        // Key includes texture pointer so each ub+tex pair gets its own set.
         auto desc_key =
-            std::make_pair(static_cast<mge::uniform_block*>(nullptr), layout);
+            std::make_tuple(ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+                            static_cast<mge::texture*>(tex),
+                            layout);
 
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
         auto            desc_it = m_descriptor_sets.find(desc_key);
@@ -1215,50 +1248,103 @@ namespace mge::vulkan {
         if (desc_it != m_descriptor_sets.end()) {
             descriptor_set = desc_it->second;
         } else {
-            VkDescriptorSetAllocateInfo alloc_info = {};
-            alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-            alloc_info.descriptorPool = m_descriptor_pool;
-            alloc_info.descriptorSetCount = 1;
-            alloc_info.pSetLayouts = &layout;
+            // Check if there's already a set with UBO written (no texture)
+            // and copy from it, or allocate fresh
+            auto ub_only_key = std::make_tuple(
+                ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+                static_cast<mge::texture*>(nullptr),
+                layout);
+            auto ub_it = m_descriptor_sets.find(ub_only_key);
 
-            VkResult result = vkAllocateDescriptorSets(m_device,
-                                                       &alloc_info,
-                                                       &descriptor_set);
-            if (result != VK_SUCCESS) {
-                return;
+            if (ub && ub_it != m_descriptor_sets.end()) {
+                // Need a new set with both UBO and texture written
+                VkDescriptorSetAllocateInfo alloc_info = {};
+                alloc_info.sType =
+                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+                alloc_info.descriptorPool = m_descriptor_pool;
+                alloc_info.descriptorSetCount = 1;
+                alloc_info.pSetLayouts = &layout;
+
+                VkResult result = vkAllocateDescriptorSets(m_device,
+                                                           &alloc_info,
+                                                           &descriptor_set);
+                if (result != VK_SUCCESS) {
+                    return VK_NULL_HANDLE;
+                }
+
+                // Write UBO binding
+                auto ub_buf_it = m_uniform_buffers.find(ub);
+                if (ub_buf_it != m_uniform_buffers.end()) {
+                    VkDescriptorBufferInfo buffer_info = {};
+                    buffer_info.buffer = ub_buf_it->second.buffer;
+                    buffer_info.offset = 0;
+                    buffer_info.range = ub->data_size();
+
+                    uint32_t binding_point = 0;
+                    for (const auto& ubm : vk_program.uniform_buffers()) {
+                        if (ubm.name == ub->name()) {
+                            binding_point = ubm.location;
+                            break;
+                        }
+                    }
+
+                    VkWriteDescriptorSet ubo_write = {};
+                    ubo_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                    ubo_write.dstSet = descriptor_set;
+                    ubo_write.dstBinding = binding_point;
+                    ubo_write.dstArrayElement = 0;
+                    ubo_write.descriptorType =
+                        VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    ubo_write.descriptorCount = 1;
+                    ubo_write.pBufferInfo = &buffer_info;
+
+                    vkUpdateDescriptorSets(m_device, 1, &ubo_write, 0, nullptr);
+                }
+            } else {
+                VkDescriptorSetAllocateInfo alloc_info = {};
+                alloc_info.sType =
+                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+                alloc_info.descriptorPool = m_descriptor_pool;
+                alloc_info.descriptorSetCount = 1;
+                alloc_info.pSetLayouts = &layout;
+
+                VkResult result = vkAllocateDescriptorSets(m_device,
+                                                           &alloc_info,
+                                                           &descriptor_set);
+                if (result != VK_SUCCESS) {
+                    return VK_NULL_HANDLE;
+                }
+            }
+
+            // Write texture binding
+            for (const auto& sb : sampler_bindings) {
+                VkDescriptorImageInfo image_info = {};
+                image_info.imageLayout =
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                image_info.imageView = vk_tex->image_view();
+                image_info.sampler = vk_tex->sampler();
+
+                VkWriteDescriptorSet descriptor_write = {};
+                descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                descriptor_write.dstSet = descriptor_set;
+                descriptor_write.dstBinding = sb.binding;
+                descriptor_write.dstArrayElement = 0;
+                descriptor_write.descriptorType =
+                    VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+                descriptor_write.descriptorCount = 1;
+                descriptor_write.pImageInfo = &image_info;
+
+                vkUpdateDescriptorSets(m_device,
+                                       1,
+                                       &descriptor_write,
+                                       0,
+                                       nullptr);
             }
 
             m_descriptor_sets[desc_key] = descriptor_set;
         }
 
-        // Update the descriptor set with the texture's image info
-        for (const auto& sb : sampler_bindings) {
-            VkDescriptorImageInfo image_info = {};
-            image_info.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            image_info.imageView = vk_tex->image_view();
-            image_info.sampler = vk_tex->sampler();
-
-            VkWriteDescriptorSet descriptor_write = {};
-            descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            descriptor_write.dstSet = descriptor_set;
-            descriptor_write.dstBinding = sb.binding;
-            descriptor_write.dstArrayElement = 0;
-            descriptor_write.descriptorType =
-                VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-            descriptor_write.descriptorCount = 1;
-            descriptor_write.pImageInfo = &image_info;
-
-            vkUpdateDescriptorSets(m_device, 1, &descriptor_write, 0, nullptr);
-        }
-
-        vkCmdBindDescriptorSets(command_buffer,
-                                VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                vk_program.pipeline_layout(),
-                                0,
-                                1,
-                                &descriptor_set,
-                                0,
-                                nullptr);
+        return descriptor_set;
     }
 
     void render_context::draw_geometry(VkCommandBuffer     command_buffer,
@@ -1267,7 +1353,9 @@ namespace mge::vulkan {
                                        mge::index_buffer*  ib,
                                        const mge::pipeline_state& state,
                                        mge::uniform_block*        ub,
-                                       mge::texture*              tex)
+                                       mge::texture*              tex,
+                                       uint32_t                   index_count,
+                                       uint32_t                   index_offset)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -1282,14 +1370,26 @@ namespace mge::vulkan {
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
 
-        // Bind uniform block if present
-        if (ub) {
-            bind_uniform_block(command_buffer, *vk_program, *ub);
-        }
-
-        // Bind texture if present
-        if (tex) {
-            bind_texture(command_buffer, *vk_program, tex);
+        // Bind uniform block and texture together to avoid
+        // updating a descriptor set that is already bound
+        if (ub || tex) {
+            VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+            if (ub) {
+                descriptor_set = prepare_uniform_block(*vk_program, *ub);
+            }
+            if (tex) {
+                descriptor_set = prepare_texture(*vk_program, tex, ub);
+            }
+            if (descriptor_set != VK_NULL_HANDLE) {
+                vkCmdBindDescriptorSets(command_buffer,
+                                        VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                        vk_program->pipeline_layout(),
+                                        0,
+                                        1,
+                                        &descriptor_set,
+                                        0,
+                                        nullptr);
+            }
         }
 
         VkDeviceSize offsets[1]{0};
@@ -1299,13 +1399,11 @@ namespace mge::vulkan {
                              vk_index_buffer->vk_buffer(),
                              0,
                              vk_index_buffer->vk_index_type());
-        vkCmdDrawIndexed(
-            command_buffer,
-            static_cast<uint32_t>(vk_index_buffer->element_count()),
-            1,
-            0,
-            0,
-            1);
+        uint32_t count =
+            index_count > 0
+                ? index_count
+                : static_cast<uint32_t>(vk_index_buffer->element_count());
+        vkCmdDrawIndexed(command_buffer, count, 1, index_offset, 0, 1);
     }
 
     void render_context::render(const mge::pass& p)
@@ -1418,6 +1516,8 @@ namespace mge::vulkan {
                 const mge::pipeline_state&  state,
                 mge::uniform_block*         ub,
                 mge::texture*               tex,
+                uint32_t                    index_count,
+                uint32_t                    index_offset,
                 const mge::rectangle&       cmd_scissor) {
                 const auto& effective =
                     cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
@@ -1440,7 +1540,9 @@ namespace mge::vulkan {
                                   index_buffer.get(),
                                   state,
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                 } else {
                     blend_pass_needed = true;
                 }
@@ -1454,6 +1556,8 @@ namespace mge::vulkan {
                     const mge::pipeline_state&  state,
                     mge::uniform_block*         ub,
                     mge::texture*               tex,
+                    uint32_t                    index_count,
+                    uint32_t                    index_offset,
                     const mge::rectangle&       cmd_scissor) {
                     const auto& effective =
                         cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
@@ -1477,7 +1581,9 @@ namespace mge::vulkan {
                                   index_buffer.get(),
                                   state,
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                 });
         }
 

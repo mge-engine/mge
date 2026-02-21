@@ -348,7 +348,9 @@ namespace mge::opengl {
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
                                        mge::uniform_block* ub,
-                                       mge::texture*       tex)
+                                       mge::texture*       tex,
+                                       uint32_t            index_count,
+                                       uint32_t            index_offset)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -405,10 +407,31 @@ namespace mge::opengl {
         }
         glBindVertexArray(vao);
         CHECK_OPENGL_ERROR(glBindVertexArray);
-        glDrawElements(GL_TRIANGLES,
-                       static_cast<GLsizei>(gl_ib.element_count()),
-                       GL_UNSIGNED_INT,
-                       nullptr);
+        GLsizei count = index_count > 0
+                            ? static_cast<GLsizei>(index_count)
+                            : static_cast<GLsizei>(gl_ib.element_count());
+
+        GLenum index_type;
+        size_t index_size;
+        switch (gl_ib.element_type()) {
+        case mge::data_type::UINT16:
+            index_type = GL_UNSIGNED_SHORT;
+            index_size = sizeof(uint16_t);
+            break;
+        case mge::data_type::INT32:
+        case mge::data_type::UINT32:
+            index_type = GL_UNSIGNED_INT;
+            index_size = sizeof(uint32_t);
+            break;
+        default:
+            MGE_THROW(mge::illegal_state)
+                << "Unsupported index buffer type: "
+                << static_cast<int>(gl_ib.element_type());
+        }
+
+        const void* offset_ptr =
+            reinterpret_cast<const void*>(index_offset * index_size);
+        glDrawElements(GL_TRIANGLES, count, index_type, offset_ptr);
         CHECK_OPENGL_ERROR(glDrawElements);
         glBindVertexArray(0);
         CHECK_OPENGL_ERROR(glBindVertexArray(0));
@@ -496,10 +519,12 @@ namespace mge::opengl {
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 
+        GLint wh = static_cast<GLint>(window_height());
         glScissor(static_cast<const GLint>(p.scissor().left),
-                  static_cast<const GLint>(p.scissor().top),
+                  wh - static_cast<const GLint>(p.scissor().bottom),
                   static_cast<const GLsizei>(p.scissor().width()),
                   static_cast<const GLsizei>(p.scissor().height()));
+        CHECK_OPENGL_ERROR(glScissor);
 
         if (p.clear_color_enabled()) {
             const rgba_color& c = p.clear_color_value();
@@ -519,6 +544,9 @@ namespace mge::opengl {
         glEnable(GL_DEPTH_TEST);
         CHECK_OPENGL_ERROR(glEnable);
 
+        glEnable(GL_SCISSOR_TEST);
+        CHECK_OPENGL_ERROR(glEnable);
+
 #ifndef GL_CONSERVATIVE_RASTERIZATION_NV
 #    define GL_CONSERVATIVE_RASTERIZATION_NV 0x9346
 #endif
@@ -529,6 +557,7 @@ namespace mge::opengl {
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
         p.for_each_draw_command([this,
+                                 wh,
                                  &blend_pass_needed,
                                  &current_scissor,
                                  &p](const program_handle&       program,
@@ -537,6 +566,8 @@ namespace mge::opengl {
                                      const mge::pipeline_state&  state,
                                      mge::uniform_block*         ub,
                                      mge::texture*               tex,
+                                     uint32_t                    index_count,
+                                     uint32_t                    index_offset,
                                      const mge::rectangle&       cmd_scissor) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
@@ -544,7 +575,7 @@ namespace mge::opengl {
                     cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                 if (effective != current_scissor) {
                     glScissor(static_cast<const GLint>(effective.left),
-                              static_cast<const GLint>(effective.top),
+                              wh - static_cast<const GLint>(effective.bottom),
                               static_cast<const GLsizei>(effective.width()),
                               static_cast<const GLsizei>(effective.height()));
                     current_scissor = effective;
@@ -577,7 +608,9 @@ namespace mge::opengl {
                               vertices.get(),
                               indices.get(),
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
                 if (conservative_raster_enabled) {
                     glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
                     CHECK_OPENGL_ERROR(glDisable);
@@ -597,13 +630,15 @@ namespace mge::opengl {
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command([this, &current_scissor, &p](
+            p.for_each_draw_command([this, wh, &current_scissor, &p](
                                         const program_handle&       program,
                                         const vertex_buffer_handle& vertices,
                                         const index_buffer_handle&  indices,
                                         const mge::pipeline_state&  state,
                                         mge::uniform_block*         ub,
                                         mge::texture*               tex,
+                                        uint32_t                    index_count,
+                                        uint32_t              index_offset,
                                         const mge::rectangle& cmd_scissor) {
                 blend_operation color_op = state.color_blend_operation();
                 blend_operation alpha_op = state.alpha_blend_operation();
@@ -617,7 +652,8 @@ namespace mge::opengl {
                     if (effective != current_scissor) {
                         glScissor(
                             static_cast<const GLint>(effective.left),
-                            static_cast<const GLint>(effective.top),
+                            wh -
+                                static_cast<const GLint>(effective.bottom),
                             static_cast<const GLsizei>(effective.width()),
                             static_cast<const GLsizei>(effective.height()));
                         current_scissor = effective;
@@ -672,7 +708,9 @@ namespace mge::opengl {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                     if (conservative_raster_enabled) {
                         glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
                         CHECK_OPENGL_ERROR(glDisable);
@@ -686,6 +724,9 @@ namespace mge::opengl {
             glDisable(GL_BLEND);
             CHECK_OPENGL_ERROR(glDisable);
         }
+
+        glDisable(GL_SCISSOR_TEST);
+        CHECK_OPENGL_ERROR(glDisable);
 
         glDisable(GL_DEPTH_TEST);
         CHECK_OPENGL_ERROR(glDisable);
@@ -732,6 +773,15 @@ namespace mge::opengl {
                                       f.size(),
                                       GL_FLOAT,
                                       GL_FALSE,
+                                      stride,
+                                      offset);
+                CHECK_OPENGL_ERROR(glVertexAttribPointer);
+                break;
+            case mge::data_type::UINT8:
+                glVertexAttribPointer(index,
+                                      f.size(),
+                                      GL_UNSIGNED_BYTE,
+                                      GL_TRUE,
                                       stride,
                                       offset);
                 CHECK_OPENGL_ERROR(glVertexAttribPointer);

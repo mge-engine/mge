@@ -26,11 +26,13 @@ namespace mge {
                 MGE_DEBUG_TRACE(BLACKSCREEN, "Close listener invoked");
                 set_quit();
             });
-            m_window->set_key_action_handler(
-                [&](mge::key k, mge::key_action a, mge::modifier m) {
+            m_window->add_key_action_handler(
+                [&](mge::key k, mge::key_action a, mge::modifier m) -> bool {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                        return true;
                     }
+                    return false;
                 });
 
             add_redraw_listener([&](uint64_t cycle, double delta) {

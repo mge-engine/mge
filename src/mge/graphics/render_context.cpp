@@ -306,12 +306,10 @@ namespace mge {
 
     mge::command_buffer& render_context::command_buffer(bool clear)
     {
-        if (clear) {
-            if (!m_command_buffer) {
-                m_command_buffer = std::make_unique<mge::command_buffer>();
-            } else {
-                m_command_buffer->clear();
-            }
+        if (!m_command_buffer) {
+            m_command_buffer = std::make_unique<mge::command_buffer>();
+        } else if (clear) {
+            m_command_buffer->clear();
         }
         return *m_command_buffer;
     }

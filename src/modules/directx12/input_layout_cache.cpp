@@ -4,7 +4,7 @@
 #include "input_layout_cache.hpp"
 #include "mge/core/stdexceptions.hpp"
 
-namespace mge::dx11 {
+namespace mge::dx12 {
 
     struct semantic_context
     {
@@ -19,18 +19,18 @@ namespace mge::dx11 {
 
     input_layout_cache::~input_layout_cache() {}
 
-    D3D11_INPUT_ELEMENT_DESC*
+    const std::vector<D3D12_INPUT_ELEMENT_DESC>&
     input_layout_cache::get(const vertex_layout& layout)
     {
         auto i = m_layouts.find(layout);
         if (i == m_layouts.end()) {
             auto insert_result = m_layouts.insert(
                 std::make_pair(layout,
-                               std::vector<D3D11_INPUT_ELEMENT_DESC>()));
+                               std::vector<D3D12_INPUT_ELEMENT_DESC>()));
             initialize_layout(layout, insert_result.first->second);
-            return insert_result.first->second.data();
+            return insert_result.first->second;
         } else {
-            return i->second.data();
+            return i->second;
         }
     }
 
@@ -121,26 +121,28 @@ namespace mge::dx11 {
             MGE_THROW(illegal_argument)
                 << "Unsupported format type: " << format.type();
         }
-    } // namespace mge::dx11
+    }
 
     void input_layout_cache::initialize_layout(
         const vertex_layout&                   layout,
-        std::vector<D3D11_INPUT_ELEMENT_DESC>& desc)
+        std::vector<D3D12_INPUT_ELEMENT_DESC>& desc)
     {
         size_t           offset = 0;
         semantic_context context;
         for (const auto& element : layout) {
-            D3D11_INPUT_ELEMENT_DESC& desc_element = desc.emplace_back();
+            D3D12_INPUT_ELEMENT_DESC& desc_element = desc.emplace_back();
             desc_element.SemanticName =
                 make_semantic_name(m_semantic_names, element.semantic, context)
                     .data();
             desc_element.SemanticIndex = 0;
             desc_element.Format = dxgi_format(element.format);
             desc_element.InputSlot = 0;
-            desc_element.AlignedByteOffset = static_cast<UINT>(offset);
-            desc_element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+            desc_element.AlignedByteOffset =
+                static_cast<UINT>(offset);
+            desc_element.InputSlotClass =
+                D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
             desc_element.InstanceDataStepRate = 0;
             offset += element.format.binary_size();
         }
     }
-} // namespace mge::dx11
+} // namespace mge::dx12

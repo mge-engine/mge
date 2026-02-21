@@ -391,6 +391,8 @@ namespace mge::dx11 {
                                      const mge::pipeline_state& state,
                                      mge::uniform_block*        ub,
                                      mge::texture*              tex,
+                                     uint32_t                   index_count,
+                                     uint32_t                   index_offset,
                                      const mge::rectangle&      cmd_scissor) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
@@ -416,7 +418,9 @@ namespace mge::dx11 {
                               vertices.get(),
                               indices.get(),
                               ub,
-                              tex);
+                              tex,
+                              index_count,
+                              index_offset);
                 if (!state.depth_write()) {
                     m_device_context->OMSetDepthStencilState(
                         m_depth_stencil_state.get(),
@@ -435,6 +439,8 @@ namespace mge::dx11 {
                                         const mge::pipeline_state& state,
                                         mge::uniform_block*        ub,
                                         mge::texture*              tex,
+                                        uint32_t                   index_count,
+                                        uint32_t                   index_offset,
                                         const mge::rectangle& cmd_scissor) {
                 blend_operation op = state.color_blend_operation();
                 if (op != blend_operation::NONE) {
@@ -470,7 +476,9 @@ namespace mge::dx11 {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex);
+                                  tex,
+                                  index_count,
+                                  index_offset);
                     if (!state.depth_write()) {
                         m_device_context->OMSetDepthStencilState(
                             m_depth_stencil_state.get(),
@@ -486,7 +494,9 @@ namespace mge::dx11 {
                                        mge::vertex_buffer* vb,
                                        mge::index_buffer*  ib,
                                        mge::uniform_block* ub,
-                                       mge::texture*       tex)
+                                       mge::texture*       tex,
+                                       uint32_t            index_count,
+                                       uint32_t            index_offset)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -501,19 +511,20 @@ namespace mge::dx11 {
         const dx11::shader* dx11_vertex_shader =
             static_cast<const dx11::shader*>(
                 dx11_prog.program_shader(mge::shader_type::VERTEX));
-        ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
-        if (input_layout == nullptr) {
-            MGE_THROW(mge::illegal_state)
-                << "No input layout for vertex shader";
-        }
-        m_device_context->IASetInputLayout(input_layout);
-        m_device_context->IASetPrimitiveTopology(
-            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         if (!vb) {
             MGE_THROW(illegal_state)
                 << "Draw command has no vertex buffer assigned";
         }
+
+        // Create input layout from vertex buffer's actual layout
+        ID3D11InputLayout* input_layout = get_or_create_input_layout(
+            vb->layout(),
+            dx11_vertex_shader->code());
+        m_device_context->IASetInputLayout(input_layout);
+        m_device_context->IASetPrimitiveTopology(
+            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
         const dx11::vertex_buffer* dx11_vertex_buffer =
             static_cast<const dx11::vertex_buffer*>(vb);
         UINT element_size =
@@ -533,7 +544,23 @@ namespace mge::dx11 {
         const dx11::index_buffer* dx11_index_buffer =
             static_cast<const dx11::index_buffer*>(ib);
         ID3D11Buffer* ib_buffer = dx11_index_buffer->buffer();
-        m_device_context->IASetIndexBuffer(ib_buffer, DXGI_FORMAT_R32_UINT, 0);
+
+        DXGI_FORMAT index_format;
+        switch (dx11_index_buffer->element_type()) {
+        case mge::data_type::UINT16:
+            index_format = DXGI_FORMAT_R16_UINT;
+            break;
+        case mge::data_type::INT32:
+        case mge::data_type::UINT32:
+            index_format = DXGI_FORMAT_R32_UINT;
+            break;
+        default:
+            MGE_THROW(mge::illegal_state)
+                << "Unsupported index buffer type: "
+                << static_cast<int>(dx11_index_buffer->element_type());
+        }
+
+        m_device_context->IASetIndexBuffer(ib_buffer, index_format, 0);
 
         m_device_context->VSSetShader(
             dx11_vertex_shader->directx_vertex_shader(),
@@ -557,8 +584,10 @@ namespace mge::dx11 {
         }
 
         UINT element_count =
-            static_cast<UINT>(dx11_index_buffer->element_count());
-        m_device_context->DrawIndexed(element_count, 0, 0);
+            index_count > 0
+                ? index_count
+                : static_cast<UINT>(dx11_index_buffer->element_count());
+        m_device_context->DrawIndexed(element_count, index_offset, 0);
 
         // Unbind texture
         if (tex) {
@@ -745,6 +774,37 @@ namespace mge::dx11 {
     mge::image_ref render_context::screenshot()
     {
         return mge::image_ref();
+    }
+
+    ID3D11InputLayout* render_context::get_or_create_input_layout(
+        const mge::vertex_layout& layout,
+        ID3DBlob*                 shader_code)
+    {
+        // Search cache for existing match
+        for (auto& entry : m_cached_input_layouts) {
+            if (entry.layout == layout && entry.shader_blob == shader_code) {
+                return entry.input_layout.get();
+            }
+        }
+
+        // Create input element descriptions from vertex layout
+        D3D11_INPUT_ELEMENT_DESC* descs = m_input_layout_cache.get(layout);
+
+        // Create input layout
+        ID3D11InputLayout* input_layout = nullptr;
+        HRESULT            rc = m_device->CreateInputLayout(
+            descs,
+            static_cast<UINT>(layout.size()),
+            shader_code->GetBufferPointer(),
+            shader_code->GetBufferSize(),
+            &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+
+        m_cached_input_layouts.push_back(
+            {layout,
+             shader_code,
+             mge::make_com_unique_ptr(input_layout)});
+        return input_layout;
     }
 
     void render_context::on_frame_present()
