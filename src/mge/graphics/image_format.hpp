@@ -39,15 +39,31 @@ namespace mge {
             , m_type(t)
         {}
 
+        /**
+         * @brief Data format of the image (e.g. RGB, RGBA).
+         *
+         * @return data format
+         */
         data_format format() const
         {
             return m_format;
         }
+
+        /**
+         * @brief Data type of each component (e.g. float, uint8).
+         *
+         * @return data type
+         */
         data_type type() const
         {
             return m_type;
         }
 
+        /**
+         * @brief Number of components per pixel.
+         *
+         * @return component count (3 for RGB, 4 for RGBA, 0 for unknown)
+         */
         inline constexpr size_t components() const noexcept
         {
             switch (m_format) {
@@ -60,6 +76,11 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Size of one pixel in bytes.
+         *
+         * @return pixel size in bytes
+         */
         inline size_t binary_size() const noexcept
         {
             return components() * data_type_size(m_type);

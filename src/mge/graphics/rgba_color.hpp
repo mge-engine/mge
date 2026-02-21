@@ -85,41 +85,81 @@ namespace mge {
          */
         inline rgba_color& operator=(const rgba_color& c) = default;
 
+        /**
+         * @brief Set the red component.
+         *
+         * @param r_ red value
+         */
         void set_red(const float r_)
         {
             r = r_;
         }
 
+        /**
+         * @brief Set the green component.
+         *
+         * @param g_ green value
+         */
         void set_green(const float g_)
         {
             g = g_;
         }
 
+        /**
+         * @brief Set the blue component.
+         *
+         * @param b_ blue value
+         */
         void set_blue(const float b_)
         {
             b = b_;
         }
 
+        /**
+         * @brief Set the alpha component.
+         *
+         * @param a_ alpha value
+         */
         void set_alpha(const float a_)
         {
             a = a_;
         }
 
+        /**
+         * @brief Red component value.
+         *
+         * @return red
+         */
         float red() const
         {
             return r;
         }
 
+        /**
+         * @brief Green component value.
+         *
+         * @return green
+         */
         float green() const
         {
             return g;
         }
 
+        /**
+         * @brief Blue component value.
+         *
+         * @return blue
+         */
         float blue() const
         {
             return b;
         }
 
+        /**
+         * @brief Alpha component value.
+         *
+         * @return alpha
+         */
         float alpha() const
         {
             return a;

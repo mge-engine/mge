@@ -304,6 +304,14 @@ namespace mge {
             return nullptr;
         }
 
+        /**
+         * @brief Destroy a context object by type and index.
+         *
+         * @tparam T object type (shader, program, etc.)
+         * @param index object type index
+         * @param flags object flags
+         * @param object_index index into the object storage
+         */
         template <typename T>
         void
         destroy_object(uint16_t index, uint16_t flags, uint32_t object_index)

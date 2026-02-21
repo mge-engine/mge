@@ -27,38 +27,45 @@ namespace mge {
 
         virtual ~memory_mesh();
 
+        /** @copydoc mesh::vertex_data_size() */
         size_t vertex_data_size() const override
         {
             return m_vertices->size();
         }
 
+        /** @copydoc mesh::index_data_size() */
         size_t index_data_size() const override
         {
             return m_indices->size();
         }
 
+        /** @copydoc mesh::vertices() */
         mge::buffer_ref vertices() const override
         {
             return m_vertices;
         }
 
+        /** @copydoc mesh::indices() */
         mge::buffer_ref indices() const override
         {
             return m_indices;
         }
 
+        /** @copydoc mesh::vertex_data() */
         void* vertex_data() const override
         {
             return static_cast<void*>(
                 const_cast<std::byte*>(m_vertices->data()));
         }
 
+        /** @copydoc mesh::index_data() */
         void* index_data() const override
         {
             return static_cast<void*>(
                 const_cast<std::byte*>(m_indices->data()));
         }
 
+        /** @copydoc mesh::vertex_data_span() */
         std::span<std::byte> vertex_data_span() const override
         {
             return std::span<std::byte>(
@@ -66,6 +73,7 @@ namespace mge {
                 m_vertices->size());
         }
 
+        /** @copydoc mesh::index_data_span() */
         std::span<std::byte> index_data_span() const override
         {
             return std::span<std::byte>(

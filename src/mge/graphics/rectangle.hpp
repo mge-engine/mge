@@ -49,6 +49,11 @@ namespace mge {
         rectangle& operator=(const rectangle&) = default;
         rectangle& operator=(rectangle&&) = default;
 
+        /**
+         * @brief Format the rectangle into a format context.
+         *
+         * @param ctx format context
+         */
         inline void format(std::format_context& ctx) const
         {
             std::format_to(ctx.out(),
@@ -59,41 +64,81 @@ namespace mge {
                            bottom);
         }
 
+        /**
+         * @brief Width of the rectangle.
+         *
+         * @return width in pixels
+         */
         inline uint32_t width() const
         {
             return right - left;
         }
 
+        /**
+         * @brief Height of the rectangle.
+         *
+         * @return height in pixels
+         */
         inline uint32_t height() const
         {
             return bottom - top;
         }
 
+        /**
+         * @brief Extent (width and height) of the rectangle.
+         *
+         * @return extent
+         */
         inline mge::extent extent() const
         {
             return mge::extent(width(), height());
         }
 
+        /**
+         * @brief Top-left corner point.
+         *
+         * @return point
+         */
         inline mge::point top_left() const
         {
             return mge::point(left, top);
         }
 
+        /**
+         * @brief Top-right corner point.
+         *
+         * @return point
+         */
         inline mge::point top_right() const
         {
             return mge::point(right, top);
         }
 
+        /**
+         * @brief Bottom-left corner point.
+         *
+         * @return point
+         */
         inline mge::point bottom_left() const
         {
             return mge::point(left, bottom);
         }
 
+        /**
+         * @brief Bottom-right corner point.
+         *
+         * @return point
+         */
         inline mge::point bottom_right() const
         {
             return mge::point(right, bottom);
         }
 
+        /**
+         * @brief Area of the rectangle in pixels.
+         *
+         * @return area
+         */
         inline uint64_t area() const
         {
             return static_cast<uint64_t>(width()) *
