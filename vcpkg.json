@@ -29,5 +29,11 @@
     "fmt",
     "nanobench",
     "nuklear"
-  ]
+  ],
+  "features": {
+    "glfw": {
+      "description": "GLFW windowing support",
+      "dependencies": ["glfw3"]
+    }
+  }
 }
