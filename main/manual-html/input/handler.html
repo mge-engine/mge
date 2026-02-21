@@ -119,32 +119,58 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler8key_typeE">
+<span id="_CPPv3N3mge13input_handler8key_typeE"></span><span id="_CPPv2N3mge13input_handler8key_typeE"></span><span class="target" id="classmge_1_1input__handler_1ae15edfcdc56081174a2080283025c072"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler8key_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key type for handler registration. </p>
+</dd></dl>
+
+<dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler20mouse_action_handlerE">
-<span id="_CPPv3N3mge13input_handler20mouse_action_handlerE"></span><span id="_CPPv2N3mge13input_handler20mouse_action_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a2aef8a5ad1ae7ec8954ba6278b512f1e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_action_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">button</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mouse.html#_CPPv4N3mge12mouse_actionE" title="mge::mouse_action"><span class="n"><span class="pre">mouse_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge8modifierE" title="mge::modifier"><span class="n"><span class="pre">modifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler20mouse_action_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13input_handler20mouse_action_handlerE"></span><span id="_CPPv2N3mge13input_handler20mouse_action_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a980e6279f8e4e812e8df17de0fb962e7"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_action_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">button</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="mouse.html#_CPPv4N3mge12mouse_actionE" title="mge::mouse_action"><span class="n"><span class="pre">mouse_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge8modifierE" title="mge::modifier"><span class="n"><span class="pre">modifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler20mouse_action_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Handler function for mouse actions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if event was consumed, false otherwise </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler18mouse_move_handlerE">
-<span id="_CPPv3N3mge13input_handler18mouse_move_handlerE"></span><span id="_CPPv2N3mge13input_handler18mouse_move_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a7f5e3a99cac8bd1abe8eb15f940c4525"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_move_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler18mouse_move_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13input_handler18mouse_move_handlerE"></span><span id="_CPPv2N3mge13input_handler18mouse_move_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a5f6b1f99be8e4524e581f5540243e5b3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_move_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler18mouse_move_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Handler function for mouse movement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if event was consumed, false otherwise </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler18key_action_handlerE">
-<span id="_CPPv3N3mge13input_handler18key_action_handlerE"></span><span id="_CPPv2N3mge13input_handler18key_action_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a151f7a589e990dfb3143dbc4ce707ae3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key_action_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="keyboard.html#_CPPv4N3mge3keyE" title="mge::key"><span class="n"><span class="pre">key</span></span></a><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge10key_actionE" title="mge::key_action"><span class="n"><span class="pre">key_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge8modifierE" title="mge::modifier"><span class="n"><span class="pre">modifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler18key_action_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13input_handler18key_action_handlerE"></span><span id="_CPPv2N3mge13input_handler18key_action_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a1e7660384135cfa08bcd12007ad49611"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">key_action_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="keyboard.html#_CPPv4N3mge3keyE" title="mge::key"><span class="n"><span class="pre">key</span></span></a><span class="w"> </span><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge10key_actionE" title="mge::key_action"><span class="n"><span class="pre">key_action</span></span></a><span class="w"> </span><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="keyboard.html#_CPPv4N3mge8modifierE" title="mge::modifier"><span class="n"><span class="pre">modifier</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler18key_action_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Handler function for keyboard actions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if event was consumed, false otherwise </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler17character_handlerE">
-<span id="_CPPv3N3mge13input_handler17character_handlerE"></span><span id="_CPPv2N3mge13input_handler17character_handlerE"></span><span class="target" id="classmge_1_1input__handler_1ad3c5e1aed13c727d937a08980b4045c6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">character_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">character</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler17character_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13input_handler17character_handlerE"></span><span id="_CPPv2N3mge13input_handler17character_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a0cd9d19c0383c338a6dafc20eec5d30e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">character_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n"><span class="pre">character</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler17character_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Handler function for character input. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if event was consumed, false otherwise </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler19mouse_wheel_handlerE">
-<span id="_CPPv3N3mge13input_handler19mouse_wheel_handlerE"></span><span id="_CPPv2N3mge13input_handler19mouse_wheel_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a219aa5e0e343542d266d19c5e1e0ccb2"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_wheel_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler19mouse_wheel_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13input_handler19mouse_wheel_handlerE"></span><span id="_CPPv2N3mge13input_handler19mouse_wheel_handlerE"></span><span class="target" id="classmge_1_1input__handler_1a7fda0042990a6bb701f29a0ab5d45bef"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mouse_wheel_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13input_handler19mouse_wheel_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Handler function for mouse wheel input. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Param x<span class="colon">:</span></dt>
@@ -152,6 +178,9 @@
 </dd>
 <dt class="field-even">Param y<span class="colon">:</span></dt>
 <dd class="field-even"><p>vertical wheel movement </p>
+</dd>
+<dt class="field-odd">Return<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if event was consumed, false otherwise </p>
 </dd>
 </dl>
 </dd></dl>
@@ -166,56 +195,126 @@
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler24set_mouse_action_handlerERK20mouse_action_handler">
-<span id="_CPPv3N3mge13input_handler24set_mouse_action_handlerERK20mouse_action_handler"></span><span id="_CPPv2N3mge13input_handler24set_mouse_action_handlerERK20mouse_action_handler"></span><span id="mge::input_handler::set_mouse_action_handler__mouse_action_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a6ee6804e55a0a239f7937f9cbe6668b5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mouse_action_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler20mouse_action_handlerE" title="mge::input_handler::mouse_action_handler"><span class="n"><span class="pre">mouse_action_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler24set_mouse_action_handlerERK20mouse_action_handler" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets the handler used to dispatch mouse actions. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler24add_mouse_action_handlerERK20mouse_action_handler">
+<span id="_CPPv3N3mge13input_handler24add_mouse_action_handlerERK20mouse_action_handler"></span><span id="_CPPv2N3mge13input_handler24add_mouse_action_handlerERK20mouse_action_handler"></span><span id="mge::input_handler::add_mouse_action_handler__mouse_action_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a3f5a6a003a4a6cb6e034991d33cb09f6"></span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_mouse_action_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler20mouse_action_handlerE" title="mge::input_handler::mouse_action_handler"><span class="n"><span class="pre">mouse_action_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler24add_mouse_action_handlerERK20mouse_action_handler" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a handler for mouse actions. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>handler</strong> – mouse action handler </p>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key for later removal </p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler22set_mouse_move_handlerERK18mouse_move_handler">
-<span id="_CPPv3N3mge13input_handler22set_mouse_move_handlerERK18mouse_move_handler"></span><span id="_CPPv2N3mge13input_handler22set_mouse_move_handlerERK18mouse_move_handler"></span><span id="mge::input_handler::set_mouse_move_handler__mouse_move_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1aad9b256324b9a840fdeb97f856a6658a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mouse_move_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler18mouse_move_handlerE" title="mge::input_handler::mouse_move_handler"><span class="n"><span class="pre">mouse_move_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler22set_mouse_move_handlerERK18mouse_move_handler" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets the handler used to dispatch mouse movement. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler22add_mouse_move_handlerERK18mouse_move_handler">
+<span id="_CPPv3N3mge13input_handler22add_mouse_move_handlerERK18mouse_move_handler"></span><span id="_CPPv2N3mge13input_handler22add_mouse_move_handlerERK18mouse_move_handler"></span><span id="mge::input_handler::add_mouse_move_handler__mouse_move_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a006f33ddc9d8d223e99eb1e6a0ea2fe3"></span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_mouse_move_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler18mouse_move_handlerE" title="mge::input_handler::mouse_move_handler"><span class="n"><span class="pre">mouse_move_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler22add_mouse_move_handlerERK18mouse_move_handler" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a handler for mouse movement. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>handler</strong> – mouse movement handler </p>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key for later removal </p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler23set_mouse_wheel_handlerERK19mouse_wheel_handler">
-<span id="_CPPv3N3mge13input_handler23set_mouse_wheel_handlerERK19mouse_wheel_handler"></span><span id="_CPPv2N3mge13input_handler23set_mouse_wheel_handlerERK19mouse_wheel_handler"></span><span id="mge::input_handler::set_mouse_wheel_handler__mouse_wheel_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a5166bd5cc4f2d1ae35c414a63006842d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mouse_wheel_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler19mouse_wheel_handlerE" title="mge::input_handler::mouse_wheel_handler"><span class="n"><span class="pre">mouse_wheel_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler23set_mouse_wheel_handlerERK19mouse_wheel_handler" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets the handler used to dispatch mouse wheel input. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler23add_mouse_wheel_handlerERK19mouse_wheel_handler">
+<span id="_CPPv3N3mge13input_handler23add_mouse_wheel_handlerERK19mouse_wheel_handler"></span><span id="_CPPv2N3mge13input_handler23add_mouse_wheel_handlerERK19mouse_wheel_handler"></span><span id="mge::input_handler::add_mouse_wheel_handler__mouse_wheel_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a185aa2574e04ab9b16a6d5959c1e6028"></span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_mouse_wheel_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler19mouse_wheel_handlerE" title="mge::input_handler::mouse_wheel_handler"><span class="n"><span class="pre">mouse_wheel_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler23add_mouse_wheel_handlerERK19mouse_wheel_handler" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a handler for mouse wheel input. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>handler</strong> – mouse wheel handler </p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler22set_key_action_handlerERK18key_action_handler">
-<span id="_CPPv3N3mge13input_handler22set_key_action_handlerERK18key_action_handler"></span><span id="_CPPv2N3mge13input_handler22set_key_action_handlerERK18key_action_handler"></span><span id="mge::input_handler::set_key_action_handler__key_action_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1aa1af2b36dce18f98bce5150edccb16da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_key_action_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler18key_action_handlerE" title="mge::input_handler::key_action_handler"><span class="n"><span class="pre">key_action_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler22set_key_action_handlerERK18key_action_handler" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets the handler used to dispatch key actions. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>handler</strong> – key action handler </p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key for later removal </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler21set_character_handlerERK17character_handler">
-<span id="_CPPv3N3mge13input_handler21set_character_handlerERK17character_handler"></span><span id="_CPPv2N3mge13input_handler21set_character_handlerERK17character_handler"></span><span id="mge::input_handler::set_character_handler__character_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a7fe274ee9ee870fa7203e2f5b6b7aae0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_character_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler17character_handlerE" title="mge::input_handler::character_handler"><span class="n"><span class="pre">character_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler21set_character_handlerERK17character_handler" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets the handler used to dispatch character input. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler22add_key_action_handlerERK18key_action_handler">
+<span id="_CPPv3N3mge13input_handler22add_key_action_handlerERK18key_action_handler"></span><span id="_CPPv2N3mge13input_handler22add_key_action_handlerERK18key_action_handler"></span><span id="mge::input_handler::add_key_action_handler__key_action_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1a9535bad31d7447ca7e113615ae86f9e0"></span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_key_action_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler18key_action_handlerE" title="mge::input_handler::key_action_handler"><span class="n"><span class="pre">key_action_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler22add_key_action_handlerERK18key_action_handler" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a handler for key actions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>handler</strong> – key action handler </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key for later removal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler21add_character_handlerERK17character_handler">
+<span id="_CPPv3N3mge13input_handler21add_character_handlerERK17character_handler"></span><span id="_CPPv2N3mge13input_handler21add_character_handlerERK17character_handler"></span><span id="mge::input_handler::add_character_handler__character_handlerCR"></span><span class="target" id="classmge_1_1input__handler_1aa06302f1c658458d686ae0a54d68755a"></span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_character_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13input_handler17character_handlerE" title="mge::input_handler::character_handler"><span class="n"><span class="pre">character_handler</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler21add_character_handlerERK17character_handler" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a handler for character input. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>handler</strong> – character input handler </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>key for later removal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler27remove_mouse_action_handlerE8key_type">
+<span id="_CPPv3N3mge13input_handler27remove_mouse_action_handlerE8key_type"></span><span id="_CPPv2N3mge13input_handler27remove_mouse_action_handlerE8key_type"></span><span id="mge::input_handler::remove_mouse_action_handler__key_type"></span><span class="target" id="classmge_1_1input__handler_1a79f2489edfc608a544a539cf78bc3556"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_mouse_action_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler27remove_mouse_action_handlerE8key_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a mouse action handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – handler key returned from add_mouse_action_handler </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler25remove_mouse_move_handlerE8key_type">
+<span id="_CPPv3N3mge13input_handler25remove_mouse_move_handlerE8key_type"></span><span id="_CPPv2N3mge13input_handler25remove_mouse_move_handlerE8key_type"></span><span id="mge::input_handler::remove_mouse_move_handler__key_type"></span><span class="target" id="classmge_1_1input__handler_1ad1600d2f3707a33820a7c4601196bc51"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_mouse_move_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler25remove_mouse_move_handlerE8key_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a mouse move handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – handler key returned from add_mouse_move_handler </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler26remove_mouse_wheel_handlerE8key_type">
+<span id="_CPPv3N3mge13input_handler26remove_mouse_wheel_handlerE8key_type"></span><span id="_CPPv2N3mge13input_handler26remove_mouse_wheel_handlerE8key_type"></span><span id="mge::input_handler::remove_mouse_wheel_handler__key_type"></span><span class="target" id="classmge_1_1input__handler_1ab5a3abfec22cb83d8e722ba9ac32a2f5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_mouse_wheel_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler26remove_mouse_wheel_handlerE8key_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a mouse wheel handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – handler key returned from add_mouse_wheel_handler </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler25remove_key_action_handlerE8key_type">
+<span id="_CPPv3N3mge13input_handler25remove_key_action_handlerE8key_type"></span><span id="_CPPv2N3mge13input_handler25remove_key_action_handlerE8key_type"></span><span id="mge::input_handler::remove_key_action_handler__key_type"></span><span class="target" id="classmge_1_1input__handler_1a6ba5899e99a9256ab7ee939b9dca48df"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_key_action_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler25remove_key_action_handlerE8key_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a key action handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – handler key returned from add_key_action_handler </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13input_handler24remove_character_handlerE8key_type">
+<span id="_CPPv3N3mge13input_handler24remove_character_handlerE8key_type"></span><span id="_CPPv2N3mge13input_handler24remove_character_handlerE8key_type"></span><span id="mge::input_handler::remove_character_handler__key_type"></span><span class="target" id="classmge_1_1input__handler_1a5e7745a7ec96e05f5e8044df1f46a53a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_character_handler</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13input_handler8key_typeE" title="mge::input_handler::key_type"><span class="n"><span class="pre">key_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13input_handler24remove_character_handlerE8key_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Removes a character handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> – handler key returned from add_character_handler </p>
 </dd>
 </dl>
 </dd></dl>
