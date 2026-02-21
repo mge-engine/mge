@@ -11,12 +11,17 @@
             }
         },
         {
-            "name": "ci-build",
-            "binaryDir": "${sourceDir}/build",
-            "generator": "Ninja",
+            "name": "default-glfw",
+            "inherits": "default",
+            "binaryDir": "${sourceDir}/build.glfw",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "USE_GLFW": "ON"
+            }
+        },
+        {
+            "name": "ci-build",
+            "inherits": "default",
+            "cacheVariables": {
                 "HEADLESS_ENVIRONMENT": "ON"
             }
         }

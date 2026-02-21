@@ -3,6 +3,11 @@
 # All rights reserved.
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.29.2)
+
+# Included before PROJECT() so that VCPKG_MANIFEST_FEATURES is populated
+# before the vcpkg toolchain processes it during the project() call.
+INCLUDE(${CMAKE_SOURCE_DIR}/cmake/modules/settings/useglfw.cmake)
+
 PROJECT(MGE)
 
 
