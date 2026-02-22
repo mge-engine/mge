@@ -4,6 +4,7 @@
 #include "mge/graphics/program.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 
 namespace mge {
 
@@ -14,13 +15,10 @@ namespace mge {
 
     program::~program() {}
 
-    void program::destroy()
+    void program::set_shader(shader_handle shader)
     {
-        context().destroy_program(this);
-    }
+        mge::shader* s = shader.get();
 
-    void program::set_shader(shader* s)
-    {
         if (!s) {
             MGE_THROW_ARGUMENT_NOT_NULL(shader);
         }
@@ -30,20 +28,26 @@ namespace mge {
                 << "Shader type must not be shader_type::COMPUTE";
         }
 
-        if (!s->initialized()) {
-            MGE_THROW(mge::illegal_argument)
-                << "Shader must be initialized before attaching to program";
-        }
-
-        on_set_shader(s);
-        m_needs_link = true;
+        context().prepare_frame([this, s]() {
+            if (!s->initialized()) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Shader must be initialized before attaching to "
+                       "program";
+            }
+            this->on_set_shader(s);
+            this->m_needs_link = true;
+        });
     }
 
     void program::link()
     {
         if (m_needs_link) {
-            on_link();
-            m_needs_link = false;
+            context().prepare_frame([this]() {
+                MGE_DEBUG_TRACE(GRAPHICS, "Linking program {}", (void*)this);
+                this->on_link();
+                this->m_needs_link = false;
+                set_ready(true);
+            });
         }
     }
 
@@ -59,10 +63,23 @@ namespace mge {
         return m_uniforms;
     }
 
-    const program::uniform_buffer_list& program::uniform_buffers() const
+    const program::uniform_block_metadata_list& program::uniform_buffers() const
     {
         assert_linked();
-        return m_uniform_buffers;
+        return m_uniform_block_metadata;
+    }
+
+    uniform_block
+    program::create_uniform_block(const std::string& block_name) const
+    {
+        assert_linked();
+        for (const auto& ub : m_uniform_block_metadata) {
+            if (ub.name == block_name) {
+                return uniform_block(ub);
+            }
+        }
+        MGE_THROW(mge::no_such_element)
+            << "Program has no uniform buffer named '" << block_name << "'";
     }
 
     void program::assert_linked() const
@@ -86,8 +103,8 @@ namespace mge {
         return os;
     }
 
-    std::ostream& operator<<(std::ostream&                       os,
-                             const mge::program::uniform_buffer& ub)
+    std::ostream& operator<<(std::ostream&                               os,
+                             const mge::program::uniform_block_metadata& ub)
     {
         return os;
     }

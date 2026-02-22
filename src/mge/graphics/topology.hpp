@@ -10,11 +10,14 @@ namespace mge {
     /**
      * @brief Define how vertices are interpreted in drawing.
      */
-    enum class topology
+    enum class topology : uint8_t
     {
-        TRIANGLES,
+        TRIANGLE_LIST,
+        TRIANGLES = TRIANGLE_LIST,
         TRIANGLE_STRIP,
         LINES,
-        LINE_STRIP
+        LINE_LIST = LINES,
+        POINTS,
+        POINT_LIST = POINTS
     };
 } // namespace mge

@@ -52,7 +52,7 @@ namespace mge {
             if (c == traits_type::eof()) {
                 sync();
             } else {
-                *m_buffer.rbegin() = static_cast<uint8_t>(c);
+                *m_buffer.rbegin() = static_cast<std::byte>(c);
                 auto* s = reinterpret_cast<char*>(m_buffer.data());
                 m_stream->write(s, m_buffer.size());
                 setp(s, s + m_buffer.size() - 1);

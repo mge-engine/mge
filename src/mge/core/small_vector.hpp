@@ -337,7 +337,7 @@ namespace mge {
             switch (m_data.index()) {
             default:
             case 0:
-                return *((pointer) nullptr);
+                MGE_THROW(illegal_state) << "back() called on empty vector";
                 break;
             case 1:
                 return std::get<1>(m_data).data[std::get<1>(m_data).length - 1];
@@ -353,7 +353,7 @@ namespace mge {
             switch (m_data.index()) {
             default:
             case 0:
-                return *((const_pointer) nullptr);
+                MGE_THROW(illegal_state) << "back() called on empty vector";
                 break;
             case 1:
                 return std::get<1>(m_data).data[std::get<1>(m_data).length - 1];

@@ -14,7 +14,9 @@ namespace mge {
         class window : public mge::window
         {
         public:
-            window(const mge::extent& extent, const window_options& options);
+            window(mge::render_system&   render_system,
+                   const mge::extent&    extent,
+                   const window_options& options);
             ~window();
 
             HWND hwnd() const noexcept

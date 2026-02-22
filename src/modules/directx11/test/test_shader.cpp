@@ -14,7 +14,7 @@ TEST_F(shader_test, create)
 {
     auto& context = m_window->render_context();
     auto  s = context.create_shader(mge::shader_type::VERTEX);
-    EXPECT_TRUE(s != nullptr);
+    EXPECT_TRUE(s);
 }
 
 TEST_F(shader_test, compile)
@@ -29,7 +29,9 @@ TEST_F(shader_test, compile)
     auto& context = m_window->render_context();
     auto  s = context.create_shader(mge::shader_type::VERTEX);
     s->compile(vertex_shader_hlsl);
+    context.frame();
     EXPECT_TRUE(s->initialized());
+    s.destroy();
 }
 
 TEST_F(shader_test, bench_compile)
@@ -45,6 +47,8 @@ TEST_F(shader_test, bench_compile)
     mge::benchmark().run("shader_compile", [&]() {
         auto s = context.create_shader(mge::shader_type::VERTEX);
         s->compile(vertex_shader_hlsl);
+        context.frame();
+        s.destroy();
     });
 }
 
@@ -61,9 +65,11 @@ TEST_F(shader_test, compile_with_syntax_error)
 
     try {
         s->compile(vertex_shader_hlsl);
+        context.frame();
         FAIL() << "Compilation should throw";
     } catch (const mge::exception& e) {
         std::cout << e;
     }
     EXPECT_FALSE(s->initialized());
+    s.destroy();
 }

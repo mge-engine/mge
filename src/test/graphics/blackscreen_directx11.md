@@ -1,0 +1,89 @@
+# Header
+- Driver: D3D11
+# Frames
+## Frame 1
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: ID3D11DeviceContext * #1
+  - NumViewports: 1
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: ID3D11DeviceContext * #1
+  - NumRects: 1
+  - pRects: [{left: 0, top: 0, right: 0, bottom: 0}]
+- Call: ID3D11DeviceContext::ClearRenderTargetView
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
+- Call: IDXGISwapChain::Present
+  - Context: ID3D11DeviceContext * #1
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 2
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: ID3D11DeviceContext * #1
+  - NumViewports: 1
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: ID3D11DeviceContext * #1
+  - NumRects: 1
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
+- Call: ID3D11DeviceContext::ClearRenderTargetView
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
+- Call: IDXGISwapChain::Present
+  - Context: ID3D11DeviceContext * #1
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 3
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: ID3D11DeviceContext * #1
+  - NumViewports: 1
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: ID3D11DeviceContext * #1
+  - NumRects: 1
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
+- Call: ID3D11DeviceContext::ClearRenderTargetView
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
+- Call: IDXGISwapChain::Present
+  - Context: ID3D11DeviceContext * #1
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 4
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: ID3D11DeviceContext * #1
+  - NumViewports: 1
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: ID3D11DeviceContext * #1
+  - NumRects: 1
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
+- Call: ID3D11DeviceContext::ClearRenderTargetView
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
+- Call: IDXGISwapChain::Present
+  - Context: ID3D11DeviceContext * #1
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 5
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: ID3D11DeviceContext * #1
+  - NumViewports: 1
+  - pViewports: [{TopLeftX: 0, TopLeftY: 0, Width: 800, Height: 600, MinDepth: 0, MaxDepth: 1}]
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: ID3D11DeviceContext * #1
+  - NumRects: 1
+  - pRects: [{left: 0, top: 0, right: 1, bottom: 1}]
+- Call: ID3D11DeviceContext::ClearRenderTargetView
+  - Context: ID3D11DeviceContext * #1
+  - pRenderTargetView: ID3D11RenderTargetView * #1
+  - ColorRGBA: [0, 0, 0, 1]
+- Call: IDXGISwapChain::Present
+  - Context: ID3D11DeviceContext * #1
+  - SyncInterval: 0
+  - Flags: 0
+

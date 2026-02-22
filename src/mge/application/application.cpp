@@ -29,11 +29,17 @@ namespace mge {
                          loop,
                          "Application loop implementation to instantiate");
 
+    MGE_DEFINE_PARAMETER(uint64_t,
+                         application,
+                         stop_at_cycle,
+                         "Whether the application shall stop at a given frame");
+
     application* application::s_instance;
 
     application::application()
         : m_return_code(0)
         , m_quit(false)
+        , m_stop_at_cycle(0)
     {
 
         if (s_instance) {
@@ -62,6 +68,8 @@ namespace mge {
         if (!configuration::loaded()) {
             configuration::load();
         }
+
+        m_stop_at_cycle = MGE_PARAMETER(application, stop_at_cycle).get(0);
     }
 
     application::~application()
@@ -119,12 +127,23 @@ namespace mge {
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
         try {
-            if (!configuration::loaded()) {
-                configuration::load();
-            }
             std::vector<const char*> new_argv;
+            std::string              config_name;
             for (int i = 0; i < argc; ++i) {
                 new_argv.push_back(argv[i]);
+                if (std::string_view(argv[i]) == "--application-name" &&
+                    i + 1 < argc) {
+                    used_application_name = argv[i + 1];
+                    ++i;
+                } else if (std::string_view(argv[i]) == "--config-name" &&
+                           i + 1 < argc) {
+                    config_name = argv[i + 1];
+                    ++i;
+                }
+            }
+
+            if (!configuration::loaded()) {
+                configuration::load(config_name);
             }
             module::load_all();
             configuration::evaluate_command_line(new_argv);
@@ -249,6 +268,12 @@ namespace mge {
 
     void application::input(uint64_t cycle)
     {
+        if (m_stop_at_cycle > 0 && cycle >= m_stop_at_cycle) {
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Stop at cycle {} reached, setting quit flag",
+                            m_stop_at_cycle);
+            set_quit();
+        }
         m_input_listeners();
     }
 

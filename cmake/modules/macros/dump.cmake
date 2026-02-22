@@ -31,7 +31,7 @@ FUNCTION(PRINT_TARGET_PROPERTIES TGT)
     STRING(REGEX REPLACE "\n" ";" _CMAKE_PROPERTY_LIST "${CMAKE_PROPERTY_LIST}")
 
     LIST(REMOVE_DUPLICATES _CMAKE_PROPERTY_LIST)
-
+    
     MESSAGE(STATUS "==============================================================")
     MESSAGE(STATUS "PROPERTIES OF TARGET ${TGT}")
     MESSAGE(STATUS "==============================================================")

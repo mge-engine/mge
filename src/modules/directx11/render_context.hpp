@@ -3,46 +3,39 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
+#include "input_layout_cache.hpp"
+#include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
 namespace mge::dx11 {
 
     class render_system;
     class window;
+    class program;
 
     class render_context : public mge::render_context
     {
     public:
-        render_context(render_system& system, window& window_);
+        render_context(mge::dx11::render_system& system, window& window_);
         virtual ~render_context();
         void initialize();
 
-        mge::index_buffer* create_index_buffer(mge::data_type dt,
-                                               size_t         data_size,
-                                               void*          data) override;
-
-        void destroy_index_buffer(mge::index_buffer* ib) override;
+        mge::index_buffer* on_create_index_buffer(mge::data_type dt,
+                                                  size_t data_size) override;
 
         mge::vertex_buffer*
-        create_vertex_buffer(const mge::vertex_layout& layout,
-                             size_t                    data_size,
-                             void*                     data) override;
+        on_create_vertex_buffer(const mge::vertex_layout& layout,
+                                size_t                    data_size) override;
 
-        void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
+        mge::shader*  on_create_shader(mge::shader_type t) override;
+        mge::program* on_create_program() override;
+        void          on_frame_present() override;
 
-        mge::shader*       create_shader(mge::shader_type t) override;
-        void               destroy_shader(mge::shader* s) override;
-        mge::program*      create_program() override;
-        void               destroy_program(mge::program* p) override;
-        mge::command_list* create_command_list() override;
-        void               destroy_command_list(mge::command_list* cl) override;
-        mge::frame_command_list* create_current_frame_command_list() override;
-        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
         mge::texture_ref create_texture(mge::texture_type type) override;
+        mge::image_ref   screenshot() override;
 
         const ::mge::dx11::window& window() const
         {
@@ -76,33 +69,69 @@ namespace mge::dx11 {
 
         void setup_context(ID3D11DeviceContext& context);
 
-        mge::rectangle default_scissor() const;
+        void render(const mge::pass& p) override;
 
     private:
-        void create_swap_chain();
+        void              draw_geometry(mge::program*       program,
+                                        mge::vertex_buffer* vb,
+                                        mge::index_buffer*  ib,
+                                        mge::uniform_block* ub,
+                                        mge::texture*       tex,
+                                        uint32_t            index_count = 0,
+                                        uint32_t            index_offset = 0);
+        void              bind_uniform_block(mge::dx11::program& dx11_program,
+                                             mge::uniform_block& ub);
+        ID3D11BlendState* blend_state(const mge::pipeline_state& state);
+        ID3D11DepthStencilState*
+        depth_stencil_state(const mge::pipeline_state& state);
+        ID3D11RasterizerState*
+                           rasterizer_state(const mge::pipeline_state& state);
+        void               create_swap_chain();
+        ID3D11InputLayout* get_or_create_input_layout(
+            const mge::vertex_layout& layout,
+            ID3DBlob*                 shader_code);
 
         mge::dx11::render_system&              m_render_system;
         mge::dx11::window&                     m_window;
         com_unique_ptr<ID3D11Device>           m_device;
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
-        com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
-        std::unordered_map<mge::index_buffer*,
-                           std::unique_ptr<mge::index_buffer>>
-            m_index_buffers;
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
-        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
-            m_shaders;
-        std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
-            m_programs;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_frame_command_lists;
+
+        com_unique_ptr<IDXGISwapChain>          m_swap_chain;
+        com_unique_ptr<ID3D11Texture2D>         m_back_buffer;
+        com_unique_ptr<ID3D11Texture2D>         m_depth_stencil_buffer;
+        com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state;
+        com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state_blend;
+        com_unique_ptr<ID3D11DepthStencilView>  m_depth_stencil_view;
+
+        using blend_state_cache_type =
+            std::unordered_map<mge::pipeline_state,
+                               com_unique_ptr<ID3D11BlendState>>;
+        blend_state_cache_type m_blend_state_cache;
+
+        using depth_stencil_state_cache_type =
+            std::unordered_map<mge::pipeline_state,
+                               com_unique_ptr<ID3D11DepthStencilState>>;
+        depth_stencil_state_cache_type m_depth_stencil_state_cache;
+
+        using rasterizer_state_cache_type =
+            std::unordered_map<mge::pipeline_state,
+                               com_unique_ptr<ID3D11RasterizerState>>;
+        rasterizer_state_cache_type m_rasterizer_state_cache;
+
+        std::map<mge::uniform_block*, com_unique_ptr<ID3D11Buffer>>
+                                                m_constant_buffers;
+        std::map<mge::uniform_block*, uint64_t> m_constant_buffer_versions;
+
+        input_layout_cache m_input_layout_cache;
+
+        struct input_layout_entry
+        {
+            mge::vertex_layout                     layout;
+            ID3DBlob*                              shader_blob;
+            com_unique_ptr<ID3D11InputLayout>       input_layout;
+        };
+        std::vector<input_layout_entry> m_cached_input_layouts;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

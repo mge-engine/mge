@@ -96,3 +96,19 @@ TEST(json, to_json_vector)
     EXPECT_EQ(2, js[1]);
     EXPECT_EQ(3, js[2]);
 }
+
+TEST(json, to_json_string)
+{
+    mge::json::json doc;
+    std::string     v = "value";
+    mge::to_json(doc["key"], v);
+    EXPECT_STREQ("{\"key\":\"value\"}", doc.dump().c_str());
+}
+
+TEST(json, to_json_string_view)
+{
+    mge::json::json  doc;
+    std::string_view v = "value";
+    mge::to_json(doc["key"], v);
+    EXPECT_STREQ("{\"key\":\"value\"}", doc.dump().c_str());
+}

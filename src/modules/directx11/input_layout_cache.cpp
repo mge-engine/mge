@@ -41,7 +41,18 @@ namespace mge::dx11 {
     {
         switch (semantic) {
         case attribute_semantic::POSITION:
+            context.position_used = true;
             return pool.get("POSITION");
+        case attribute_semantic::NORMAL:
+            return pool.get("NORMAL");
+        case attribute_semantic::TANGENT:
+            return pool.get("TANGENT");
+        case attribute_semantic::BITANGENT:
+            return pool.get("BINORMAL");
+        case attribute_semantic::COLOR:
+            return pool.get("COLOR");
+        case attribute_semantic::TEXCOORD:
+            return pool.get("TEXCOORD");
         case attribute_semantic::ANY:
             if (!context.position_used) {
                 context.position_used = true;
@@ -97,6 +108,14 @@ namespace mge::dx11 {
             default:
                 MGE_THROW(illegal_argument)
                     << "Unsupported uint format size: " << format.size();
+            }
+        case data_type::UINT8:
+            switch (format.size()) {
+            case 4:
+                return DXGI_FORMAT_R8G8B8A8_UNORM;
+            default:
+                MGE_THROW(illegal_argument)
+                    << "Unsupported uint8 format size: " << format.size();
             }
         default:
             MGE_THROW(illegal_argument)

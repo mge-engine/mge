@@ -7,6 +7,7 @@ SET(MGEINPUT_TEST_SOURCES
     test_modifier.cpp
     test_mouse_state.cpp
     test_keyboard_state.cpp
+    test_input_handler.cpp
 )
 
 MGE_TEST(

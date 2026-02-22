@@ -37,6 +37,11 @@ namespace mge::opengl {
                                 const char* signature,
                                 const char* glFunction);
 
+        static bool warn_error(const char* file,
+                               int         line,
+                               const char* signature,
+                               const char* glFunction);
+
         static void clear();
     };
 } // namespace mge::opengl
@@ -52,3 +57,9 @@ namespace mge::opengl {
                                __LINE__,                                       \
                                MGE_FUNCTION_SIGNATURE,                         \
                                #function)
+
+#define WARN_OPENGL_ERROR(function)                                            \
+    opengl::error::warn_error(__FILE__,                                        \
+                              __LINE__,                                        \
+                              MGE_FUNCTION_SIGNATURE,                          \
+                              #function)

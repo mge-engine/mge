@@ -21,10 +21,19 @@
     "libmagic",
     "magic-enum",
     "vulkan-memory-allocator",
+    "spirv-reflect",
     "jemalloc",
     "libffi",
     "assimp",
     "sqlite3",
-    "fmt"
-  ]
+    "fmt",
+    "nanobench",
+    "nuklear"
+  ],
+  "features": {
+    "glfw": {
+      "description": "GLFW windowing support",
+      "dependencies": ["glfw3"]
+    }
+  }
 }

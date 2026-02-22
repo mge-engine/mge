@@ -257,26 +257,61 @@ namespace mge {
             return m_semantics;
         }
 
+        /**
+         * @brief Iterator to the first element.
+         *
+         * @return begin iterator
+         */
         iterator begin()
         {
             return iterator(*this, 0);
         }
+
+        /**
+         * @brief Iterator past the last element.
+         *
+         * @return end iterator
+         */
         iterator end()
         {
             return iterator(*this, m_formats.size());
         }
+
+        /**
+         * @brief Const iterator to the first element.
+         *
+         * @return begin const iterator
+         */
         const_iterator begin() const
         {
             return const_iterator(*this, 0);
         }
+
+        /**
+         * @brief Const iterator past the last element.
+         *
+         * @return end const iterator
+         */
         const_iterator end() const
         {
             return const_iterator(*this, m_formats.size());
         }
+
+        /**
+         * @brief Const iterator to the first element.
+         *
+         * @return begin const iterator
+         */
         const_iterator cbegin() const
         {
             return const_iterator(*this, 0);
         }
+
+        /**
+         * @brief Const iterator past the last element.
+         *
+         * @return end const iterator
+         */
         const_iterator cend() const
         {
             return const_iterator(*this, m_formats.size());
@@ -292,16 +327,33 @@ namespace mge {
             return const_entry{m_formats[index], m_semantics[index]};
         }
 
+        /**
+         * @brief Access element at index with bounds checking.
+         *
+         * @param index element index
+         * @return entry at index
+         */
         inline entry at(size_t index)
         {
             return entry{m_formats.at(index), m_semantics.at(index)};
         }
 
+        /**
+         * @brief Access element at index with bounds checking (const).
+         *
+         * @param index element index
+         * @return const entry at index
+         */
         inline const_entry at(size_t index) const
         {
             return const_entry{m_formats.at(index), m_semantics.at(index)};
         }
 
+        /**
+         * @brief Number of elements in the layout.
+         *
+         * @return element count
+         */
         auto size() const noexcept
         {
             return m_formats.size();

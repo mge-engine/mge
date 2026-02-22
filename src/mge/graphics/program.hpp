@@ -9,16 +9,20 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace mge {
 
+    class uniform_block;
+
     /**
-     * A program represents the stages in the drawing process.
+     * @brief A program represents the stages in the drawing process.
      *
      * When applied to a render command list, a program executes several
      * stages:
@@ -66,24 +70,17 @@ namespace mge {
 
         using uniform_list = small_vector<uniform, 5>;
 
-        struct uniform_buffer
+        struct uniform_block_metadata
         {
             std::string  name;
             uniform_list uniforms;
+            uint32_t     location; //!< binding point/slot
         };
 
-        using uniform_buffer_list = small_vector<uniform_buffer, 3>;
+        using uniform_block_metadata_list =
+            small_vector<uniform_block_metadata, 3>;
 
         virtual ~program();
-
-        /**
-         * @brief Destroy the program.
-         *
-         * The program is removed from the context and
-         * its resources are freed. Afterwards, the pointer to the
-         * program is invalid.
-         */
-        void destroy();
 
         /**
          * Set a shader object. The shader object must be a shader designated
@@ -91,7 +88,7 @@ namespace mge {
          *
          * @param shader shader object that is set
          */
-        void set_shader(shader* shader);
+        void set_shader(shader_handle shader);
 
         /**
          * Links the program. A program must be linked after setting all
@@ -127,13 +124,22 @@ namespace mge {
          * Get uniform buffer meta data.
          * @return uniform buffers
          */
-        const uniform_buffer_list& uniform_buffers() const;
+        const uniform_block_metadata_list& uniform_buffers() const;
+
+        /**
+         * @brief Create a uniform block instance from one of this program's
+         * uniform buffers.
+         *
+         * @param block_name name of the uniform buffer in the shader
+         * @return a new uniform_block with std140 layout
+         */
+        uniform_block create_uniform_block(const std::string& block_name) const;
 
     protected:
-        bool                m_needs_link;
-        attribute_list      m_attributes;
-        uniform_list        m_uniforms;
-        uniform_buffer_list m_uniform_buffers;
+        bool                        m_needs_link;
+        attribute_list              m_attributes;
+        uniform_list                m_uniforms;
+        uniform_block_metadata_list m_uniform_block_metadata;
 
     private:
         void assert_linked() const;
@@ -147,7 +153,7 @@ namespace mge {
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&           os,
                                                 const program::uniform& u);
     MGEGRAPHICS_EXPORT               std::ostream&
-    operator<<(std::ostream& os, const program::uniform_buffer& ub);
+    operator<<(std::ostream& os, const program::uniform_block_metadata& ub);
 } // namespace mge
 
 template <> struct fmt::formatter<mge::program::attribute>
@@ -190,7 +196,7 @@ template <> struct fmt::formatter<mge::program::uniform>
     }
 };
 
-template <> struct fmt::formatter<mge::program::uniform_buffer>
+template <> struct fmt::formatter<mge::program::uniform_block_metadata>
 {
     constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin())
     {
@@ -198,12 +204,14 @@ template <> struct fmt::formatter<mge::program::uniform_buffer>
     }
 
     template <typename FormatContext>
-    auto format(const mge::program::uniform_buffer& uniform_buffer,
-                FormatContext&                      ctx) const
+    auto
+    format(const mge::program::uniform_block_metadata& uniform_block_metadata,
+           FormatContext&                              ctx) const
     {
-        return fmt::format_to(ctx.out(),
-                              "uniform_buffer{{ name: '{}', size: {} }}",
-                              uniform_buffer.name,
-                              uniform_buffer.uniforms.size());
+        return fmt::format_to(
+            ctx.out(),
+            "uniform_block_metadata{{ name: '{}', size: {} }}",
+            uniform_block_metadata.name,
+            uniform_block_metadata.uniforms.size());
     }
 };

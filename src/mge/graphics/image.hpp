@@ -59,10 +59,25 @@ namespace mge {
             return m_extent;
         }
 
+        /**
+         * @brief Raw pointer to image data.
+         *
+         * @return pointer to image pixel data
+         */
         virtual void* data() const = 0;
 
+        /**
+         * @brief Span over the image data bytes.
+         *
+         * @return span of image pixel data
+         */
         virtual std::span<uint8_t> data_span() const = 0;
 
+        /**
+         * @brief Total size of the image data in bytes.
+         *
+         * @return size in bytes
+         */
         virtual size_t binary_size() const = 0;
 
     private:

@@ -19,6 +19,11 @@ namespace mge::opengl {
                       const void*              data,
                       size_t                   size) override;
 
+        GLuint texture_name() const noexcept
+        {
+            return m_texture;
+        }
+
     private:
         GLint  internal_format(const mge::image_format& format) const;
         GLenum pixel_format(const mge::image_format& format) const;

@@ -48,6 +48,15 @@ namespace mge {
         mge::extent extent;       //!< width and height
         uint32_t    refresh_rate; //!< refresh rate in Hz
 
+        /**
+         * @brief Check if the refresh rate matches.
+         *
+         * Returns true if either rate is ANY_REFRESH_RATE or
+         * both rates are equal.
+         *
+         * @param rate refresh rate to compare against
+         * @return true if rates match
+         */
         bool is_refresh_rate(uint32_t rate) const
         {
             if (refresh_rate == ANY_REFRESH_RATE || rate == ANY_REFRESH_RATE) {

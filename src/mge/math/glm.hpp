@@ -25,4 +25,5 @@ namespace mge {
     using glm::dot;
     using glm::length;
     using glm::normalize;
+    using glm::ortho;
 } // namespace mge

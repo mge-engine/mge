@@ -7,8 +7,9 @@
 namespace mge {
     // MGE_USE_TRACE(GRAPHICS);
 
-    window::window(const mge::extent& extent_, const window_options&)
-        : m_extent(extent_)
+    window::window(mge::render_system& render_system, const mge::extent& extent_, const window_options&)
+        : m_render_system(render_system)
+        , m_extent(extent_)
         , m_closing_listener([] { return true; })
         , m_visible(false)
     {}

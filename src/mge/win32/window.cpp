@@ -20,8 +20,10 @@ namespace mge {
 
         static LPCWSTR mge_class_name = L"mge";
 
-        window::window(const mge::extent& extent, const window_options& options)
-            : mge::window(extent, options)
+        window::window(mge::render_system&   render_system,
+                       const mge::extent&    extent,
+                       const window_options& options)
+            : mge::window(render_system, extent, options)
             , m_hwnd(0)
             , m_quit_listener(0)
             , m_process_input_listener(0)
@@ -259,9 +261,13 @@ namespace mge {
                 return mge::key::KP_8;
             case VK_NUMPAD9:
                 return mge::key::KP_9;
+            case VK_BACK:
+                return mge::key::BACKSPACE;
+            case VK_TAB:
+                return mge::key::TAB;
             case VK_ESCAPE:
                 return mge::key::ESCAPE;
-            case 13:
+            case VK_RETURN:
                 return mge::key::ENTER;
             }
 

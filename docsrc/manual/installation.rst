@@ -15,8 +15,12 @@ Building From Source
 Prerequisites
 *************
 
-MGE depends ony a number of tools and packages, which need to be installed
-before building:
+MGE depends on a number of tools and packages, which need to be installed
+before building. The following subsections detail the requirements for each
+supported platform.
+
+Microsoft Windows
+=================
 
 Microsoft Visual C++ 2022
     MGE currently is built using this compile tool chain.
@@ -40,16 +44,128 @@ Microsoft Visual C++ 2022
 
 `Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
     Vulkan is a low-overhead, cross-platform graphics and computing API. It is
-    used as a possible graphics backend of MGE.
+    used as a possible graphics backend of MGE. The SDK can be installed using
+    the provided helper script:
+
+    .. code-block::
+
+        C:\mge>python tools\ci\vulkan.py
 
 `Ninja <https://ninja-build.org/>`_
     While cmake can be used to generate Visual Studio project files, or also
     a build environment suitable for *nmake*, ninja is the preferred build tool.
+    Install via Chocolatey:
+
+    .. code-block::
+
+        C:\>choco install ninja
 
 .. note::
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
    to keep them up to date and install updates easily.
+
+Linux
+=====
+
+MGE is currently supported only on Debian/Ubuntu based distributions.
+
+GCC 14 Compiler
+    MGE requires GCC 14 or later. For Ubuntu:
+
+    .. code-block::
+
+        $ sudo apt-get install gcc-14 g++-14
+
+`Git <https://git-scm.com/>`_
+    Git is typically included in most distributions or can be installed via
+    the package manager:
+
+    .. code-block::
+
+        $ sudo apt-get install git  # Debian/Ubuntu
+
+`CMake <https://cmake.org/>`_
+    Install CMake from your distribution's package manager. For Ubuntu, using
+    snap is recommended:
+
+    .. code-block::
+
+        $ sudo snap install cmake --classic
+
+`Python 3 <https://www.python.org/>`_
+    Python 3 is typically pre-installed on most Linux distributions.
+
+`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
+    Download and install the Vulkan SDK from the LunarG website, or install
+    via package manager if available.
+
+`Ninja <https://ninja-build.org/>`_
+    Install Ninja build system:
+
+    .. code-block::
+
+        $ sudo apt-get install ninja-build  # Debian/Ubuntu
+
+Build Tools
+    Install automake and related tools, they are required for building some of the third-party dependencies:
+
+    .. code-block::
+
+        $ sudo apt-get install automake autoconf autoconf-archive libtool
+
+Mac OS X
+========
+
+Xcode Command Line Tools
+    Install the Xcode Command Line Tools:
+
+    .. code-block::
+
+        $ xcode-select --install
+
+`Homebrew <https://brew.sh/>`_
+    Homebrew is recommended as a package manager for macOS. Install it if
+    you don't have it already.
+
+`Git <https://git-scm.com/>`_
+    Git is included with Xcode Command Line Tools, or install via Homebrew:
+
+    .. code-block::
+
+        $ brew install git
+
+`CMake <https://cmake.org/>`_
+    Install CMake via Homebrew:
+    
+    .. code-block::
+
+        $ brew install cmake
+
+`Python 3 <https://www.python.org/>`_
+    Install Python 3 via Homebrew:
+
+    .. code-block::
+
+        $ brew install python3
+
+`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
+    Download and install the Vulkan SDK from the LunarG website. On Mac OS X,
+    Vulkan is implemented via MoltenVK which translates Vulkan to Metal.
+
+`Ninja <https://ninja-build.org/>`_
+
+    Install Ninja build system:
+    .. code-block::
+
+        $ brew install ninja
+
+Automake and related tools
+    Install automake and related tools via Homebrew:
+
+    .. code-block::
+
+        $ brew install automake autoconf autoconf-archive libtool
 
 
 Build Steps
@@ -102,74 +218,143 @@ install the needed python packages there.
 Configuring the Build
 =====================
 
-To configure, you need to ensure that you are in a `cmd` environment that
-has the correct settings
+Microsoft Windows
+-----------------
+
+Ensure you are in a properly configured Visual Studio environment. The MSVC
+compiler and environment need to be set up:
 
 .. code-block::
 
     C:\>SET INCLUDE=
     C:\>SET LIB=
-    C:\>CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-    C:\>SET CXX=cl
+    C:\>CALL "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+    C:\>SET CXX=cl.exe
+    C:\>SET CC=cl.exe
     C:\>SET VCPKG_ROOT=C:\mge\vcpkg
     C:\>SET PATH=%VCPKG_ROOT%;%PATH%
 
-and if you want to build the documentation:
+If building documentation, activate the Sphinx environment:
 
 .. code-block::
 
     C:\mge>sphinx\Scripts\activate.bat
 
-Note the file for setting the Microsoft Visual Studio command prompt may be at
-a different location, depending on your installation.
-
-Make sure `cmake` and Python 3 are also in the PATH and can be called, and make
-sure the `cmake` executable is the one you want to use, as multiple programs may
-install an own version of the tool. The same is valid for `vcpkg`.
-
-MGE does not support so-called *in-source* builds, but comes with a respective
-setup:
+Set up the Vulkan SDK:
 
 .. code-block::
 
-    C:\mge>mkdir build
-    C:\mge>cd build
+    C:\mge>SET VULKAN_SDK=C:\VulkanSDK\1.4.309.0
 
-Within the `build` directory, use `cmake` to configure the build:
+Configure the build using CMake:
 
 .. code-block::
 
     C:\mge>cmake --preset=default
 
-This configures the build for the `RelWithDebInfo` configuration. It will
-install also all dependencies using `vcpkg`. It may take a while.
+This configures the build for the `RelWithDebInfo` configuration and installs
+all dependencies using `vcpkg`. It may take a while.
+
+Linux
+-----
+
+Set the compiler to GCC 14:
+
+.. code-block::
+
+    $ export CC=gcc-14
+    $ export CXX=g++-14
+    $ export VCPKG_ROOT=$HOME/mge/vcpkg
+
+Configure the build using CMake:
+
+.. code-block::
+
+    $ cmake --preset=default
+
+
+This configures the build and installs all dependencies using `vcpkg`. It may
+take a while.
+
+Mac OS X
+--------
+
+Set up the vcpkg root:
+
+.. code-block::
+
+    $ export VCPKG_ROOT=$HOME/mge/vcpkg
+
+Configure the build using CMake:
+
+.. code-block::
+
+    $ cmake --preset=default
+
+
+This configures the build and installs all dependencies using `vcpkg`. It may
+take a while.
 
 Build MGE
 =========
 
-The build can simply be started after successful configuring by also
-calling `cmake`:
+Microsoft Windows
+-----------------
+
+Build the project using CMake:
 
 .. code-block::
 
-    C:\mge>cmake --build build --target all
+    C:\mge>cmake --build build --parallel 8 --target all
 
-Again, this may take a while.
+Linux
+-----
+
+Build the project using CMake:
+
+.. code-block::
+
+    $ cmake --build build --parallel 8 --target all
+
+Mac OS X
+--------
+
+Build the project using CMake:
+
+.. code-block::
+
+    $ cmake --build build --parallel 4 --target all
 
 Test MGE
 ========
 
-After building, you may want to run the unit-tests to ensure a clean build, or
-also to ensure proper quality if you have made a change to the source code:
+After building, run the unit tests to ensure a clean build:
 
-The tests can be simply started by running `ctest`:
+Microsoft Windows
+-----------------
 
 .. code-block::
 
-    C:\mge\build>ctest
+    C:\mge\build>ctest --verbose
+
+Linux
+-----
+
+.. code-block::
+
+    $ cd build
+    $ ctest --verbose
+
+Mac OS X
+--------
+
+.. code-block::
+
+    $ cd build
+    $ ctest --verbose
 
 All unit test programs start with `test_` and are located in the main build
-directory, and can be also simply executed and debugged on their own.
+directory, and can also be executed individually for debugging.
 
 Building Documentation
 ======================
