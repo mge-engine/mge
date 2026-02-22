@@ -22,32 +22,38 @@ TEST_F(index_buffer_test, create)
     EXPECT_TRUE(buffer);
 }
 
-TEST_F(index_buffer_test, map_unmap)
+TEST_F(index_buffer_test, construct)
 {
-    auto& context = m_window->render_context();
+    auto&           context = m_window->render_context();
+    mge::buffer_ref data = mge::make_buffer(sizeof(int) * 100);
+    int*            data_ptr = reinterpret_cast<int*>(data->data());
 
-    auto buffer =
-        context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
-
-    int* data = static_cast<int*>(buffer->map());
     for (int i = 0; i < 100; ++i) {
-        data[i] = i;
+        data_ptr[i] = i;
     }
-    buffer->unmap();
+
+    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400, data);
+    EXPECT_TRUE(buffer);
+    EXPECT_EQ(buffer->element_type(), mge::data_type::INT32);
+    EXPECT_FALSE(buffer->ready());
+    m_window->render_context().frame();
+    EXPECT_TRUE(buffer->ready());
+    buffer.destroy();
+    EXPECT_FALSE(buffer);
 }
 
-TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
+TEST_F(index_buffer_test, bench_index_buffer_create_and_upload)
 {
-    auto& context = m_window->render_context();
-    int*  data = new int[100];
+    auto&           context = m_window->render_context();
+    mge::buffer_ref data = mge::make_buffer(sizeof(int) * 100);
+    int*            data_ptr = reinterpret_cast<int*>(data->data());
     for (int i = 0; i < 100; ++i) {
-        data[i] = i;
+        data_ptr[i] = i;
     }
     mge::benchmark().run("index_buffer_creation", [&]() {
         auto buffer =
-            context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
-        int* buffer_data = static_cast<int*>(buffer->map());
-        memcpy(buffer_data, data, 100 * sizeof(int));
-        buffer->unmap();
+            context.create_index_buffer(mge::data_type::INT32, 400, data);
+        m_window->render_context().frame();
+        buffer.destroy();
     });
 }

@@ -10,6 +10,7 @@ TEST(monitor, all_monitors)
 {
     auto all_monitors = mge::win32::monitor::all_monitors();
     EXPECT_GE(all_monitors.size(), 1u);
+    std::cout << "Detected monitors: " << all_monitors.size() << "\n";
 }
 
 TEST(monitor, all_monitors_0_primary)
@@ -23,6 +24,7 @@ TEST(monitor, supported_modes)
     auto mon = *(mge::win32::monitor::all_monitors().begin());
     auto modes = mon->supported_modes();
     EXPECT_GE(modes.size(), 1u);
+    std::cout << "Supported modes: " << modes.size() << "\n";
 }
 
 TEST(monitor, physical_size)

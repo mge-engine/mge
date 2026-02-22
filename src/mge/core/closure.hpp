@@ -16,10 +16,24 @@ namespace mge {
     class MGECORE_EXPORT closure_base
     {
     public:
+        /**
+         * @brief Construct closure.
+         */
         closure_base();
+        /**
+         * @brief Destructor.
+         */
         virtual ~closure_base();
 
     protected:
+        /**
+         * @brief Prepare closure with function signature.
+         * @param return_type FFI return type
+         * @param arg_types FFI argument types array
+         * @param nargs number of arguments
+         * @param binding_function binding function pointer
+         * @param user_data user data pointer
+         */
         void prepare(ffi_type*  return_type,
                      ffi_type** arg_types,
                      uint32_t   nargs,

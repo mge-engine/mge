@@ -22,8 +22,6 @@ namespace mge::vulkan {
         ~window();
 
     private:
-        void create_render_context();
-
-        render_system& m_render_system;
+        void create_render_context(render_system& system);
     };
 } // namespace mge::vulkan

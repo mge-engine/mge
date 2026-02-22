@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
 #include "mge/graphics/hardware_buffer.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
@@ -21,12 +22,10 @@ namespace mge {
          * @param context render context
          * @param layout vertex layout
          * @param data_size size in bytes
-         * @param initial_data optional initial data
          */
         vertex_buffer(render_context&      context,
                       const vertex_layout& layout,
-                      size_t               data_size,
-                      void*                initial_data = nullptr);
+                      size_t               data_size);
 
     public:
         ~vertex_buffer();
@@ -46,13 +45,12 @@ namespace mge {
         size_t element_count() const;
 
         /**
-         * @brief Destroy the vertex buffer.
+         * @brief Set the data of the vertex buffer.
+         * The actual data transfer will be deferred to prepare frame time.
          *
-         * The vertex buffer is removed from the context and
-         * its resources are freed. Afterwards, the pointer to the
-         * vertex buffer is invalid.
+         * @param data Buffer containing the data to set
          */
-        void destroy();
+        void set_data(const buffer_ref& data);
 
     private:
         vertex_layout m_layout;

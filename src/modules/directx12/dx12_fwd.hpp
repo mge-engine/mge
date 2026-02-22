@@ -9,4 +9,5 @@ namespace mge::dx12 {
     class index_buffer;
     class vertex_buffer;
     class shader;
+    class texture;
 } // namespace mge::dx12

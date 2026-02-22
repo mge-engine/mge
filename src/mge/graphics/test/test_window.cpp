@@ -2,17 +2,20 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/test/mock_window.hpp"
+#include "mge/graphics/test/mock_render_system.hpp"
 #include "test/googletest.hpp"
 
 TEST(window, default_invisible)
 {
-    MOCK_window w;
+    MOCK_render_system rs;
+    MOCK_window w(rs);
     EXPECT_FALSE(w.visible());
 }
 
 TEST(window, show)
 {
-    MOCK_window w;
+    MOCK_render_system rs;
+    MOCK_window w(rs);
     EXPECT_CALL(w, on_show()).Times(1);
     w.show();
     w.show(); // no-op
@@ -21,7 +24,8 @@ TEST(window, show)
 
 TEST(window, hide)
 {
-    MOCK_window w;
+    MOCK_render_system rs;
+    MOCK_window w(rs);
     EXPECT_CALL(w, on_show());
     EXPECT_CALL(w, on_hide());
     w.show();
@@ -31,7 +35,8 @@ TEST(window, hide)
 
 TEST(window, on_close_calls_listeners)
 {
-    MOCK_window w;
+    MOCK_render_system rs;
+    MOCK_window w(rs);
     bool        closing_listener_called = false;
     bool        close_listener_called = false;
     w.set_closing_listener([&] {
@@ -46,7 +51,8 @@ TEST(window, on_close_calls_listeners)
 
 TEST(window, on_close_aborted_if_closing_listener_returns_false)
 {
-    MOCK_window w;
+    MOCK_render_system rs;
+    MOCK_window w(rs);
     bool        closing_listener_called = false;
     bool        close_listener_called = false;
     w.set_closing_listener([&] {

@@ -23,13 +23,17 @@ namespace mge {
     protected:
         /**
          * @brief Create a window.
-         * @param extent window size
-         * @param options   window options
+         * @param render_system render system creating the window
+         * @param extent        window size
+         * @param options     window options
          */
-        window(const extent& extent, const window_options& options);
+        window(mge::render_system&   render_system,
+               const extent&         extent,
+               const window_options& options);
 
     public:
-        /** @brief Listener type for close action.
+        /**
+         * @brief Listener type for close action.
          */
         using close_listener = void_function;
 
@@ -130,7 +134,8 @@ namespace mge {
          * Called when window is hidden.
          */
         virtual void on_hide() = 0;
-
+        
+        mge::render_system&     m_render_system;
         mge::point              m_position;
         mge::extent             m_extent;
         mge::render_context_ref m_render_context;

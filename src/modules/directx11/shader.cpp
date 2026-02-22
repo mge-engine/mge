@@ -38,11 +38,15 @@ namespace mge::dx11 {
                              &compiled_code,
                              &errors);
         if (FAILED(rc)) {
-            std::string errormessage(
-                static_cast<const char*>(errors->GetBufferPointer()),
-                static_cast<const char*>(errors->GetBufferPointer()) +
-                    errors->GetBufferSize());
-            errors->Release();
+            std::string errormessage("Unknown shader compile error");
+            if (errors) {
+                errormessage.assign(
+                    static_cast<const char*>(errors->GetBufferPointer()),
+                    static_cast<const char*>(errors->GetBufferPointer()) +
+                        errors->GetBufferSize());
+                errors->Release();
+                errors = nullptr;
+            }
             throw dx11::error().set_info_from_hresult(rc,
                                                       __FILE__,
                                                       __LINE__,
@@ -183,9 +187,9 @@ namespace mge::dx11 {
     }
 
     void
-    shader::reflect(mge::program::attribute_list&      attributes,
-                    mge::program::uniform_list&        uniforms,
-                    mge::program::uniform_buffer_list& uniform_buffers) const
+    shader::reflect(mge::program::attribute_list&              attributes,
+                    mge::program::uniform_list&                uniforms,
+                    mge::program::uniform_block_metadata_list& uniform_buffers)
     {
         ID3D11ShaderReflection* shader_reflection = nullptr;
 
@@ -221,8 +225,24 @@ namespace mge::dx11 {
 
                 D3D11_SHADER_BUFFER_DESC cbuffer_desc = {};
                 cbuffer->GetDesc(&cbuffer_desc);
-                mge::program::uniform_buffer uniform_buffer;
-                uniform_buffer.name = cbuffer_desc.Name;
+                mge::program::uniform_block_metadata uniform_block_metadata;
+                uniform_block_metadata.name = cbuffer_desc.Name;
+
+                // Get bind point for this constant buffer
+                D3D11_SHADER_INPUT_BIND_DESC bind_desc = {};
+                HRESULT                      bind_rc =
+                    shader_reflection->GetResourceBindingDescByName(
+                        cbuffer_desc.Name,
+                        &bind_desc);
+                if (SUCCEEDED(bind_rc)) {
+                    uniform_block_metadata.location = bind_desc.BindPoint;
+                } else {
+                    uniform_block_metadata.location = 0;
+                    MGE_WARNING_TRACE(
+                        DX11,
+                        "Could not get bind point for buffer '{}'",
+                        cbuffer_desc.Name);
+                }
                 for (uint32_t j = 0; j < cbuffer_desc.Variables; ++j) {
                     ID3D11ShaderReflectionVariable* variable =
                         cbuffer->GetVariableByIndex(j);
@@ -236,50 +256,91 @@ namespace mge::dx11 {
                     variable_type->GetDesc(&variable_type_desc);
                     u.type = data_type_of_variable(variable_type_desc);
                     u.array_size = variable_desc.Size;
-                    uniform_buffer.uniforms.push_back(u);
+                    uniform_block_metadata.uniforms.push_back(u);
                 }
-                if (uniform_buffer.name == "$Globals") {
+                if (uniform_block_metadata.name == "$Globals") {
                     uniforms.insert(uniforms.begin(),
-                                    uniform_buffer.uniforms.begin(),
-                                    uniform_buffer.uniforms.end());
+                                    uniform_block_metadata.uniforms.begin(),
+                                    uniform_block_metadata.uniforms.end());
                     for (size_t k = 0; k < uniforms.size(); ++k) {
                         MGE_DEBUG_TRACE(DX11, "uniform[{}]={}", i, uniforms[k]);
                     }
                 } else {
-                    uniform_buffers.push_back(uniform_buffer);
+                    uniform_buffers.push_back(uniform_block_metadata);
+                    m_uniform_buffer_names.insert(uniform_block_metadata.name);
                     MGE_DEBUG_TRACE(DX11,
-                                    "uniform_buffer[{}]={}",
+                                    "uniform_block_metadata[{}]={}",
                                     uniform_buffers.size() - 1,
-                                    uniform_buffer);
+                                    uniform_block_metadata);
                 }
             }
         }
     }
 
+    static DXGI_FORMAT
+    format_from_parameter(const D3D11_SIGNATURE_PARAMETER_DESC& desc)
+    {
+        // Determine number of components from the mask
+        BYTE mask = desc.Mask;
+        int  components = 0;
+        while (mask) {
+            components += (mask & 1);
+            mask >>= 1;
+        }
+
+        switch (desc.ComponentType) {
+        case D3D_REGISTER_COMPONENT_FLOAT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_FLOAT;
+            case 2:
+                return DXGI_FORMAT_R32G32_FLOAT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_FLOAT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_FLOAT;
+            default:
+                break;
+            }
+            break;
+        case D3D_REGISTER_COMPONENT_UINT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_UINT;
+            case 2:
+                return DXGI_FORMAT_R32G32_UINT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_UINT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_UINT;
+            default:
+                break;
+            }
+            break;
+        case D3D_REGISTER_COMPONENT_SINT32:
+            switch (components) {
+            case 1:
+                return DXGI_FORMAT_R32_SINT;
+            case 2:
+                return DXGI_FORMAT_R32G32_SINT;
+            case 3:
+                return DXGI_FORMAT_R32G32B32_SINT;
+            case 4:
+                return DXGI_FORMAT_R32G32B32A32_SINT;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
+        }
+        MGE_THROW(dx11::error)
+            << "Unsupported input parameter format: " << desc.ComponentType
+            << " with " << components << " components";
+    }
+
     void shader::create_input_layout()
     {
-        D3D11_INPUT_ELEMENT_DESC input_elements[] = {
-            {"POSITION",
-             0,
-             DXGI_FORMAT_R32G32B32_FLOAT,
-             0,
-             0,
-             D3D11_INPUT_PER_VERTEX_DATA,
-             0},
-        };
-
-        ID3D11InputLayout* input_layout = nullptr;
-        render_context&    ctx = dx11_context(context());
-
-        auto rc = ctx.device()->CreateInputLayout(input_elements,
-                                                  1,
-                                                  m_code->GetBufferPointer(),
-                                                  m_code->GetBufferSize(),
-                                                  &input_layout);
-        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
-        m_input_layout = mge::make_com_unique_ptr(input_layout);
-
-#if 0
         ID3D11ShaderReflection* shader_reflection = nullptr;
 
         CHECK_HRESULT(D3DReflect(m_code->GetBufferPointer(),
@@ -293,34 +354,45 @@ namespace mge::dx11 {
                 shader_reflection->Release();
             }
         });
-        if (shader_reflection) {
-            D3D11_SHADER_DESC shader_desc = {};
-            shader_reflection->GetDesc(&shader_desc);
-            dump_shader_desc(shader_desc);
 
-            std::vector<D3D11_INPUT_ELEMENT_DESC> input_elements;
-            for (uint32_t i = 0; i < shader_desc.InputParameters; ++i) {
-                D3D11_SIGNATURE_PARAMETER_DESC parameter_desc = {};
-                shader_reflection->GetInputParameterDesc(i, &parameter_desc);
-                D3D11_INPUT_ELEMENT_DESC input_element = {};
-                input_element.SemanticName = parameter_desc.SemanticName;
-                input_element.SemanticIndex = parameter_desc.SemanticIndex;
-                input_element.InputSlot = 0;
-                input_element.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-                input_element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-                input_element.InstanceDataStepRate = 0;
-                input_element.Format = DXGI_FORMAT_R32G32B32_FLOAT;
-                input_elements.push_back(input_element);
-            }
+        D3D11_SHADER_DESC shader_desc = {};
+        shader_reflection->GetDesc(&shader_desc);
 
-            HRESULT rc = dx11_context(context()).device()->CreateInputLayout(
-                input_elements.data(),
-                input_elements.size(),
-                m_code->GetBufferPointer(),
-                m_code->GetBufferSize(),
-                &m_input_layout);
-            CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+        std::vector<D3D11_INPUT_ELEMENT_DESC> input_elements;
+        for (uint32_t i = 0; i < shader_desc.InputParameters; ++i) {
+            D3D11_SIGNATURE_PARAMETER_DESC parameter_desc = {};
+            shader_reflection->GetInputParameterDesc(i, &parameter_desc);
+            D3D11_INPUT_ELEMENT_DESC input_element = {};
+            input_element.SemanticName = parameter_desc.SemanticName;
+            input_element.SemanticIndex = parameter_desc.SemanticIndex;
+            input_element.InputSlot = 0;
+            input_element.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+            input_element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+            input_element.InstanceDataStepRate = 0;
+            input_element.Format = format_from_parameter(parameter_desc);
+            input_elements.push_back(input_element);
+            MGE_DEBUG_TRACE(DX11,
+                            "Input element[{}]: {} index={}",
+                            i,
+                            parameter_desc.SemanticName,
+                            parameter_desc.SemanticIndex);
         }
-#endif
+
+        ID3D11InputLayout* input_layout = nullptr;
+        render_context&    ctx = dx11_context(context());
+        auto               rc = ctx.device()->CreateInputLayout(
+            input_elements.data(),
+            static_cast<UINT>(input_elements.size()),
+            m_code->GetBufferPointer(),
+            m_code->GetBufferSize(),
+            &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+        m_input_layout = mge::make_com_unique_ptr(input_layout);
+    }
+
+    bool shader::uses_uniform_buffer(const std::string& name) const
+    {
+        return m_uniform_buffer_names.find(name) !=
+               m_uniform_buffer_names.end();
     }
 } // namespace mge::dx11

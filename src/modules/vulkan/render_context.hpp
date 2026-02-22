@@ -2,38 +2,38 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
+#include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "vulkan.hpp"
+
+#include <unordered_map>
 
 namespace mge::vulkan {
     class render_system;
     class window;
+    class vertex_buffer;
+    class program;
 
     class render_context : public mge::render_context
     {
     public:
-        render_context(render_system& render_system_, window& window_);
+        render_context(mge::vulkan::render_system& render_system_,
+                       window&                     window_);
         ~render_context();
 
-        mge::index_buffer* create_index_buffer(data_type dt,
-                                               size_t    data_size,
-                                               void*     data) override;
-        void               destroy_index_buffer(mge::index_buffer* ib) override;
-        mge::vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
-                                                 size_t               data_size,
-                                                 void* data) override;
-        void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
-        mge::shader*  create_shader(shader_type t) override;
-        void          destroy_shader(mge::shader* s) override;
-        mge::program* create_program() override;
-        void          destroy_program(mge::program* p) override;
-        mge::frame_command_list* create_current_frame_command_list() override;
-        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::command_list* create_command_list() override;
-        void               destroy_command_list(mge::command_list* cl) override;
-        mge::texture_ref   create_texture(texture_type type) override;
+        mge::index_buffer*  on_create_index_buffer(data_type dt,
+                                                   size_t    data_size) override;
+        mge::vertex_buffer* on_create_vertex_buffer(const vertex_layout& layout,
+                                                    size_t data_size) override;
+        mge::shader*        on_create_shader(shader_type t) override;
+        mge::program*       on_create_program() override;
+
+        void on_frame_present() override;
+        void render(const mge::pass& p) override;
+
+        mge::texture_ref create_texture(texture_type type) override;
+        mge::image_ref   screenshot() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -52,7 +52,7 @@ namespace mge::vulkan {
         {
             return m_queue;
         }
-        // TODO: support different present queue
+
         VkQueue present_queue() const noexcept
         {
             return m_queue;
@@ -72,8 +72,6 @@ namespace mge::vulkan {
         }
 
         void present();
-
-        void init_swap_chain();
 
         uint32_t current_image_index() const noexcept
         {
@@ -110,15 +108,38 @@ namespace mge::vulkan {
             return m_allocator;
         }
 
-        void execute_frame_command_buffer(VkCommandBuffer command_buffer);
-        void discard_command_buffer(uint64_t        frame,
-                                    VkCommandBuffer command_buffer);
-        void destroy_command_buffer(VkCommandBuffer command_buffer);
+        const std::vector<VkVertexInputAttributeDescription>&
+        vertex_input_attribute_descriptions(const mge::vertex_layout& layout);
 
-        void discard_pipeline(uint64_t frame, VkPipeline command_buffer);
-        void destroy_pipeline(VkPipeline command_buffer);
+        VkPipeline pipeline(const vertex_buffer&       buffer,
+                            const program&             program,
+                            const mge::pipeline_state& state);
 
-        void gc();
+        void draw_geometry(VkCommandBuffer            command_buffer,
+                           mge::program*              program,
+                           mge::vertex_buffer*        vb,
+                           mge::index_buffer*         ib,
+                           const mge::pipeline_state& state,
+                           mge::uniform_block*        ub,
+                           mge::texture*              tex,
+                           uint32_t                   index_count = 0,
+                           uint32_t                   index_offset = 0);
+
+        void bind_uniform_block(VkCommandBuffer       command_buffer,
+                                mge::vulkan::program& vk_program,
+                                mge::uniform_block&   ub);
+
+        void bind_texture(VkCommandBuffer       command_buffer,
+                          mge::vulkan::program& vk_program,
+                          mge::texture*         tex,
+                          mge::uniform_block*   ub = nullptr);
+
+        VkDescriptorSet prepare_uniform_block(mge::vulkan::program& vk_program,
+                                              mge::uniform_block&   ub);
+
+        VkDescriptorSet prepare_texture(mge::vulkan::program& vk_program,
+                                        mge::texture*         tex,
+                                        mge::uniform_block*   ub);
 
     private:
         void create_surface();
@@ -129,24 +150,21 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void create_depth_resources();
         void create_render_pass();
         void create_graphics_command_pool();
         void create_primary_command_buffers();
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
+        void create_descriptor_pool();
+
         void teardown();
         void resolve_device_functions();
         void clear_functions();
 
         void wait_for_frame_finished();
         void acquire_next_image();
-
-        // void tmp_draw_all();
-        void begin_draw();
-        void end_draw();
-        void begin_frame();
-        void initialize_drawing();
 
         VkCommandBuffer current_primary_command_buffer() const
         {
@@ -161,17 +179,17 @@ namespace mge::vulkan {
             DRAW_FINISHED // drawing finished, submit & present
         };
 
-        std::shared_ptr<render_system> m_render_system;
-        window&                        m_window;
-        VkSurfaceKHR                   m_surface{VK_NULL_HANDLE};
-        VkDevice                       m_device{VK_NULL_HANDLE};
-        VmaAllocator                   m_allocator{VK_NULL_HANDLE};
-        VkQueue                        m_queue{VK_NULL_HANDLE};
-        VkRenderPass                   m_render_pass{VK_NULL_HANDLE};
-        VkCommandPool                  m_graphics_command_pool{VK_NULL_HANDLE};
-        VkSemaphore m_image_available_semaphore{VK_NULL_HANDLE};
-        VkSemaphore m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence     m_frame_finished_fence{VK_NULL_HANDLE};
+        std::shared_ptr<mge::vulkan::render_system> m_render_system;
+        window&                                     m_window;
+        VkSurfaceKHR                                m_surface{VK_NULL_HANDLE};
+        VkDevice                                    m_device{VK_NULL_HANDLE};
+        VmaAllocator                                m_allocator{VK_NULL_HANDLE};
+        VkQueue                                     m_queue{VK_NULL_HANDLE};
+        VkRenderPass  m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool m_graphics_command_pool{VK_NULL_HANDLE};
+        VkSemaphore   m_image_available_semaphore{VK_NULL_HANDLE};
+        VkSemaphore   m_render_finished_semaphore{VK_NULL_HANDLE};
+        VkFence       m_frame_finished_fence{VK_NULL_HANDLE};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
@@ -182,34 +200,39 @@ namespace mge::vulkan {
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
+        std::vector<VkImage>            m_depth_images;
+        std::vector<VmaAllocation>      m_depth_image_allocations;
+        std::vector<VkImageView>        m_depth_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
-        std::vector<VkCommandBuffer>    m_pending_command_buffers;
 
         std::atomic<uint64_t> m_frame{0};
 
-        std::vector<std::pair<uint64_t, VkCommandBuffer>>
-                                                     m_deleted_command_buffers;
-        std::vector<std::pair<uint64_t, VkPipeline>> m_deleted_pipelines;
-
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
-        bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-        std::unordered_map<mge::index_buffer*,
-                           std::unique_ptr<mge::index_buffer>>
-            m_index_buffers;
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
-        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
-            m_shaders;
-        std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
-            m_programs;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_frame_command_lists;
+
+        std::unordered_map<mge::vertex_layout,
+                           std::vector<VkVertexInputAttributeDescription>>
+            m_vertex_input_attribute_descriptions;
+
+        using pipeline_key_type =
+            std::tuple<VkBuffer, VkPipelineLayout, mge::pipeline_state>;
+        using pipeline_cache_type =
+            std::unordered_map<pipeline_key_type, VkPipeline>;
+        pipeline_cache_type m_pipelines;
+
+        // Uniform buffer management
+        struct uniform_buffer_data
+        {
+            VkBuffer      buffer{VK_NULL_HANDLE};
+            VmaAllocation allocation{VK_NULL_HANDLE};
+            uint64_t      version{0};
+            void*         mapped_data{nullptr};
+        };
+        std::map<mge::uniform_block*, uniform_buffer_data> m_uniform_buffers;
+        VkDescriptorPool m_descriptor_pool{VK_NULL_HANDLE};
+        using descriptor_set_key = std::
+            tuple<mge::uniform_block*, mge::texture*, VkDescriptorSetLayout>;
+        std::map<descriptor_set_key, VkDescriptorSet> m_descriptor_sets;
     };
 } // namespace mge::vulkan

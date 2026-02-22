@@ -30,7 +30,7 @@ namespace mge {
     /**
      * @brief Allocate memory.
      *
-     * An :any:`mge::out_of_memory` exception is thrown in case memory
+     * An @ref mge::out_of_memory exception is thrown in case memory
      * cannot be allocated.
      *
      * @param size number of bytes to allocate
@@ -41,7 +41,7 @@ namespace mge {
     /**
      * @brief Frees allocated memory.
      *
-     * Passing a :any:`nullptr` to the function is safe, no operation is
+     * Passing a @c nullptr to the function is safe, no operation is
      * performed in this case.
      *
      * @param ptr pointer to memory to free.
@@ -51,10 +51,10 @@ namespace mge {
     /**
      * @brief Reallocate memory.
      *
-     * This function is similar to :any:`realloc` from the C standard
-     * library. If the pointer is :any:`nullptr`, the function behaves
-     * like :any:`malloc`. If the size is 0, the function behaves like
-     * :any:`free`.
+     * This function is similar to @c realloc from the C standard
+     * library. If the pointer is @c nullptr, the function behaves
+     * like @ref mge::malloc. If the size is 0, the function behaves like
+     * @ref mge::free.
      *
      * @param ptr pointer to memory to reallocate
      * @param size new size of memory block

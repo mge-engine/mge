@@ -5,6 +5,9 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/program.hpp"
 #include "opengl.hpp"
+#include <map>
+#include <string>
+#include <vector>
 
 namespace mge::opengl {
 
@@ -17,11 +20,24 @@ namespace mge::opengl {
         virtual ~program();
 
         void on_link() override;
-        void on_set_shader(shader* shader) override;
+        void on_set_shader(mge::shader* shader) override;
 
         GLuint program_name() const noexcept
         {
             return m_program;
+        }
+
+        GLuint block_index(const std::string& name) const;
+
+        struct sampler_info
+        {
+            std::string name;
+            GLint       location;
+        };
+
+        const std::vector<sampler_info>& sampler_locations() const noexcept
+        {
+            return m_sampler_locations;
         }
 
     private:
@@ -30,7 +46,9 @@ namespace mge::opengl {
         void collect_uniform_buffers();
         void collect_attributes();
 
-        GLuint m_program;
+        GLuint                        m_program;
+        std::map<std::string, GLuint> m_block_indices;
+        std::vector<sampler_info>     m_sampler_locations;
     };
 
     inline GLuint gl_program(const mge::program& p)

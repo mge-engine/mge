@@ -2,28 +2,122 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
-#include "command_list.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
-#include "frame_command_list.hpp"
 #include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
-#include "swap_chain.hpp"
+#include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
 
 namespace mge::vulkan {
 
-    render_context::render_context(render_system& render_system_,
-                                   window&        window_)
-        : mge::render_context(window_.extent())
+    static inline VkBlendFactor blend_factor_to_vulkan(blend_factor factor)
+    {
+        switch (factor) {
+        case blend_factor::ZERO:
+            return VK_BLEND_FACTOR_ZERO;
+        case blend_factor::ONE:
+            return VK_BLEND_FACTOR_ONE;
+        case blend_factor::SRC_COLOR:
+            return VK_BLEND_FACTOR_SRC_COLOR;
+        case blend_factor::ONE_MINUS_SRC_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
+        case blend_factor::DST_COLOR:
+            return VK_BLEND_FACTOR_DST_COLOR;
+        case blend_factor::ONE_MINUS_DST_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
+        case blend_factor::SRC_ALPHA:
+            return VK_BLEND_FACTOR_SRC_ALPHA;
+        case blend_factor::ONE_MINUS_SRC_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
+        case blend_factor::DST_ALPHA:
+            return VK_BLEND_FACTOR_DST_ALPHA;
+        case blend_factor::ONE_MINUS_DST_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
+        case blend_factor::CONSTANT_COLOR:
+            return VK_BLEND_FACTOR_CONSTANT_COLOR;
+        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR;
+        case blend_factor::CONSTANT_ALPHA:
+            return VK_BLEND_FACTOR_CONSTANT_ALPHA;
+        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
+        case blend_factor::SRC_ALPHA_SATURATE:
+            return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
+        case blend_factor::SRC1_COLOR:
+            return VK_BLEND_FACTOR_SRC1_COLOR;
+        case blend_factor::ONE_MINUS_SRC1_COLOR:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR;
+        case blend_factor::SRC1_ALPHA:
+            return VK_BLEND_FACTOR_SRC1_ALPHA;
+        case blend_factor::ONE_MINUS_SRC1_ALPHA:
+            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend factor: " << factor;
+        }
+    }
+
+    static inline VkBlendOp blend_operation_to_vulkan(blend_operation op)
+    {
+        switch (op) {
+        case blend_operation::NONE:
+            return VK_BLEND_OP_ADD;
+        case blend_operation::ADD:
+            return VK_BLEND_OP_ADD;
+        case blend_operation::SUBTRACT:
+            return VK_BLEND_OP_SUBTRACT;
+        case blend_operation::REVERSE_SUBTRACT:
+            return VK_BLEND_OP_REVERSE_SUBTRACT;
+        case blend_operation::MIN:
+            return VK_BLEND_OP_MIN;
+        case blend_operation::MAX:
+            return VK_BLEND_OP_MAX;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown blend operation: " << op;
+        }
+    }
+
+    static inline VkCompareOp depth_test_to_vulkan(mge::test func)
+    {
+        switch (func) {
+        case mge::test::NEVER:
+            return VK_COMPARE_OP_NEVER;
+        case mge::test::LESS:
+            return VK_COMPARE_OP_LESS;
+        case mge::test::EQUAL:
+            return VK_COMPARE_OP_EQUAL;
+        case mge::test::LESS_EQUAL:
+            return VK_COMPARE_OP_LESS_OR_EQUAL;
+        case mge::test::GREATER:
+            return VK_COMPARE_OP_GREATER;
+        case mge::test::NOT_EQUAL:
+            return VK_COMPARE_OP_NOT_EQUAL;
+        case mge::test::GREATER_EQUAL:
+            return VK_COMPARE_OP_GREATER_OR_EQUAL;
+        case mge::test::ALWAYS:
+            return VK_COMPARE_OP_ALWAYS;
+        default:
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown depth test: " << static_cast<int>(func);
+        }
+    }
+
+    render_context::render_context(mge::vulkan::render_system& render_system_,
+                                   window&                     window_)
+        : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_.shared_from_this())
         , m_window(window_)
     {
@@ -37,24 +131,25 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
+            create_depth_resources();
             create_render_pass();
             create_graphics_command_pool();
             create_primary_command_buffers();
             create_framebuffers();
             create_fence();
             create_semaphores();
-        } catch (...) {
-            teardown();
-            throw;
-        }
-    }
+            create_descriptor_pool();
 
-    void render_context::init_swap_chain()
-    {
-        try {
-            // called after construction, as otherwise the shared_from_this()
-            // call would fail
-            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+            // For Vulkan, RenderDoc must be injected before vkCreateInstance
+            // So we don't set the context programmatically - instead launch
+            // the application through RenderDoc UI or renderdoccmd
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(
+                    VULKAN,
+                    "Note: For Vulkan, launch application through RenderDoc "
+                    "to enable frame capture");
+            }
         } catch (...) {
             teardown();
             throw;
@@ -63,138 +158,44 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
-        m_frame_command_lists.clear();
-        m_command_lists.clear();
-        m_programs.clear();
-        m_shaders.clear();
-        m_vertex_buffers.clear();
-        m_index_buffers.clear();
+        if (m_render_system->frame_debugger()) {
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(VULKAN, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+
+        wait_for_frame_finished();
         teardown();
     }
 
-    mge::index_buffer* render_context::create_index_buffer(data_type dt,
-                                                           size_t    data_size,
-                                                           void*     data)
+    mge::index_buffer* render_context::on_create_index_buffer(data_type dt,
+                                                              size_t data_size)
     {
-        auto result =
-            std::make_unique<index_buffer>(*this, dt, data_size, data);
-        auto ptr = result.get();
-        m_index_buffers[ptr] = std::move(result);
-        return ptr;
+        return new index_buffer(*this, dt, data_size);
     }
 
-    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    mge::vertex_buffer*
+    render_context::on_create_vertex_buffer(const vertex_layout& layout,
+                                            size_t               data_size)
     {
-        auto it = m_index_buffers.find(ib);
-        if (it != m_index_buffers.end()) {
-            m_index_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown index buffer";
-        }
+        return new mge::vulkan::vertex_buffer(*this, layout, data_size);
     }
 
-    mge::vertex_buffer* render_context::create_vertex_buffer(
-        const vertex_layout& layout, size_t data_size, void* data)
+    mge::shader* render_context::on_create_shader(shader_type t)
     {
-        auto result =
-            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
-        auto ptr = result.get();
-        m_vertex_buffers[ptr] = std::move(result);
-        return ptr;
+        return new shader(*this, t);
     }
 
-    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
+    mge::program* render_context::on_create_program()
     {
-        auto it = m_vertex_buffers.find(vb);
-        if (it != m_vertex_buffers.end()) {
-            m_vertex_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown vertex buffer";
-        }
-    }
-
-    mge::shader* render_context::create_shader(shader_type t)
-    {
-        auto result = std::make_unique<shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_shader(mge::shader* s)
-    {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
-    }
-
-    mge::program* render_context::create_program()
-    {
-        auto result = std::make_unique<program>(*this);
-        auto ptr = result.get();
-        m_programs[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_program(mge::program* p)
-    {
-        auto it = m_programs.find(p);
-        if (it != m_programs.end()) {
-            m_programs.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
-        }
-    }
-
-    mge::command_list* render_context::create_command_list()
-    {
-        auto  ptr = std::make_unique<mge::vulkan::command_list>(*this);
-        auto* result = ptr.get();
-        m_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void render_context::destroy_command_list(mge::command_list* cl)
-    {
-        m_command_lists.erase(cl);
-    }
-
-    mge::frame_command_list* render_context::create_current_frame_command_list()
-    {
-        if (!m_drawing_initialized) {
-            initialize_drawing();
-        }
-        if (m_current_frame_state == frame_state::BEFORE_DRAW) {
-            begin_frame();
-            begin_draw();
-        } else if (m_current_frame_state != frame_state::DRAW) {
-            MGE_THROW(error)
-                << "Invalid frame state for frame command list creation: "
-                << m_current_frame_state;
-        }
-        auto  ptr = std::make_unique<frame_command_list>(*this,
-                                                        m_frame,
-                                                        m_current_image_index);
-        auto* result = ptr.get();
-        m_frame_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void
-    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
-    {
-        m_frame_command_lists.erase(fcl);
+        return new mge::vulkan::program(*this);
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)
     {
-        mge::texture_ref result;
-        return result;
+        return std::make_shared<mge::vulkan::texture>(*this, type);
     }
 
     void render_context::create_surface()
@@ -268,18 +269,21 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
-        // Clean up any deleted pipelines before destroying device
-        for (auto& pipeline : m_deleted_pipelines) {
-            destroy_pipeline(pipeline.second);
+        // Clean up uniform buffers
+        for (auto& [ub, data] : m_uniform_buffers) {
+            if (data.buffer != VK_NULL_HANDLE) {
+                vmaDestroyBuffer(m_allocator, data.buffer, data.allocation);
+            }
         }
-        m_deleted_pipelines.clear();
-        
-        // Clean up any deleted command buffers before destroying device
-        for (auto& cb : m_deleted_command_buffers) {
-            destroy_command_buffer(cb.second);
+        m_uniform_buffers.clear();
+
+        // Clean up descriptor pool
+        if (vkDestroyDescriptorPool && m_descriptor_pool) {
+            vkDestroyDescriptorPool(m_device, m_descriptor_pool, nullptr);
+            m_descriptor_pool = VK_NULL_HANDLE;
         }
-        m_deleted_command_buffers.clear();
-        
+        m_descriptor_sets.clear();
+
         if (vkDestroySemaphore) {
             if (m_image_available_semaphore) {
                 vkDestroySemaphore(m_device,
@@ -336,6 +340,25 @@ namespace mge::vulkan {
             }
         }
         m_swap_chain_image_views.clear();
+
+        if (vkDestroyImageView) {
+            for (auto view : m_depth_image_views) {
+                if (view != VK_NULL_HANDLE) {
+                    vkDestroyImageView(m_device, view, nullptr);
+                }
+            }
+        }
+        m_depth_image_views.clear();
+
+        for (size_t i = 0; i < m_depth_images.size(); ++i) {
+            if (m_allocator && m_depth_images[i] != VK_NULL_HANDLE) {
+                vmaDestroyImage(m_allocator,
+                                m_depth_images[i],
+                                m_depth_image_allocations[i]);
+            }
+        }
+        m_depth_images.clear();
+        m_depth_image_allocations.clear();
 
         m_swap_chain_images.clear();
 
@@ -630,6 +653,59 @@ namespace mge::vulkan {
         }
     }
 
+    void render_context::create_depth_resources()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Create depth resources");
+        VkFormat depth_format = VK_FORMAT_D24_UNORM_S8_UINT;
+
+        m_depth_images.resize(m_swap_chain_images.size());
+        m_depth_image_allocations.resize(m_swap_chain_images.size());
+        m_depth_image_views.resize(m_swap_chain_images.size());
+
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            VkImageCreateInfo image_info = {};
+            image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+            image_info.imageType = VK_IMAGE_TYPE_2D;
+            image_info.extent.width = m_extent.width;
+            image_info.extent.height = m_extent.height;
+            image_info.extent.depth = 1;
+            image_info.mipLevels = 1;
+            image_info.arrayLayers = 1;
+            image_info.format = depth_format;
+            image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+            image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+            image_info.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+            image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+            image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+            VmaAllocationCreateInfo alloc_info = {};
+            alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+            CHECK_VK_CALL(vmaCreateImage(m_allocator,
+                                         &image_info,
+                                         &alloc_info,
+                                         &m_depth_images[i],
+                                         &m_depth_image_allocations[i],
+                                         nullptr));
+
+            VkImageViewCreateInfo view_info = {};
+            view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            view_info.image = m_depth_images[i];
+            view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            view_info.format = depth_format;
+            view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+            view_info.subresourceRange.baseMipLevel = 0;
+            view_info.subresourceRange.levelCount = 1;
+            view_info.subresourceRange.baseArrayLayer = 0;
+            view_info.subresourceRange.layerCount = 1;
+
+            CHECK_VK_CALL(vkCreateImageView(m_device,
+                                            &view_info,
+                                            nullptr,
+                                            &m_depth_image_views[i]));
+        }
+    }
+
     void render_context::create_allocator()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create allocator");
@@ -654,10 +730,9 @@ namespace mge::vulkan {
         VkAttachmentDescription color_attachment = {};
         // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
-        // TODO: multisampling in vulkan
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        // don't care about content of the image at beginning
-        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        // explicit clear via vkCmdClearAttachments
+        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         // store content of the image for later
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         // nothing needed for stencil
@@ -667,27 +742,52 @@ namespace mge::vulkan {
         color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
+        VkAttachmentDescription depth_attachment = {};
+        depth_attachment.format = VK_FORMAT_D24_UNORM_S8_UINT;
+        depth_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        depth_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        depth_attachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depth_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        depth_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        depth_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        depth_attachment.finalLayout =
+            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+
         VkAttachmentReference color_attachment_ref = {};
         color_attachment_ref.attachment = 0;
         color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkAttachmentReference depth_attachment_ref = {};
+        depth_attachment_ref.attachment = 1;
+        depth_attachment_ref.layout =
+            VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
         VkSubpassDescription subpass = {};
         subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
+        subpass.pDepthStencilAttachment = &depth_attachment_ref;
 
         VkSubpassDependency dependency = {};
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         dependency.dstSubpass = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+            VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
         dependency.srcAccessMask = 0;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT |
+            VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
+                                   VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+
+        VkAttachmentDescription attachments[] = {color_attachment,
+                                                 depth_attachment};
 
         VkRenderPassCreateInfo render_pass_info = {};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-        render_pass_info.attachmentCount = 1;
-        render_pass_info.pAttachments = &color_attachment;
+        render_pass_info.attachmentCount = 2;
+        render_pass_info.pAttachments = attachments;
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
         render_pass_info.dependencyCount = 1;
@@ -740,12 +840,13 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN, "Create framebuffers");
         m_swap_chain_framebuffers.resize(m_swap_chain_image_views.size());
         for (size_t i = 0; i < m_swap_chain_image_views.size(); ++i) {
-            VkImageView attachments[] = {m_swap_chain_image_views[i]};
+            VkImageView attachments[] = {m_swap_chain_image_views[i],
+                                         m_depth_image_views[i]};
 
             VkFramebufferCreateInfo framebuffer_info = {};
             framebuffer_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
             framebuffer_info.renderPass = m_render_pass;
-            framebuffer_info.attachmentCount = 1;
+            framebuffer_info.attachmentCount = 2;
             framebuffer_info.pAttachments = attachments;
             framebuffer_info.width = m_extent.width;
             framebuffer_info.height = m_extent.height;
@@ -786,12 +887,31 @@ namespace mge::vulkan {
                                         &m_render_finished_semaphore));
     }
 
+    void render_context::create_descriptor_pool()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Create descriptor pool");
+
+        std::array<VkDescriptorPoolSize, 2> pool_sizes = {};
+        pool_sizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        pool_sizes[0].descriptorCount = 1000;
+        pool_sizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        pool_sizes[1].descriptorCount = 1000;
+
+        VkDescriptorPoolCreateInfo pool_info = {};
+        pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
+        pool_info.pPoolSizes = pool_sizes.data();
+        pool_info.maxSets = 1000;
+        pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+
+        CHECK_VK_CALL(vkCreateDescriptorPool(m_device,
+                                             &pool_info,
+                                             nullptr,
+                                             &m_descriptor_pool));
+    }
+
     void render_context::wait_for_frame_finished()
     {
-        if (m_deleted_command_buffers.size() + m_deleted_pipelines.size() >=
-            5) {
-            gc();
-        };
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
@@ -805,7 +925,6 @@ namespace mge::vulkan {
 
     void render_context::acquire_next_image()
     {
-        // acquire next swap chain image
         CHECK_VK_CALL(
             vkAcquireNextImageKHR(m_device,
                                   m_swap_chain_khr,
@@ -815,12 +934,7 @@ namespace mge::vulkan {
                                   &m_current_image_index));
     }
 
-    void render_context::begin_frame()
-    {
-        wait_for_frame_finished();
-        acquire_next_image();
-    }
-
+#if 0
     void render_context::begin_draw()
     {
         if (m_current_frame_state != frame_state::BEFORE_DRAW) {
@@ -857,53 +971,7 @@ namespace mge::vulkan {
         m_current_frame_state = frame_state::DRAW;
         // MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
     }
-
-    void
-    render_context::execute_frame_command_buffer(VkCommandBuffer command_buffer)
-    {
-        if (m_current_frame_state != frame_state::DRAW) {
-            MGE_THROW(error)
-                << "Invalid frame state for execution of frame command buffer: "
-                << m_current_frame_state;
-        }
-        m_pending_command_buffers.push_back(command_buffer);
-    }
-
-    void render_context::end_draw()
-    {
-        if (m_pending_command_buffers.size() > 0) {
-            // MGE_DEBUG_TRACE(VULKAN)
-            //    << "Execute " << m_pending_command_buffers.size()
-            //    << " secondary command buffers";
-            vkCmdExecuteCommands(
-                current_primary_command_buffer(),
-                mge::checked_cast<uint32_t>(m_pending_command_buffers.size()),
-                m_pending_command_buffers.data());
-        }
-        //  MGE_DEBUG_TRACE(VULKAN) << "End render pass";
-        vkCmdEndRenderPass(current_primary_command_buffer());
-        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
-
-        VkSubmitInfo submit_info{};
-        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
-        VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
-        VkPipelineStageFlags wait_stages[] = {
-            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        submit_info.waitSemaphoreCount = 1;
-        submit_info.pWaitSemaphores = wait_semaphores;
-        submit_info.pWaitDstStageMask = wait_stages;
-        submit_info.signalSemaphoreCount = 1;
-        submit_info.pSignalSemaphores = signal_semaphores;
-        submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = command_buffers;
-
-        CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
-        m_current_frame_state = frame_state::DRAW_FINISHED;
-        m_pending_command_buffers.clear();
-    }
+#endif
 #if 0
     void render_context::tmp_draw_all()
     {
@@ -984,31 +1052,382 @@ namespace mge::vulkan {
     }
 #endif
 
-    void render_context::initialize_drawing()
+    mge::image_ref render_context::screenshot()
     {
-        // draw one frame to boot up the acquire/release cycle
-        wait_for_frame_finished();
-        acquire_next_image();
+        return mge::image_ref();
+    }
 
-        VkCommandBuffer             tmp_command_buffer;
-        VkCommandBufferAllocateInfo alloc_info = {};
-        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        alloc_info.commandPool = m_graphics_command_pool;
-        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        alloc_info.commandBufferCount = 1;
+    void render_context::bind_uniform_block(VkCommandBuffer command_buffer,
+                                            mge::vulkan::program& vk_program,
+                                            mge::uniform_block&   ub)
+    {
+        VkDescriptorSet descriptor_set = prepare_uniform_block(vk_program, ub);
+        if (descriptor_set != VK_NULL_HANDLE) {
+            vkCmdBindDescriptorSets(command_buffer,
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    vk_program.pipeline_layout(),
+                                    0,
+                                    1,
+                                    &descriptor_set,
+                                    0,
+                                    nullptr);
+        }
+    }
 
-        CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
-                                               &alloc_info,
-                                               &tmp_command_buffer));
+    VkDescriptorSet
+    render_context::prepare_uniform_block(mge::vulkan::program& vk_program,
+                                          mge::uniform_block&   ub)
+    {
+        // Sync values from global uniforms
+        ub.sync_from_globals();
 
-        CHECK_VK_CALL(vkResetCommandBuffer(tmp_command_buffer, 0));
+        // Get or create uniform buffer
+        auto                 it = m_uniform_buffers.find(&ub);
+        uniform_buffer_data* ub_data = nullptr;
 
-        // begin command buffer recording
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags = 0;
-        begin_info.pInheritanceInfo = nullptr;
-        CHECK_VK_CALL(vkBeginCommandBuffer(tmp_command_buffer, &begin_info));
+        if (it != m_uniform_buffers.end()) {
+            ub_data = &it->second;
+        } else {
+            // Create new uniform buffer
+            size_t aligned_size = (ub.data_size() + 255) & ~255;
+
+            VkBufferCreateInfo buffer_info = {};
+            buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+            buffer_info.size = aligned_size;
+            buffer_info.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+            buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+            VmaAllocationCreateInfo alloc_info = {};
+            alloc_info.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
+            alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+            uniform_buffer_data new_data;
+            VmaAllocationInfo   allocation_info = {};
+
+            VkResult result = vmaCreateBuffer(m_allocator,
+                                              &buffer_info,
+                                              &alloc_info,
+                                              &new_data.buffer,
+                                              &new_data.allocation,
+                                              &allocation_info);
+            if (result != VK_SUCCESS) {
+                MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
+                return VK_NULL_HANDLE;
+            }
+
+            new_data.mapped_data = allocation_info.pMappedData;
+            new_data.version = 0;
+
+            m_uniform_buffers[&ub] = new_data;
+            ub_data = &m_uniform_buffers[&ub];
+        }
+
+        // Update buffer if version changed
+        if (ub_data->version != ub.version()) {
+            if (ub_data->mapped_data) {
+                memcpy(ub_data->mapped_data, ub.data(), ub.data_size());
+                CHECK_VK_CALL(vmaFlushAllocation(m_allocator,
+                                                 ub_data->allocation,
+                                                 0,
+                                                 ub.data_size()));
+            }
+            ub_data->version = ub.version();
+        }
+
+        // Get or create descriptor set
+        auto            desc_key = std::make_tuple(&ub,
+                                        static_cast<mge::texture*>(nullptr),
+                                        vk_program.descriptor_set_layout());
+        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+        auto            desc_it = m_descriptor_sets.find(desc_key);
+
+        if (desc_it != m_descriptor_sets.end()) {
+            descriptor_set = desc_it->second;
+        } else {
+            // Allocate new descriptor set
+            VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
+            if (layout == VK_NULL_HANDLE) {
+                return VK_NULL_HANDLE;
+            }
+
+            VkDescriptorSetAllocateInfo alloc_info = {};
+            alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+            alloc_info.descriptorPool = m_descriptor_pool;
+            alloc_info.descriptorSetCount = 1;
+            alloc_info.pSetLayouts = &layout;
+
+            VkResult result = vkAllocateDescriptorSets(m_device,
+                                                       &alloc_info,
+                                                       &descriptor_set);
+            if (result != VK_SUCCESS) {
+                return VK_NULL_HANDLE;
+            }
+
+            // Update descriptor set with uniform buffer
+            VkDescriptorBufferInfo buffer_info = {};
+            buffer_info.buffer = ub_data->buffer;
+            buffer_info.offset = 0;
+            buffer_info.range = ub.data_size();
+
+            // Find binding point for this uniform block
+            uint32_t binding_point = 0;
+            for (const auto& ub_metadata : vk_program.uniform_buffers()) {
+                if (ub_metadata.name == ub.name()) {
+                    binding_point = ub_metadata.location;
+                    break;
+                }
+            }
+
+            VkWriteDescriptorSet descriptor_write = {};
+            descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+            descriptor_write.dstSet = descriptor_set;
+            descriptor_write.dstBinding = binding_point;
+            descriptor_write.dstArrayElement = 0;
+            descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+            descriptor_write.descriptorCount = 1;
+            descriptor_write.pBufferInfo = &buffer_info;
+
+            vkUpdateDescriptorSets(m_device, 1, &descriptor_write, 0, nullptr);
+
+            m_descriptor_sets[desc_key] = descriptor_set;
+        }
+
+        return descriptor_set;
+    }
+
+    void render_context::bind_texture(VkCommandBuffer       command_buffer,
+                                      mge::vulkan::program& vk_program,
+                                      mge::texture*         tex,
+                                      mge::uniform_block*   ub)
+    {
+        VkDescriptorSet descriptor_set = prepare_texture(vk_program, tex, ub);
+        if (descriptor_set != VK_NULL_HANDLE) {
+            vkCmdBindDescriptorSets(command_buffer,
+                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                    vk_program.pipeline_layout(),
+                                    0,
+                                    1,
+                                    &descriptor_set,
+                                    0,
+                                    nullptr);
+        }
+    }
+
+    VkDescriptorSet
+    render_context::prepare_texture(mge::vulkan::program& vk_program,
+                                    mge::texture*         tex,
+                                    mge::uniform_block*   ub)
+    {
+        if (!tex) {
+            return VK_NULL_HANDLE;
+        }
+
+        auto* vk_tex = static_cast<mge::vulkan::texture*>(tex);
+
+        const auto& sampler_bindings = vk_program.sampler_bindings();
+        if (sampler_bindings.empty()) {
+            return VK_NULL_HANDLE;
+        }
+
+        VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
+        if (layout == VK_NULL_HANDLE) {
+            return VK_NULL_HANDLE;
+        }
+
+        // Reuse the descriptor set from prepare_uniform_block if available,
+        // so both UBO and sampler bindings are on the same set.
+        // Key includes texture pointer so each ub+tex pair gets its own set.
+        auto desc_key =
+            std::make_tuple(ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+                            static_cast<mge::texture*>(tex),
+                            layout);
+
+        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+        auto            desc_it = m_descriptor_sets.find(desc_key);
+
+        if (desc_it != m_descriptor_sets.end()) {
+            descriptor_set = desc_it->second;
+        } else {
+            // Check if there's already a set with UBO written (no texture)
+            // and copy from it, or allocate fresh
+            auto ub_only_key = std::make_tuple(
+                ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+                static_cast<mge::texture*>(nullptr),
+                layout);
+            auto ub_it = m_descriptor_sets.find(ub_only_key);
+
+            if (ub && ub_it != m_descriptor_sets.end()) {
+                // Need a new set with both UBO and texture written
+                VkDescriptorSetAllocateInfo alloc_info = {};
+                alloc_info.sType =
+                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+                alloc_info.descriptorPool = m_descriptor_pool;
+                alloc_info.descriptorSetCount = 1;
+                alloc_info.pSetLayouts = &layout;
+
+                VkResult result = vkAllocateDescriptorSets(m_device,
+                                                           &alloc_info,
+                                                           &descriptor_set);
+                if (result != VK_SUCCESS) {
+                    return VK_NULL_HANDLE;
+                }
+
+                // Write UBO binding
+                auto ub_buf_it = m_uniform_buffers.find(ub);
+                if (ub_buf_it != m_uniform_buffers.end()) {
+                    VkDescriptorBufferInfo buffer_info = {};
+                    buffer_info.buffer = ub_buf_it->second.buffer;
+                    buffer_info.offset = 0;
+                    buffer_info.range = ub->data_size();
+
+                    uint32_t binding_point = 0;
+                    for (const auto& ubm : vk_program.uniform_buffers()) {
+                        if (ubm.name == ub->name()) {
+                            binding_point = ubm.location;
+                            break;
+                        }
+                    }
+
+                    VkWriteDescriptorSet ubo_write = {};
+                    ubo_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                    ubo_write.dstSet = descriptor_set;
+                    ubo_write.dstBinding = binding_point;
+                    ubo_write.dstArrayElement = 0;
+                    ubo_write.descriptorType =
+                        VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    ubo_write.descriptorCount = 1;
+                    ubo_write.pBufferInfo = &buffer_info;
+
+                    vkUpdateDescriptorSets(m_device, 1, &ubo_write, 0, nullptr);
+                }
+            } else {
+                VkDescriptorSetAllocateInfo alloc_info = {};
+                alloc_info.sType =
+                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+                alloc_info.descriptorPool = m_descriptor_pool;
+                alloc_info.descriptorSetCount = 1;
+                alloc_info.pSetLayouts = &layout;
+
+                VkResult result = vkAllocateDescriptorSets(m_device,
+                                                           &alloc_info,
+                                                           &descriptor_set);
+                if (result != VK_SUCCESS) {
+                    return VK_NULL_HANDLE;
+                }
+            }
+
+            // Write texture binding
+            for (const auto& sb : sampler_bindings) {
+                VkDescriptorImageInfo image_info = {};
+                image_info.imageLayout =
+                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                image_info.imageView = vk_tex->image_view();
+                image_info.sampler = vk_tex->sampler();
+
+                VkWriteDescriptorSet descriptor_write = {};
+                descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+                descriptor_write.dstSet = descriptor_set;
+                descriptor_write.dstBinding = sb.binding;
+                descriptor_write.dstArrayElement = 0;
+                descriptor_write.descriptorType =
+                    VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+                descriptor_write.descriptorCount = 1;
+                descriptor_write.pImageInfo = &image_info;
+
+                vkUpdateDescriptorSets(m_device,
+                                       1,
+                                       &descriptor_write,
+                                       0,
+                                       nullptr);
+            }
+
+            m_descriptor_sets[desc_key] = descriptor_set;
+        }
+
+        return descriptor_set;
+    }
+
+    void render_context::draw_geometry(VkCommandBuffer     command_buffer,
+                                       mge::program*       program,
+                                       mge::vertex_buffer* vb,
+                                       mge::index_buffer*  ib,
+                                       const mge::pipeline_state& state,
+                                       mge::uniform_block*        ub,
+                                       mge::texture*              tex,
+                                       uint32_t                   index_count,
+                                       uint32_t                   index_offset)
+    {
+        mge::vulkan::program* vk_program =
+            static_cast<mge::vulkan::program*>(program);
+        mge::vulkan::vertex_buffer* vk_vertex_buffer =
+            static_cast<mge::vulkan::vertex_buffer*>(vb);
+        mge::vulkan::index_buffer* vk_index_buffer =
+            static_cast<mge::vulkan::index_buffer*>(ib);
+
+        VkPipeline pipeline =
+            this->pipeline(*vk_vertex_buffer, *vk_program, state);
+        vkCmdBindPipeline(command_buffer,
+                          VK_PIPELINE_BIND_POINT_GRAPHICS,
+                          pipeline);
+
+        // Bind uniform block and texture together to avoid
+        // updating a descriptor set that is already bound
+        if (ub || tex) {
+            VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
+            if (ub) {
+                descriptor_set = prepare_uniform_block(*vk_program, *ub);
+            }
+            if (tex) {
+                descriptor_set = prepare_texture(*vk_program, tex, ub);
+            }
+            if (descriptor_set != VK_NULL_HANDLE) {
+                vkCmdBindDescriptorSets(command_buffer,
+                                        VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                        vk_program->pipeline_layout(),
+                                        0,
+                                        1,
+                                        &descriptor_set,
+                                        0,
+                                        nullptr);
+            }
+        }
+
+        VkDeviceSize offsets[1]{0};
+        VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
+        vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
+        vkCmdBindIndexBuffer(command_buffer,
+                             vk_index_buffer->vk_buffer(),
+                             0,
+                             vk_index_buffer->vk_index_type());
+        uint32_t count =
+            index_count > 0
+                ? index_count
+                : static_cast<uint32_t>(vk_index_buffer->element_count());
+        vkCmdDrawIndexed(command_buffer, count, 1, index_offset, 0, 1);
+    }
+
+    void render_context::render(const mge::pass& p)
+    {
+        if (m_current_frame_state == frame_state::BEFORE_DRAW) {
+            wait_for_frame_finished();
+            acquire_next_image();
+        }
+        VkCommandBuffer command_buffer = VK_NULL_HANDLE;
+        if (!p.frame_buffer()) {
+            command_buffer = current_primary_command_buffer();
+            if (m_current_frame_state == frame_state::BEFORE_DRAW) {
+                CHECK_VK_CALL(vkResetCommandBuffer(command_buffer, 0));
+                VkCommandBufferBeginInfo begin_info = {};
+                begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+                begin_info.flags = 0;
+                begin_info.pInheritanceInfo = nullptr;
+                CHECK_VK_CALL(
+                    vkBeginCommandBuffer(command_buffer, &begin_info));
+            }
+        } else {
+            MGE_THROW_NOT_IMPLEMENTED << "Rendering to custom frame buffers "
+                                         "not implemented in Vulkan yet";
+        }
 
         VkRenderPassBeginInfo render_pass_info{};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -1019,35 +1438,169 @@ namespace mge::vulkan {
         render_pass_info.renderArea.offset = {0, 0};
         render_pass_info.renderArea.extent = m_extent;
 
-        VkClearValue clear_color = {{{0.0f, 0.0f, 0.0f, 1.0f}}};
-        render_pass_info.clearValueCount = 1;
-        render_pass_info.pClearValues = &clear_color;
-
-        vkCmdBeginRenderPass(tmp_command_buffer,
+        vkCmdBeginRenderPass(command_buffer,
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_INLINE);
 
-        VkViewport viewport{};
-        viewport.x = 0.0f;
-        viewport.y = 0.0f;
-        viewport.width = static_cast<float>(m_extent.width);
-        viewport.height = static_cast<float>(m_extent.height);
-        viewport.minDepth = 0.0f;
-        viewport.maxDepth = 1.0f;
-        vkCmdSetViewport(tmp_command_buffer, 0, 1, &viewport);
+        // use flipped view port to align with opengl and dx
+        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
+        const auto& vp = p.viewport();
+        VkViewport  viewport{};
+        viewport.x = static_cast<float>(vp.x);
+        viewport.y = static_cast<float>(vp.y) + static_cast<float>(vp.height);
+        viewport.width = static_cast<float>(vp.width);
+        viewport.height = -static_cast<float>(vp.height);
+        viewport.minDepth = vp.min_depth;
+        viewport.maxDepth = vp.max_depth;
+        vkCmdSetViewport(command_buffer, 0, 1, &viewport);
 
-        VkRect2D scissor{};
-        scissor.offset = {0, 0};
-        scissor.extent = m_extent;
-        vkCmdSetScissor(tmp_command_buffer, 0, 1, &scissor);
+        const auto& sr = p.scissor();
+        VkRect2D    scissor{};
+        scissor.offset = {static_cast<int32_t>(sr.left),
+                          static_cast<int32_t>(sr.top)};
+        scissor.extent = {static_cast<uint32_t>(sr.right - sr.left),
+                          static_cast<uint32_t>(sr.bottom - sr.top)};
+        vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
-        vkCmdEndRenderPass(tmp_command_buffer);
-        CHECK_VK_CALL(vkEndCommandBuffer(tmp_command_buffer));
+        if (p.clear_color_enabled()) {
+            const auto&  c = p.clear_color_value();
+            VkClearValue clear_color = {};
+            clear_color.color = {{c.r, c.g, c.b, c.a}};
+            VkClearAttachment clear_attachment = {};
+            clear_attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            clear_attachment.colorAttachment = 0;
+            clear_attachment.clearValue = clear_color;
+            VkClearRect clear_rect = {};
+            clear_rect.rect.offset = {0, 0};
+            clear_rect.rect.extent = extent();
+            clear_rect.baseArrayLayer = 0;
+            clear_rect.layerCount = 1;
+            vkCmdClearAttachments(command_buffer,
+                                  1,
+                                  &clear_attachment,
+                                  1,
+                                  &clear_rect);
+        }
 
+        if (p.clear_depth_enabled() || p.clear_stencil_enabled()) {
+            VkClearValue      clear_depth_stencil = {};
+            VkClearAttachment clear_attachment = {};
+            if (p.clear_depth_enabled()) {
+                clear_depth_stencil.depthStencil.depth = p.clear_depth_value();
+                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_DEPTH_BIT;
+            }
+            if (p.clear_stencil_enabled()) {
+                clear_depth_stencil.depthStencil.stencil =
+                    p.clear_stencil_value();
+                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+            }
+            clear_attachment.clearValue = clear_depth_stencil;
+            VkClearRect clear_rect = {};
+            clear_rect.rect.offset = {0, 0};
+            clear_rect.rect.extent = m_extent;
+            clear_rect.baseArrayLayer = 0;
+            clear_rect.layerCount = 1;
+            vkCmdClearAttachments(command_buffer,
+                                  1,
+                                  &clear_attachment,
+                                  1,
+                                  &clear_rect);
+        }
+        bool           blend_pass_needed = false;
+        mge::rectangle current_scissor = p.scissor();
+        p.for_each_draw_command(
+            [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
+                const program_handle&       program,
+                const vertex_buffer_handle& vertex_buffer,
+                const index_buffer_handle&  index_buffer,
+                const mge::pipeline_state&  state,
+                mge::uniform_block*         ub,
+                mge::texture*               tex,
+                uint32_t                    index_count,
+                uint32_t                    index_offset,
+                const mge::rectangle&       cmd_scissor) {
+                const auto& effective =
+                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                if (effective != current_scissor) {
+                    VkRect2D vk_scissor{};
+                    vk_scissor.offset = {static_cast<int32_t>(effective.left),
+                                         static_cast<int32_t>(effective.top)};
+                    vk_scissor.extent = {
+                        static_cast<uint32_t>(effective.right - effective.left),
+                        static_cast<uint32_t>(effective.bottom -
+                                              effective.top)};
+                    vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
+                    current_scissor = effective;
+                }
+                auto blend_operation = state.color_blend_operation();
+                if (blend_operation == mge::blend_operation::NONE) {
+                    draw_geometry(command_buffer,
+                                  program.get(),
+                                  vertex_buffer.get(),
+                                  index_buffer.get(),
+                                  state,
+                                  ub,
+                                  tex,
+                                  index_count,
+                                  index_offset);
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
+        if (blend_pass_needed) {
+            p.for_each_draw_command(
+                [this, command_buffer, &current_scissor, &p](
+                    const program_handle&       program,
+                    const vertex_buffer_handle& vertex_buffer,
+                    const index_buffer_handle&  index_buffer,
+                    const mge::pipeline_state&  state,
+                    mge::uniform_block*         ub,
+                    mge::texture*               tex,
+                    uint32_t                    index_count,
+                    uint32_t                    index_offset,
+                    const mge::rectangle&       cmd_scissor) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        VkRect2D vk_scissor{};
+                        vk_scissor.offset = {
+                            static_cast<int32_t>(effective.left),
+                            static_cast<int32_t>(effective.top)};
+                        vk_scissor.extent = {
+                            static_cast<uint32_t>(effective.right -
+                                                  effective.left),
+                            static_cast<uint32_t>(effective.bottom -
+                                                  effective.top)};
+                        vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
+                        current_scissor = effective;
+                    }
+                    auto blend_operation = state.color_blend_operation();
+                    draw_geometry(command_buffer,
+                                  program.get(),
+                                  vertex_buffer.get(),
+                                  index_buffer.get(),
+                                  state,
+                                  ub,
+                                  tex,
+                                  index_count,
+                                  index_offset);
+                });
+        }
+
+        vkCmdEndRenderPass(command_buffer);
+        m_current_frame_state = frame_state::DRAW;
+    }
+
+    void render_context::on_frame_present()
+    {
+        // MGE_DEBUG_TRACE(VULKAN, "Present frame");
+
+        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
+        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
+        VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         submit_info.waitSemaphoreCount = 1;
@@ -1056,95 +1609,245 @@ namespace mge::vulkan {
         submit_info.signalSemaphoreCount = 1;
         submit_info.pSignalSemaphores = signal_semaphores;
         submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = &tmp_command_buffer;
+        submit_info.pCommandBuffers = command_buffers;
 
         CHECK_VK_CALL(
             vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+        m_current_frame_state = frame_state::DRAW_FINISHED;
 
+        VkSemaphore present_wait_semaphores[] = {m_render_finished_semaphore};
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = signal_semaphores;
+        present_info.pWaitSemaphores = present_wait_semaphores;
         present_info.swapchainCount = 1;
         present_info.pSwapchains = &m_swap_chain_khr;
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-
-        // schedule command buffer for gc
-        m_deleted_command_buffers.emplace_back(0, tmp_command_buffer);
-
-        m_drawing_initialized = true;
-    }
-
-    void render_context::present()
-    {
-        switch (m_current_frame_state) {
-        case frame_state::BEFORE_DRAW:
-            begin_frame();
-            [[fallthrough]];
-        case frame_state::DRAW:
-            end_draw();
-            [[fallthrough]];
-        case frame_state::DRAW_FINISHED:
-            break;
-        }
-
-        VkSemaphore      wait_semaphores[] = {m_render_finished_semaphore};
-        VkPresentInfoKHR present_info = {};
-        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-        present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = wait_semaphores;
-        present_info.swapchainCount = 1;
-        present_info.pSwapchains = &m_swap_chain_khr;
-        present_info.pImageIndices = &m_current_image_index;
-        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-
         m_current_frame_state = frame_state::BEFORE_DRAW;
     }
 
-    void render_context::discard_command_buffer(uint64_t        frame,
-                                                VkCommandBuffer command_buffer)
+    const std::vector<VkVertexInputAttributeDescription>&
+    render_context::vertex_input_attribute_descriptions(
+        const mge::vertex_layout& layout)
     {
-        if (frame < m_frame) {
-            destroy_command_buffer(command_buffer);
+        auto it = m_vertex_input_attribute_descriptions.find(layout);
+        if (it != m_vertex_input_attribute_descriptions.end()) {
+            return it->second;
+        }
+        std::vector<VkVertexInputAttributeDescription> descriptions;
+        uint32_t                                       offset = 0;
+        uint32_t                                       location = 0;
+        for (const auto& el : layout) {
+            VkVertexInputAttributeDescription desc;
+            desc.binding = 0;
+            desc.location = location++;
+            desc.format = vk_format(el.format);
+            desc.offset = offset;
+            descriptions.emplace_back(desc);
+            offset += static_cast<uint32_t>(el.format.binary_size());
+        }
+        return m_vertex_input_attribute_descriptions[layout] =
+                   std::move(descriptions);
+    }
+
+    VkPipeline render_context::pipeline(const vertex_buffer&       buffer,
+                                        const program&             program,
+                                        const mge::pipeline_state& state)
+    {
+        // binding_description
+        // attribute_descriptions -> layout
+        // program (pipeline layout)
+        // render pass - always the same for now
+        // blend state
+        pipeline_key_type key{buffer.vk_buffer(),
+                              program.pipeline_layout(),
+                              state};
+
+        auto it = m_pipelines.find(key);
+        if (it != m_pipelines.end()) {
+            return it->second;
+        }
+
+        VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
+                                           VK_DYNAMIC_STATE_SCISSOR};
+        VkPipelineDynamicStateCreateInfo dynamic_state_create_info = {};
+        dynamic_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        dynamic_state_create_info.dynamicStateCount = std::size(dynamic_states);
+        dynamic_state_create_info.pDynamicStates = dynamic_states;
+
+        VkPipelineVertexInputStateCreateInfo vertex_input_state_create_info =
+            {};
+        vertex_input_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
+        vertex_input_state_create_info.pVertexBindingDescriptions =
+            &buffer.binding_description();
+        vertex_input_state_create_info.vertexAttributeDescriptionCount =
+            static_cast<uint32_t>(buffer.attribute_descriptions().size());
+        vertex_input_state_create_info.pVertexAttributeDescriptions =
+            buffer.attribute_descriptions().data();
+
+        VkPipelineInputAssemblyStateCreateInfo
+            input_assembly_state_create_info = {};
+        input_assembly_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+        input_assembly_state_create_info.topology =
+            VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        input_assembly_state_create_info.primitiveRestartEnable = VK_FALSE;
+
+        VkPipelineViewportStateCreateInfo viewport_state_create_info{};
+        viewport_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewport_state_create_info.viewportCount = 1;
+        viewport_state_create_info.scissorCount = 1;
+
+        VkPipelineRasterizationStateCreateInfo rasterization_state_create_info =
+            {};
+        rasterization_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+        rasterization_state_create_info.depthClampEnable =
+            VK_FALSE; // discard elements out of depth range
+        rasterization_state_create_info.rasterizerDiscardEnable =
+            VK_FALSE; // allow elements to pass rasterizer stage
+        rasterization_state_create_info.polygonMode =
+            VK_POLYGON_MODE_FILL; // fill the polygon drawn
+        rasterization_state_create_info.lineWidth = 1.0f;
+
+        mge::cull_mode cull = state.cull_mode();
+        switch (cull) {
+        case mge::cull_mode::NONE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_NONE;
+            break;
+        case mge::cull_mode::CLOCKWISE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_FRONT_BIT;
+            break;
+        case mge::cull_mode::COUNTER_CLOCKWISE:
+            rasterization_state_create_info.cullMode = VK_CULL_MODE_BACK_BIT;
+            break;
+        }
+        rasterization_state_create_info.frontFace =
+            VK_FRONT_FACE_CLOCKWISE; // clockwise front face
+
+        // no depth bias, that's only used in shadow mapping
+        rasterization_state_create_info.depthBiasEnable = VK_FALSE;
+        rasterization_state_create_info.depthBiasConstantFactor = 0.0f;
+        rasterization_state_create_info.depthBiasClamp = 0.0f;
+        rasterization_state_create_info.depthBiasSlopeFactor = 0.0f;
+
+        VkPipelineMultisampleStateCreateInfo multisampling_create_info{};
+        multisampling_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+        multisampling_create_info.sampleShadingEnable = VK_FALSE;
+        multisampling_create_info.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+        multisampling_create_info.minSampleShading = 1.0f;
+        multisampling_create_info.pSampleMask = nullptr;
+        multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
+        multisampling_create_info.alphaToOneEnable = VK_FALSE;
+
+        VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info =
+            {};
+        depth_stencil_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+        depth_stencil_state_create_info.depthTestEnable = VK_TRUE;
+        depth_stencil_state_create_info.depthWriteEnable =
+            state.depth_write() ? VK_TRUE : VK_FALSE;
+        depth_stencil_state_create_info.depthCompareOp =
+            depth_test_to_vulkan(state.depth_test_function());
+        depth_stencil_state_create_info.depthBoundsTestEnable = VK_FALSE;
+        depth_stencil_state_create_info.stencilTestEnable = VK_FALSE;
+
+        // color blending
+        VkPipelineColorBlendAttachmentState color_blend_attachment_state = {};
+        color_blend_attachment_state.colorWriteMask =
+            VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+            VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+
+        auto color_blend_operation = state.color_blend_operation();
+
+        if (color_blend_operation == mge::blend_operation::NONE) {
+            color_blend_attachment_state.blendEnable = VK_FALSE;
+            color_blend_attachment_state.srcColorBlendFactor =
+                VK_BLEND_FACTOR_ONE;
+            color_blend_attachment_state.dstColorBlendFactor =
+                VK_BLEND_FACTOR_ZERO;
+            color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
+            color_blend_attachment_state.srcAlphaBlendFactor =
+                VK_BLEND_FACTOR_ONE;
+            color_blend_attachment_state.dstAlphaBlendFactor =
+                VK_BLEND_FACTOR_ZERO;
+            color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
         } else {
-            m_deleted_command_buffers.emplace_back(frame, command_buffer);
+            auto color_src_factor = state.color_blend_factor_src();
+            auto color_dst_factor = state.color_blend_factor_dst();
+            auto alpha_blend_operation = state.alpha_blend_operation();
+            auto alpha_src_factor = state.alpha_blend_factor_src();
+            auto alpha_dst_factor = state.alpha_blend_factor_dst();
+
+            color_blend_attachment_state.blendEnable = VK_TRUE;
+            color_blend_attachment_state.srcColorBlendFactor =
+                blend_factor_to_vulkan(color_src_factor);
+            color_blend_attachment_state.dstColorBlendFactor =
+                blend_factor_to_vulkan(color_dst_factor);
+            color_blend_attachment_state.colorBlendOp =
+                blend_operation_to_vulkan(color_blend_operation);
+            color_blend_attachment_state.srcAlphaBlendFactor =
+                blend_factor_to_vulkan(alpha_src_factor);
+            color_blend_attachment_state.dstAlphaBlendFactor =
+                blend_factor_to_vulkan(alpha_dst_factor);
+            color_blend_attachment_state.alphaBlendOp =
+                blend_operation_to_vulkan(alpha_blend_operation);
         }
-    }
 
-    void render_context::discard_pipeline(uint64_t frame, VkPipeline pipeline)
-    {
-        if (frame < m_frame) {
-            destroy_pipeline(pipeline);
-        } else {
-            m_deleted_pipelines.emplace_back(frame, pipeline);
-        }
-    }
+        VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
+        color_blend_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+        color_blend_state_create_info.logicOpEnable = VK_FALSE;
+        color_blend_state_create_info.logicOp = VK_LOGIC_OP_COPY;
+        color_blend_state_create_info.attachmentCount = 1;
+        color_blend_state_create_info.pAttachments =
+            &color_blend_attachment_state;
+        color_blend_state_create_info.blendConstants[0] = 0.0f;
+        color_blend_state_create_info.blendConstants[1] = 0.0f;
+        color_blend_state_create_info.blendConstants[2] = 0.0f;
+        color_blend_state_create_info.blendConstants[3] = 0.0f;
 
-    void render_context::destroy_pipeline(VkPipeline pipeline)
-    {
-        vkDestroyPipeline(m_device, pipeline, nullptr);
-    }
+        VkPipelineLayout pipeline_layout{program.pipeline_layout()};
 
-    void render_context::destroy_command_buffer(VkCommandBuffer command_buffer)
-    {
-        vkFreeCommandBuffers(m_device,
-                             m_graphics_command_pool,
-                             1,
-                             &command_buffer);
-    }
+        VkGraphicsPipelineCreateInfo pipeline_create_info = {};
+        pipeline_create_info.sType =
+            VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+        pipeline_create_info.stageCount =
+            static_cast<uint32_t>(program.shader_stage_create_infos().size());
+        pipeline_create_info.pStages =
+            program.shader_stage_create_infos().data();
+        pipeline_create_info.pVertexInputState =
+            &vertex_input_state_create_info;
+        pipeline_create_info.pInputAssemblyState =
+            &input_assembly_state_create_info;
+        pipeline_create_info.pViewportState = &viewport_state_create_info;
+        pipeline_create_info.pRasterizationState =
+            &rasterization_state_create_info;
+        pipeline_create_info.pMultisampleState = &multisampling_create_info;
+        pipeline_create_info.pDepthStencilState =
+            &depth_stencil_state_create_info;
+        pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
+        pipeline_create_info.pDynamicState = &dynamic_state_create_info;
+        pipeline_create_info.layout = pipeline_layout;
+        pipeline_create_info.renderPass = render_pass();
+        pipeline_create_info.subpass = 0;
+        pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
+        pipeline_create_info.basePipelineIndex = -1;
 
-    void render_context::gc()
-    {
-        std::vector<std::pair<uint64_t, VkCommandBuffer>> new_deleted;
-        for (auto& cb : m_deleted_command_buffers) {
-            if (cb.first < m_frame) {
-                destroy_command_buffer(cb.second);
-            } else {
-                new_deleted.push_back(cb);
-            }
-        }
-        m_deleted_command_buffers.swap(new_deleted);
+        VkPipeline pipeline{VK_NULL_HANDLE};
+        CHECK_VK_CALL(vkCreateGraphicsPipelines(device(),
+                                                VK_NULL_HANDLE,
+                                                1,
+                                                &pipeline_create_info,
+                                                nullptr,
+                                                &pipeline));
+        return m_pipelines[key] = pipeline;
     }
 
 } // namespace mge::vulkan

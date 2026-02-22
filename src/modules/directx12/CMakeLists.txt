@@ -5,13 +5,13 @@ SET(mge_dx12_module_SOURCES
     common.cpp
     window.cpp
     error.cpp
+    input_layout_cache.cpp
+    message_id.cpp
     render_system.cpp
     render_context.cpp
-    swap_chain.cpp
-    command_list.cpp
-    frame_command_list.cpp
     shader.cpp
     program.cpp
+    texture.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )

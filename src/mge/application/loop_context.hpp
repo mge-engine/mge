@@ -13,8 +13,11 @@ namespace mge {
     class MGEAPPLICATION_EXPORT loop_context
     {
     public:
+        /** @brief Frame counter */
         uint64_t cycle;
+        /** @brief Delta time in seconds since last update */
         double   delta;
+        /** @brief Peek value for interpolation [0,1) */
         double   peek;
     };
 } // namespace mge

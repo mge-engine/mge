@@ -193,7 +193,7 @@ namespace mge {
  * @brief Check whether ERROR trace is enabled.
  * @param TOPIC trace topic
  */
-#define MGE_ERROR_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, ERROR)
+#define MGE_ERROR_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, LEVEL_ERROR)
 
 /**
  * @def MGE_ERROR_TRACE
@@ -205,7 +205,7 @@ namespace mge {
     do {                                                                       \
         if (!(MGE_ERROR_TRACE_ENABLED(TOPIC))) {                               \
         } else {                                                               \
-            auto trc = MGE_TRACE_OBJECT(TOPIC, ERROR);                         \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, LEVEL_ERROR);                   \
             fmt::print(trc.stream(), __VA_ARGS__);                             \
         }                                                                      \
     } while (false)

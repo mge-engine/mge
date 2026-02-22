@@ -254,14 +254,13 @@ namespace mge::vulkan {
 
         VkApplicationInfo application_info = {};
         application_info.pApplicationName = application_name.c_str();
-        // TODO: manage application version
+
         // app_info.applicationVersion = ...
         application_info.pEngineName = "mge";
-        // TODO: manage engine (library version)
         // app_info.engineVersion = ...
         application_info.apiVersion = VK_API_VERSION_1_3;
 
-        // TODO: manage instance layers and extensions externally
+        // : manage instance layers and extensions externally
         std::vector<const char*> extensions;
         std::vector<const char*> layers;
         for (const auto& e : s_default_extensions) {
@@ -304,7 +303,6 @@ namespace mge::vulkan {
             instance_create_info.pNext = &debug_create_info;
         }
 
-        // TODO: manage memory allocation for instance
         CHECK_VK_CALL(
             vkCreateInstance(&instance_create_info, nullptr, &m_instance));
         resolve_instance_functions();
@@ -592,6 +590,16 @@ namespace mge::vulkan {
         if (m_graphics_queue_index == m_queue_family_properties.size()) {
             MGE_THROW(error) << "No graphics queue family found";
         }
+    }
+
+    void* render_system::renderdoc_device() const
+    {
+        if (m_instance != VK_NULL_HANDLE) {
+#define INSTANCE_FOR_RENDERDOC(inst) (*((void**)(inst)))
+            return INSTANCE_FOR_RENDERDOC(m_instance);
+#undef INSTANCE_FOR_RENDERDOC
+        }
+        return nullptr;
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);

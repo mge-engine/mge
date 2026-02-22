@@ -1,6 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
-# All rights reserved.
+# All rights reserved.  
 
 SET(mgegraphics_sources
     render_system.cpp
@@ -10,15 +10,12 @@ SET(mgegraphics_sources
     render_context.cpp
     shader_language.cpp
     context_object.cpp
-    command_list.cpp
-    frame_command_list.cpp
     color_names.cpp
     rgb_color.cpp
     rgba_color.cpp
     hardware_buffer.cpp
     data_type.cpp
     index_buffer.cpp
-    swap_chain.cpp
     vertex_format.cpp
     vertex_layout.cpp
     vertex_buffer.cpp
@@ -26,7 +23,6 @@ SET(mgegraphics_sources
     program.cpp
     texture.cpp
     shader_format.cpp
-    draw_command.cpp
     uniform_data_type.cpp
     attribute_semantic.cpp
     image_format.cpp
@@ -34,6 +30,12 @@ SET(mgegraphics_sources
     mesh.cpp
     memory_mesh.cpp
     uniform_binding.cpp
+    pass.cpp
+    frame_buffer.cpp
+    command_buffer.cpp
+    frame_debugger.cpp
+    uniform_block.cpp
+    uniform.cpp
 )
 
 SET(mgegraphics_headers
@@ -49,26 +51,26 @@ SET(mgegraphics_headers
     shader_type.hpp
     shader_language.hpp
     context_object.hpp
-    command_list.hpp
-    frame_command_list.hpp
     rgb_color.hpp
     rgba_color.hpp
     buffer_type.hpp
     hardware_buffer.hpp
     data_type.hpp
     index_buffer.hpp
-    swap_chain.hpp
     vertex_format.hpp
     vertex_layout.hpp
     vertex_buffer.hpp
     shader.hpp
     program.hpp
     shader_format.hpp
-    draw_command.hpp
     uniform_data_type.hpp
     attribute_semantic.hpp
+    blend_factor.hpp
+    blend_operation.hpp
+    pipeline_state.hpp
     texture_type.hpp
     texture.hpp
+    topology.hpp
     image.hpp
     image_format.hpp
     memory_image.hpp
@@ -77,6 +79,15 @@ SET(mgegraphics_headers
     uniform_binding.hpp
     rectangle.hpp
     viewport.hpp
+    pass.hpp
+    frame_buffer.hpp
+    command_buffer.hpp
+    frame_debugger.hpp
+    test.hpp
+    update_rate.hpp
+    std140.hpp
+    uniform_block.hpp
+    uniform.hpp
 )
 
 MGE_LIBRARY(

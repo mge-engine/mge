@@ -3,6 +3,7 @@
 # All rights reserved.
 
 build*/**/*
+**/__pycache__
 .vscode/*
 .vs
 mge.files
@@ -27,3 +28,5 @@ BROWSE*.DB-wal
 sphinx/**/*
 # ctest 
 Testing/**/*
+# -- claude temporary files
+tmpclaude-*

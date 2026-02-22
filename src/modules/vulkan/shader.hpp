@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "glslang.hpp"
+#include "mge/graphics/program.hpp"
 #include "mge/graphics/shader.hpp"
 #include "vulkan.hpp"
 
@@ -15,6 +16,12 @@ namespace mge::vulkan {
         shader(render_context& context, shader_type type);
         ~shader();
         const VkPipelineShaderStageCreateInfo& pipeline_stage_info() const;
+
+        void reflect(mge::program::attribute_list&              attributes,
+                     mge::program::uniform_list&                uniforms,
+                     mge::program::uniform_block_metadata_list& uniform_buffers,
+                     std::vector<std::pair<std::string, uint32_t>>&
+                         sampler_bindings) const;
 
     protected:
         virtual void on_compile(std::string_view code) override;

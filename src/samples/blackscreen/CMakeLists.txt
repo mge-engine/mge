@@ -11,3 +11,5 @@ TARGET_LINK_LIBRARIES(blackscreen
     mgeapplication
     mgeinput
     mgegraphics)
+
+MGE_CAPTURE_TEST(TARGET blackscreen)

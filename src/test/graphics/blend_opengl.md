@@ -1,0 +1,473 @@
+# Header
+- Driver: OpenGL
+# Frames
+## Frame 1
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: null
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #3
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #4
+- Call: glEnableVertexAttribArray
+  - vaobj: GLResource #2
+  - index: 0
+- Call: glVertexAttribPointer
+  - vaobj: GLResource #2
+  - buffer: GLResource #3
+  - index: 0
+  - size: 3
+  - type: GL_FLOAT
+  - normalized: false
+  - stride: 12
+  - offset: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #7
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #4
+- Call: glEnableVertexAttribArray
+  - vaobj: GLResource #6
+  - index: 0
+- Call: glVertexAttribPointer
+  - vaobj: GLResource #6
+  - buffer: GLResource #7
+  - index: 0
+  - size: 3
+  - type: GL_FLOAT
+  - normalized: false
+  - stride: 12
+  - offset: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDisable
+  - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
+- Call: SwapBuffers
+## Frame 2
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: null
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDisable
+  - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
+- Call: SwapBuffers
+## Frame 3
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: null
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDisable
+  - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
+- Call: SwapBuffers
+## Frame 4
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: null
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDisable
+  - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
+- Call: SwapBuffers
+## Frame 5
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: null
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
+- Call: glEnable
+  - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_BLEND
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #2
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDepthFunc
+  - func: GL_ALWAYS
+- Call: glBlendFunc
+  - sfactor: GL_LINES
+  - dfactor: GL_LINES
+- Call: glBlendEquation
+  - mode: GL_FUNC_ADD
+- Call: glDepthMask
+  - flag: false
+- Call: glUseProgram
+  - program: GLResource #1
+- Call: glBindVertexArray
+  - vaobj: GLResource #6
+- Call: glDrawElements
+  - mode: GL_TRIANGLES
+  - count: 3
+  - type: GL_UNSIGNED_INT
+  - indices: 0
+- Call: glBindVertexArray
+  - vaobj: GLResource #5
+- Call: glUseProgram
+  - program: null
+- Call: glDepthMask
+  - flag: true
+- Call: glDisable
+  - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_DEPTH_TEST
+- Call: SwapBuffers
+

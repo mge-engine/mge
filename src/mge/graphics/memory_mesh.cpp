@@ -10,8 +10,8 @@ namespace mge {
                              size_t               index_size)
         : mesh(layout, index_element_type)
     {
-        m_vertices.resize(vertex_size);
-        m_indices.resize(index_size);
+        m_vertices = mge::make_buffer(vertex_size);
+        m_indices = mge::make_buffer(index_size);
     }
 
     memory_mesh::~memory_mesh() {}

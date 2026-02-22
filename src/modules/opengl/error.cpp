@@ -67,6 +67,26 @@ namespace mge::opengl {
         }
     }
 
+    bool error::warn_error(const char* file,
+                           int         line,
+                           const char* signature,
+                           const char* glFunction)
+    {
+        auto err = glGetError();
+        if (err != GL_NO_ERROR) {
+            MGE_WARNING_TRACE(OPENGL,
+                              "OpenGL error: {}:{} in {}: [{}] ({}) {}",
+                              file,
+                              line,
+                              signature,
+                              glFunction,
+                              (unsigned int)err,
+                              gl_error_text(err));
+            return true;
+        }
+        return false;
+    }
+
     void error::trace_error(const char* file,
                             int         line,
                             const char* signature,

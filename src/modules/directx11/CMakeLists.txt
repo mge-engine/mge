@@ -7,10 +7,8 @@ SET(mge_dx11_module_SOURCES
     window.cpp
     render_context.cpp
     render_system.cpp
-    swap_chain.cpp
     index_buffer.cpp
     vertex_buffer.cpp
-    command_list.cpp
     shader.cpp
     program.cpp
     input_layout_cache.cpp

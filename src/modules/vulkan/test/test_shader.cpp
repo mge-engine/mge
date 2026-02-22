@@ -28,8 +28,11 @@ TEST_F(shader_test, compile_successfully)
                                "  gl_Position.xyz = vertexPosition;\n"
                                "  gl_Position.w = 1.0;\n"
                                "}"sv;
-
+    EXPECT_FALSE(shader->initialized());
     shader->compile(vertex_shader_glsl);
+    context.frame();
+    EXPECT_TRUE(shader->initialized());
+    shader.destroy();
 }
 
 TEST_F(shader_test, compile_failed)
@@ -49,8 +52,11 @@ TEST_F(shader_test, compile_failed)
 
     try {
         shader->compile(vertex_shader_glsl);
+        context.frame();
         FAIL() << "Expected exception";
     } catch (const mge::exception& ex) {
         std::cout << ex.what() << std::endl;
     }
+    EXPECT_FALSE(shader->initialized());
+    shader.destroy();
 }

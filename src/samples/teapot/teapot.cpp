@@ -3,17 +3,13 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/mesh.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
-#include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
 namespace mge {
@@ -36,16 +32,14 @@ namespace mge {
             m_render_system = render_system::create();
             m_window = m_render_system->create_window();
             m_window->set_close_listener([&] { set_quit(); });
-            m_window->set_key_action_handler(
-                [&](mge::key k, mge::key_action a, mge::modifier m) {
+            m_window->add_key_action_handler(
+                [&](mge::key k, mge::key_action a, mge::modifier m) -> bool {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                        return true;
                     }
+                    return false;
                 });
-
-            m_clear_commands = m_window->render_context().create_command_list();
-            m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-            m_clear_commands->finish();
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 this->draw(cycle, delta);
@@ -56,21 +50,22 @@ namespace mge {
 
         void draw(uint64_t cycle, double delta)
         {
+            auto& ctx = m_window->render_context();
+
             if (m_initialized) {
-                auto draw_commands = m_window->render_context()
-                                         .create_current_frame_command_list();
-                draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-                draw_commands->default_scissor();
-                draw_commands->draw(
-                    mge::draw_command(m_program,
-                                      m_vertices,
-                                      m_indices,
-                                      mge::topology::TRIANGLES));
-                draw_commands->finish();
-                draw_commands->execute();
-                draw_commands->destroy();
+                auto& pass = ctx.pass(0);
+                pass.default_viewport();
+                pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                auto& command_buffer = ctx.command_buffer();
+                command_buffer.draw(m_program, m_vertices, m_indices);
+                pass.submit(command_buffer);
+            } else {
+                auto& pass = ctx.pass(0);
+                pass.default_viewport();
+                pass.clear_color(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                pass.touch();
             }
-            m_window->render_context().swap_chain()->present();
+            ctx.frame();
         }
 
         void initialize()
@@ -148,9 +143,9 @@ namespace mge {
                            "mge::dx12::render_system") {
 
                 const char* vertex_shader_hlsl = R"shader(
-                    float4 main( float4 pos : POSITION ) : SV_POSITION
+                    float4 main( float3 pos : POSITION ) : SV_POSITION
                     {
-                        return pos;
+                        return float4(pos, 1.0);
                     }
                 )shader";
 
@@ -181,33 +176,23 @@ namespace mge {
             m_vertices = m_window->render_context().create_vertex_buffer(
                 mesh->layout(),
                 mesh->vertex_data_size(),
-                mesh->vertex_data());
+                mesh->vertices());
             MGE_DEBUG_TRACE(TEAPOT, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 mesh->index_data_size(),
-                mesh->index_data());
-            m_draw_commands = m_window->render_context().create_command_list();
-            m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-            m_draw_commands->draw(mge::draw_command(m_program,
-                                                    m_vertices,
-                                                    m_indices,
-                                                    mge::topology::TRIANGLES));
-            m_draw_commands->finish();
+                mesh->indices());
             MGE_DEBUG_TRACE(TEAPOT, "Initializing objects done");
-
             m_initialized = true;
         }
 
     private:
-        render_system_ref m_render_system;
-        window_ref        m_window;
-        std::atomic<bool> m_initialized;
-        command_list*     m_clear_commands;
-        command_list*     m_draw_commands;
-        program*          m_program;
-        vertex_buffer*    m_vertices;
-        index_buffer*     m_indices;
+        render_system_ref    m_render_system;
+        window_ref           m_window;
+        std::atomic<bool>    m_initialized;
+        program_handle       m_program;
+        vertex_buffer_handle m_vertices;
+        index_buffer_handle  m_indices;
     };
 
     MGE_REGISTER_IMPLEMENTATION(teapot, mge::application, teapot);

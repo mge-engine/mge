@@ -7,10 +7,8 @@ SET(mge_opengl_module_SOURCES
     window.cpp
     render_context.cpp
     opengl_info.cpp
-    swap_chain.cpp
     index_buffer.cpp
     vertex_buffer.cpp
-    command_list.cpp
     shader.cpp
     error.cpp
     common.cpp

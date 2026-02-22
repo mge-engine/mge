@@ -28,7 +28,7 @@ namespace mge {
         stream << "[" << std::fixed << std::setw(11) << std::setprecision(6)
                << std::setfill(' ') << duration_seconds << "] " << std::setw(10)
                << std::dec << r.sequence << " " << std::setw(8) << std::hex
-               << r.thread << " ";
+               << r.thread << std::dec << " ";
         switch (r.level) {
         case trace_level::DEBUG:
             stream << "D ";

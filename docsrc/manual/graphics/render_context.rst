@@ -21,3 +21,20 @@ rates and enable presenting frames.
 
 .. doxygenclass:: mge::swap_chain
     :members:
+
+Render Pass
+===========
+
+A pass organizes rendering commands with specific state settings for clear
+operations, viewports, and scissor rectangles.
+
+.. doxygenclass:: mge::pass
+    :members:
+
+Frame Buffer
+============
+
+A frame buffer is collection of render targets for rendering operations.
+
+.. doxygenclass:: mge::frame_buffer
+    :members:

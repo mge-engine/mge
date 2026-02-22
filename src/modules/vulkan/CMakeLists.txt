@@ -26,14 +26,12 @@ SET(mge_vulkan_module_SOURCES
     render_system.cpp
     render_context.cpp
     window.cpp
-    swap_chain.cpp
     shader.cpp
     vulkan_memory_allocator.cpp
-    frame_command_list.cpp
     program.cpp
+    texture.cpp
     vertex_buffer.cpp
     index_buffer.cpp
-    command_list.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
@@ -61,9 +59,10 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     glslang::glslang
     glslang::glslang-default-resource-limits
     glslang::SPIRV
+    unofficial::spirv-reflect
 #    glslang::SPVRemapper
 )
-
+ 
 ADD_SUBDIRECTORY(test)
 
 

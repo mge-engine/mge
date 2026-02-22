@@ -39,7 +39,6 @@ namespace mge::dx12 {
         public:
             capabilities()
             {
-                // TODO: resolve actual shader model (up to version 6.6)
                 shader_language hlsl{"hlsl"sv, mge::semantic_version(5, 0)};
                 m_shader_languages.push_back(hlsl);
                 shader_format bytecode{"bytecode"sv,

@@ -61,6 +61,7 @@ TEST_F(program_test, compile_and_link)
     program->set_shader(pixel_shader);
     program->set_shader(vertex_shader);
     program->link();
+    m_window->render_context().frame();
 
     ASSERT_EQ(1u, program->attributes().size());
     EXPECT_STREQ("vertexPosition", program->attributes()[0].name.c_str());
