@@ -34,7 +34,8 @@ namespace mge::lua {
 
     private:
         void
-        bind_enum(const mge::reflection::type_details::enum_specific_details&
+        bind_enum(std::string_view name,
+                  const mge::reflection::type_details::enum_specific_details&
                       details);
 
         lua_context* m_context;

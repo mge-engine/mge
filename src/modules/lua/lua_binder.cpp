@@ -97,14 +97,32 @@ namespace mge::lua {
                         "Binding type: {}",
                         std::string(details.name).c_str());
         if (details.is_enum) {
-            bind_enum(details.enum_specific());
+            bind_enum(details.name, details.enum_specific());
         }
     }
 
     void lua_binder::bind_enum(
+        std::string_view                                            name,
         const mge::reflection::type_details::enum_specific_details& details)
     {
         auto L = m_context->lua_state();
+        // parent module table is on top of the stack
+        lua_newtable(L);
+        for (const auto& [val_name, val] : details.values) {
+            lua_pushstring(L, val_name.data());
+            if (std::holds_alternative<int64_t>(val)) {
+                lua_pushinteger(
+                    L,
+                    static_cast<lua_Integer>(std::get<int64_t>(val)));
+            } else {
+                lua_pushinteger(
+                    L,
+                    static_cast<lua_Integer>(std::get<uint64_t>(val)));
+            }
+            lua_settable(L, -3);
+        }
+        lua_setfield(L, -2, name.data());
+        MGE_DEBUG_TRACE(LUA, "Bound enum: {}", std::string(name).c_str());
     }
 
     void lua_binder::after(const mge::reflection::type_details& details) {}

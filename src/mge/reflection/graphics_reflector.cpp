@@ -6,6 +6,7 @@
 #include "mge/reflection/reflector.hpp"
 #include "mge/reflection/type.hpp"
 
+#include "mge/graphics/data_type.hpp"
 #include "mge/graphics/topology.hpp"
 
 namespace mge::reflection {
@@ -18,6 +19,7 @@ namespace mge::reflection {
         void reflect() const override
         {
             auto mge = module("mge");
+            mge(type<mge::data_type>());
             mge(type<mge::topology>());
         }
 
