@@ -15,7 +15,7 @@
   - farVal: 1
 - Call: glScissor
   - x: 0
-  - y: 0
+  - y: 600
   - width: 0
   - height: 0
 - Call: glClearColor
@@ -27,6 +27,10 @@
   - mask: GL_COLOR_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -44,7 +48,7 @@
   - farVal: 1
 - Call: glScissor
   - x: 0
-  - y: 0
+  - y: 599
   - width: 1
   - height: 1
 - Call: glClearColor
@@ -56,6 +60,10 @@
   - mask: GL_COLOR_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -73,7 +81,7 @@
   - farVal: 1
 - Call: glScissor
   - x: 0
-  - y: 0
+  - y: 599
   - width: 1
   - height: 1
 - Call: glClearColor
@@ -85,6 +93,10 @@
   - mask: GL_COLOR_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -102,7 +114,7 @@
   - farVal: 1
 - Call: glScissor
   - x: 0
-  - y: 0
+  - y: 599
   - width: 1
   - height: 1
 - Call: glClearColor
@@ -114,6 +126,10 @@
   - mask: GL_COLOR_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -131,7 +147,7 @@
   - farVal: 1
 - Call: glScissor
   - x: 0
-  - y: 0
+  - y: 599
   - width: 1
   - height: 1
 - Call: glClearColor
@@ -143,6 +159,10 @@
   - mask: GL_COLOR_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
