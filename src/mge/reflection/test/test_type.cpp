@@ -434,6 +434,19 @@ namespace mge::reflection {
         EXPECT_FALSE(details->class_specific().is_abstract);
         EXPECT_FALSE(details->class_specific().has_virtual_destructor);
         EXPECT_TRUE(details->class_specific().is_destructible);
+        EXPECT_FALSE(details->class_specific().is_shared_ptr);
+        EXPECT_EQ(details->class_specific().shared_ptr_element_type, nullptr);
+    }
+
+    TEST(type, class_type_shared_ptr)
+    {
+        auto type_shared_ptr_a = type<std::shared_ptr<a>>();
+        EXPECT_TRUE(type_shared_ptr_a.is_class());
+        const auto& details = type_shared_ptr_a.details();
+        EXPECT_TRUE(details->class_specific().is_shared_ptr);
+        ASSERT_NE(details->class_specific().shared_ptr_element_type, nullptr);
+        EXPECT_EQ(details->class_specific().shared_ptr_element_type,
+                  type_details::get<a>());
     }
 
     TEST(type, class_type_not_default_constructible)

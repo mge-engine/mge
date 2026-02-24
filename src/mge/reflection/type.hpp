@@ -8,6 +8,7 @@
 
 #include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
+#include "mge/core/is_shared_ptr.hpp"
 #include "mge/reflection/call_context.hpp"
 #include "mge/reflection/function_parameter_helper.hpp"
 #include "mge/reflection/signature.hpp"
@@ -1413,6 +1414,11 @@ namespace mge::reflection {
                 std::has_virtual_destructor_v<T>;
             class_details.is_destructible = std::is_destructible_v<T>;
             class_details.is_empty = std::is_empty_v<T>;
+            class_details.is_shared_ptr = mge::is_shared_ptr_v<T>;
+            if constexpr (mge::is_shared_ptr_v<T>) {
+                class_details.shared_ptr_element_type =
+                    get_or_create_type_details<typename T::element_type>();
+            }
 
             // Register default constructor if available
             if constexpr (std::is_default_constructible_v<T>) {

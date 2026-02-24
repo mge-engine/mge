@@ -16,11 +16,11 @@ function test_mge_data_type_exists()
      assert(mge.data_type.HALF == 11)
 end
 
--- function test_mge_point_type_exists()
---     local mge = package.loaded["mge"]
---     local point_type = mge.point
---     assert(type(point_type) == "table", "point type is not accessible")
--- end
+--function test_mge_point_type_exists()
+--    local mge = package.loaded["mge"]
+--    local point_type = mge.point
+--    assert(type(point_type) == "table", "point type is not accessible")
+--end
 
 -- function test_mge_point_construct()
 --     local mge = package.loaded["mge"]

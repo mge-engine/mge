@@ -98,6 +98,8 @@ namespace mge::lua {
                         std::string(details.name).c_str());
         if (details.is_enum) {
             bind_enum(details.name, details.enum_specific());
+        } else if (details.is_class) {
+            bind_class(details);
         }
     }
 
@@ -123,6 +125,24 @@ namespace mge::lua {
         }
         lua_setfield(L, -2, name.data());
         MGE_DEBUG_TRACE(LUA, "Bound enum: {}", std::string(name).c_str());
+    }
+
+    void lua_binder::bind_class(const mge::reflection::type_details& details)
+    {
+        auto             L = m_context->lua_state();
+        std::string_view n = details.name;
+        // strip namespace prefix (e.g. "mge::point" -> "point")
+        auto pos = n.rfind("::");
+        if (pos != std::string_view::npos) {
+            n = n.substr(pos + 2);
+        }
+        // parent module table is on top of the stack
+        lua_newtable(L);
+        std::string short_name(n);
+        lua_setfield(L, -2, short_name.c_str());
+        MGE_DEBUG_TRACE(LUA,
+                        "Bound class: {}",
+                        std::string(details.name).c_str());
     }
 
     void lua_binder::after(const mge::reflection::type_details& details) {}

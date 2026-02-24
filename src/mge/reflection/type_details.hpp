@@ -91,6 +91,11 @@ namespace mge::reflection {
             unsigned int has_virtual_destructor : 1;
             unsigned int is_destructible : 1;
             unsigned int is_empty : 1;
+            unsigned int is_shared_ptr : 1;
+
+            // set when is_shared_ptr is true: the element type T of
+            // std::shared_ptr<T>
+            type_details_ref shared_ptr_element_type;
 
             void add_base(const type_details_ref& base)
             {
