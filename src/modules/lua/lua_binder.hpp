@@ -57,6 +57,7 @@ namespace mge::lua {
         static int instance_index(lua_State* L);
         static int instance_newindex(lua_State* L);
         static int instance_gc(lua_State* L);
+        static int method_call(lua_State* L);
 
         lua_context* m_context;
     };

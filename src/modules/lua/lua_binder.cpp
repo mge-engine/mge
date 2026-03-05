@@ -236,6 +236,11 @@ namespace mge::lua {
                 ti == std::type_index(typeid(std::string))) {
                 return lua_type_at == LUA_TSTRING;
             }
+            // enum types are stored as integers in Lua
+            const auto& type_ref = mge::reflection::type_details::get(tid);
+            if (type_ref && type_ref->is_enum) {
+                return lua_type_at == LUA_TNUMBER;
+            }
             // userdata (pointer or class)
             return lua_type_at == LUA_TUSERDATA;
         }
@@ -333,10 +338,69 @@ namespace mge::lua {
             }
         }
 
+        for (const auto& [name, sig, invoke_fn, is_const, is_noexcept] :
+             class_details.methods) {
+            if (name == key) {
+                // push userdata as upvalue 1, method name as upvalue 2
+                lua_pushvalue(L, 1);
+                lua_pushstring(L, key);
+                lua_pushcclosure(L, &lua_binder::method_call, 2);
+                return 1;
+            }
+        }
+
         return luaL_error(L,
-                          "'%s' has no field '%s'",
+                          "'%s' has no field or method '%s'",
                           std::string(header->type->name).c_str(),
                           key);
+    }
+
+    int lua_binder::method_call(lua_State* L)
+    {
+        // upvalue 1 = userdata (self), upvalue 2 = method name
+        auto* header = static_cast<lua_instance_header*>(
+            lua_touserdata(L, lua_upvalueindex(1)));
+        if (!header || !header->type) {
+            return luaL_error(L, "invalid instance in method call");
+        }
+
+        const char* method_name = lua_tostring(L, lua_upvalueindex(2));
+        void*       obj_ptr = instance_object_ptr(header);
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                header->type->specific_details);
+
+        int nargs = lua_gettop(L) - 1; // exclude self (arg 1 from : syntax)
+
+        for (const auto& [name, sig, invoke_fn, is_const, is_noexcept] :
+             class_details.methods) {
+            if (name != method_name) {
+                continue;
+            }
+            const auto& params = sig.parameter_types();
+            if (static_cast<int>(params.size()) != nargs) {
+                continue;
+            }
+            bool compatible = true;
+            for (int i = 0; i < nargs; ++i) {
+                if (!is_lua_compatible(L, i + 2, params[i])) {
+                    compatible = false;
+                    break;
+                }
+            }
+            if (compatible) {
+                lua_call_context ctx(L, 2, obj_ptr);
+                invoke_fn(ctx);
+                return ctx.num_results();
+            }
+        }
+
+        return luaL_error(L,
+                          "no matching method '%s' on '%s' with %d args",
+                          method_name,
+                          std::string(header->type->name).c_str(),
+                          nargs);
     }
 
     int lua_binder::instance_newindex(lua_State* L)

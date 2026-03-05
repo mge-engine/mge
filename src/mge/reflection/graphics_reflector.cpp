@@ -9,6 +9,7 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/point.hpp"
 #include "mge/graphics/topology.hpp"
+#include "mge/graphics/vertex_format.hpp"
 
 namespace mge::reflection {
 
@@ -26,6 +27,9 @@ namespace mge::reflection {
                     .constructor<uint32_t, uint32_t>()
                     .field("x", &mge::point::x)
                     .field("y", &mge::point::y));
+            mge(type<mge::vertex_format>()
+                    .constructor<mge::data_type, size_t>()
+                    .method("binary_size", &mge::vertex_format::binary_size));
         }
 
         std::span<std::string_view> dependencies() const override
