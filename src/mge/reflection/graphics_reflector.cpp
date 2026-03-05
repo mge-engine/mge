@@ -7,6 +7,7 @@
 #include "mge/reflection/type.hpp"
 
 #include "mge/graphics/data_type.hpp"
+#include "mge/graphics/point.hpp"
 #include "mge/graphics/topology.hpp"
 
 namespace mge::reflection {
@@ -21,6 +22,7 @@ namespace mge::reflection {
             auto mge = module("mge");
             mge(type<mge::data_type>());
             mge(type<mge::topology>());
+            mge(type<mge::point>());
         }
 
         std::span<std::string_view> dependencies() const override
