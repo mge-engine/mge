@@ -22,7 +22,10 @@ namespace mge::reflection {
             auto mge = module("mge");
             mge(type<mge::data_type>());
             mge(type<mge::topology>());
-            mge(type<mge::point>());
+            mge(type<mge::point>()
+                    .constructor<uint32_t, uint32_t>()
+                    .field("x", &mge::point::x)
+                    .field("y", &mge::point::y));
         }
 
         std::span<std::string_view> dependencies() const override

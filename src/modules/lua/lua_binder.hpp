@@ -11,6 +11,16 @@ namespace mge::lua {
 
     class lua_context;
 
+    /**
+     * @brief Header embedded in full userdata for class instances.
+     *
+     * The object data follows immediately after this header in memory.
+     */
+    struct lua_instance_header
+    {
+        const mge::reflection::type_details* type;
+    };
+
     class lua_binder : public mge::reflection::visitor
     {
     public:
@@ -32,12 +42,21 @@ namespace mge::lua {
         void on(const mge::reflection::function_details& details) override;
         void after(const mge::reflection::function_details& details) override;
 
+        static void* instance_object_ptr(lua_instance_header* header);
+
     private:
         void
         bind_enum(std::string_view name,
                   const mge::reflection::type_details::enum_specific_details&
                       details);
         void bind_class(const mge::reflection::type_details& details);
+        void
+        create_instance_metatable(const mge::reflection::type_details& details);
+
+        static int class_call(lua_State* L);
+        static int instance_index(lua_State* L);
+        static int instance_newindex(lua_State* L);
+        static int instance_gc(lua_State* L);
 
         lua_context* m_context;
     };

@@ -2,12 +2,16 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "lua_binder.hpp"
+#include "lua_call_context.hpp"
 #include "lua_context.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/reflection/function_details.hpp"
 #include "mge/reflection/module_details.hpp"
 #include "mge/reflection/type_details.hpp"
+#include "mge/reflection/type_identifier.hpp"
 #include "stack_check_scope.hpp"
+
+#include <typeindex>
 
 namespace mge {
     MGE_USE_TRACE(LUA);
@@ -136,13 +140,256 @@ namespace mge::lua {
         if (pos != std::string_view::npos) {
             n = n.substr(pos + 2);
         }
-        // parent module table is on top of the stack
-        lua_newtable(L);
         std::string short_name(n);
+
+        // create instance metatable first (stored in registry)
+        create_instance_metatable(details);
+
+        // parent module table is on top of the stack
+        // create class table
+        lua_newtable(L);
+
+        // store type_details pointer
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(&details));
+        lua_setfield(L, -2, "__details__");
+
+        // set metatable on class table with __call for construction
+        lua_newtable(L); // metatable for class table
+        lua_pushcfunction(L, &lua_binder::class_call);
+        lua_setfield(L, -2, "__call");
+        lua_setmetatable(L, -2);
+
         lua_setfield(L, -2, short_name.c_str());
         MGE_DEBUG_TRACE(LUA,
                         "Bound class: {}",
                         std::string(details.name).c_str());
+    }
+
+    void lua_binder::create_instance_metatable(
+        const mge::reflection::type_details& details)
+    {
+        auto L = m_context->lua_state();
+
+        // use type_details pointer as registry key
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(&details));
+        lua_newtable(L); // the metatable
+
+        // store type_details in metatable
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(&details));
+        lua_setfield(L, -2, "__type__");
+
+        lua_pushcfunction(L, &lua_binder::instance_index);
+        lua_setfield(L, -2, "__index");
+
+        lua_pushcfunction(L, &lua_binder::instance_newindex);
+        lua_setfield(L, -2, "__newindex");
+
+        lua_pushcfunction(L, &lua_binder::instance_gc);
+        lua_setfield(L, -2, "__gc");
+
+        // store in registry: registry[type_details*] = metatable
+        lua_settable(L, LUA_REGISTRYINDEX);
+    }
+
+    void* lua_binder::instance_object_ptr(lua_instance_header* header)
+    {
+        return reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
+    }
+
+    namespace {
+        bool is_lua_compatible(lua_State*                              L,
+                               int                                     idx,
+                               const mge::reflection::type_identifier& tid)
+        {
+            auto ti = tid.type_index();
+            auto lua_type_at = lua_type(L, idx);
+
+            // integer types
+            if (ti == std::type_index(typeid(int8_t)) ||
+                ti == std::type_index(typeid(uint8_t)) ||
+                ti == std::type_index(typeid(int16_t)) ||
+                ti == std::type_index(typeid(uint16_t)) ||
+                ti == std::type_index(typeid(int32_t)) ||
+                ti == std::type_index(typeid(uint32_t)) ||
+                ti == std::type_index(typeid(int64_t)) ||
+                ti == std::type_index(typeid(uint64_t))) {
+                return lua_type_at == LUA_TNUMBER;
+            }
+            // float types
+            if (ti == std::type_index(typeid(float)) ||
+                ti == std::type_index(typeid(double)) ||
+                ti == std::type_index(typeid(long double))) {
+                return lua_type_at == LUA_TNUMBER;
+            }
+            // bool
+            if (ti == std::type_index(typeid(bool))) {
+                return lua_type_at == LUA_TBOOLEAN;
+            }
+            // string
+            if (ti == std::type_index(typeid(std::string_view)) ||
+                ti == std::type_index(typeid(std::string))) {
+                return lua_type_at == LUA_TSTRING;
+            }
+            // userdata (pointer or class)
+            return lua_type_at == LUA_TUSERDATA;
+        }
+    } // namespace
+
+    int lua_binder::class_call(lua_State* L)
+    {
+        // stack: [1] = class table, [2..n] = constructor args
+        // get type_details from class table
+        lua_getfield(L, 1, "__details__");
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            lua_touserdata(L, -1));
+        lua_pop(L, 1);
+
+        if (!details || !details->is_class) {
+            return luaL_error(L, "invalid class table");
+        }
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details->specific_details);
+
+        int nargs = lua_gettop(L) - 1; // exclude class table
+
+        // find matching constructor
+        const mge::reflection::invoke_function* matched_ctor = nullptr;
+        for (const auto& [sig, invoke_fn] : class_details.constructors) {
+            const auto& params = sig.parameter_types();
+            if (static_cast<int>(params.size()) != nargs) {
+                continue;
+            }
+            bool compatible = true;
+            for (int i = 0; i < nargs; ++i) {
+                if (!is_lua_compatible(L, i + 2, params[i])) {
+                    compatible = false;
+                    break;
+                }
+            }
+            if (compatible) {
+                matched_ctor = &invoke_fn;
+                break;
+            }
+        }
+
+        if (!matched_ctor) {
+            return luaL_error(L,
+                              "no matching constructor for '%s' with %d args",
+                              std::string(details->name).c_str(),
+                              nargs);
+        }
+
+        // allocate userdata
+        size_t ud_size = sizeof(lua_instance_header) + details->size;
+        auto*  header =
+            static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
+        header->type = details;
+
+        void* obj_ptr = instance_object_ptr(header);
+
+        // invoke constructor
+        lua_call_context ctx(L, 2, obj_ptr);
+        (*matched_ctor)(ctx);
+
+        // set instance metatable from registry
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(details));
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_setmetatable(L, -2);
+
+        return 1;
+    }
+
+    int lua_binder::instance_index(lua_State* L)
+    {
+        // stack: [1] = userdata, [2] = key (string)
+        auto* header = static_cast<lua_instance_header*>(lua_touserdata(L, 1));
+        if (!header || !header->type) {
+            return luaL_error(L, "invalid instance");
+        }
+
+        const char* key = luaL_checkstring(L, 2);
+        void*       obj_ptr = instance_object_ptr(header);
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                header->type->specific_details);
+
+        for (const auto& [name, type_id, getter, setter] :
+             class_details.fields) {
+            if (name == key) {
+                lua_call_context ctx(L, 0, obj_ptr);
+                getter(ctx);
+                return ctx.num_results();
+            }
+        }
+
+        return luaL_error(L,
+                          "'%s' has no field '%s'",
+                          std::string(header->type->name).c_str(),
+                          key);
+    }
+
+    int lua_binder::instance_newindex(lua_State* L)
+    {
+        // stack: [1] = userdata, [2] = key (string), [3] = value
+        auto* header = static_cast<lua_instance_header*>(lua_touserdata(L, 1));
+        if (!header || !header->type) {
+            return luaL_error(L, "invalid instance");
+        }
+
+        const char* key = luaL_checkstring(L, 2);
+        void*       obj_ptr = instance_object_ptr(header);
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                header->type->specific_details);
+
+        for (const auto& [name, type_id, getter, setter] :
+             class_details.fields) {
+            if (name == key) {
+                if (!setter) {
+                    return luaL_error(L, "field '%s' is read-only", key);
+                }
+                lua_call_context ctx(L, 3, obj_ptr);
+                setter(ctx);
+                return 0;
+            }
+        }
+
+        return luaL_error(L,
+                          "'%s' has no field '%s'",
+                          std::string(header->type->name).c_str(),
+                          key);
+    }
+
+    int lua_binder::instance_gc(lua_State* L)
+    {
+        auto* header = static_cast<lua_instance_header*>(lua_touserdata(L, 1));
+        if (!header || !header->type) {
+            return 0;
+        }
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                header->type->specific_details);
+
+        if (class_details.destructor) {
+            void*            obj_ptr = instance_object_ptr(header);
+            lua_call_context ctx(L, 0, obj_ptr);
+            class_details.destructor(ctx);
+        }
+
+        return 0;
     }
 
     void lua_binder::after(const mge::reflection::type_details& details) {}
