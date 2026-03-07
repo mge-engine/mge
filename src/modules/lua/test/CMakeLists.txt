@@ -44,3 +44,9 @@ MGE_TEST(
     LIBRARIES   mgescript mgereflection mgeapplication mgecore
 )
 
+ADD_CUSTOM_TARGET(run-lua-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R "lua"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    DEPENDS test_lua lua-copy-tests
+)
+
