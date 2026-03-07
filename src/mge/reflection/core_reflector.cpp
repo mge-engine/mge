@@ -6,10 +6,12 @@
 #include "mge/reflection/reflector.hpp"
 #include "mge/reflection/type.hpp"
 
+#include "mge/core/clock.hpp"
 #include "mge/core/debugging.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_record.hpp"
 #include "mge/core/trace_topic.hpp"
+
 
 namespace mge::reflection {
 
@@ -53,6 +55,8 @@ namespace mge::reflection {
                                 &mge::trace_topic::set_level))
                     .method("name", &mge::trace_topic::name)
                     .method("global", &mge::trace_topic::global));
+
+            mge(type<clock>());
         }
 
         std::span<std::string_view> dependencies() const override

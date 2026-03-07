@@ -5,6 +5,8 @@
 #include "mge/reflection/module.hpp"
 #include "mge/reflection/reflector.hpp"
 
+#include <filesystem>
+
 namespace mge::reflection {
 
     class std_reflector : public reflector
@@ -17,6 +19,11 @@ namespace mge::reflection {
         {
             auto std = module("std");
             std(function("terminate", &std::terminate));
+
+            auto std_filesystem = module("std::filesystem");
+
+            std_filesystem(
+                type<std::filesystem::path>().constructor<std::string_view>());
         }
     };
 
