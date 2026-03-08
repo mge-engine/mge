@@ -691,6 +691,12 @@ namespace mge::reflection {
         using self_type = type<T>;
 
         type() = default;
+
+        explicit type(std::string_view alias)
+        {
+            get_or_create_type_details<T>()->alias = alias;
+        }
+
         type(const type&) = default;
         type(type&&) noexcept = default;
         type& operator=(const type&) = default;

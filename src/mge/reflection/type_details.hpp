@@ -47,6 +47,7 @@ namespace mge::reflection {
         size_t                  size = 0;
         size_t                  alignment_of = 0;
         std::string_view        name;
+        std::string_view        alias;
         module_details_weak_ref module;
 
         struct enum_specific_details

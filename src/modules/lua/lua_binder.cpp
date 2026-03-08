@@ -134,7 +134,8 @@ namespace mge::lua {
     void lua_binder::bind_class(const mge::reflection::type_details& details)
     {
         auto             L = m_context->lua_state();
-        std::string_view n = details.name;
+        std::string_view n =
+            details.alias.empty() ? details.name : details.alias;
         // strip namespace prefix (e.g. "mge::point" -> "point")
         auto pos = n.rfind("::");
         if (pos != std::string_view::npos) {
