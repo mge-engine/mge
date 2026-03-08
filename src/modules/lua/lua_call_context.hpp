@@ -56,6 +56,12 @@ namespace mge::lua {
             return m_num_results;
         }
 
+        void set_pointer_result_type(
+            const mge::reflection::type_details* type)
+        {
+            m_pointer_result_type = type;
+        }
+
     private:
         int stack_index(size_t index) const;
 
@@ -63,6 +69,7 @@ namespace mge::lua {
         int        m_param_start;
         void*      m_this_ptr;
         int        m_num_results;
+        const mge::reflection::type_details* m_pointer_result_type{nullptr};
     };
 
 } // namespace mge::lua

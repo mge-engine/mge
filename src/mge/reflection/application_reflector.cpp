@@ -18,7 +18,9 @@ namespace mge::reflection {
         void reflect() const override
         {
             auto mge = module("mge");
-            mge(type<mge::application>());
+            mge(type<mge::application>()
+                    .static_method("instance",
+                                   &mge::application::instance));
         }
 
         std::span<std::string_view> dependencies() const override

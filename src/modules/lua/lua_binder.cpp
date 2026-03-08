@@ -162,6 +162,23 @@ namespace mge::lua {
         lua_setfield(L, -2, "__call");
         lua_setmetatable(L, -2);
 
+        // bind static methods as functions on the class table
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details.specific_details);
+        for (size_t i = 0; i < class_details.static_methods.size(); ++i) {
+            const auto& [name, sig, invoke_fn] =
+                class_details.static_methods[i];
+            // upvalue 1: type_details pointer
+            lua_pushlightuserdata(
+                L,
+                const_cast<mge::reflection::type_details*>(&details));
+            // upvalue 2: method index
+            lua_pushinteger(L, static_cast<lua_Integer>(i));
+            lua_pushcclosure(L, &lua_binder::static_method_call, 2);
+            lua_setfield(L, -2, std::string(name).c_str());
+        }
+
         lua_setfield(L, -2, short_name.c_str());
         MGE_DEBUG_TRACE(LUA,
                         "Bound class: {}",
@@ -200,7 +217,12 @@ namespace mge::lua {
 
     void* lua_binder::instance_object_ptr(lua_instance_header* header)
     {
-        return reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
+        void* data_area =
+            reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
+        if (header->foreign_pointer) {
+            return *reinterpret_cast<void**>(data_area);
+        }
+        return data_area;
     }
 
     namespace {
@@ -298,6 +320,7 @@ namespace mge::lua {
         auto*  header =
             static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
         header->type = details;
+        header->foreign_pointer = false;
 
         void* obj_ptr = instance_object_ptr(header);
 
@@ -444,6 +467,10 @@ namespace mge::lua {
             return 0;
         }
 
+        if (header->foreign_pointer) {
+            return 0;
+        }
+
         const auto& class_details =
             std::get<mge::reflection::type_details::class_specific_details>(
                 header->type->specific_details);
@@ -455,6 +482,95 @@ namespace mge::lua {
         }
 
         return 0;
+    }
+
+    void lua_binder::create_foreign_instance(
+        lua_State*                               L,
+        const mge::reflection::type_details*     target_type,
+        void*                                    ptr)
+    {
+        size_t ud_size = sizeof(lua_instance_header) + sizeof(void*);
+        auto*  header =
+            static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
+        header->type = target_type;
+        header->foreign_pointer = true;
+        void** data_area = reinterpret_cast<void**>(
+            reinterpret_cast<char*>(header) + sizeof(lua_instance_header));
+        *data_area = ptr;
+
+        // set instance metatable from registry
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(target_type));
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_setmetatable(L, -2);
+    }
+
+    int lua_binder::static_method_call(lua_State* L)
+    {
+        // upvalue 1 = type_details*, upvalue 2 = method index
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            lua_touserdata(L, lua_upvalueindex(1)));
+        auto method_index = static_cast<size_t>(
+            lua_tointeger(L, lua_upvalueindex(2)));
+
+        if (!details || !details->is_class) {
+            return luaL_error(L, "invalid class in static method call");
+        }
+
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details->specific_details);
+
+        if (method_index >= class_details.static_methods.size()) {
+            return luaL_error(L, "invalid static method index");
+        }
+
+        const auto& [name, sig, invoke_fn] =
+            class_details.static_methods[method_index];
+
+        int nargs = lua_gettop(L);
+        const auto& params = sig.parameter_types();
+        if (static_cast<int>(params.size()) != nargs) {
+            return luaL_error(L,
+                              "static method '%s' expects %d args, got %d",
+                              std::string(name).c_str(),
+                              static_cast<int>(params.size()),
+                              nargs);
+        }
+
+        for (int i = 0; i < nargs; ++i) {
+            if (!is_lua_compatible(L, i + 1, params[i])) {
+                return luaL_error(
+                    L,
+                    "incompatible argument %d for static method '%s'",
+                    i + 1,
+                    std::string(name).c_str());
+            }
+        }
+
+        // Determine if return type is pointer to class
+        const mge::reflection::type_details* pointer_element_type = nullptr;
+        const auto& return_type_id = sig.return_type();
+        const auto& return_type_details =
+            mge::reflection::type_details::get(return_type_id);
+        if (return_type_details && return_type_details->is_pointer) {
+            const auto& ptr_details =
+                std::get<
+                    mge::reflection::type_details::pointer_specific_details>(
+                    return_type_details->specific_details);
+            if (ptr_details.element_type &&
+                ptr_details.element_type->is_class) {
+                pointer_element_type = ptr_details.element_type.get();
+            }
+        }
+
+        lua_call_context ctx(L, 1, nullptr);
+        if (pointer_element_type) {
+            ctx.set_pointer_result_type(pointer_element_type);
+        }
+        invoke_fn(ctx);
+        return ctx.num_results();
     }
 
     void lua_binder::after(const mge::reflection::type_details& details) {}

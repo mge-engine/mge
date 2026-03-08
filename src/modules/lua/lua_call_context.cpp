@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "lua_call_context.hpp"
+#include "lua_binder.hpp"
 
 namespace mge::lua {
 
@@ -193,7 +194,13 @@ namespace mge::lua {
 
     void lua_call_context::pointer_result(void* value)
     {
-        lua_pushlightuserdata(m_lua_state, value);
+        if (m_pointer_result_type) {
+            lua_binder::create_foreign_instance(m_lua_state,
+                                                m_pointer_result_type,
+                                                value);
+        } else {
+            lua_pushlightuserdata(m_lua_state, value);
+        }
         ++m_num_results;
     }
 

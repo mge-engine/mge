@@ -15,10 +15,13 @@ namespace mge::lua {
      * @brief Header embedded in full userdata for class instances.
      *
      * The object data follows immediately after this header in memory.
+     * When @c foreign_pointer is true, the data area stores a void*
+     * pointing to externally-owned memory (no destruction on GC).
      */
     struct lua_instance_header
     {
         const mge::reflection::type_details* type;
+        bool                                 foreign_pointer;
     };
 
     class lua_binder : public mge::reflection::visitor
@@ -58,6 +61,15 @@ namespace mge::lua {
         static int instance_newindex(lua_State* L);
         static int instance_gc(lua_State* L);
         static int method_call(lua_State* L);
+        static int static_method_call(lua_State* L);
+
+    public:
+        static void create_foreign_instance(
+            lua_State*                               L,
+            const mge::reflection::type_details*     target_type,
+            void*                                    ptr);
+
+    private:
 
         lua_context* m_context;
     };

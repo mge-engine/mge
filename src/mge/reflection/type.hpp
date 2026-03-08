@@ -845,6 +845,8 @@ namespace mge::reflection {
         self_type& static_method(const char* name, R (*method_ptr)(Args...))
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            // ensure return type details exist (needed for pointer resolution)
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
