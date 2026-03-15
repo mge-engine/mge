@@ -52,6 +52,20 @@ namespace mge::reflection {
         virtual ~invocation_context() = default;
 
         /**
+         * @brief Check if a method is implemented.
+         *
+         * Check if a method is implemented in the scripting language. If a
+         * method is not implemented, the base class will be called.
+         *
+         * @param method method name
+         * @return true if the method is implemented
+         */
+        virtual bool call_implemented(const char* method)
+        {
+            return true;
+        }
+
+        /**
          * @brief Call a method with arguments.
          * @tparam R return type
          * @tparam Args argument types
@@ -147,20 +161,6 @@ namespace mge::reflection {
         }
 
     protected:
-        /**
-         * @brief Check if a method is implemented.
-         *
-         * Check if a method is implemented in the scripting language. If a
-         * method is not implemented, the base class will be called.
-         *
-         * @param method method name
-         * @return true if the method is implemented
-         */
-        virtual bool call_implemented(const char* method)
-        {
-            return true;
-        }
-
         virtual void store_bool_argument(size_t index, bool value) = 0;
         virtual void store_int8_t_argument(size_t index, int8_t value) = 0;
         virtual void store_uint8_t_argument(size_t index, uint8_t value) = 0;
