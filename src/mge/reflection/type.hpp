@@ -1478,6 +1478,9 @@ namespace mge::reflection {
                         }
                     }
                 };
+                class_details.raw_destructor = [](void* ptr) {
+                    static_cast<T*>(ptr)->~T();
+                };
             }
         }
         if constexpr (std::is_pointer_v<T>) {

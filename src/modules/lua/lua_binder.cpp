@@ -290,11 +290,24 @@ namespace mge::lua {
             std::get<mge::reflection::type_details::class_specific_details>(
                 details->specific_details);
 
+        // Check if the type has a proxy type
+        const mge::reflection::type_details* proxy_type =
+            class_details.proxy_type.get();
+
+        // Use proxy constructors if available, otherwise interface
+        // constructors
+        const auto& ctor_source =
+            proxy_type
+                ? std::get<
+                      mge::reflection::type_details::class_specific_details>(
+                      proxy_type->specific_details)
+                : class_details;
+
         int nargs = lua_gettop(L) - 1; // exclude class table
 
         // find matching constructor
         const mge::reflection::invoke_function* matched_ctor = nullptr;
-        for (const auto& [sig, invoke_fn] : class_details.constructors) {
+        for (const auto& [sig, invoke_fn] : ctor_source.constructors) {
             const auto& params = sig.parameter_types();
             if (static_cast<int>(params.size()) != nargs) {
                 continue;
@@ -319,25 +332,43 @@ namespace mge::lua {
                               nargs);
         }
 
-        // allocate userdata
-        size_t ud_size = sizeof(lua_instance_header) + details->size;
-        auto*  header =
-            static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
-        header->type = details;
-        header->ownership = lua_instance_ownership::OWNED;
+        if (proxy_type) {
+            // Allocate proxy on the heap, wrap in shared_ptr
+            void*            raw = ::operator new(proxy_type->size);
+            lua_call_context ctx(L, 2, raw);
+            (*matched_ctor)(ctx);
 
-        void* obj_ptr = instance_object_ptr(header);
+            auto raw_dtor = ctor_source.raw_destructor;
+            auto shared = std::shared_ptr<void>(raw, [raw_dtor](void* p) {
+                if (raw_dtor) {
+                    raw_dtor(p);
+                }
+                ::operator delete(p);
+            });
 
-        // invoke constructor
-        lua_call_context ctx(L, 2, obj_ptr);
-        (*matched_ctor)(ctx);
+            // Use interface type for metatable and header->type
+            create_shared_instance(L, details, std::move(shared));
+        } else {
+            // allocate userdata with object inline
+            size_t ud_size = sizeof(lua_instance_header) + details->size;
+            auto*  header =
+                static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
+            header->type = details;
+            header->ownership = lua_instance_ownership::OWNED;
 
-        // set instance metatable from registry
-        lua_pushlightuserdata(
-            L,
-            const_cast<mge::reflection::type_details*>(details));
-        lua_gettable(L, LUA_REGISTRYINDEX);
-        lua_setmetatable(L, -2);
+            void* obj_ptr = instance_object_ptr(header);
+
+            // invoke constructor
+            lua_call_context ctx(L, 2, obj_ptr);
+            (*matched_ctor)(ctx);
+
+            // set instance metatable from registry
+            lua_pushlightuserdata(
+                L,
+                const_cast<mge::reflection::type_details*>(details));
+            lua_gettable(L, LUA_REGISTRYINDEX);
+            lua_setmetatable(L, -2);
+        }
 
         return 1;
     }
