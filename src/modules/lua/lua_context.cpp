@@ -81,6 +81,40 @@ namespace mge::lua {
 
         lua_binder b(this);
         root_module.details()->apply(b);
+
+        register_class_function();
+    }
+
+    void lua_context::register_class_function()
+    {
+        auto L = lua_state();
+        // clang-format off
+        const char* code =
+            "function class(base)\n"
+            "    local c = {}\n"
+            "    if base then\n"
+            "        setmetatable(c, { __index = base })\n"
+            "        c.super = base\n"
+            "    end\n"
+            "    c.__index = function(t, k)\n"
+            "        local v = c[k]\n"
+            "        if v ~= nil then return v end\n"
+            "        local native = rawget(t, '_native')\n"
+            "        if native then return native[k] end\n"
+            "    end\n"
+            "    function c.new(...)\n"
+            "        local self = setmetatable({}, c)\n"
+            "        if self.init then\n"
+            "            self:init(...)\n"
+            "        end\n"
+            "        return self\n"
+            "    end\n"
+            "    return c\n"
+            "end\n";
+        // clang-format on
+        int rc = luaL_dostring(L, code);
+        CHECK_STATUS(rc, L);
+        MGE_DEBUG_TRACE(LUA, "Registered class function");
     }
 
     void lua_context::create_helper_module()

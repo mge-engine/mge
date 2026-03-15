@@ -31,6 +31,7 @@ namespace mge::lua {
 
     private:
         void create_helper_module();
+        void register_class_function();
 
         lua_engine* m_engine;
         lua_State*  m_lua_state;
