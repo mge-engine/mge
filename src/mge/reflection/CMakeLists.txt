@@ -26,6 +26,7 @@ SET(mgereflection_headers
     type_identifier.hpp
     call_context.hpp
     invocation_context.hpp
+    proxy.hpp
     signature.hpp
 
     reflector.hpp
