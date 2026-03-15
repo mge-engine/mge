@@ -204,6 +204,18 @@ namespace mge::lua {
         ++m_num_results;
     }
 
+    void lua_call_context::shared_ptr_result(std::shared_ptr<void> value)
+    {
+        if (m_shared_ptr_result_type) {
+            lua_binder::create_shared_instance(m_lua_state,
+                                               m_shared_ptr_result_type,
+                                               std::move(value));
+        } else {
+            lua_pushlightuserdata(m_lua_state, value.get());
+        }
+        ++m_num_results;
+    }
+
     // --- exception methods ---
 
     void lua_call_context::exception_thrown(const mge::exception& ex)

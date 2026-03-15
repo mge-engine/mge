@@ -219,10 +219,14 @@ namespace mge::lua {
     {
         void* data_area =
             reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
-        if (header->foreign_pointer) {
+        switch (header->ownership) {
+        case lua_instance_ownership::FOREIGN_POINTER:
             return *reinterpret_cast<void**>(data_area);
+        case lua_instance_ownership::SHARED_PTR:
+            return reinterpret_cast<std::shared_ptr<void>*>(data_area)->get();
+        default:
+            return data_area;
         }
-        return data_area;
     }
 
     namespace {
@@ -320,7 +324,7 @@ namespace mge::lua {
         auto*  header =
             static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
         header->type = details;
-        header->foreign_pointer = false;
+        header->ownership = lua_instance_ownership::OWNED;
 
         void* obj_ptr = instance_object_ptr(header);
 
@@ -414,7 +418,42 @@ namespace mge::lua {
                 }
             }
             if (compatible) {
+                // Determine if return type is pointer/shared_ptr to class
+                const mge::reflection::type_details* pointer_element_type =
+                    nullptr;
+                const mge::reflection::type_details* shared_ptr_element_type =
+                    nullptr;
+                const auto& return_type_id = sig.return_type();
+                const auto& return_type_details =
+                    mge::reflection::type_details::get(return_type_id);
+                if (return_type_details && return_type_details->is_pointer) {
+                    const auto& ptr_details =
+                        std::get<mge::reflection::type_details::
+                                     pointer_specific_details>(
+                            return_type_details->specific_details);
+                    if (ptr_details.element_type &&
+                        ptr_details.element_type->is_class) {
+                        pointer_element_type = ptr_details.element_type.get();
+                    }
+                } else if (return_type_details &&
+                           return_type_details->is_class) {
+                    const auto& ret_class = std::get<
+                        mge::reflection::type_details::class_specific_details>(
+                        return_type_details->specific_details);
+                    if (ret_class.is_shared_ptr &&
+                        ret_class.shared_ptr_element_type) {
+                        shared_ptr_element_type =
+                            ret_class.shared_ptr_element_type.get();
+                    }
+                }
+
                 lua_call_context ctx(L, 2, obj_ptr);
+                if (pointer_element_type) {
+                    ctx.set_pointer_result_type(pointer_element_type);
+                }
+                if (shared_ptr_element_type) {
+                    ctx.set_shared_ptr_result_type(shared_ptr_element_type);
+                }
                 invoke_fn(ctx);
                 return ctx.num_results();
             }
@@ -467,8 +506,17 @@ namespace mge::lua {
             return 0;
         }
 
-        if (header->foreign_pointer) {
+        switch (header->ownership) {
+        case lua_instance_ownership::FOREIGN_POINTER:
             return 0;
+        case lua_instance_ownership::SHARED_PTR: {
+            void* data_area =
+                reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
+            reinterpret_cast<std::shared_ptr<void>*>(data_area)->~shared_ptr();
+            return 0;
+        }
+        default:
+            break;
         }
 
         const auto& class_details =
@@ -485,15 +533,15 @@ namespace mge::lua {
     }
 
     void lua_binder::create_foreign_instance(
-        lua_State*                               L,
-        const mge::reflection::type_details*     target_type,
-        void*                                    ptr)
+        lua_State*                           L,
+        const mge::reflection::type_details* target_type,
+        void*                                ptr)
     {
         size_t ud_size = sizeof(lua_instance_header) + sizeof(void*);
         auto*  header =
             static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
         header->type = target_type;
-        header->foreign_pointer = true;
+        header->ownership = lua_instance_ownership::FOREIGN_POINTER;
         void** data_area = reinterpret_cast<void**>(
             reinterpret_cast<char*>(header) + sizeof(lua_instance_header));
         *data_area = ptr;
@@ -506,13 +554,36 @@ namespace mge::lua {
         lua_setmetatable(L, -2);
     }
 
+    void lua_binder::create_shared_instance(
+        lua_State*                           L,
+        const mge::reflection::type_details* element_type,
+        std::shared_ptr<void>                ptr)
+    {
+        size_t ud_size =
+            sizeof(lua_instance_header) + sizeof(std::shared_ptr<void>);
+        auto* header =
+            static_cast<lua_instance_header*>(lua_newuserdata(L, ud_size));
+        header->type = element_type;
+        header->ownership = lua_instance_ownership::SHARED_PTR;
+        void* data_area =
+            reinterpret_cast<char*>(header) + sizeof(lua_instance_header);
+        new (data_area) std::shared_ptr<void>(std::move(ptr));
+
+        // set instance metatable from registry
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::type_details*>(element_type));
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_setmetatable(L, -2);
+    }
+
     int lua_binder::static_method_call(lua_State* L)
     {
         // upvalue 1 = type_details*, upvalue 2 = method index
         auto* details = static_cast<const mge::reflection::type_details*>(
             lua_touserdata(L, lua_upvalueindex(1)));
-        auto method_index = static_cast<size_t>(
-            lua_tointeger(L, lua_upvalueindex(2)));
+        auto method_index =
+            static_cast<size_t>(lua_tointeger(L, lua_upvalueindex(2)));
 
         if (!details || !details->is_class) {
             return luaL_error(L, "invalid class in static method call");
@@ -529,7 +600,7 @@ namespace mge::lua {
         const auto& [name, sig, invoke_fn] =
             class_details.static_methods[method_index];
 
-        int nargs = lua_gettop(L);
+        int         nargs = lua_gettop(L);
         const auto& params = sig.parameter_types();
         if (static_cast<int>(params.size()) != nargs) {
             return luaL_error(L,
@@ -551,23 +622,34 @@ namespace mge::lua {
 
         // Determine if return type is pointer to class
         const mge::reflection::type_details* pointer_element_type = nullptr;
-        const auto& return_type_id = sig.return_type();
-        const auto& return_type_details =
+        const mge::reflection::type_details* shared_ptr_element_type = nullptr;
+        const auto&                          return_type_id = sig.return_type();
+        const auto&                          return_type_details =
             mge::reflection::type_details::get(return_type_id);
         if (return_type_details && return_type_details->is_pointer) {
-            const auto& ptr_details =
-                std::get<
-                    mge::reflection::type_details::pointer_specific_details>(
-                    return_type_details->specific_details);
+            const auto& ptr_details = std::get<
+                mge::reflection::type_details::pointer_specific_details>(
+                return_type_details->specific_details);
             if (ptr_details.element_type &&
                 ptr_details.element_type->is_class) {
                 pointer_element_type = ptr_details.element_type.get();
+            }
+        } else if (return_type_details && return_type_details->is_class) {
+            const auto& ret_class =
+                std::get<mge::reflection::type_details::class_specific_details>(
+                    return_type_details->specific_details);
+            if (ret_class.is_shared_ptr && ret_class.shared_ptr_element_type) {
+                shared_ptr_element_type =
+                    ret_class.shared_ptr_element_type.get();
             }
         }
 
         lua_call_context ctx(L, 1, nullptr);
         if (pointer_element_type) {
             ctx.set_pointer_result_type(pointer_element_type);
+        }
+        if (shared_ptr_element_type) {
+            ctx.set_shared_ptr_result_type(shared_ptr_element_type);
         }
         invoke_fn(ctx);
         return ctx.num_results();

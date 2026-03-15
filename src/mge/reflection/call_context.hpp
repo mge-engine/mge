@@ -2,9 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
+
+#include <memory>
 
 namespace mge::reflection {
 
@@ -34,8 +37,8 @@ namespace mge::reflection {
         virtual double           double_parameter(size_t index) = 0;
         virtual long double      long_double_parameter(size_t index) = 0;
         virtual std::string_view string_view_parameter(size_t index) = 0;
-        virtual void*            pointer_parameter(size_t              index,
-                                                   const type_details& details) = 0;
+        virtual void* pointer_parameter(size_t              index,
+                                        const type_details& details) = 0;
 
         template <typename T>
             requires std::is_pointer_v<T>
@@ -116,12 +119,16 @@ namespace mge::reflection {
         virtual void long_double_result(long double value) = 0;
         virtual void string_view_result(std::string_view value) = 0;
         virtual void pointer_result(void* value) = 0;
+        virtual void shared_ptr_result(std::shared_ptr<void> value) = 0;
 
         template <typename T> void result(T value)
         {
-            if constexpr (std::is_pointer_v<T>) {
+            if constexpr (mge::is_shared_ptr_v<T>) {
+                shared_ptr_result(std::static_pointer_cast<void>(value));
+            } else if constexpr (std::is_pointer_v<T>) {
                 if constexpr (std::is_const_v<std::remove_pointer_t<T>>) {
-                    pointer_result(const_cast<void*>(static_cast<const void*>(value)));
+                    pointer_result(
+                        const_cast<void*>(static_cast<const void*>(value)));
                 } else {
                     pointer_result(static_cast<void*>(value));
                 }

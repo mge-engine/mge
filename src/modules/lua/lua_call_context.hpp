@@ -5,6 +5,8 @@
 #include "lua.hpp"
 #include "mge/reflection/call_context.hpp"
 
+#include <memory>
+
 namespace mge::lua {
 
     class lua_call_context : public mge::reflection::call_context
@@ -46,6 +48,7 @@ namespace mge::lua {
         void long_double_result(long double value) override;
         void string_view_result(std::string_view value) override;
         void pointer_result(void* value) override;
+        void shared_ptr_result(std::shared_ptr<void> value) override;
 
         void exception_thrown(const mge::exception& ex) override;
         void exception_thrown(const std::exception& ex) override;
@@ -56,20 +59,26 @@ namespace mge::lua {
             return m_num_results;
         }
 
-        void set_pointer_result_type(
-            const mge::reflection::type_details* type)
+        void set_pointer_result_type(const mge::reflection::type_details* type)
         {
             m_pointer_result_type = type;
+        }
+
+        void
+        set_shared_ptr_result_type(const mge::reflection::type_details* type)
+        {
+            m_shared_ptr_result_type = type;
         }
 
     private:
         int stack_index(size_t index) const;
 
-        lua_State* m_lua_state;
-        int        m_param_start;
-        void*      m_this_ptr;
-        int        m_num_results;
+        lua_State*                           m_lua_state;
+        int                                  m_param_start;
+        void*                                m_this_ptr;
+        int                                  m_num_results;
         const mge::reflection::type_details* m_pointer_result_type{nullptr};
+        const mge::reflection::type_details* m_shared_ptr_result_type{nullptr};
     };
 
 } // namespace mge::lua

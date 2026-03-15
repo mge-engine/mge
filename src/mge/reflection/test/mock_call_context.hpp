@@ -53,6 +53,10 @@ namespace mge::reflection {
                     (override));
         MOCK_METHOD(void, pointer_result, (void* value), (override));
         MOCK_METHOD(void,
+                    shared_ptr_result,
+                    (std::shared_ptr<void> value),
+                    (override));
+        MOCK_METHOD(void,
                     exception_thrown,
                     (const mge::exception& ex),
                     (override));
