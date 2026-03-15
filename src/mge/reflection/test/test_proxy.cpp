@@ -23,8 +23,14 @@ namespace mge::reflection {
             {}
             virtual ~base() = default;
 
-            int                value() const { return m_value; }
-            const std::string& name() const { return m_name; }
+            int value() const
+            {
+                return m_value;
+            }
+            const std::string& name() const
+            {
+                return m_name;
+            }
 
         private:
             int         m_value{0};
@@ -35,7 +41,10 @@ namespace mge::reflection {
         {
         public:
             using proxy<base>::proxy;
-            invocation_context* context() const { return m_context; }
+            invocation_context* context() const
+            {
+                return m_context;
+            }
         };
 
     } // namespace
