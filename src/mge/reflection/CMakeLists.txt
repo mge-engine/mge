@@ -25,6 +25,7 @@ SET(mgereflection_headers
     function_details.hpp
     type_identifier.hpp
     call_context.hpp
+    invocation_context.hpp
     signature.hpp
 
     reflector.hpp
