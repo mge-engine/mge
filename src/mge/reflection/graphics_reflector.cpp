@@ -8,6 +8,7 @@
 
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/point.hpp"
+#include "mge/graphics/render_system.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/vertex_format.hpp"
 
@@ -30,6 +31,23 @@ namespace mge::reflection {
             mge(type<mge::vertex_format>()
                     .constructor<mge::data_type, size_t>()
                     .method("binary_size", &mge::vertex_format::binary_size));
+            mge(type<mge::render_system>()
+                    .static_method("create",
+                                   static_cast<mge::render_system_ref (*)()>(
+                                       &mge::render_system::create))
+                    .static_method(
+                        "create",
+                        static_cast<mge::render_system_ref (*)(
+                            std::string_view)>(&mge::render_system::create))
+                    .method(
+                        "create_window",
+                        static_cast<mge::window_ref (mge::render_system::*)()>(
+                            &mge::render_system::create_window))
+                    .method("system_capabilities",
+                            &mge::render_system::system_capabilities)
+                    .method("monitors", &mge::render_system::monitors)
+                    .method("frame_debugger",
+                            &mge::render_system::frame_debugger));
         }
 
         std::span<std::string_view> dependencies() const override
