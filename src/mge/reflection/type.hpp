@@ -11,6 +11,7 @@
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/reflection/call_context.hpp"
 #include "mge/reflection/function_parameter_helper.hpp"
+#include "mge/reflection/proxy.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <iostream>
@@ -959,6 +960,19 @@ namespace mge::reflection {
             };
 
             specific.methods.emplace_back(name, sig, invoke_fn, true, true);
+            return *this;
+        }
+
+        template <typename Proxy>
+            requires(std::is_base_of_v<proxy<T>, Proxy> &&
+                     !std::is_abstract_v<Proxy>)
+        self_type& proxy_type()
+        {
+            type<Proxy> pt;
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            specific.proxy_type = pt.details();
+            pt.details()->class_specific().interface_type =
+                get_or_create_type_details<T>();
             return *this;
         }
     };

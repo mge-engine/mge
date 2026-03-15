@@ -98,6 +98,11 @@ namespace mge::reflection {
             // std::shared_ptr<T>
             type_details_ref shared_ptr_element_type;
 
+            // proxy type implementing this interface type
+            type_details_ref proxy_type;
+            // interface type this proxy type implements
+            type_details_ref interface_type;
+
             void add_base(const type_details_ref& base)
             {
                 auto it = std::find(bases.begin(), bases.end(), base);
