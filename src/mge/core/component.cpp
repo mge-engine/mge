@@ -59,6 +59,41 @@ namespace mge {
             do_register_implementation(component_name, i);
         }
 
+        void unregister_implementation(implementation_registry_entry_base* i)
+        {
+            auto component_name = i->component_name();
+            auto implementation_name = i->name();
+            MGE_TRACE_OBJECT(CORE, DEBUG)
+                << "Unregistering implementation " << implementation_name
+                << " of component " << component_name;
+
+            auto impl_it = m_implementations.find(component_name);
+            if (impl_it != m_implementations.end()) {
+                impl_it->second.erase(implementation_name);
+            }
+
+            auto alias_it = m_aliases.find(component_name);
+            if (alias_it != m_aliases.end()) {
+                auto it = alias_it->second.begin();
+                while (it != alias_it->second.end()) {
+                    if (it->second == implementation_name) {
+                        it = alias_it->second.erase(it);
+                    } else {
+                        ++it;
+                    }
+                }
+            }
+
+            auto pit = m_pending_implementations.begin();
+            while (pit != m_pending_implementations.end()) {
+                if (*pit == i) {
+                    pit = m_pending_implementations.erase(pit);
+                } else {
+                    ++pit;
+                }
+            }
+        }
+
         bool component_registered(std::string_view name) const
         {
             return contains(m_components, name);
@@ -187,6 +222,12 @@ namespace mge {
         implementation_registry_entry_base* i)
     {
         s_component_registry->register_implementation(i);
+    }
+
+    void implementation_registry_entry_base::unregister_implementation(
+        implementation_registry_entry_base* i)
+    {
+        s_component_registry->unregister_implementation(i);
     }
 
     bool component_base::component_registered(std::string_view name)
