@@ -6,9 +6,9 @@ import sys
 import subprocess
 import shutil
 
-vulkan_version = "1.4.309.0"
+vulkan_version = "1.4.341.1"
 vulkan_installer_cache_dir = 'vulkan-installer'
-vulkan_installer = '%s\VulkanSDK-%s-Installer.exe' % (
+vulkan_installer = '%s\vulkansdk-windows-X64-%s.exe' % (
     vulkan_installer_cache_dir, vulkan_version)
 
 
@@ -32,7 +32,7 @@ def download_vulkan():
     os.mkdir('vulkan-installer')
     print("Downloading vulkan installer", flush=True)
     run_process(["curl", "--show-error", "--output",
-                 '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?Human=true&u=" % (vulkan_version, vulkan_version)], )
+                 '%s\vulkansdk-windows-X64-%s.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/vulkansdk-windows-X64-%s.exe?Human=true&u=" % (vulkan_version, vulkan_version)], )
 
 
 def install_vulkan():
