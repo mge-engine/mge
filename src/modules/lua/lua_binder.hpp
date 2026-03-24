@@ -73,6 +73,7 @@ namespace mge::lua {
         static int instance_gc(lua_State* L);
         static int method_call(lua_State* L);
         static int static_method_call(lua_State* L);
+        static int function_call(lua_State* L);
 
     public:
         static void create_foreign_instance(

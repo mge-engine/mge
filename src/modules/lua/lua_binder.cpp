@@ -692,6 +692,79 @@ namespace mge::lua {
 
     void lua_binder::after(const mge::reflection::type_details& details) {}
     void lua_binder::before(const mge::reflection::function_details& details) {}
-    void lua_binder::on(const mge::reflection::function_details& details) {}
+
+    void lua_binder::on(const mge::reflection::function_details& details)
+    {
+        auto L = m_context->lua_state();
+        // Module table is on top of stack (pushed by module on())
+        lua_pushlightuserdata(
+            L,
+            const_cast<mge::reflection::function_details*>(&details));
+        lua_pushcclosure(L, &lua_binder::function_call, 1);
+        lua_setfield(L, -2, details.name().c_str());
+    }
+
     void lua_binder::after(const mge::reflection::function_details& details) {}
+
+    int lua_binder::function_call(lua_State* L)
+    {
+        auto* details = static_cast<const mge::reflection::function_details*>(
+            lua_touserdata(L, lua_upvalueindex(1)));
+        if (!details) {
+            return luaL_error(L, "invalid function in call");
+        }
+
+        int         nargs = lua_gettop(L);
+        const auto& sig = details->signature();
+        const auto& params = sig.parameter_types();
+        if (static_cast<int>(params.size()) != nargs) {
+            return luaL_error(L,
+                              "function '%s' expects %d args, got %d",
+                              details->name().c_str(),
+                              static_cast<int>(params.size()),
+                              nargs);
+        }
+
+        for (int i = 0; i < nargs; ++i) {
+            if (!is_lua_compatible(L, i + 1, params[i])) {
+                return luaL_error(L,
+                                  "incompatible argument %d for function '%s'",
+                                  i + 1,
+                                  details->name().c_str());
+            }
+        }
+
+        const mge::reflection::type_details* pointer_element_type = nullptr;
+        const mge::reflection::type_details* shared_ptr_element_type = nullptr;
+        const auto&                          return_type_id = sig.return_type();
+        const auto&                          return_type_details =
+            mge::reflection::type_details::get(return_type_id);
+        if (return_type_details && return_type_details->is_pointer) {
+            const auto& ptr_details = std::get<
+                mge::reflection::type_details::pointer_specific_details>(
+                return_type_details->specific_details);
+            if (ptr_details.element_type &&
+                ptr_details.element_type->is_class) {
+                pointer_element_type = ptr_details.element_type.get();
+            }
+        } else if (return_type_details && return_type_details->is_class) {
+            const auto& ret_class =
+                std::get<mge::reflection::type_details::class_specific_details>(
+                    return_type_details->specific_details);
+            if (ret_class.is_shared_ptr && ret_class.shared_ptr_element_type) {
+                shared_ptr_element_type =
+                    ret_class.shared_ptr_element_type.get();
+            }
+        }
+
+        lua_call_context ctx(L, 1, nullptr);
+        if (pointer_element_type) {
+            ctx.set_pointer_result_type(pointer_element_type);
+        }
+        if (shared_ptr_element_type) {
+            ctx.set_shared_ptr_result_type(shared_ptr_element_type);
+        }
+        details->invoke(ctx);
+        return ctx.num_results();
+    }
 } // namespace mge::lua
