@@ -44,10 +44,12 @@ namespace mge::reflection {
         bool                    is_pointer = false;
         bool                    is_array = false;
         bool                    is_reference = false;
+        bool                    is_primitive_vector = false;
         size_t                  size = 0;
         size_t                  alignment_of = 0;
         std::string_view        name;
         std::string_view        alias;
+        type_details_ref        primitive_vector_element_type;
         module_details_weak_ref module;
 
         struct enum_specific_details

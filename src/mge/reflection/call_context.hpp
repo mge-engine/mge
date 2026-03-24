@@ -2,12 +2,14 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/is_primitive_vector.hpp"
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
 #include <memory>
+#include <typeindex>
 
 namespace mge::reflection {
 
@@ -82,6 +84,13 @@ namespace mge::reflection {
                 return long_double_parameter(index);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 return string_view_parameter(index);
+            } else if constexpr (mge::is_primitive_vector_v<T>) {
+                T vec;
+                primitive_vector_parameter(
+                    index,
+                    &vec,
+                    std::type_index(typeid(typename T::value_type)));
+                return vec;
             }
         }
 
@@ -120,6 +129,14 @@ namespace mge::reflection {
         virtual void string_view_result(std::string_view value) = 0;
         virtual void pointer_result(void* value) = 0;
         virtual void shared_ptr_result(std::shared_ptr<void> value) = 0;
+        virtual void
+        primitive_vector_result(const void*            data,
+                                size_t                 count,
+                                const std::type_index& element_type) = 0;
+        virtual void
+        primitive_vector_parameter(size_t                 index,
+                                   void*                  out_vector,
+                                   const std::type_index& element_type) = 0;
 
         template <typename T> void result(T value)
         {
@@ -161,6 +178,11 @@ namespace mge::reflection {
                 long_double_result(value);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 string_view_result(value);
+            } else if constexpr (mge::is_primitive_vector_v<T>) {
+                primitive_vector_result(
+                    value.data(),
+                    value.size(),
+                    std::type_index(typeid(typename T::value_type)));
             }
         }
 

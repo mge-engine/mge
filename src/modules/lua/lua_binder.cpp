@@ -268,6 +268,10 @@ namespace mge::lua {
             if (type_ref && type_ref->is_enum) {
                 return lua_type_at == LUA_TNUMBER;
             }
+            // primitive vector types map to Lua tables
+            if (type_ref && type_ref->is_primitive_vector) {
+                return lua_type_at == LUA_TTABLE;
+            }
             // userdata (pointer or class)
             return lua_type_at == LUA_TUSERDATA;
         }

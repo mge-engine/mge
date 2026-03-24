@@ -6,6 +6,7 @@
 #include "mge/reflection/call_context.hpp"
 
 #include <memory>
+#include <typeindex>
 
 namespace mge::lua {
 
@@ -49,6 +50,14 @@ namespace mge::lua {
         void string_view_result(std::string_view value) override;
         void pointer_result(void* value) override;
         void shared_ptr_result(std::shared_ptr<void> value) override;
+        void
+        primitive_vector_result(const void*            data,
+                                size_t                 count,
+                                const std::type_index& element_type) override;
+        void primitive_vector_parameter(
+            size_t                 index,
+            void*                  out_vector,
+            const std::type_index& element_type) override;
 
         void exception_thrown(const mge::exception& ex) override;
         void exception_thrown(const std::exception& ex) override;

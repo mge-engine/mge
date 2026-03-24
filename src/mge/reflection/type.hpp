@@ -8,6 +8,7 @@
 
 #include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
+#include "mge/core/is_primitive_vector.hpp"
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/reflection/call_context.hpp"
 #include "mge/reflection/function_parameter_helper.hpp"
@@ -1440,6 +1441,11 @@ namespace mge::reflection {
             if constexpr (mge::is_shared_ptr_v<T>) {
                 class_details.shared_ptr_element_type =
                     get_or_create_type_details<typename T::element_type>();
+            }
+            if constexpr (mge::is_primitive_vector_v<T>) {
+                details->is_primitive_vector = true;
+                details->primitive_vector_element_type =
+                    get_or_create_type_details<typename T::value_type>();
             }
 
             // Register default constructor if available

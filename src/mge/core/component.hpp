@@ -353,6 +353,12 @@ namespace mge {
         std::weak_ptr<Class> m_self;
     };
 
+    /**
+     * @brief Get registered components.
+     * @return vector of registered component names
+     */
+    std::vector<std::string_view> MGECORE_EXPORT registered_components();
+
 /**
  * @brief Register a class as component. The macro must be used within the
  * definition namespaces of the argument class.
