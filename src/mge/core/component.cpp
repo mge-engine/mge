@@ -138,6 +138,16 @@ namespace mge {
             }
         }
 
+        std::vector<std::string_view> registered_components() const
+        {
+            std::vector<std::string_view> result;
+            result.reserve(m_components.size());
+            for (const auto& e : m_components) {
+                result.push_back(e.first);
+            }
+            return result;
+        }
+
         std::shared_ptr<component_base>
         create(std::string_view component_name,
                std::string_view implementation_name)
@@ -256,5 +266,10 @@ namespace mge {
     {
         return s_component_registry->create(component_name,
                                             implementation_name);
+    }
+
+    std::vector<std::string_view> registered_components()
+    {
+        return s_component_registry->registered_components();
     }
 } // namespace mge
