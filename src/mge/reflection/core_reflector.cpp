@@ -59,6 +59,8 @@ namespace mge::reflection {
             mge(type<clock>());
 
             mge(function("registered_components", &mge::registered_components));
+            mge(function("registered_implementations",
+                         &mge::registered_implementations));
         }
 
         std::span<std::string_view> dependencies() const override
