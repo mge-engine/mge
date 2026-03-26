@@ -3,7 +3,11 @@
 // All rights reserved.
 #pragma once
 #include "lua.hpp"
+#include "mge/core/component.hpp"
 #include "mge/script/script_context.hpp"
+
+#include <memory>
+#include <vector>
 
 namespace mge::lua {
 
@@ -32,9 +36,14 @@ namespace mge::lua {
     private:
         void create_helper_module();
         void register_class_function();
+        void register_component_function();
+
+        static int component_call(lua_State* L);
 
         lua_engine* m_engine;
         lua_State*  m_lua_state;
+        std::vector<std::unique_ptr<mge::dynamic_implementation_registry_entry>>
+            m_component_entries;
     };
 
 } // namespace mge::lua

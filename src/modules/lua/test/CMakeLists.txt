@@ -14,6 +14,7 @@ SET(LUA_TESTS
     test004_class.lua
     test005_proxy.lua
     test006_function.lua
+    test007_component.lua
 )
 
 COPY_FILE(unittest.lua "${CMAKE_BINARY_DIR}/unittest.lua")

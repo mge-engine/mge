@@ -8,6 +8,9 @@
 #include "mge/core/trace.hpp"
 #include "mge/reflection/module.hpp"
 #include "mge/reflection/module_details.hpp"
+#include "mge/reflection/type_details.hpp"
+
+#include "mge/core/crash.hpp"
 
 #if !defined(lua_writestringerror)
 #    define lua_writestringerror(s, p)                                         \
@@ -45,6 +48,63 @@ static inline bool lua_stdin_is_tty()
 
 namespace mge::lua {
 
+    namespace {
+        // Minimal call_context for invoking a default constructor
+        // via the reflection invoke_function. Only this_ptr() is
+        // meaningful; all parameter/result methods abort.
+        class default_ctor_context
+            : public mge::reflection::call_context
+        {
+        public:
+            explicit default_ctor_context(void* ptr)
+                : m_ptr(ptr)
+            {}
+
+            void* this_ptr() override { return m_ptr; }
+
+            // None of the parameter/result methods should be called
+            // for a default constructor.
+            // clang-format off
+            bool             bool_parameter(size_t) override { mge::crash(); }
+            int8_t           int8_t_parameter(size_t) override { mge::crash(); }
+            uint8_t          uint8_t_parameter(size_t) override { mge::crash(); }
+            int16_t          int16_t_parameter(size_t) override { mge::crash(); }
+            uint16_t         uint16_t_parameter(size_t) override { mge::crash(); }
+            int32_t          int32_t_parameter(size_t) override { mge::crash(); }
+            uint32_t         uint32_t_parameter(size_t) override { mge::crash(); }
+            int64_t          int64_t_parameter(size_t) override { mge::crash(); }
+            uint64_t         uint64_t_parameter(size_t) override { mge::crash(); }
+            float            float_parameter(size_t) override { mge::crash(); }
+            double           double_parameter(size_t) override { mge::crash(); }
+            long double      long_double_parameter(size_t) override { mge::crash(); }
+            std::string_view string_view_parameter(size_t) override { mge::crash(); }
+            void*            pointer_parameter(size_t, const mge::reflection::type_details&) override { mge::crash(); }
+            void bool_result(bool) override { mge::crash(); }
+            void int8_t_result(int8_t) override { mge::crash(); }
+            void uint8_t_result(uint8_t) override { mge::crash(); }
+            void int16_t_result(int16_t) override { mge::crash(); }
+            void uint16_t_result(uint16_t) override { mge::crash(); }
+            void int32_t_result(int32_t) override { mge::crash(); }
+            void uint32_t_result(uint32_t) override { mge::crash(); }
+            void int64_t_result(int64_t) override { mge::crash(); }
+            void uint64_t_result(uint64_t) override { mge::crash(); }
+            void float_result(float) override { mge::crash(); }
+            void double_result(double) override { mge::crash(); }
+            void long_double_result(long double) override { mge::crash(); }
+            void string_view_result(std::string_view) override { mge::crash(); }
+            void pointer_result(void*) override { mge::crash(); }
+            void shared_ptr_result(std::shared_ptr<void>) override { mge::crash(); }
+            void primitive_vector_result(const void*, size_t, const std::type_index&) override { mge::crash(); }
+            void primitive_vector_parameter(size_t, void*, const std::type_index&) override { mge::crash(); }
+            void exception_thrown(const mge::exception&) override { mge::crash(); }
+            void exception_thrown(const std::exception&) override { mge::crash(); }
+            void exception_thrown() override { mge::crash(); }
+            // clang-format on
+        private:
+            void* m_ptr;
+        };
+    } // namespace
+
     lua_context::lua_context(lua_engine* engine)
         : m_engine(engine)
         , m_lua_state(nullptr)
@@ -59,6 +119,10 @@ namespace mge::lua {
 
     lua_context::~lua_context()
     {
+        for (auto& entry : m_component_entries) {
+            entry->unregister();
+        }
+        m_component_entries.clear();
         if (m_lua_state) {
             lua_close(m_lua_state);
             m_lua_state = nullptr;
@@ -83,6 +147,7 @@ namespace mge::lua {
         root_module.details()->apply(b);
 
         register_class_function();
+        register_component_function();
     }
 
     void lua_context::register_class_function()
@@ -115,6 +180,167 @@ namespace mge::lua {
         int rc = luaL_dostring(L, code);
         CHECK_STATUS(rc, L);
         MGE_DEBUG_TRACE(LUA, "Registered class function");
+    }
+
+    void lua_context::register_component_function()
+    {
+        auto L = lua_state();
+        // set mge.component = closure(component_call, upvalue=this)
+        lua_getglobal(L, "mge");
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &lua_context::component_call, 1);
+        lua_setfield(L, -2, "component");
+        lua_pop(L, 1); // pop mge table
+        MGE_DEBUG_TRACE(LUA, "Registered component function");
+    }
+
+    // Separated from component_call so that C++ objects with
+    // destructors (std::string, std::function, unique_ptr) never
+    // share a stack frame with luaL_error. LuaJIT uses SEH-based
+    // unwinding on Windows, which invokes destructors for all
+    // locals in a function frame — including uninitialized ones
+    // declared after the error point.
+    static void do_register_component(
+        std::vector<std::unique_ptr<
+            mge::dynamic_implementation_registry_entry>>& entries,
+        const mge::reflection::type_details*              details,
+        const mge::reflection::type_details*              proxy_type,
+        const char*                                       impl_name_cstr)
+    {
+        const auto& proxy_details = std::get<
+            mge::reflection::type_details::class_specific_details>(
+            proxy_type->specific_details);
+
+        // find default constructor (0 args) on proxy type
+        const mge::reflection::invoke_function* default_ctor = nullptr;
+        for (const auto& [sig, invoke_fn] : proxy_details.constructors) {
+            if (sig.parameter_types().empty()) {
+                default_ctor = &invoke_fn;
+                break;
+            }
+        }
+        if (!default_ctor) {
+            MGE_THROW(mge::illegal_state)
+                << "proxy type '" << proxy_type->name
+                << "' has no default constructor";
+        }
+
+        std::string impl_name(impl_name_cstr);
+        std::string component_name(details->name);
+
+        auto ctor_fn = *default_ctor;
+        auto raw_dtor = proxy_details.raw_destructor;
+        auto proxy_size = proxy_type->size;
+
+        auto factory =
+            [ctor_fn, raw_dtor, proxy_size]()
+            -> std::shared_ptr<mge::component_base> {
+            void*                raw = ::operator new(proxy_size);
+            default_ctor_context ctx(raw);
+            ctor_fn(ctx);
+            auto shared =
+                std::shared_ptr<mge::component_base>(
+                    static_cast<mge::component_base*>(raw),
+                    [raw_dtor](mge::component_base* p) {
+                        if (raw_dtor) {
+                            raw_dtor(p);
+                        }
+                        ::operator delete(p);
+                    });
+            return shared;
+        };
+
+        auto entry =
+            std::make_unique<mge::dynamic_implementation_registry_entry>(
+                std::move(factory),
+                component_name,
+                impl_name);
+        entries.push_back(std::move(entry));
+
+        MGE_DEBUG_TRACE(LUA,
+                        "Registered component '{}' implementation '{}'",
+                        component_name,
+                        impl_name);
+    }
+
+    int lua_context::component_call(lua_State* L)
+    {
+        auto* self = static_cast<lua_context*>(
+            lua_touserdata(L, lua_upvalueindex(1)));
+
+        // arg1: base type table (C++ class with proxy)
+        if (!lua_istable(L, 1)) {
+            return luaL_error(L,
+                              "mge.component arg1: expected a type table");
+        }
+
+        lua_getfield(L, 1, "__details__");
+        auto* details =
+            static_cast<const mge::reflection::type_details*>(
+                lua_touserdata(L, -1));
+        lua_pop(L, 1);
+
+        if (!details || !details->is_class) {
+            return luaL_error(
+                L,
+                "mge.component arg1: expected a class type table");
+        }
+
+        const auto& class_details = std::get<
+            mge::reflection::type_details::class_specific_details>(
+            details->specific_details);
+
+        const mge::reflection::type_details* proxy_type =
+            class_details.proxy_type.get();
+        if (!proxy_type) {
+            return luaL_error(
+                L,
+                "mge.component arg1: type has no proxy");
+        }
+
+        // arg2: derived Lua class table (created by class(base))
+        if (!lua_istable(L, 2)) {
+            return luaL_error(
+                L,
+                "mge.component arg2: expected a class table");
+        }
+
+        // verify arg2 is derived from arg1 via class():
+        //   class(base) sets setmetatable(c, { __index = base })
+        //   so getmetatable(arg2).__index should be arg1
+        if (!lua_getmetatable(L, 2)) {
+            return luaL_error(
+                L,
+                "mge.component arg2: table has no metatable"
+                " (not created by class())");
+        }
+        lua_getfield(L, -1, "__index");
+        bool is_derived = lua_rawequal(L, -1, 1) != 0;
+        lua_pop(L, 2); // pop __index and metatable
+
+        if (!is_derived) {
+            return luaL_error(
+                L,
+                "mge.component arg2: not derived from arg1"
+                " via class()");
+        }
+
+        // get implementation name from arg2.__name__
+        lua_getfield(L, 2, "__name__");
+        if (!lua_isstring(L, -1)) {
+            return luaL_error(
+                L,
+                "mge.component arg2: missing '__name__' string"
+                " field");
+        }
+        const char* impl_name_cstr = lua_tostring(L, -1);
+        lua_pop(L, 1);
+
+        do_register_component(self->m_component_entries,
+                              details,
+                              proxy_type,
+                              impl_name_cstr);
+        return 0;
     }
 
     void lua_context::create_helper_module()
