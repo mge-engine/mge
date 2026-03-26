@@ -52,15 +52,17 @@ namespace mge::lua {
         // Minimal call_context for invoking a default constructor
         // via the reflection invoke_function. Only this_ptr() is
         // meaningful; all parameter/result methods abort.
-        class default_ctor_context
-            : public mge::reflection::call_context
+        class default_ctor_context : public mge::reflection::call_context
         {
         public:
             explicit default_ctor_context(void* ptr)
                 : m_ptr(ptr)
             {}
 
-            void* this_ptr() override { return m_ptr; }
+            void* this_ptr() override
+            {
+                return m_ptr;
+            }
 
             // None of the parameter/result methods should be called
             // for a default constructor.
@@ -207,9 +209,9 @@ namespace mge::lua {
         const mge::reflection::type_details*              proxy_type,
         const char*                                       impl_name_cstr)
     {
-        const auto& proxy_details = std::get<
-            mge::reflection::type_details::class_specific_details>(
-            proxy_type->specific_details);
+        const auto& proxy_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                proxy_type->specific_details);
 
         // find default constructor (0 args) on proxy type
         const mge::reflection::invoke_function* default_ctor = nullptr;
@@ -220,9 +222,8 @@ namespace mge::lua {
             }
         }
         if (!default_ctor) {
-            MGE_THROW(mge::illegal_state)
-                << "proxy type '" << proxy_type->name
-                << "' has no default constructor";
+            MGE_THROW(mge::illegal_state) << "proxy type '" << proxy_type->name
+                                          << "' has no default constructor";
         }
 
         std::string impl_name(impl_name_cstr);
@@ -232,21 +233,20 @@ namespace mge::lua {
         auto raw_dtor = proxy_details.raw_destructor;
         auto proxy_size = proxy_type->size;
 
-        auto factory =
-            [ctor_fn, raw_dtor, proxy_size]()
-            -> std::shared_ptr<mge::component_base> {
+        auto factory = [ctor_fn,
+                        raw_dtor,
+                        proxy_size]() -> std::shared_ptr<mge::component_base> {
             void*                raw = ::operator new(proxy_size);
             default_ctor_context ctx(raw);
             ctor_fn(ctx);
-            auto shared =
-                std::shared_ptr<mge::component_base>(
-                    static_cast<mge::component_base*>(raw),
-                    [raw_dtor](mge::component_base* p) {
-                        if (raw_dtor) {
-                            raw_dtor(p);
-                        }
-                        ::operator delete(p);
-                    });
+            auto shared = std::shared_ptr<mge::component_base>(
+                static_cast<mge::component_base*>(raw),
+                [raw_dtor](mge::component_base* p) {
+                    if (raw_dtor) {
+                        raw_dtor(p);
+                    }
+                    ::operator delete(p);
+                });
             return shared;
         };
 
@@ -265,19 +265,17 @@ namespace mge::lua {
 
     int lua_context::component_call(lua_State* L)
     {
-        auto* self = static_cast<lua_context*>(
-            lua_touserdata(L, lua_upvalueindex(1)));
+        auto* self =
+            static_cast<lua_context*>(lua_touserdata(L, lua_upvalueindex(1)));
 
         // arg1: base type table (C++ class with proxy)
         if (!lua_istable(L, 1)) {
-            return luaL_error(L,
-                              "mge.component arg1: expected a type table");
+            return luaL_error(L, "mge.component arg1: expected a type table");
         }
 
         lua_getfield(L, 1, "__details__");
-        auto* details =
-            static_cast<const mge::reflection::type_details*>(
-                lua_touserdata(L, -1));
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            lua_touserdata(L, -1));
         lua_pop(L, 1);
 
         if (!details || !details->is_class) {
@@ -286,52 +284,45 @@ namespace mge::lua {
                 "mge.component arg1: expected a class type table");
         }
 
-        const auto& class_details = std::get<
-            mge::reflection::type_details::class_specific_details>(
-            details->specific_details);
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details->specific_details);
 
         const mge::reflection::type_details* proxy_type =
             class_details.proxy_type.get();
         if (!proxy_type) {
-            return luaL_error(
-                L,
-                "mge.component arg1: type has no proxy");
+            return luaL_error(L, "mge.component arg1: type has no proxy");
         }
 
         // arg2: derived Lua class table (created by class(base))
         if (!lua_istable(L, 2)) {
-            return luaL_error(
-                L,
-                "mge.component arg2: expected a class table");
+            return luaL_error(L, "mge.component arg2: expected a class table");
         }
 
         // verify arg2 is derived from arg1 via class():
         //   class(base) sets setmetatable(c, { __index = base })
         //   so getmetatable(arg2).__index should be arg1
         if (!lua_getmetatable(L, 2)) {
-            return luaL_error(
-                L,
-                "mge.component arg2: table has no metatable"
-                " (not created by class())");
+            return luaL_error(L,
+                              "mge.component arg2: table has no metatable"
+                              " (not created by class())");
         }
         lua_getfield(L, -1, "__index");
         bool is_derived = lua_rawequal(L, -1, 1) != 0;
         lua_pop(L, 2); // pop __index and metatable
 
         if (!is_derived) {
-            return luaL_error(
-                L,
-                "mge.component arg2: not derived from arg1"
-                " via class()");
+            return luaL_error(L,
+                              "mge.component arg2: not derived from arg1"
+                              " via class()");
         }
 
         // get implementation name from arg2.__name__
         lua_getfield(L, 2, "__name__");
         if (!lua_isstring(L, -1)) {
-            return luaL_error(
-                L,
-                "mge.component arg2: missing '__name__' string"
-                " field");
+            return luaL_error(L,
+                              "mge.component arg2: missing '__name__' string"
+                              " field");
         }
         const char* impl_name_cstr = lua_tostring(L, -1);
         lua_pop(L, 1);
