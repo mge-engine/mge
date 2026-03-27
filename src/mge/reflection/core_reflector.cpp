@@ -160,6 +160,7 @@ namespace mge::reflection {
                     .method("joinable", &mge::thread::joinable)
                     .method("join", &mge::thread::join)
                     .method("detach", &mge::thread::detach)
+                    .static_method("this_thread", &mge::thread::this_thread)
                     .static_method("hardware_concurrency",
                                    &mge::thread::hardware_concurrency));
 
