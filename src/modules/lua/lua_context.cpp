@@ -187,11 +187,11 @@ namespace mge::lua {
     void lua_context::register_component_function()
     {
         auto L = lua_state();
-        // set mge.component = closure(component_call, upvalue=this)
+        // set mge.register_component = closure(component_call, upvalue=this)
         lua_getglobal(L, "mge");
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &lua_context::component_call, 1);
-        lua_setfield(L, -2, "component");
+        lua_setfield(L, -2, "register_component");
         lua_pop(L, 1); // pop mge table
         MGE_DEBUG_TRACE(LUA, "Registered component function");
     }

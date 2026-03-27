@@ -1,19 +1,19 @@
 unittest = require "unittest"
 
 function test_mge_component_exists()
-    assert(type(mge.component) == "function",
-        "mge.component should be a function")
+    assert(type(mge.register_component) == "function",
+        "mge.register_component should be a function")
 end
 
 function test_component_arg1_must_be_table()
-    local ok, err = pcall(mge.component, 42, {})
+    local ok, err = pcall(mge.register_component, 42, {})
     assert(not ok, "should fail with non-table arg1")
     assert(string.find(err, "arg1"),
         "error should mention arg1")
 end
 
 function test_component_arg1_must_have_details()
-    local ok, err = pcall(mge.component, {}, {})
+    local ok, err = pcall(mge.register_component, {}, {})
     assert(not ok, "should fail with plain table arg1")
     assert(string.find(err, "arg1"),
         "error should mention arg1")
@@ -24,7 +24,7 @@ function test_component_arg1_must_have_proxy()
     local ok, err = pcall(function()
         local Derived = class(mge.point)
         Derived.__name__ = "test_point_impl"
-        mge.component(mge.point, Derived)
+        mge.register_component(mge.point, Derived)
     end)
     assert(not ok, "should fail for type without proxy")
     assert(string.find(err, "proxy"),
@@ -32,7 +32,7 @@ function test_component_arg1_must_have_proxy()
 end
 
 function test_component_arg2_must_be_table()
-    local ok, err = pcall(mge.component, mge.application, 42)
+    local ok, err = pcall(mge.register_component, mge.application, 42)
     assert(not ok, "should fail with non-table arg2")
     assert(string.find(err, "arg2"),
         "error should mention arg2")
@@ -42,7 +42,7 @@ function test_component_arg2_must_be_derived()
     local ok, err = pcall(function()
         local NotDerived = class()
         NotDerived.__name__ = "not_derived"
-        mge.component(mge.application, NotDerived)
+        mge.register_component(mge.application, NotDerived)
     end)
     assert(not ok, "should fail when arg2 not derived from arg1")
     assert(string.find(err, "arg2"),
@@ -52,7 +52,7 @@ end
 function test_component_arg2_must_have_name()
     local ok, err = pcall(function()
         local MyApp = class(mge.application)
-        mge.component(mge.application, MyApp)
+        mge.register_component(mge.application, MyApp)
     end)
     assert(not ok, "should fail without __name__")
     assert(string.find(err, "__name__"),
@@ -62,7 +62,7 @@ end
 function test_component_registers_implementation()
     local MyApp = class(mge.application)
     MyApp.__name__ = "test_lua_app"
-    mge.component(mge.application, MyApp)
+    mge.register_component(mge.application, MyApp)
     local impls = mge.registered_implementations("mge::application")
     local found = false
     for _, v in ipairs(impls) do

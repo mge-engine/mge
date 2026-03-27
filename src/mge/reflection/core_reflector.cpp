@@ -58,6 +58,27 @@ namespace mge::reflection {
 
             mge(type<clock>());
 
+            mge(type<mge::component_base>()
+                    .method("implementation_name",
+                            &mge::component_base::implementation_name)
+                    .method("alias_names", &mge::component_base::alias_names)
+                    .static_method(
+                        "create",
+                        static_cast<std::shared_ptr<mge::component_base> (*)(
+                            std::string_view,
+                            std::string_view)>(&mge::component_base::create))
+                    .static_method("component_registered",
+                                   &mge::component_base::component_registered)
+                    .static_method(
+                        "implementation_registered",
+                        &mge::component_base::implementation_registered)
+                    .static_method(
+                        "implementations",
+                        static_cast<void (*)(
+                            std::string_view,
+                            const std::function<void(std::string_view)>&)>(
+                            &mge::component_base::implementations)));
+
             mge(function("registered_components", &mge::registered_components));
             mge(function("registered_implementations",
                          &mge::registered_implementations));
