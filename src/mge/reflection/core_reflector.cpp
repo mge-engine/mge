@@ -58,7 +58,7 @@ namespace mge::reflection {
 
             mge(type<clock>());
 
-            mge(type<mge::component_base>()
+            mge(type<mge::component_base>("component")
                     .method("implementation_name",
                             &mge::component_base::implementation_name)
                     .method("alias_names", &mge::component_base::alias_names)
