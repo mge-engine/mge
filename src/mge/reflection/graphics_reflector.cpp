@@ -7,10 +7,14 @@
 #include "mge/reflection/type.hpp"
 
 #include "mge/graphics/data_type.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/graphics/point.hpp"
+#include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/vertex_format.hpp"
+#include "mge/graphics/window.hpp"
 
 namespace mge::reflection {
 
@@ -48,12 +52,32 @@ namespace mge::reflection {
                     .method("monitors", &mge::render_system::monitors)
                     .method("frame_debugger",
                             &mge::render_system::frame_debugger));
+            mge(type<mge::rgba_color>()
+                    .constructor<float, float, float, float>()
+                    .field("r", &mge::rgba_color::r)
+                    .field("g", &mge::rgba_color::g)
+                    .field("b", &mge::rgba_color::b)
+                    .field("a", &mge::rgba_color::a));
+            mge(type<mge::window>()
+                    .method("show", &mge::window::show)
+                    .method("hide", &mge::window::hide)
+                    .method(
+                        "render_context",
+                        static_cast<mge::render_context& (mge::window::*)()>(
+                            &mge::window::render_context)));
+            mge(type<mge::render_context>()
+                    .method("pass", &mge::render_context::pass)
+                    .method("frame", &mge::render_context::frame));
+            mge(type<mge::pass>()
+                    .method("default_viewport", &mge::pass::default_viewport)
+                    .method("clear_color", &mge::pass::clear_color)
+                    .method("touch", &mge::pass::touch));
         }
 
         std::span<std::string_view> dependencies() const override
         {
-            static std::array<std::string_view, 3> deps{
-                {"core", "std", "math"}};
+            static std::array<std::string_view, 4> deps{
+                {"core", "std", "math", "input"}};
             return deps;
         }
     };

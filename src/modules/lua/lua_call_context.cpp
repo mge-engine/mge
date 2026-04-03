@@ -114,7 +114,12 @@ namespace mge::lua {
     void* lua_call_context::pointer_parameter(
         size_t index, const mge::reflection::type_details& /* details */)
     {
-        return lua_touserdata(m_lua_state, stack_index(index));
+        void* ud = lua_touserdata(m_lua_state, stack_index(index));
+        if (ud && lua_type(m_lua_state, stack_index(index)) == LUA_TUSERDATA) {
+            auto* header = static_cast<lua_instance_header*>(ud);
+            return lua_binder::instance_object_ptr(header);
+        }
+        return ud;
     }
 
     // --- result methods ---

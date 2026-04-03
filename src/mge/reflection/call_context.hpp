@@ -140,7 +140,10 @@ namespace mge::reflection {
 
         template <typename T> void result(T value)
         {
-            if constexpr (mge::is_shared_ptr_v<T>) {
+            if constexpr (std::is_lvalue_reference_v<T>) {
+                pointer_result(const_cast<void*>(
+                    static_cast<const void*>(std::addressof(value))));
+            } else if constexpr (mge::is_shared_ptr_v<T>) {
                 shared_ptr_result(std::static_pointer_cast<void>(value));
             } else if constexpr (std::is_pointer_v<T>) {
                 if constexpr (std::is_const_v<std::remove_pointer_t<T>>) {

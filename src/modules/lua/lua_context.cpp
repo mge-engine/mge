@@ -249,12 +249,8 @@ namespace mge::lua {
         auto raw_dtor = proxy_details.raw_destructor;
         auto proxy_size = proxy_type->size;
 
-        auto factory = [ctor_fn,
-                        raw_dtor,
-                        proxy_size,
-                        set_context_fn,
-                        L,
-                        class_ref]()
+        auto factory =
+            [ctor_fn, raw_dtor, proxy_size, set_context_fn, L, class_ref]()
             -> std::shared_ptr<mge::component_base> {
             void*                raw = ::operator new(proxy_size);
             default_ctor_context ctx(raw);
@@ -391,9 +387,8 @@ namespace mge::lua {
                 "mge.create_component arg1: expected a type table");
         }
         if (!lua_isstring(L, 2)) {
-            return luaL_error(
-                L,
-                "mge.create_component arg2: expected a string");
+            return luaL_error(L,
+                              "mge.create_component arg2: expected a string");
         }
 
         lua_getfield(L, 1, "__details__");
@@ -409,8 +404,7 @@ namespace mge::lua {
 
         const char* impl_name = lua_tostring(L, 2);
 
-        auto instance =
-            mge::component_base::create(details->name, impl_name);
+        auto instance = mge::component_base::create(details->name, impl_name);
         if (!instance) {
             return luaL_error(L,
                               "mge.create_component: failed to create "
@@ -418,9 +412,7 @@ namespace mge::lua {
                               impl_name);
         }
 
-        lua_binder::create_shared_instance(L,
-                                           details,
-                                           std::move(instance));
+        lua_binder::create_shared_instance(L, details, std::move(instance));
         return 1;
     }
 

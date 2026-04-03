@@ -972,10 +972,9 @@ namespace mge::reflection {
             type<Proxy> pt;
             auto& specific = get_or_create_type_details<T>()->class_specific();
             specific.proxy_type = pt.details();
-            specific.set_context =
-                [](void* obj, invocation_context* ctx) {
-                    static_cast<Proxy*>(obj)->set_context(ctx);
-                };
+            specific.set_context = [](void* obj, invocation_context* ctx) {
+                static_cast<Proxy*>(obj)->set_context(ctx);
+            };
             pt.details()->class_specific().interface_type =
                 get_or_create_type_details<T>();
             return *this;

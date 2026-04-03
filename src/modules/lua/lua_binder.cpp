@@ -275,6 +275,56 @@ namespace mge::lua {
             // userdata (pointer or class)
             return lua_type_at == LUA_TUSERDATA;
         }
+
+        /**
+         * @brief Resolve return type to pointer/shared_ptr element types
+         * for Lua result handling.
+         *
+         * Handles pointer types, shared_ptr types, and reference types
+         * (which are treated as foreign pointers).
+         */
+        void resolve_return_type(
+            const mge::reflection::type_identifier&  return_type_id,
+            const mge::reflection::type_details*&    pointer_element_type,
+            const mge::reflection::type_details*&    shared_ptr_element_type)
+        {
+            pointer_element_type = nullptr;
+            shared_ptr_element_type = nullptr;
+
+            const auto& return_type_details =
+                mge::reflection::type_details::get(return_type_id);
+            if (return_type_details && return_type_details->is_pointer) {
+                const auto& ptr_details =
+                    std::get<mge::reflection::type_details::
+                                 pointer_specific_details>(
+                        return_type_details->specific_details);
+                if (ptr_details.element_type &&
+                    ptr_details.element_type->is_class) {
+                    pointer_element_type = ptr_details.element_type.get();
+                }
+            } else if (return_type_details &&
+                       return_type_details->is_class) {
+                const auto& ret_class = std::get<
+                    mge::reflection::type_details::class_specific_details>(
+                    return_type_details->specific_details);
+                if (ret_class.is_shared_ptr &&
+                    ret_class.shared_ptr_element_type) {
+                    shared_ptr_element_type =
+                        ret_class.shared_ptr_element_type.get();
+                }
+            }
+
+            // Reference return types: look up the base type
+            if (!pointer_element_type && !shared_ptr_element_type &&
+                return_type_id.is_reference()) {
+                auto        base_id = return_type_id.base_type_identifier();
+                const auto& base_details =
+                    mge::reflection::type_details::get(base_id);
+                if (base_details && base_details->is_class) {
+                    pointer_element_type = base_details.get();
+                }
+            }
+        }
     } // namespace
 
     int lua_binder::class_call(lua_State* L)
@@ -453,34 +503,11 @@ namespace mge::lua {
                 }
             }
             if (compatible) {
-                // Determine if return type is pointer/shared_ptr to class
-                const mge::reflection::type_details* pointer_element_type =
-                    nullptr;
-                const mge::reflection::type_details* shared_ptr_element_type =
-                    nullptr;
-                const auto& return_type_id = sig.return_type();
-                const auto& return_type_details =
-                    mge::reflection::type_details::get(return_type_id);
-                if (return_type_details && return_type_details->is_pointer) {
-                    const auto& ptr_details =
-                        std::get<mge::reflection::type_details::
-                                     pointer_specific_details>(
-                            return_type_details->specific_details);
-                    if (ptr_details.element_type &&
-                        ptr_details.element_type->is_class) {
-                        pointer_element_type = ptr_details.element_type.get();
-                    }
-                } else if (return_type_details &&
-                           return_type_details->is_class) {
-                    const auto& ret_class = std::get<
-                        mge::reflection::type_details::class_specific_details>(
-                        return_type_details->specific_details);
-                    if (ret_class.is_shared_ptr &&
-                        ret_class.shared_ptr_element_type) {
-                        shared_ptr_element_type =
-                            ret_class.shared_ptr_element_type.get();
-                    }
-                }
+                const mge::reflection::type_details* pointer_element_type;
+                const mge::reflection::type_details* shared_ptr_element_type;
+                resolve_return_type(sig.return_type(),
+                                    pointer_element_type,
+                                    shared_ptr_element_type);
 
                 lua_call_context ctx(L, 2, obj_ptr);
                 if (pointer_element_type) {
@@ -656,28 +683,11 @@ namespace mge::lua {
         }
 
         // Determine if return type is pointer to class
-        const mge::reflection::type_details* pointer_element_type = nullptr;
-        const mge::reflection::type_details* shared_ptr_element_type = nullptr;
-        const auto&                          return_type_id = sig.return_type();
-        const auto&                          return_type_details =
-            mge::reflection::type_details::get(return_type_id);
-        if (return_type_details && return_type_details->is_pointer) {
-            const auto& ptr_details = std::get<
-                mge::reflection::type_details::pointer_specific_details>(
-                return_type_details->specific_details);
-            if (ptr_details.element_type &&
-                ptr_details.element_type->is_class) {
-                pointer_element_type = ptr_details.element_type.get();
-            }
-        } else if (return_type_details && return_type_details->is_class) {
-            const auto& ret_class =
-                std::get<mge::reflection::type_details::class_specific_details>(
-                    return_type_details->specific_details);
-            if (ret_class.is_shared_ptr && ret_class.shared_ptr_element_type) {
-                shared_ptr_element_type =
-                    ret_class.shared_ptr_element_type.get();
-            }
-        }
+        const mge::reflection::type_details* pointer_element_type;
+        const mge::reflection::type_details* shared_ptr_element_type;
+        resolve_return_type(sig.return_type(),
+                            pointer_element_type,
+                            shared_ptr_element_type);
 
         lua_call_context ctx(L, 1, nullptr);
         if (pointer_element_type) {
@@ -734,28 +744,11 @@ namespace mge::lua {
             }
         }
 
-        const mge::reflection::type_details* pointer_element_type = nullptr;
-        const mge::reflection::type_details* shared_ptr_element_type = nullptr;
-        const auto&                          return_type_id = sig.return_type();
-        const auto&                          return_type_details =
-            mge::reflection::type_details::get(return_type_id);
-        if (return_type_details && return_type_details->is_pointer) {
-            const auto& ptr_details = std::get<
-                mge::reflection::type_details::pointer_specific_details>(
-                return_type_details->specific_details);
-            if (ptr_details.element_type &&
-                ptr_details.element_type->is_class) {
-                pointer_element_type = ptr_details.element_type.get();
-            }
-        } else if (return_type_details && return_type_details->is_class) {
-            const auto& ret_class =
-                std::get<mge::reflection::type_details::class_specific_details>(
-                    return_type_details->specific_details);
-            if (ret_class.is_shared_ptr && ret_class.shared_ptr_element_type) {
-                shared_ptr_element_type =
-                    ret_class.shared_ptr_element_type.get();
-            }
-        }
+        const mge::reflection::type_details* pointer_element_type;
+        const mge::reflection::type_details* shared_ptr_element_type;
+        resolve_return_type(sig.return_type(),
+                            pointer_element_type,
+                            shared_ptr_element_type);
 
         lua_call_context ctx(L, 1, nullptr);
         if (pointer_element_type) {

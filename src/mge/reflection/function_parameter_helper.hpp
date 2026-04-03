@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/callable.hpp"
 #include "mge/reflection/call_context.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
@@ -18,6 +19,17 @@ namespace mge::reflection {
         if constexpr (std::is_pointer_v<T>) {
             return static_cast<T>(
                 ctx.pointer_parameter(index, *get_or_create_type_details<T>()));
+        } else if constexpr (std::is_lvalue_reference_v<T> &&
+                             std::is_class_v<std::remove_cv_t<
+                                 std::remove_reference_t<T>>> &&
+                             !mge::is_callable_v<std::remove_cv_t<
+                                 std::remove_reference_t<T>>>) {
+            void* ptr = ctx.pointer_parameter(
+                index,
+                *get_or_create_type_details<
+                    std::remove_cv_t<std::remove_reference_t<T>>>());
+            return *static_cast<
+                std::remove_cv_t<std::remove_reference_t<T>>*>(ptr);
         } else {
             return ctx.template parameter<T>(index);
         }

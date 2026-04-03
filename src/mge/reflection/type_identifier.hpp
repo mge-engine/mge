@@ -102,6 +102,19 @@ namespace mge::reflection {
             return !(*this < other);
         }
 
+        /**
+         * @brief Return a copy with const, volatile, and reference
+         * qualifiers removed.
+         */
+        type_identifier base_type_identifier() const noexcept
+        {
+            auto result = *this;
+            result.m_is_const = false;
+            result.m_is_volatile = false;
+            result.m_is_reference = false;
+            return result;
+        }
+
     private:
         std::type_index  m_type_index;
         std::string_view m_name;

@@ -72,6 +72,8 @@ namespace mge::reflection {
                     .method("setup", &mge::application::setup)
                     .method("teardown", &mge::application::teardown)
                     .method("run", &mge::application::run)
+                    .method("set_quit", &mge::application::set_quit)
+                    .method("is_quit", &mge::application::is_quit)
                     .proxy_type<application_proxy>());
         }
 
