@@ -1003,6 +1003,7 @@ namespace mge::lua {
         result = lua_toboolean(L, -1);  /* get result */
         report(L, status);
         lua_close(L);
+        m_lua_state = nullptr;
         return (result && status == LUA_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
     }
 

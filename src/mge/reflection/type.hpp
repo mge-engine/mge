@@ -873,6 +873,7 @@ namespace mge::reflection {
         self_type& method(const char* name, R (T::*method_ptr)(Args...))
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -900,6 +901,7 @@ namespace mge::reflection {
         self_type& method(const char* name, R (T::*method_ptr)(Args...) const)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -929,6 +931,7 @@ namespace mge::reflection {
                           R (T::*method_ptr)(Args...) noexcept)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -950,6 +953,7 @@ namespace mge::reflection {
                           R (T::*method_ptr)(Args...) const noexcept)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 

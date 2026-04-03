@@ -7,6 +7,7 @@
 #include "mge/reflection/type.hpp"
 
 #include "mge/graphics/data_type.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/graphics/point.hpp"
 #include "mge/graphics/render_context.hpp"
