@@ -41,7 +41,7 @@ namespace mge::reflection {
                                    static_cast<mge::render_system_ref (*)()>(
                                        &mge::render_system::create))
                     .static_method(
-                        "create",
+                        "create_with",
                         static_cast<mge::render_system_ref (*)(
                             std::string_view)>(&mge::render_system::create))
                     .method(

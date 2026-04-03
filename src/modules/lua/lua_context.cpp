@@ -116,14 +116,12 @@ namespace mge::lua {
         : m_engine(engine)
         , m_lua_state(nullptr)
     {
-        std::cerr << "CTX: ctor start" << std::endl;
         MGE_DEBUG_TRACE(LUA, "Creating new Lua state");
         m_lua_state = luaL_newstate();
         CHECK_STATUS(m_lua_state ? LUA_OK : LUA_ERRMEM, m_lua_state);
         MGE_DEBUG_TRACE(LUA, "Lua state created successfully");
         luaL_openlibs(m_lua_state);
         MGE_DEBUG_TRACE(LUA, "Lua libs opened successfully");
-        std::cerr << "CTX: ctor done" << std::endl;
     }
 
     lua_context::~lua_context()
@@ -150,30 +148,23 @@ namespace mge::lua {
     {
         reflection::module root_module = reflection::module::root();
         MGE_DEBUG_TRACE(LUA, "Compute binding information");
-        std::cerr << "BIND: start" << std::endl;
 
         // Register callable type wrappers for std::function signatures
         // used in reflected methods
         lua_call_context::register_callable_type<void>();
-        std::cerr << "BIND: registered void" << std::endl;
         lua_call_context::register_callable_type<bool,
                                                  mge::key,
                                                  mge::key_action,
                                                  const mge::modifier&>();
-        std::cerr << "BIND: registered key_action" << std::endl;
         lua_call_context::register_callable_type<void, uint64_t, double>();
-        std::cerr << "BIND: registered redraw" << std::endl;
 
         create_helper_module();
-        std::cerr << "BIND: helper module created" << std::endl;
 
         lua_binder b(this);
         root_module.details()->apply(b);
-        std::cerr << "BIND: binder applied" << std::endl;
 
         register_class_function();
         register_component_function();
-        std::cerr << "BIND: done" << std::endl;
     }
 
     void lua_context::register_class_function()
