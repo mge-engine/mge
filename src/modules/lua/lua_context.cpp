@@ -272,9 +272,13 @@ namespace mge::lua {
         auto raw_dtor = proxy_details.raw_destructor;
         auto proxy_size = proxy_type->size;
 
-        auto factory =
-            [ctor_fn, raw_dtor, proxy_size, set_context_fn, L, class_ref]()
-            -> std::shared_ptr<mge::component_base> {
+        auto factory = [ctor_fn,
+                        raw_dtor,
+                        proxy_size,
+                        set_context_fn,
+                        details,
+                        L,
+                        class_ref]() -> std::shared_ptr<mge::component_base> {
             void*                raw = ::operator new(proxy_size);
             default_ctor_context ctx(raw);
             ctor_fn(ctx);
@@ -284,13 +288,9 @@ namespace mge::lua {
             lua_rawgeti(L, LUA_REGISTRYINDEX, class_ref);
             int instance_class_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 
-            // Create self table for this instance
-            lua_newtable(L);
-            int self_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-
             // Create invocation context and wire it to the proxy
             auto* invocation_ctx =
-                new lua_invocation_context(L, instance_class_ref, self_ref);
+                new lua_invocation_context(L, instance_class_ref, LUA_NOREF);
 
             if (set_context_fn) {
                 set_context_fn(raw, invocation_ctx);
@@ -305,6 +305,22 @@ namespace mge::lua {
                     }
                     ::operator delete(p);
                 });
+
+            // Create a Lua userdata wrapping the shared_ptr so that
+            // the invocation context can push 'self' with C++ methods.
+            lua_binder::create_shared_instance(L, details, shared);
+            // weak-value table so GC can collect the userdata
+            lua_newtable(L); // weak table
+            lua_newtable(L); // metatable
+            lua_pushstring(L, "v");
+            lua_setfield(L, -2, "__mode");
+            lua_setmetatable(L, -2);
+            lua_pushvalue(L, -2);  // copy userdata
+            lua_rawseti(L, -2, 1); // weak_table[1] = userdata
+            int weak_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+            lua_pop(L, 1); // pop the userdata
+            invocation_ctx->set_self_ref(weak_ref);
+
             return shared;
         };
 
@@ -435,35 +451,23 @@ namespace mge::lua {
                               impl_name);
         }
 
-        // Get the raw pointer before moving
-        void* raw_ptr = instance.get();
-
-        lua_binder::create_shared_instance(L, details, std::move(instance));
-
-        // If the type has a proxy with an invocation context, update
-        // the self_ref to point to the actual userdata (now on top of
-        // the Lua stack) so that Lua overrides receive it as 'self'.
-        // Uses a weak table to avoid circular reference preventing GC.
+        // The factory already created a Lua userdata (with weak self_ref).
+        // Retrieve it from the invocation context's weak table.
         const auto& class_details =
             std::get<mge::reflection::type_details::class_specific_details>(
                 details->specific_details);
         if (class_details.get_context) {
+            void* raw_ptr = instance.get();
             auto* ctx = class_details.get_context(raw_ptr);
             if (ctx) {
                 auto* lua_ctx = static_cast<lua_invocation_context*>(ctx);
-                // Create a weak-value table: {[1] = userdata}
-                lua_newtable(L); // weak table
-                lua_newtable(L); // metatable
-                lua_pushstring(L, "v");
-                lua_setfield(L, -2, "__mode");
-                lua_setmetatable(L, -2);
-                lua_pushvalue(L, -2);  // copy userdata
-                lua_rawseti(L, -2, 1); // weak_table[1] = userdata
-                int weak_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-                lua_ctx->set_self_ref(weak_ref);
+                lua_ctx->push_self(L);
+                return 1;
             }
         }
 
+        // Fallback: no proxy, create userdata from the shared_ptr directly
+        lua_binder::create_shared_instance(L, details, std::move(instance));
         return 1;
     }
 

@@ -38,6 +38,17 @@ namespace mge::lua {
         m_self_ref = new_self_ref;
     }
 
+    void lua_invocation_context::push_self(lua_State* L)
+    {
+        if (m_self_ref == LUA_NOREF) {
+            lua_pushnil(L);
+            return;
+        }
+        lua_rawgeti(L, LUA_REGISTRYINDEX, m_self_ref);
+        lua_rawgeti(L, -1, 1);
+        lua_remove(L, -2); // remove weak table, keep userdata
+    }
+
     bool lua_invocation_context::call_implemented(const char* method)
     {
         // Look up method in the class table

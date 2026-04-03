@@ -122,6 +122,18 @@ namespace mge {
         main(std::string_view application, int argc, const char** argv);
 
         /**
+         * @brief Run application by name.
+         *
+         * Assumes modules are already loaded and configuration is set up.
+         * Creates the named application, runs its lifecycle
+         * (initialize, setup, run, teardown), and returns the exit code.
+         *
+         * @param application application implementation name
+         * @return return code
+         */
+        static int main(std::string_view application);
+
+        /**
          * @brief Run default application implementation.
          *
          * @param argc argument count

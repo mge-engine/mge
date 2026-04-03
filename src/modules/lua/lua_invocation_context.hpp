@@ -44,6 +44,12 @@ namespace mge::lua {
          */
         void set_self_ref(int new_self_ref);
 
+        /**
+         * @brief Push the self userdata onto the Lua stack.
+         * Retrieves the userdata from the weak table.
+         */
+        void push_self(lua_State* L);
+
     protected:
         void store_bool_argument(size_t index, bool value) override;
         void store_int8_t_argument(size_t index, int8_t value) override;
