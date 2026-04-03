@@ -47,112 +47,119 @@ namespace mge::lua {
         }
     }
 
+    void lua_invocation_context::push_value(const lua_value& v)
+    {
+        std::visit(
+            [this](const auto& val) {
+                using T = std::decay_t<decltype(val)>;
+                if constexpr (std::is_same_v<T, std::monostate>) {
+                    lua_pushnil(m_lua_state);
+                } else if constexpr (std::is_same_v<T, bool>) {
+                    lua_pushboolean(m_lua_state, val ? 1 : 0);
+                } else if constexpr (std::is_same_v<T, lua_Integer>) {
+                    lua_pushinteger(m_lua_state, val);
+                } else if constexpr (std::is_same_v<T, lua_Number>) {
+                    lua_pushnumber(m_lua_state, val);
+                } else if constexpr (std::is_same_v<T, std::string>) {
+                    lua_pushlstring(m_lua_state, val.c_str(), val.size());
+                }
+            },
+            v);
+    }
+
     void lua_invocation_context::store_bool_argument(size_t index, bool value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::BOOL;
-        m_arguments[index].bool_val = value;
+        m_arguments[index] = value;
     }
 
     void lua_invocation_context::store_int8_t_argument(size_t index,
                                                        int8_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_uint8_t_argument(size_t  index,
                                                         uint8_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_int16_t_argument(size_t  index,
                                                         int16_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_uint16_t_argument(size_t   index,
                                                          uint16_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_int32_t_argument(size_t  index,
                                                         int32_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_uint32_t_argument(size_t   index,
                                                          uint32_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_int64_t_argument(size_t  index,
                                                         int64_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_uint64_t_argument(size_t   index,
                                                          uint64_t value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::INTEGER;
-        m_arguments[index].int_val = static_cast<lua_Integer>(value);
+        m_arguments[index] = static_cast<lua_Integer>(value);
     }
 
     void lua_invocation_context::store_float_argument(size_t index, float value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::NUMBER;
-        m_arguments[index].num_val = static_cast<lua_Number>(value);
+        m_arguments[index] = static_cast<lua_Number>(value);
     }
 
     void lua_invocation_context::store_double_argument(size_t index,
                                                        double value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::NUMBER;
-        m_arguments[index].num_val = static_cast<lua_Number>(value);
+        m_arguments[index] = static_cast<lua_Number>(value);
     }
 
     void lua_invocation_context::store_long_double_argument(size_t      index,
                                                             long double value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::NUMBER;
-        m_arguments[index].num_val = static_cast<lua_Number>(value);
+        m_arguments[index] = static_cast<lua_Number>(value);
     }
 
     void lua_invocation_context::store_string_argument(size_t             index,
                                                        const std::string& value)
     {
         ensure_argument_slot(index);
-        m_arguments[index].type = stored_argument::arg_type::STRING;
-        m_arguments[index].str_val = value;
+        m_arguments[index] = value;
     }
 
     lua_invocation_context::call_result_type
     lua_invocation_context::call_method(const char* method)
     {
-        m_has_result = false;
+        m_result = std::monostate{};
 
         // Push the method function from the class table
         lua_rawgeti(m_lua_state, LUA_REGISTRYINDEX, m_class_ref);
@@ -171,22 +178,7 @@ namespace mge::lua {
         // Push stored arguments
         int nargs = 1; // self
         for (const auto& arg : m_arguments) {
-            switch (arg.type) {
-            case stored_argument::arg_type::BOOL:
-                lua_pushboolean(m_lua_state, arg.bool_val ? 1 : 0);
-                break;
-            case stored_argument::arg_type::INTEGER:
-                lua_pushinteger(m_lua_state, arg.int_val);
-                break;
-            case stored_argument::arg_type::NUMBER:
-                lua_pushnumber(m_lua_state, arg.num_val);
-                break;
-            case stored_argument::arg_type::STRING:
-                lua_pushlstring(m_lua_state,
-                                arg.str_val.c_str(),
-                                arg.str_val.size());
-                break;
-            }
+            push_value(arg);
             ++nargs;
         }
         m_arguments.clear();
@@ -204,23 +196,14 @@ namespace mge::lua {
         }
 
         // Store the result from stack top for later retrieval
-        if (lua_isnil(m_lua_state, -1)) {
-            m_has_result = false;
-        } else if (lua_isboolean(m_lua_state, -1)) {
-            m_has_result = true;
-            m_bool_result = lua_toboolean(m_lua_state, -1) != 0;
-            m_int_result = m_bool_result ? 1 : 0;
-            m_num_result = m_bool_result ? 1.0 : 0.0;
+        if (lua_isboolean(m_lua_state, -1)) {
+            m_result = lua_toboolean(m_lua_state, -1) != 0;
         } else if (lua_isnumber(m_lua_state, -1)) {
-            m_has_result = true;
-            m_num_result = lua_tonumber(m_lua_state, -1);
-            m_int_result = lua_tointeger(m_lua_state, -1);
-            m_bool_result = m_int_result != 0;
+            m_result = lua_tonumber(m_lua_state, -1);
         } else if (lua_isstring(m_lua_state, -1)) {
-            m_has_result = true;
             size_t      len = 0;
             const char* s = lua_tolstring(m_lua_state, -1, &len);
-            m_string_result.assign(s, len);
+            m_result = std::string(s, len);
         }
         lua_pop(m_lua_state, 1); // pop result
 
@@ -229,67 +212,97 @@ namespace mge::lua {
 
     bool lua_invocation_context::get_bool_result()
     {
-        return m_bool_result;
+        if (auto* v = std::get_if<bool>(&m_result)) {
+            return *v;
+        }
+        if (auto* v = std::get_if<lua_Integer>(&m_result)) {
+            return *v != 0;
+        }
+        if (auto* v = std::get_if<lua_Number>(&m_result)) {
+            return *v != 0.0;
+        }
+        return false;
     }
 
     int8_t lua_invocation_context::get_int8_t_result()
     {
-        return static_cast<int8_t>(m_int_result);
+        return static_cast<int8_t>(get_int64_t_result());
     }
 
     uint8_t lua_invocation_context::get_uint8_t_result()
     {
-        return static_cast<uint8_t>(m_int_result);
+        return static_cast<uint8_t>(get_int64_t_result());
     }
 
     int16_t lua_invocation_context::get_int16_t_result()
     {
-        return static_cast<int16_t>(m_int_result);
+        return static_cast<int16_t>(get_int64_t_result());
     }
 
     uint16_t lua_invocation_context::get_uint16_t_result()
     {
-        return static_cast<uint16_t>(m_int_result);
+        return static_cast<uint16_t>(get_int64_t_result());
     }
 
     int32_t lua_invocation_context::get_int32_t_result()
     {
-        return static_cast<int32_t>(m_int_result);
+        return static_cast<int32_t>(get_int64_t_result());
     }
 
     uint32_t lua_invocation_context::get_uint32_t_result()
     {
-        return static_cast<uint32_t>(m_int_result);
+        return static_cast<uint32_t>(get_int64_t_result());
     }
 
     int64_t lua_invocation_context::get_int64_t_result()
     {
-        return static_cast<int64_t>(m_int_result);
+        if (auto* v = std::get_if<lua_Integer>(&m_result)) {
+            return static_cast<int64_t>(*v);
+        }
+        if (auto* v = std::get_if<lua_Number>(&m_result)) {
+            return static_cast<int64_t>(*v);
+        }
+        if (auto* v = std::get_if<bool>(&m_result)) {
+            return *v ? 1 : 0;
+        }
+        return 0;
     }
 
     uint64_t lua_invocation_context::get_uint64_t_result()
     {
-        return static_cast<uint64_t>(m_int_result);
+        return static_cast<uint64_t>(get_int64_t_result());
     }
 
     float lua_invocation_context::get_float_result()
     {
-        return static_cast<float>(m_num_result);
+        return static_cast<float>(get_double_result());
     }
 
     double lua_invocation_context::get_double_result()
     {
-        return static_cast<double>(m_num_result);
+        if (auto* v = std::get_if<lua_Number>(&m_result)) {
+            return static_cast<double>(*v);
+        }
+        if (auto* v = std::get_if<lua_Integer>(&m_result)) {
+            return static_cast<double>(*v);
+        }
+        if (auto* v = std::get_if<bool>(&m_result)) {
+            return *v ? 1.0 : 0.0;
+        }
+        return 0.0;
     }
 
     long double lua_invocation_context::get_long_double_result()
     {
-        return static_cast<long double>(m_num_result);
+        return static_cast<long double>(get_double_result());
     }
 
     std::string lua_invocation_context::get_string_result()
     {
-        return m_string_result;
+        if (auto* v = std::get_if<std::string>(&m_result)) {
+            return *v;
+        }
+        return {};
     }
 
 } // namespace mge::lua

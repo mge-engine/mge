@@ -6,6 +6,8 @@
 #include "mge/core/trace.hpp"
 #include "mge/reflection/invocation_context.hpp"
 
+#include <string>
+#include <variant>
 #include <vector>
 
 namespace mge::lua {
@@ -69,37 +71,18 @@ namespace mge::lua {
         std::string get_string_result() override;
 
     private:
-        /**
-         * @brief Stored argument for deferred pushing to Lua stack.
-         */
-        struct stored_argument
-        {
-            enum class arg_type
-            {
-                BOOL,
-                INTEGER,
-                NUMBER,
-                STRING
-            };
+        using lua_value =
+            std::variant<std::monostate, bool, lua_Integer, lua_Number,
+                         std::string>;
 
-            arg_type    type;
-            bool        bool_val;
-            lua_Integer int_val;
-            lua_Number  num_val;
-            std::string str_val;
-        };
-
+        void push_value(const lua_value& v);
         void ensure_argument_slot(size_t index);
 
-        lua_State*                   m_lua_state;
-        int                          m_class_ref;
-        int                          m_self_ref;
-        std::vector<stored_argument> m_arguments;
-        bool                         m_has_result{false};
-        lua_Integer                  m_int_result{0};
-        lua_Number                   m_num_result{0.0};
-        bool                         m_bool_result{false};
-        std::string                  m_string_result;
+        lua_State*              m_lua_state;
+        int                     m_class_ref;
+        int                     m_self_ref;
+        std::vector<lua_value>  m_arguments;
+        lua_value               m_result;
     };
 
 } // namespace mge::lua
