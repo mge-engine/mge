@@ -7,6 +7,12 @@ SET(LUA_TEST_SOURCES
     test_context.cpp
 )
 
+SET(LUA_INVOCATION_TEST_SOURCES
+    test_invocation_context.cpp
+    ../lua_invocation_context.cpp
+    ../lua_error.cpp
+)
+
 SET(LUA_TESTS
     test001_smoke.lua 
     test002_std.lua
@@ -15,6 +21,7 @@ SET(LUA_TESTS
     test005_proxy.lua
     test006_function.lua
     test007_component.lua
+    test008_proxy_dispatch.lua
 )
 
 COPY_FILE(unittest.lua "${CMAKE_BINARY_DIR}/unittest.lua")
@@ -48,6 +55,14 @@ MGE_TEST(
     NOMAIN
     LIBRARIES   mgescript mgereflection mgeapplication mgecore
 )
+
+MGE_TEST(
+    TARGET      test_lua_invocation_context
+    SOURCES     ${LUA_INVOCATION_TEST_SOURCES}
+    LIBRARIES   mgereflection mgecore PkgConfig::LUAJIT
+)
+
+TARGET_INCLUDE_DIRECTORIES(test_lua_invocation_context PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 ADD_CUSTOM_TARGET(run-lua-tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R "lua"

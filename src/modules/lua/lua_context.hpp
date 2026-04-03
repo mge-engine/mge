@@ -39,6 +39,7 @@ namespace mge::lua {
         void register_component_function();
 
         static int component_call(lua_State* L);
+        static int create_component_call(lua_State* L);
 
         lua_engine* m_engine;
         lua_State*  m_lua_state;

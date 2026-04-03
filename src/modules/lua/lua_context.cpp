@@ -4,6 +4,7 @@
 #include "lua_context.hpp"
 #include "lua_binder.hpp"
 #include "lua_error.hpp"
+#include "lua_invocation_context.hpp"
 #include "mge/core/line_editor.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/reflection/module.hpp"
@@ -98,9 +99,9 @@ namespace mge::lua {
             void shared_ptr_result(std::shared_ptr<void>) override { mge::crash(); }
             void primitive_vector_result(const void*, size_t, const std::type_index&) override { mge::crash(); }
             void primitive_vector_parameter(size_t, void*, const std::type_index&) override { mge::crash(); }
-            void exception_thrown(const mge::exception&) override { mge::crash(); }
-            void exception_thrown(const std::exception&) override { mge::crash(); }
-            void exception_thrown() override { mge::crash(); }
+            void exception_thrown(const mge::exception& ex) override { throw; }
+            void exception_thrown(const std::exception& ex) override { throw; }
+            void exception_thrown() override { throw; }
             // clang-format on
         private:
             void* m_ptr;
@@ -192,6 +193,13 @@ namespace mge::lua {
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &lua_context::component_call, 1);
         lua_setfield(L, -2, "register_component");
+
+        // set mge.create_component = closure(create_component_call,
+        // upvalue=this)
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &lua_context::create_component_call, 1);
+        lua_setfield(L, -2, "create_component");
+
         lua_pop(L, 1); // pop mge table
         MGE_DEBUG_TRACE(LUA, "Registered component function");
     }
@@ -207,7 +215,9 @@ namespace mge::lua {
             mge::dynamic_implementation_registry_entry>>& entries,
         const mge::reflection::type_details*              details,
         const mge::reflection::type_details*              proxy_type,
-        const char*                                       impl_name_cstr)
+        const char*                                       impl_name_cstr,
+        lua_State*                                        L,
+        int                                               class_ref)
     {
         const auto& proxy_details =
             std::get<mge::reflection::type_details::class_specific_details>(
@@ -226,6 +236,12 @@ namespace mge::lua {
                                           << "' has no default constructor";
         }
 
+        // get the set_context function from interface type details
+        const auto& interface_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details->specific_details);
+        auto set_context_fn = interface_details.set_context;
+
         std::string impl_name(impl_name_cstr);
         std::string component_name(details->name);
 
@@ -235,13 +251,36 @@ namespace mge::lua {
 
         auto factory = [ctor_fn,
                         raw_dtor,
-                        proxy_size]() -> std::shared_ptr<mge::component_base> {
+                        proxy_size,
+                        set_context_fn,
+                        L,
+                        class_ref]()
+            -> std::shared_ptr<mge::component_base> {
             void*                raw = ::operator new(proxy_size);
             default_ctor_context ctx(raw);
             ctor_fn(ctx);
+
+            // Create a fresh registry ref to the class table for this
+            // instance (each invocation_context owns and unrefs its own).
+            lua_rawgeti(L, LUA_REGISTRYINDEX, class_ref);
+            int instance_class_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+            // Create self table for this instance
+            lua_newtable(L);
+            int self_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+            // Create invocation context and wire it to the proxy
+            auto* invocation_ctx =
+                new lua_invocation_context(L, instance_class_ref, self_ref);
+
+            if (set_context_fn) {
+                set_context_fn(raw, invocation_ctx);
+            }
+
             auto shared = std::shared_ptr<mge::component_base>(
                 static_cast<mge::component_base*>(raw),
-                [raw_dtor](mge::component_base* p) {
+                [raw_dtor, invocation_ctx](mge::component_base* p) {
+                    delete invocation_ctx;
                     if (raw_dtor) {
                         raw_dtor(p);
                     }
@@ -327,11 +366,62 @@ namespace mge::lua {
         const char* impl_name_cstr = lua_tostring(L, -1);
         lua_pop(L, 1);
 
+        // Create a registry reference to the Lua class table (arg2)
+        // so it survives beyond this call for use in the factory lambda.
+        lua_pushvalue(L, 2);
+        int class_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
         do_register_component(self->m_component_entries,
                               details,
                               proxy_type,
-                              impl_name_cstr);
+                              impl_name_cstr,
+                              L,
+                              class_ref);
         return 0;
+    }
+
+    int lua_context::create_component_call(lua_State* L)
+    {
+        // arg1: base type table (e.g. mge.application)
+        // arg2: implementation name (string, e.g. "my_lua_app")
+        // returns: shared_ptr userdata of the created component
+        if (!lua_istable(L, 1)) {
+            return luaL_error(
+                L,
+                "mge.create_component arg1: expected a type table");
+        }
+        if (!lua_isstring(L, 2)) {
+            return luaL_error(
+                L,
+                "mge.create_component arg2: expected a string");
+        }
+
+        lua_getfield(L, 1, "__details__");
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            lua_touserdata(L, -1));
+        lua_pop(L, 1);
+
+        if (!details || !details->is_class) {
+            return luaL_error(
+                L,
+                "mge.create_component arg1: expected a class type table");
+        }
+
+        const char* impl_name = lua_tostring(L, 2);
+
+        auto instance =
+            mge::component_base::create(details->name, impl_name);
+        if (!instance) {
+            return luaL_error(L,
+                              "mge.create_component: failed to create "
+                              "implementation '%s'",
+                              impl_name);
+        }
+
+        lua_binder::create_shared_instance(L,
+                                           details,
+                                           std::move(instance));
+        return 1;
     }
 
     void lua_context::create_helper_module()

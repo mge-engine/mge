@@ -13,6 +13,8 @@
 
 namespace mge::reflection {
 
+    class invocation_context;
+
     class MGEREFLECTION_EXPORT type_details
     {
     public:
@@ -105,6 +107,12 @@ namespace mge::reflection {
             type_details_ref proxy_type;
             // interface type this proxy type implements
             type_details_ref interface_type;
+
+            // function to call set_context on a proxy instance
+            // signature: void(void* proxy_ptr, invocation_context* ctx)
+            using set_context_function =
+                std::function<void(void*, invocation_context*)>;
+            set_context_function set_context;
 
             void add_base(const type_details_ref& base)
             {

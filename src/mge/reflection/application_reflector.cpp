@@ -69,6 +69,9 @@ namespace mge::reflection {
             auto mge = module("mge");
             mge(type<mge::application>()
                     .static_method("instance", &mge::application::instance)
+                    .method("setup", &mge::application::setup)
+                    .method("teardown", &mge::application::teardown)
+                    .method("run", &mge::application::run)
                     .proxy_type<application_proxy>());
         }
 
