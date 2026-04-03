@@ -15,6 +15,7 @@
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/vertex_format.hpp"
 #include "mge/graphics/window.hpp"
+#include "mge/input/input_handler.hpp"
 
 namespace mge::reflection {
 
@@ -64,7 +65,14 @@ namespace mge::reflection {
                     .method(
                         "render_context",
                         static_cast<mge::render_context& (mge::window::*)()>(
-                            &mge::window::render_context)));
+                            &mge::window::render_context))
+                    .method("set_close_listener",
+                            &mge::window::set_close_listener)
+                    .method("add_key_action_handler",
+                            static_cast<mge::input_handler::key_type (
+                                mge::window::*)(
+                                const mge::input_handler::key_action_handler&)>(
+                                &mge::input_handler::add_key_action_handler)));
             mge(type<mge::render_context>()
                     .method("pass", &mge::render_context::pass)
                     .method("frame", &mge::render_context::frame));

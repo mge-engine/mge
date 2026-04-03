@@ -16,9 +16,15 @@ namespace mge::reflection {
     template <typename T>
     inline T function_parameter_helper(call_context& ctx, size_t index)
     {
+        using bare = std::remove_cv_t<std::remove_reference_t<T>>;
         if constexpr (std::is_pointer_v<T>) {
             return static_cast<T>(
                 ctx.pointer_parameter(index, *get_or_create_type_details<T>()));
+        } else if constexpr (mge::is_callable_v<bare>) {
+            void* ptr = ctx.callable_parameter(
+                index,
+                std::type_index(typeid(bare)));
+            return *static_cast<bare*>(ptr);
         } else if constexpr (std::is_lvalue_reference_v<T> &&
                              std::is_class_v<std::remove_cv_t<
                                  std::remove_reference_t<T>>> &&

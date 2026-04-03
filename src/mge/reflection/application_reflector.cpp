@@ -74,6 +74,8 @@ namespace mge::reflection {
                     .method("run", &mge::application::run)
                     .method("set_quit", &mge::application::set_quit)
                     .method("is_quit", &mge::application::is_quit)
+                    .method("add_redraw_listener",
+                            &mge::application::add_redraw_listener)
                     .proxy_type<application_proxy>());
         }
 

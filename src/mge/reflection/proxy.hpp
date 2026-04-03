@@ -53,6 +53,14 @@ namespace mge::reflection {
             m_context = context;
         }
 
+        /**
+         * Get the invocation context.
+         */
+        invocation_context* context() const
+        {
+            return m_context;
+        }
+
     protected:
         invocation_context* m_context{nullptr};
     };

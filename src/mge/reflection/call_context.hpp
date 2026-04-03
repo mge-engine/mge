@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <typeindex>
+#include <vector>
 
 namespace mge::reflection {
 
@@ -137,6 +138,21 @@ namespace mge::reflection {
         primitive_vector_parameter(size_t                 index,
                                    void*                  out_vector,
                                    const std::type_index& element_type) = 0;
+
+        /**
+         * Extract a callable parameter (std::function) from the call.
+         * Returns a pointer to a call_context-owned object of the
+         * callable type identified by @p callable_type.
+         * The returned pointer is valid for the lifetime of the
+         * call_context.
+         *
+         * @param index parameter index
+         * @param callable_type type_index of the std::function<Sig> type
+         * @return pointer to the callable object
+         */
+        virtual void*
+        callable_parameter(size_t                 index,
+                           const std::type_index& callable_type) = 0;
 
         template <typename T> void result(T value)
         {

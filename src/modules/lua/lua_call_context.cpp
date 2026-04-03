@@ -11,6 +11,30 @@
 
 namespace mge::lua {
 
+    std::unordered_map<std::type_index,
+                       lua_call_context::callable_factory_fn>&
+    lua_call_context::callable_factories()
+    {
+        static std::unordered_map<std::type_index, callable_factory_fn>
+            factories;
+        return factories;
+    }
+
+    void* lua_call_context::callable_parameter(
+        size_t index, const std::type_index& callable_type)
+    {
+        auto& factories = callable_factories();
+        auto  it = factories.find(callable_type);
+        if (it == factories.end()) {
+            MGE_THROW(mge::illegal_state)
+                << "No callable wrapper registered for type: "
+                << callable_type.name();
+        }
+        auto ptr = it->second(m_lua_state, stack_index(index));
+        m_callable_storage.push_back(ptr);
+        return ptr.get();
+    }
+
     lua_call_context::lua_call_context(lua_State* L,
                                        int        param_start,
                                        void*      this_ptr)

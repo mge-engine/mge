@@ -3,10 +3,13 @@
 // All rights reserved.
 #include "lua_context.hpp"
 #include "lua_binder.hpp"
+#include "lua_call_context.hpp"
 #include "lua_error.hpp"
 #include "lua_invocation_context.hpp"
 #include "mge/core/line_editor.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/core/void_function.hpp"
+#include "mge/input/input_handler.hpp"
 #include "mge/reflection/module.hpp"
 #include "mge/reflection/module_details.hpp"
 #include "mge/reflection/type_details.hpp"
@@ -99,6 +102,7 @@ namespace mge::lua {
             void shared_ptr_result(std::shared_ptr<void>) override { mge::crash(); }
             void primitive_vector_result(const void*, size_t, const std::type_index&) override { mge::crash(); }
             void primitive_vector_parameter(size_t, void*, const std::type_index&) override { mge::crash(); }
+            void* callable_parameter(size_t, const std::type_index&) override { mge::crash(); }
             void exception_thrown(const mge::exception& ex) override { throw; }
             void exception_thrown(const std::exception& ex) override { throw; }
             void exception_thrown() override { throw; }
@@ -112,12 +116,14 @@ namespace mge::lua {
         : m_engine(engine)
         , m_lua_state(nullptr)
     {
+        std::cerr << "CTX: ctor start" << std::endl;
         MGE_DEBUG_TRACE(LUA, "Creating new Lua state");
         m_lua_state = luaL_newstate();
         CHECK_STATUS(m_lua_state ? LUA_OK : LUA_ERRMEM, m_lua_state);
         MGE_DEBUG_TRACE(LUA, "Lua state created successfully");
         luaL_openlibs(m_lua_state);
         MGE_DEBUG_TRACE(LUA, "Lua libs opened successfully");
+        std::cerr << "CTX: ctor done" << std::endl;
     }
 
     lua_context::~lua_context()
@@ -144,13 +150,30 @@ namespace mge::lua {
     {
         reflection::module root_module = reflection::module::root();
         MGE_DEBUG_TRACE(LUA, "Compute binding information");
+        std::cerr << "BIND: start" << std::endl;
+
+        // Register callable type wrappers for std::function signatures
+        // used in reflected methods
+        lua_call_context::register_callable_type<void>();
+        std::cerr << "BIND: registered void" << std::endl;
+        lua_call_context::register_callable_type<bool,
+                                                 mge::key,
+                                                 mge::key_action,
+                                                 const mge::modifier&>();
+        std::cerr << "BIND: registered key_action" << std::endl;
+        lua_call_context::register_callable_type<void, uint64_t, double>();
+        std::cerr << "BIND: registered redraw" << std::endl;
+
         create_helper_module();
+        std::cerr << "BIND: helper module created" << std::endl;
 
         lua_binder b(this);
         root_module.details()->apply(b);
+        std::cerr << "BIND: binder applied" << std::endl;
 
         register_class_function();
         register_component_function();
+        std::cerr << "BIND: done" << std::endl;
     }
 
     void lua_context::register_class_function()
@@ -412,7 +435,35 @@ namespace mge::lua {
                               impl_name);
         }
 
+        // Get the raw pointer before moving
+        void* raw_ptr = instance.get();
+
         lua_binder::create_shared_instance(L, details, std::move(instance));
+
+        // If the type has a proxy with an invocation context, update
+        // the self_ref to point to the actual userdata (now on top of
+        // the Lua stack) so that Lua overrides receive it as 'self'.
+        // Uses a weak table to avoid circular reference preventing GC.
+        const auto& class_details =
+            std::get<mge::reflection::type_details::class_specific_details>(
+                details->specific_details);
+        if (class_details.get_context) {
+            auto* ctx = class_details.get_context(raw_ptr);
+            if (ctx) {
+                auto* lua_ctx = static_cast<lua_invocation_context*>(ctx);
+                // Create a weak-value table: {[1] = userdata}
+                lua_newtable(L); // weak table
+                lua_newtable(L); // metatable
+                lua_pushstring(L, "v");
+                lua_setfield(L, -2, "__mode");
+                lua_setmetatable(L, -2);
+                lua_pushvalue(L, -2);  // copy userdata
+                lua_rawseti(L, -2, 1); // weak_table[1] = userdata
+                int weak_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+                lua_ctx->set_self_ref(weak_ref);
+            }
+        }
+
         return 1;
     }
 

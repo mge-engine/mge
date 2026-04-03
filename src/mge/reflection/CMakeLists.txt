@@ -61,7 +61,7 @@ TARGET_LINK_LIBRARIES(mge_module_reflection_core mgereflection mgecore)
 SET(mge_module_reflection_graphics_SOURCES
     graphics_reflector.cpp)
 ADD_LIBRARY(mge_module_reflection_graphics MODULE ${mge_module_reflection_graphics_SOURCES})
-TARGET_LINK_LIBRARIES(mge_module_reflection_graphics mgereflection mgecore mgegraphics)
+TARGET_LINK_LIBRARIES(mge_module_reflection_graphics mgereflection mgecore mgegraphics mgeinput)
 
 SET(mge_module_reflection_math_SOURCES
     math_reflector.cpp)

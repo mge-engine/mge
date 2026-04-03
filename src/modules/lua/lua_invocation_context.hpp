@@ -37,6 +37,13 @@ namespace mge::lua {
 
         bool call_implemented(const char* method) override;
 
+        /**
+         * @brief Replace the self reference with a new registry ref
+         * to a weak table containing the userdata.
+         * The weak table prevents circular references.
+         */
+        void set_self_ref(int new_self_ref);
+
     protected:
         void store_bool_argument(size_t index, bool value) override;
         void store_int8_t_argument(size_t index, int8_t value) override;
@@ -71,18 +78,17 @@ namespace mge::lua {
         std::string get_string_result() override;
 
     private:
-        using lua_value =
-            std::variant<std::monostate, bool, lua_Integer, lua_Number,
-                         std::string>;
+        using lua_value = std::
+            variant<std::monostate, bool, lua_Integer, lua_Number, std::string>;
 
         void push_value(const lua_value& v);
         void ensure_argument_slot(size_t index);
 
-        lua_State*              m_lua_state;
-        int                     m_class_ref;
-        int                     m_self_ref;
-        std::vector<lua_value>  m_arguments;
-        lua_value               m_result;
+        lua_State*             m_lua_state;
+        int                    m_class_ref;
+        int                    m_self_ref;
+        std::vector<lua_value> m_arguments;
+        lua_value              m_result;
     };
 
 } // namespace mge::lua

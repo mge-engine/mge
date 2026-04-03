@@ -23,6 +23,7 @@ SET(LUA_TESTS
     test007_component.lua
     test008_proxy_dispatch.lua
     test009_reflection_bindings.lua
+    test010_callbacks.lua
 )
 
 COPY_FILE(unittest.lua "${CMAKE_BINARY_DIR}/unittest.lua")

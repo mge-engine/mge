@@ -114,6 +114,10 @@ namespace mge::reflection {
                 std::function<void(void*, invocation_context*)>;
             set_context_function set_context;
 
+            using get_context_function =
+                std::function<invocation_context*(void*)>;
+            get_context_function get_context;
+
             void add_base(const type_details_ref& base)
             {
                 auto it = std::find(bases.begin(), bases.end(), base);

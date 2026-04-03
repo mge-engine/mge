@@ -70,6 +70,10 @@ namespace mge::reflection {
                      void*                  out_vector,
                      const std::type_index& element_type),
                     (override));
+        MOCK_METHOD(void*,
+                    callable_parameter,
+                    (size_t index, const std::type_index& callable_type),
+                    (override));
         MOCK_METHOD(void,
                     exception_thrown,
                     (const mge::exception& ex),

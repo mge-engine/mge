@@ -975,6 +975,9 @@ namespace mge::reflection {
             specific.set_context = [](void* obj, invocation_context* ctx) {
                 static_cast<Proxy*>(obj)->set_context(ctx);
             };
+            specific.get_context = [](void* obj) -> invocation_context* {
+                return static_cast<Proxy*>(obj)->context();
+            };
             pt.details()->class_specific().interface_type =
                 get_or_create_type_details<T>();
             return *this;

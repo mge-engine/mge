@@ -30,6 +30,14 @@ namespace mge::lua {
         }
     }
 
+    void lua_invocation_context::set_self_ref(int new_self_ref)
+    {
+        if (m_self_ref != LUA_NOREF) {
+            luaL_unref(m_lua_state, LUA_REGISTRYINDEX, m_self_ref);
+        }
+        m_self_ref = new_self_ref;
+    }
+
     bool lua_invocation_context::call_implemented(const char* method)
     {
         // Look up method in the class table
@@ -172,8 +180,10 @@ namespace mge::lua {
             return call_result_type::CALL_NOT_FOUND;
         }
 
-        // Push self as first argument
+        // Push self as first argument (stored in weak table at index 1)
         lua_rawgeti(m_lua_state, LUA_REGISTRYINDEX, m_self_ref);
+        lua_rawgeti(m_lua_state, -1, 1);
+        lua_remove(m_lua_state, -2); // remove weak table, keep userdata
 
         // Push stored arguments
         int nargs = 1; // self

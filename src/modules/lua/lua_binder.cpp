@@ -4,6 +4,7 @@
 #include "lua_binder.hpp"
 #include "lua_call_context.hpp"
 #include "lua_context.hpp"
+#include "mge/core/callable.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/reflection/function_details.hpp"
 #include "mge/reflection/module_details.hpp"
@@ -263,6 +264,13 @@ namespace mge::lua {
                 ti == std::type_index(typeid(std::string))) {
                 return lua_type_at == LUA_TSTRING;
             }
+            // callable types (std::function) map to Lua functions
+            {
+                auto& factories = lua_call_context::callable_factories();
+                if (factories.count(ti)) {
+                    return lua_type_at == LUA_TFUNCTION;
+                }
+            }
             // enum types are stored as integers in Lua
             const auto& type_ref = mge::reflection::type_details::get(tid);
             if (type_ref && type_ref->is_enum) {
@@ -284,9 +292,9 @@ namespace mge::lua {
          * (which are treated as foreign pointers).
          */
         void resolve_return_type(
-            const mge::reflection::type_identifier&  return_type_id,
-            const mge::reflection::type_details*&    pointer_element_type,
-            const mge::reflection::type_details*&    shared_ptr_element_type)
+            const mge::reflection::type_identifier& return_type_id,
+            const mge::reflection::type_details*&   pointer_element_type,
+            const mge::reflection::type_details*&   shared_ptr_element_type)
         {
             pointer_element_type = nullptr;
             shared_ptr_element_type = nullptr;
@@ -294,16 +302,14 @@ namespace mge::lua {
             const auto& return_type_details =
                 mge::reflection::type_details::get(return_type_id);
             if (return_type_details && return_type_details->is_pointer) {
-                const auto& ptr_details =
-                    std::get<mge::reflection::type_details::
-                                 pointer_specific_details>(
-                        return_type_details->specific_details);
+                const auto& ptr_details = std::get<
+                    mge::reflection::type_details::pointer_specific_details>(
+                    return_type_details->specific_details);
                 if (ptr_details.element_type &&
                     ptr_details.element_type->is_class) {
                     pointer_element_type = ptr_details.element_type.get();
                 }
-            } else if (return_type_details &&
-                       return_type_details->is_class) {
+            } else if (return_type_details && return_type_details->is_class) {
                 const auto& ret_class = std::get<
                     mge::reflection::type_details::class_specific_details>(
                     return_type_details->specific_details);
