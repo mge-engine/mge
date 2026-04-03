@@ -48,8 +48,8 @@ namespace mge::reflection {
             CALL_FAILED = 2     //!< call failed, e.g. exception was thrown
         };
 
-        invocation_context() = default;
-        virtual ~invocation_context() = default;
+        invocation_context();
+        virtual ~invocation_context();
 
         /**
          * @brief Check if a method is implemented.

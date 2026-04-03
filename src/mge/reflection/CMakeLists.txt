@@ -10,6 +10,7 @@ SET(mgereflection_sources
     function_details.cpp
     type_identifier.cpp
     call_context.cpp
+    invocation_context.cpp
     
     reflector.cpp
     std_reflector.cpp

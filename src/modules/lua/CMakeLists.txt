@@ -6,6 +6,7 @@ SET(mge_lua_module_SOURCES
     lua_context.cpp
     lua_binder.cpp
     lua_call_context.cpp
+    lua_invocation_context.cpp
     lua_error.cpp
 )
 
