@@ -76,17 +76,22 @@ FUNCTION(MGE_TEST)
     IF(MGE_TEST_DISABLED)
         MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to DISABLED flag")
     ELSE()
+        IF(APPLE)
+            SET(_TEST_COMMAND lldb --batch -o run --one-line-on-crash "bt all" --one-line-on-crash quit -- ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml)
+        ELSE()
+            SET(_TEST_COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml)
+        ENDIF()
         IF(MGE_TEST_NEEDSDISPLAY)
             IF(HEADLESS_ENVIRONMENT)
                 MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to headless environment")
             ELSE()
                 ADD_TEST(NAME ${MGE_TEST_TARGET}
-                        COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
+                        COMMAND ${_TEST_COMMAND}
                         WORKING_DIRECTORY "${_BINARY_DIR}")
             ENDIF()
         ELSE()
             ADD_TEST(NAME ${MGE_TEST_TARGET}
-                    COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
+                    COMMAND ${_TEST_COMMAND}
                     WORKING_DIRECTORY "${_BINARY_DIR}")
         ENDIF()
         IF(MGE_TEST_SHOWTRACE)

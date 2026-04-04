@@ -41,7 +41,7 @@ FOREACH(LUA_TEST ${LUA_TESTS})
     GET_FILENAME_COMPONENT(LUA_TEST_NAME ${LUA_TEST} NAME_WE)
     IF(APPLE)
         ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
-            COMMAND lldb -b -o run -o "bt all" -o quit
+            COMMAND lldb --batch -o run --one-line-on-crash "bt all" --one-line-on-crash quit
                 -- $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
