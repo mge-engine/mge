@@ -240,7 +240,10 @@ namespace mge {
             register_implementation(this);
         }
 
-        ~dynamic_implementation_registry_entry() override = default;
+        ~dynamic_implementation_registry_entry() override
+        {
+            unregister();
+        }
 
         dynamic_implementation_registry_entry(
             const dynamic_implementation_registry_entry&) = delete;
@@ -249,7 +252,10 @@ namespace mge {
 
         void unregister()
         {
-            unregister_implementation(this);
+            if (m_registered) {
+                unregister_implementation(this);
+                m_registered = false;
+            }
         }
 
         std::string_view component_name() const noexcept override
@@ -289,6 +295,7 @@ namespace mge {
         std::string     m_component_name;
         std::string     m_name;
         std::string     m_alias_names;
+        bool            m_registered{true};
     };
 
     template <typename Class> class component : public component_base
