@@ -77,6 +77,10 @@ namespace mge::reflection {
                 return int64_t_parameter(index);
             } else if constexpr (std::is_same_v<T, uint64_t>) {
                 return uint64_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, long>) {
+                return static_cast<long>(int64_t_parameter(index));
+            } else if constexpr (std::is_same_v<T, unsigned long>) {
+                return static_cast<unsigned long>(uint64_t_parameter(index));
             } else if constexpr (std::is_same_v<T, float>) {
                 return float_parameter(index);
             } else if constexpr (std::is_same_v<T, double>) {
