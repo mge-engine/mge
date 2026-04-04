@@ -51,6 +51,7 @@ namespace mge {
          */
         singleton()
             : m_instance(nullptr)
+            , m_destroyed(false)
         {}
 
         /**
@@ -60,18 +61,23 @@ namespace mge {
          */
         ~singleton()
         {
+            m_destroyed.store(true);
             m_instance.store(nullptr);
         }
 
         /**
          * Access the contained object.
-         * @return contained object
+         * @return contained object, nullptr if destroyed
          */
         inline pointer ptr()
         {
             T* p = m_instance.load();
             if (p) {
                 return p;
+            }
+
+            if (m_destroyed.load()) {
+                return nullptr;
             }
 
             p = new T();
@@ -123,7 +129,8 @@ namespace mge {
         }
 
     private:
-        std::atomic<T*> m_instance;
+        std::atomic<T*>   m_instance;
+        std::atomic<bool> m_destroyed;
     };
 
 } // namespace mge
