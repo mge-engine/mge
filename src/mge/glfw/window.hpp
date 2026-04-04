@@ -5,6 +5,7 @@
 #include "mge/application/application.hpp"
 #include "mge/graphics/window.hpp"
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 namespace mge {
@@ -15,7 +16,8 @@ namespace mge {
         public:
             window(mge::render_system&   render_system,
                    const mge::extent&    extent,
-                   const window_options& options);
+                   const window_options& options,
+                   int                   client_api = GLFW_NO_API);
             ~window();
 
             GLFWwindow* handle() const noexcept

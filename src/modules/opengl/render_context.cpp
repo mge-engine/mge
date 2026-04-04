@@ -26,6 +26,9 @@
 typedef HGLRC(WINAPI* PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC   hDC,
                                                          HGLRC hShareContext,
                                                          const int* attribList);
+#else
+#    define GLFW_INCLUDE_NONE
+#    include <GLFW/glfw3.h>
 #endif
 
 namespace mge {
@@ -289,7 +292,61 @@ namespace mge::opengl {
         s_glinfo.ptr();
     }
 #else
-#    error Missing port
+    render_context::render_context(mge::opengl::render_system& render_system_,
+                                   mge::opengl::window*        context_window)
+        : mge::render_context(render_system_, context_window->extent())
+        , m_window(context_window)
+        , m_glfw_window(context_window->handle())
+    {
+        glfwMakeContextCurrent(m_glfw_window);
+        init_gl3w();
+        collect_opengl_info();
+
+        const auto& exts = gl_info().extensions;
+        m_conservative_rasterization_supported =
+            exts.find("GL_NV_conservative_raster") != exts.end() ||
+            exts.find("GL_INTEL_conservative_rasterization") != exts.end();
+        if (m_conservative_rasterization_supported) {
+            MGE_INFO_TRACE(OPENGL, "Conservative rasterization supported");
+        }
+
+        if (gl_info().major_version > 4 ||
+            (gl_info().major_version == 4 && gl_info().minor_version >= 5)) {
+            MGE_INFO_TRACE(
+                OPENGL,
+                "Setting clip control: GL_LOWER_LEFT, GL_ZERO_TO_ONE");
+            glClipControl(GL_LOWER_LEFT, GL_ZERO_TO_ONE);
+            CHECK_OPENGL_ERROR(glClipControl);
+        } else {
+            MGE_WARNING_TRACE(OPENGL,
+                              "OpenGL {}.{} does not support glClipControl "
+                              "(requires 4.5+)",
+                              gl_info().major_version,
+                              gl_info().minor_version);
+        }
+    }
+
+    static bool s_gl3w_initialized = false;
+
+    void render_context::init_gl3w()
+    {
+        if (!s_gl3w_initialized) {
+            MGE_INFO_TRACE(OPENGL, "Initializing gl3w");
+            auto rc = gl3wInit();
+            if (rc) {
+                MGE_THROW(runtime_exception)
+                    << MGE_CALLED_FUNCTION(gl3wInit)
+                    << "Initializing gl3w library failed: " << rc;
+            }
+            s_gl3w_initialized = true;
+        }
+    }
+
+    void render_context::collect_opengl_info()
+    {
+        MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
+        s_glinfo.ptr();
+    }
 #endif
 
     render_context::~render_context()
@@ -556,77 +613,76 @@ namespace mge::opengl {
 
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
-        p.for_each_draw_command([this,
-                                 wh,
-                                 &blend_pass_needed,
-                                 &current_scissor,
-                                 &p](const program_handle&       program,
-                                     const vertex_buffer_handle& vertices,
-                                     const index_buffer_handle&  indices,
-                                     const mge::pipeline_state&  state,
-                                     mge::uniform_block*         ub,
-                                     mge::texture*               tex,
-                                     uint32_t                    index_count,
-                                     uint32_t                    index_offset,
-                                     const mge::rectangle&       cmd_scissor) {
-            blend_operation op = state.color_blend_operation();
-            if (op == blend_operation::NONE) {
-                const auto& effective =
-                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-                if (effective != current_scissor) {
-                    glScissor(static_cast<const GLint>(effective.left),
-                              wh - static_cast<const GLint>(effective.bottom),
-                              static_cast<const GLsizei>(effective.width()),
-                              static_cast<const GLsizei>(effective.height()));
-                    current_scissor = effective;
-                }
-                mge::cull_mode cull = state.cull_mode();
-                if (cull != mge::cull_mode::NONE) {
-                    glEnable(GL_CULL_FACE);
-                    CHECK_OPENGL_ERROR(glEnable);
-                    if (cull == mge::cull_mode::CLOCKWISE) {
-                        glCullFace(GL_FRONT);
-                    } else {
-                        glCullFace(GL_BACK);
+        p.for_each_draw_command(
+            [this, wh, &blend_pass_needed, &current_scissor, &p](
+                const program_handle&       program,
+                const vertex_buffer_handle& vertices,
+                const index_buffer_handle&  indices,
+                const mge::pipeline_state&  state,
+                mge::uniform_block*         ub,
+                mge::texture*               tex,
+                uint32_t                    index_count,
+                uint32_t                    index_offset,
+                const mge::rectangle&       cmd_scissor) {
+                blend_operation op = state.color_blend_operation();
+                if (op == blend_operation::NONE) {
+                    const auto& effective =
+                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                    if (effective != current_scissor) {
+                        glScissor(
+                            static_cast<const GLint>(effective.left),
+                            wh - static_cast<const GLint>(effective.bottom),
+                            static_cast<const GLsizei>(effective.width()),
+                            static_cast<const GLsizei>(effective.height()));
+                        current_scissor = effective;
                     }
-                    CHECK_OPENGL_ERROR(glCullFace);
+                    mge::cull_mode cull = state.cull_mode();
+                    if (cull != mge::cull_mode::NONE) {
+                        glEnable(GL_CULL_FACE);
+                        CHECK_OPENGL_ERROR(glEnable);
+                        if (cull == mge::cull_mode::CLOCKWISE) {
+                            glCullFace(GL_FRONT);
+                        } else {
+                            glCullFace(GL_BACK);
+                        }
+                        CHECK_OPENGL_ERROR(glCullFace);
+                    }
+                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
+                    CHECK_OPENGL_ERROR(glDepthFunc);
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_FALSE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
+                    bool conservative_raster_enabled =
+                        m_conservative_rasterization_supported &&
+                        state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
+                    if (conservative_raster_enabled) {
+                        glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glEnable);
+                    }
+                    draw_geometry(program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  ub,
+                                  tex,
+                                  index_count,
+                                  index_offset);
+                    if (conservative_raster_enabled) {
+                        glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                        CHECK_OPENGL_ERROR(glDisable);
+                    }
+                    if (!state.depth_write()) {
+                        glDepthMask(GL_TRUE);
+                        CHECK_OPENGL_ERROR(glDepthMask);
+                    }
+                    if (cull != mge::cull_mode::NONE) {
+                        glDisable(GL_CULL_FACE);
+                        CHECK_OPENGL_ERROR(glDisable);
+                    }
+                } else {
+                    blend_pass_needed = true;
                 }
-                glDepthFunc(depth_test_to_gl(state.depth_test_function()));
-                CHECK_OPENGL_ERROR(glDepthFunc);
-                if (!state.depth_write()) {
-                    glDepthMask(GL_FALSE);
-                    CHECK_OPENGL_ERROR(glDepthMask);
-                }
-                bool conservative_raster_enabled =
-                    m_conservative_rasterization_supported &&
-                    state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
-                if (conservative_raster_enabled) {
-                    glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                    CHECK_OPENGL_ERROR(glEnable);
-                }
-                draw_geometry(program.get(),
-                              vertices.get(),
-                              indices.get(),
-                              ub,
-                              tex,
-                              index_count,
-                              index_offset);
-                if (conservative_raster_enabled) {
-                    glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                    CHECK_OPENGL_ERROR(glDisable);
-                }
-                if (!state.depth_write()) {
-                    glDepthMask(GL_TRUE);
-                    CHECK_OPENGL_ERROR(glDepthMask);
-                }
-                if (cull != mge::cull_mode::NONE) {
-                    glDisable(GL_CULL_FACE);
-                    CHECK_OPENGL_ERROR(glDisable);
-                }
-            } else {
-                blend_pass_needed = true;
-            }
-        });
+            });
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
@@ -652,8 +708,7 @@ namespace mge::opengl {
                     if (effective != current_scissor) {
                         glScissor(
                             static_cast<const GLint>(effective.left),
-                            wh -
-                                static_cast<const GLint>(effective.bottom),
+                            wh - static_cast<const GLint>(effective.bottom),
                             static_cast<const GLsizei>(effective.width()),
                             static_cast<const GLsizei>(effective.height()));
                         current_scissor = effective;
@@ -742,7 +797,7 @@ namespace mge::opengl {
 #ifdef MGE_OS_WINDOWS
         SwapBuffers(m_hdc);
 #else
-#    error Missing port
+        glfwSwapBuffers(m_glfw_window);
 #endif
     }
 
@@ -751,8 +806,8 @@ namespace mge::opengl {
     {
         vao_key key = std::make_tuple(vb->buffer_name(), ib->buffer_name());
         GLuint  vao = 0;
-        glCreateVertexArrays(1, &vao);
-        CHECK_OPENGL_ERROR(glCreateVertexArrays);
+        glGenVertexArrays(1, &vao);
+        CHECK_OPENGL_ERROR(glGenVertexArrays);
         glBindVertexArray(vao);
         CHECK_OPENGL_ERROR(glBindVertexArray);
         glBindBuffer(GL_ARRAY_BUFFER, vb->buffer_name());

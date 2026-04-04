@@ -3,12 +3,8 @@
 # All rights reserved.
 
 IF(OpenGL_FOUND)
-    IF (NOT APPLE)
-        MESSAGE("-- OpenGL found and enabled")
-        ADD_SUBDIRECTORY(opengl)
-    ELSE()
-        MESSAGE("-- On Apple platform, skipping OpenGL render system")
-    ENDIF()
+    MESSAGE("-- OpenGL found and enabled")
+    ADD_SUBDIRECTORY(opengl)
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
 ENDIF()

@@ -6,13 +6,15 @@
 #include "mge/core/trace.hpp"
 
 namespace mge {
+    MGE_DEFINE_TRACE(GLFW);
     MGE_USE_TRACE(GLFW);
 
     namespace glfw {
 
         window::window(mge::render_system&   render_system,
                        const mge::extent&    ext,
-                       const window_options& options)
+                       const window_options& options,
+                       int                   client_api)
             : mge::window(render_system, ext, options)
             , m_handle(nullptr)
             , m_quit_listener(0)
@@ -24,7 +26,13 @@ namespace mge {
             }
 
             glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-            glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+            glfwWindowHint(GLFW_CLIENT_API, client_api);
+            if (client_api == GLFW_OPENGL_API) {
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+                glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+                glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+            }
 
             m_handle = glfwCreateWindow(static_cast<int>(ext.width),
                                         static_cast<int>(ext.height),

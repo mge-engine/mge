@@ -38,11 +38,11 @@ namespace mge {
     namespace win32 {}
     namespace platform = win32;
 #elif defined MGE_OS_LINUX
-    namespace linux {}
-    namespace platform = linux;
+    namespace glfw {}
+    namespace platform = glfw;
 #elif defined MGE_OS_MACOSX
-    namespace macosx {}
-    namespace platform = macosx;
+    namespace glfw {}
+    namespace platform = glfw;
 #else
 #    error Missing port.
 #endif

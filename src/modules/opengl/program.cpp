@@ -300,15 +300,12 @@ namespace mge::opengl {
 
     void program::collect_uniforms()
     {
-        m_uniforms.clear(); // Assuming m_uniforms is the member variable
+        m_uniforms.clear();
         m_sampler_locations.clear();
 
         GLint num_uniforms = 0;
-        glGetProgramInterfaceiv(m_program,
-                                GL_UNIFORM,
-                                GL_ACTIVE_RESOURCES,
-                                &num_uniforms);
-        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_ACTIVE_RESOURCES));
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &num_uniforms);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORMS));
 
         if (num_uniforms == 0) {
             MGE_DEBUG_TRACE(OPENGL,
@@ -318,11 +315,10 @@ namespace mge::opengl {
         }
 
         GLint max_name_length = 0;
-        glGetProgramInterfaceiv(m_program,
-                                GL_UNIFORM,
-                                GL_MAX_NAME_LENGTH,
-                                &max_name_length);
-        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_MAX_NAME_LENGTH));
+        glGetProgramiv(m_program,
+                       GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                       &max_name_length);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORM_MAX_LENGTH));
 
         std::vector<char> name_buffer(max_name_length);
 
@@ -331,43 +327,34 @@ namespace mge::opengl {
                         num_uniforms,
                         m_program);
 
-        const GLenum properties[] = {GL_NAME_LENGTH,
-                                     GL_TYPE,
-                                     GL_ARRAY_SIZE,
-                                     GL_LOCATION,
-                                     GL_BLOCK_INDEX};
-        const int    num_props = sizeof(properties) / sizeof(properties[0]);
-
         for (GLint i = 0; i < num_uniforms; ++i) {
-            GLint values[num_props];
-            glGetProgramResourceiv(m_program,
-                                   GL_UNIFORM,
-                                   i,
-                                   num_props,
-                                   properties,
-                                   num_props,
-                                   nullptr,
-                                   values);
-            CHECK_OPENGL_ERROR(glGetProgramResourceiv);
+            GLsizei name_length = 0;
+            GLint   array_size = 0;
+            GLenum  gl_type = 0;
+            glGetActiveUniform(m_program,
+                               i,
+                               static_cast<GLsizei>(name_buffer.size()),
+                               &name_length,
+                               &array_size,
+                               &gl_type,
+                               name_buffer.data());
+            CHECK_OPENGL_ERROR(glGetActiveUniform);
 
-            // Skip uniforms in blocks (handled separately if needed)
-            if (values[4] != -1) {
+            // Skip uniforms in blocks
+            GLint  block_index = -1;
+            GLuint uniform_index = static_cast<GLuint>(i);
+            glGetActiveUniformsiv(m_program,
+                                  1,
+                                  &uniform_index,
+                                  GL_UNIFORM_BLOCK_INDEX,
+                                  &block_index);
+            CHECK_OPENGL_ERROR(glGetActiveUniformsiv);
+            if (block_index != -1) {
                 continue;
             }
 
-            GLsizei name_length = 0;
-            glGetProgramResourceName(m_program,
-                                     GL_UNIFORM,
-                                     i,
-                                     static_cast<GLsizei>(name_buffer.size()),
-                                     &name_length,
-                                     name_buffer.data());
-            CHECK_OPENGL_ERROR(glGetProgramResourceName);
-
             std::string name(name_buffer.data(), name_length);
-            GLenum      gl_type = values[1];
-            GLint       array_size = values[2];
-            GLint       location = values[3];
+            GLint location = glGetUniformLocation(m_program, name.c_str());
 
             // Collect sampler uniforms separately
             if (is_sampler_type(gl_type)) {
@@ -379,12 +366,9 @@ namespace mge::opengl {
                 continue;
             }
 
-            auto uniform_type = static_cast<mge::uniform_data_type>(values[1]);
-            uniform_type = uniform_type_from_gl(gl_type);
+            auto uniform_type = uniform_type_from_gl(gl_type);
 
-            if (uniform_type ==
-                mge::uniform_data_type::UNKNOWN) { // Check against
-                                                   // mge::data_type::UNKNOWN
+            if (uniform_type == mge::uniform_data_type::UNKNOWN) {
                 MGE_WARNING_TRACE(
                     OPENGL,
                     "Unsupported uniform type {} for uniform '{}'",
@@ -394,7 +378,6 @@ namespace mge::opengl {
             }
 
             if (name.ends_with("]")) {
-                // Remove array suffix from name
                 auto pos = name.find_last_of('[');
                 if (pos != std::string::npos) {
                     name.erase(pos);
@@ -409,7 +392,7 @@ namespace mge::opengl {
             }
 
             if (array_size == 0) {
-                array_size = 1; // Default to 1 if no array size is specified
+                array_size = 1;
             }
 
             m_uniforms.push_back({std::move(name),
