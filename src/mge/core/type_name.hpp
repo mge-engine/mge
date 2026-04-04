@@ -85,13 +85,37 @@ namespace mge {
                 if (pos == std::string::npos) {
                     return std::string_view("???");
                 }
-                auto end = func_name.find(']', pos + prefix.size());
-                if (end == std::string::npos) {
-                    return std::string_view("???");
+                const size_t arank = std::rank_v<T>;
+                if constexpr (arank > 0) {
+                    // handle array types
+                    size_t end = func_name.find(']', pos + prefix.size());
+                    if (end == std::string::npos) {
+                        return std::string_view("???");
+                    }
+                    ++end;
+                    for (size_t i = 1; i < arank; ++i) {
+                        end = func_name.find(']', end);
+                        if (end == std::string::npos) {
+                            return std::string_view("???");
+                        }
+                        ++end;
+                    }
+                    end = func_name.find(']', end);
+                    if (end == std::string::npos) {
+                        return std::string_view("???");
+                    }
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
+                } else {
+                    auto end = func_name.find(']', pos + prefix.size());
+                    if (end == std::string::npos) {
+                        return std::string_view("???");
+                    }
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
                 }
-                auto n = func_name.substr(pos + prefix.size(),
-                                          end - pos - prefix.size());
-                return n;
 #elif defined(MGE_COMPILER_APPLECLANG)
                 std::string_view func_name(
                     std::source_location::current().function_name());
@@ -100,18 +124,38 @@ namespace mge {
                 if (pos == std::string::npos) {
                     return std::string_view("???");
                 }
-                auto end = func_name.find(']', pos + prefix.size());
-                if (end == std::string::npos) {
-                    return std::string_view("???");
+                const size_t arank = std::rank_v<T>;
+                if constexpr (arank > 0) {
+                    // handle array types
+                    // For arrays, we need to find all the closing brackets
+                    // The function signature looks like: [T = int[10]]
+                    // We need to find the array brackets, not the outer ]
+                    auto end = pos + prefix.size();
+                    for (size_t i = 0; i < arank; ++i) {
+                        end = func_name.find(']', end);
+                        if (end == std::string::npos) {
+                            return std::string_view("???");
+                        }
+                        ++end;
+                    }
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
+                } else {
+                    auto end = func_name.find(']', pos + prefix.size());
+                    if (end == std::string::npos) {
+                        return std::string_view("???");
+                    }
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
                 }
-                auto n = func_name.substr(pos + prefix.size(),
-                                          end - pos - prefix.size());
-                return n;
 #else
 #    error Missing port
 #endif
             }
         };
+
     } // namespace
 
     /**

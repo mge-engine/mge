@@ -2,18 +2,22 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
+
+
 IF(OpenGL_FOUND)
-    IF (NOT APPLE)
+    IF (NOT APPLE AND NOT LINUX)
         MESSAGE("-- OpenGL found and enabled")
         ADD_SUBDIRECTORY(opengl)
+
     ELSE()
-        MESSAGE("-- On Apple platform, skipping OpenGL render system")
+        MESSAGE("-- On Apple or Linux platform, skipping OpenGL render system")
     ENDIF()
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
 ENDIF()
+
 IF(Vulkan_FOUND)
-ADD_SUBDIRECTORY(vulkan)
+    ADD_SUBDIRECTORY(vulkan)
 ELSE()
     MESSAGE("-- Vulkan not found, not building vulkan render system")
 ENDIF()
@@ -36,6 +40,7 @@ IF(MSVC)
 ENDIF()
 ADD_SUBDIRECTORY(stb_image)
 ADD_SUBDIRECTORY(assimp)
+ADD_SUBDIRECTORY(lua)
 IF(WIN32 OR (UNIX AND NOT APPLE))
     ADD_SUBDIRECTORY(renderdoc)
 ENDIF()

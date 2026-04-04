@@ -73,3 +73,101 @@ TEST(implementation, create_with_alias)
     ASSERT_FALSE(c == 0);
     EXPECT_EQ(42, c->foo());
 }
+
+class dynamic_impl : public a_component
+{
+public:
+    int foo() override
+    {
+        return 99;
+    }
+};
+
+TEST(dynamic_implementation, register_and_create)
+{
+    mge::dynamic_implementation_registry_entry entry(
+        []() -> std::shared_ptr<mge::component_base> {
+            return std::make_shared<dynamic_impl>();
+        },
+        "a_component",
+        "dynamic_impl",
+        "dynalias1",
+        "dynalias2");
+
+    EXPECT_TRUE(mge::component_base::implementation_registered("a_component",
+                                                               "dynamic_impl"));
+    auto c = a_component::create("dynamic_impl");
+    ASSERT_TRUE(c);
+    EXPECT_EQ(99, c->foo());
+    entry.unregister();
+}
+
+TEST(dynamic_implementation, create_with_alias)
+{
+    mge::dynamic_implementation_registry_entry entry(
+        []() -> std::shared_ptr<mge::component_base> {
+            return std::make_shared<dynamic_impl>();
+        },
+        "a_component",
+        "dynamic_impl2",
+        "dalias1",
+        "dalias2");
+
+    auto c1 = a_component::create("dalias1");
+    ASSERT_TRUE(c1);
+    EXPECT_EQ(99, c1->foo());
+
+    auto c2 = a_component::create("dalias2");
+    ASSERT_TRUE(c2);
+    EXPECT_EQ(99, c2->foo());
+    entry.unregister();
+}
+
+TEST(dynamic_implementation, register_with_alias_string)
+{
+    mge::dynamic_implementation_registry_entry entry(
+        []() -> std::shared_ptr<mge::component_base> {
+            return std::make_shared<dynamic_impl>();
+        },
+        "a_component",
+        "dynamic_impl3",
+        std::string_view("salias1, salias2"));
+
+    EXPECT_TRUE(mge::component_base::implementation_registered("a_component",
+                                                               "salias1"));
+    EXPECT_TRUE(mge::component_base::implementation_registered("a_component",
+                                                               "salias2"));
+    auto c = a_component::create("salias1");
+    ASSERT_TRUE(c);
+    EXPECT_EQ(99, c->foo());
+    entry.unregister();
+}
+
+TEST(dynamic_implementation, unregister)
+{
+    {
+        mge::dynamic_implementation_registry_entry entry(
+            []() -> std::shared_ptr<mge::component_base> {
+                return std::make_shared<dynamic_impl>();
+            },
+            "a_component",
+            "dynamic_impl_unreg",
+            "unreg_alias");
+
+        EXPECT_TRUE(mge::component_base::implementation_registered(
+            "a_component",
+            "dynamic_impl_unreg"));
+        EXPECT_TRUE(
+            mge::component_base::implementation_registered("a_component",
+                                                           "unreg_alias"));
+
+        entry.unregister();
+
+        EXPECT_FALSE(mge::component_base::implementation_registered(
+            "a_component",
+            "dynamic_impl_unreg"));
+        EXPECT_FALSE(
+            mge::component_base::implementation_registered("a_component",
+                                                           "unreg_alias"));
+    }
+}

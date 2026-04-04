@@ -26,5 +26,7 @@ BROWSE*.DB-shm
 BROWSE*.DB-wal
 # -- sphinx venv
 sphinx/**/*
+# ctest 
+Testing/**/*
 # -- claude temporary files
 tmpclaude-*

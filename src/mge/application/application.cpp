@@ -120,6 +120,55 @@ namespace mge {
         MGE_DEBUG_TRACE(APPLICATION, "Main loop finished");
     }
 
+    int application::main(std::string_view application_name)
+    {
+        try {
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Create application '{}'",
+                            application_name);
+            auto app = application::create(application_name);
+            if (!app) {
+                MGE_ERROR_TRACE(APPLICATION,
+                                "Application '{}' not found",
+                                application_name);
+                return 1;
+            }
+            MGE_DEBUG_TRACE(APPLICATION, "Application initialize");
+            app->initialize(0, nullptr);
+            MGE_DEBUG_TRACE(APPLICATION, "Application setup");
+            app->setup();
+            MGE_DEBUG_TRACE(APPLICATION, "Application run");
+            app->run();
+            MGE_DEBUG_TRACE(APPLICATION, "Remove all listeners");
+            app->clear_listeners();
+            MGE_DEBUG_TRACE(APPLICATION, "Application teardown");
+            app->teardown();
+            auto rc = app->return_code();
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Application '{}' finished with return code {}",
+                            application_name,
+                            rc);
+            return rc;
+        } catch (const mge::exception& ex) {
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Exception in application '{}': {}",
+                            application_name,
+                            ex.details());
+            return 1;
+        } catch (const std::exception& ex) {
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Exception in application '{}': {}",
+                            application_name,
+                            ex.what());
+            return 1;
+        } catch (...) {
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Unknown exception in application '{}'",
+                            application_name);
+            return 1;
+        }
+    }
+
     int application::main(std::string_view application_name,
                           int              argc,
                           const char**     argv)

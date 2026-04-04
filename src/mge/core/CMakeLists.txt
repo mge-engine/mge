@@ -95,6 +95,7 @@ SET(mgecore_headers
     mutex.hpp
     is_container.hpp
     is_associative_container.hpp
+    is_primitive_vector.hpp
     io_exception.hpp
     file_input_stream.hpp
     file_output_stream.hpp

@@ -51,35 +51,33 @@ namespace mge {
          */
         singleton()
             : m_instance(nullptr)
+            , m_destroyed(false)
         {}
 
         /**
-         * Destructor. Exchanges the contained instance pointer
-         * with the null pointer, and deletes the contained object.
+         * Destructor. Intentionally leaks the contained object.
+         * During static destruction, the allocator (jemalloc) may
+         * already be torn down, making delete unsafe.
          */
         ~singleton()
         {
-            T* p = m_instance.load();
-            T* null = nullptr;
-            if (m_instance.compare_exchange_strong(p, null)) {
-                delete p;
-            } else {
-                abort();
-                //
-                // crash("Inconsistency destroying singleton instance of",
-                //      type_name<T>());
-            }
+            m_destroyed.store(true);
+            m_instance.store(nullptr);
         }
 
         /**
          * Access the contained object.
-         * @return contained object
+         * @return contained object, nullptr if destroyed
          */
         inline pointer ptr()
         {
             T* p = m_instance.load();
             if (p) {
                 return p;
+            }
+
+            if (m_destroyed.load()) {
+                return nullptr;
             }
 
             p = new T();
@@ -131,7 +129,8 @@ namespace mge {
         }
 
     private:
-        std::atomic<T*> m_instance;
+        std::atomic<T*>   m_instance;
+        std::atomic<bool> m_destroyed;
     };
 
 } // namespace mge

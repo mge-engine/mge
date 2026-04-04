@@ -32,6 +32,8 @@
 - Call: glEnable
   - cap: GL_DEPTH_TEST
 - Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glEnable
   - cap: GL_BLEND
 - Call: glDepthFunc
   - func: GL_ALWAYS
@@ -127,6 +129,8 @@
   - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -161,6 +165,8 @@
 - Call: glEnable
   - cap: GL_DEPTH_TEST
 - Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glEnable
   - cap: GL_BLEND
 - Call: glDepthFunc
   - func: GL_ALWAYS
@@ -212,6 +218,8 @@
   - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -246,6 +254,8 @@
 - Call: glEnable
   - cap: GL_DEPTH_TEST
 - Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glEnable
   - cap: GL_BLEND
 - Call: glDepthFunc
   - func: GL_ALWAYS
@@ -297,6 +307,8 @@
   - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -331,6 +343,8 @@
 - Call: glEnable
   - cap: GL_DEPTH_TEST
 - Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glEnable
   - cap: GL_BLEND
 - Call: glDepthFunc
   - func: GL_ALWAYS
@@ -382,6 +396,8 @@
   - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -416,6 +432,8 @@
 - Call: glEnable
   - cap: GL_DEPTH_TEST
 - Call: glEnable
+  - cap: GL_SCISSOR_TEST
+- Call: glEnable
   - cap: GL_BLEND
 - Call: glDepthFunc
   - func: GL_ALWAYS
@@ -467,6 +485,8 @@
   - flag: true
 - Call: glDisable
   - cap: GL_BLEND
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
