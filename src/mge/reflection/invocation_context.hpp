@@ -103,6 +103,10 @@ namespace mge::reflection {
                 store_int64_t_argument(index, value);
             } else if constexpr (std::is_same_v<plain_type, uint64_t>) {
                 store_uint64_t_argument(index, value);
+            } else if constexpr (std::is_same_v<plain_type, long>) {
+                store_int64_t_argument(index, static_cast<int64_t>(value));
+            } else if constexpr (std::is_same_v<plain_type, unsigned long>) {
+                store_uint64_t_argument(index, static_cast<uint64_t>(value));
             } else if constexpr (std::is_same_v<plain_type, float>) {
                 store_float_argument(index, value);
             } else if constexpr (std::is_same_v<plain_type, double>) {
@@ -146,6 +150,10 @@ namespace mge::reflection {
                 return get_int64_t_result();
             } else if constexpr (std::is_same_v<R, uint64_t>) {
                 return get_uint64_t_result();
+            } else if constexpr (std::is_same_v<R, long>) {
+                return static_cast<long>(get_int64_t_result());
+            } else if constexpr (std::is_same_v<R, unsigned long>) {
+                return static_cast<unsigned long>(get_uint64_t_result());
             } else if constexpr (std::is_same_v<R, float>) {
                 return get_float_result();
             } else if constexpr (std::is_same_v<R, double>) {

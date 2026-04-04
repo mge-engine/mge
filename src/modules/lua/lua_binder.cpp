@@ -246,7 +246,9 @@ namespace mge::lua {
                 ti == std::type_index(typeid(int32_t)) ||
                 ti == std::type_index(typeid(uint32_t)) ||
                 ti == std::type_index(typeid(int64_t)) ||
-                ti == std::type_index(typeid(uint64_t))) {
+                ti == std::type_index(typeid(uint64_t)) ||
+                ti == std::type_index(typeid(long)) ||
+                ti == std::type_index(typeid(unsigned long))) {
                 return lua_type_at == LUA_TNUMBER;
             }
             // float types

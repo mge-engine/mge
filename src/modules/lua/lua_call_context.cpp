@@ -286,6 +286,13 @@ namespace mge::lua {
                 lua_pushinteger(m_lua_state,
                                 static_cast<lua_Integer>(
                                     static_cast<const uint64_t*>(data)[i]));
+            } else if (element_type == std::type_index(typeid(long))) {
+                lua_pushinteger(m_lua_state,
+                                static_cast<const long*>(data)[i]);
+            } else if (element_type == std::type_index(typeid(unsigned long))) {
+                lua_pushinteger(m_lua_state,
+                                static_cast<lua_Integer>(
+                                    static_cast<const unsigned long*>(data)[i]));
             } else if (element_type == std::type_index(typeid(float))) {
                 lua_pushnumber(m_lua_state, static_cast<const float*>(data)[i]);
             } else if (element_type == std::type_index(typeid(double))) {
@@ -352,6 +359,14 @@ namespace mge::lua {
                 static_cast<std::vector<uint64_t>*>(out_vector)
                     ->push_back(
                         static_cast<uint64_t>(lua_tointeger(m_lua_state, -1)));
+            } else if (element_type == std::type_index(typeid(long))) {
+                static_cast<std::vector<long>*>(out_vector)
+                    ->push_back(
+                        static_cast<long>(lua_tointeger(m_lua_state, -1)));
+            } else if (element_type == std::type_index(typeid(unsigned long))) {
+                static_cast<std::vector<unsigned long>*>(out_vector)
+                    ->push_back(
+                        static_cast<unsigned long>(lua_tointeger(m_lua_state, -1)));
             } else if (element_type == std::type_index(typeid(float))) {
                 static_cast<std::vector<float>*>(out_vector)
                     ->push_back(
