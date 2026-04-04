@@ -123,7 +123,7 @@ namespace mge::reflection {
         bool             m_is_reference;
     };
 
-    namespace {
+    namespace detail {
         template <typename T> struct has_const
         {
             static constexpr bool value = std::is_const_v<T>;
@@ -154,16 +154,16 @@ namespace mge::reflection {
         {
             static constexpr bool value = std::is_reference_v<T>;
         };
-    } // namespace
+    } // namespace detail
 
     template <typename T> inline type_identifier make_type_identifier() noexcept
     {
         using base_type = std::remove_cv_t<std::remove_reference_t<T>>;
         return type_identifier(typeid(base_type),
                                mge::type_name<base_type>(),
-                               has_const<T>::value,
-                               has_volatile<T>::value,
-                               has_reference<T>::value);
+                               detail::has_const<T>::value,
+                               detail::has_volatile<T>::value,
+                               detail::has_reference<T>::value);
     }
 } // namespace mge::reflection
 
