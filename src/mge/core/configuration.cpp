@@ -296,7 +296,10 @@ namespace mge {
 
     void configuration::unregister_parameter(basic_parameter& p)
     {
-        s_configuration_instance->unregister_parameter(p);
+        auto* instance = s_configuration_instance.ptr();
+        if (instance) {
+            instance->unregister_parameter(p);
+        }
     }
 
     basic_parameter& configuration::find_parameter(std::string_view section,
