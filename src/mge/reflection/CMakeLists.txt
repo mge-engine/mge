@@ -10,6 +10,7 @@ SET(mgereflection_sources
     function_details.cpp
     type_identifier.cpp
     call_context.cpp
+    invocation_context.cpp
     
     reflector.cpp
     std_reflector.cpp
@@ -25,6 +26,8 @@ SET(mgereflection_headers
     function_details.hpp
     type_identifier.hpp
     call_context.hpp
+    invocation_context.hpp
+    proxy.hpp
     signature.hpp
 
     reflector.hpp
@@ -58,7 +61,7 @@ TARGET_LINK_LIBRARIES(mge_module_reflection_core mgereflection mgecore)
 SET(mge_module_reflection_graphics_SOURCES
     graphics_reflector.cpp)
 ADD_LIBRARY(mge_module_reflection_graphics MODULE ${mge_module_reflection_graphics_SOURCES})
-TARGET_LINK_LIBRARIES(mge_module_reflection_graphics mgereflection mgecore mgegraphics)
+TARGET_LINK_LIBRARIES(mge_module_reflection_graphics mgereflection mgecore mgegraphics mgeinput)
 
 SET(mge_module_reflection_math_SOURCES
     math_reflector.cpp)

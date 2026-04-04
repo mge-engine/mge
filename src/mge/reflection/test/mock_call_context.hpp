@@ -4,6 +4,8 @@
 #include "mge/reflection/call_context.hpp"
 #include "test/googlemock.hpp"
 
+#include <typeindex>
+
 namespace mge::reflection {
 
     class MOCK_call_context_base : public call_context
@@ -52,6 +54,26 @@ namespace mge::reflection {
                     (std::string_view value),
                     (override));
         MOCK_METHOD(void, pointer_result, (void* value), (override));
+        MOCK_METHOD(void,
+                    shared_ptr_result,
+                    (std::shared_ptr<void> value),
+                    (override));
+        MOCK_METHOD(void,
+                    primitive_vector_result,
+                    (const void*            data,
+                     size_t                 count,
+                     const std::type_index& element_type),
+                    (override));
+        MOCK_METHOD(void,
+                    primitive_vector_parameter,
+                    (size_t                 index,
+                     void*                  out_vector,
+                     const std::type_index& element_type),
+                    (override));
+        MOCK_METHOD(void*,
+                    callable_parameter,
+                    (size_t index, const std::type_index& callable_type),
+                    (override));
         MOCK_METHOD(void,
                     exception_thrown,
                     (const mge::exception& ex),

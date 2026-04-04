@@ -32,6 +32,7 @@ namespace mge::reflection {
             for (auto it = reflectors.begin(); it != reflectors.end();) {
                 auto&      reflector = *it;
                 const auto deps = reflector->dependencies();
+                bool       has_missing_deps = false;
                 for (const auto& dep : deps) {
                     if (reflectors_done.find(dep) == reflectors_done.end()) {
                         MGE_DEBUG_TRACE(REFLECTION,
@@ -39,9 +40,13 @@ namespace mge::reflection {
                                         "missing dependency '{}'",
                                         reflector->implementation_name(),
                                         dep);
-                        ++it;
-                        continue;
+                        has_missing_deps = true;
+                        break;
                     }
+                }
+                if (has_missing_deps) {
+                    ++it;
+                    continue;
                 }
                 MGE_DEBUG_TRACE(REFLECTION,
                                 "Reflecting types using reflector '{}'",

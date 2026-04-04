@@ -39,6 +39,7 @@ namespace mge {
 
     protected:
         void register_implementation(implementation_registry_entry_base*);
+        void unregister_implementation(implementation_registry_entry_base*);
     };
 
     class MGECORE_EXPORT component_base
@@ -200,14 +201,96 @@ namespace mge {
     };
 
     /**
-     * @brief Base class for defining a component.
+     * @brief Dynamic implementation registry entry.
      *
-     * Classes defining an interface are defined as subclass
-     * of this class. This class implements factory and
-     * introspection methods to instantiate an implementation.
-     *
-     * @tparam Class interface class
+     * Allows registering a component implementation at runtime
+     * using a factory function instead of a static type.
      */
+    class MGECORE_EXPORT dynamic_implementation_registry_entry
+        : public implementation_registry_entry_base
+    {
+    public:
+        using create_function =
+            std::function<std::shared_ptr<component_base>()>;
+
+        template <typename... Aliases>
+        dynamic_implementation_registry_entry(
+            create_function  factory,
+            std::string_view component_name,
+            std::string_view implementation_name,
+            Aliases... aliases)
+            : m_factory(std::move(factory))
+            , m_component_name(component_name)
+            , m_name(implementation_name)
+        {
+            build_alias_names(aliases...);
+            register_implementation(this);
+        }
+
+        dynamic_implementation_registry_entry(
+            create_function  factory,
+            std::string_view component_name,
+            std::string_view implementation_name,
+            std::string_view alias_names)
+            : m_factory(std::move(factory))
+            , m_component_name(component_name)
+            , m_name(implementation_name)
+            , m_alias_names(alias_names)
+        {
+            register_implementation(this);
+        }
+
+        ~dynamic_implementation_registry_entry() override = default;
+
+        dynamic_implementation_registry_entry(
+            const dynamic_implementation_registry_entry&) = delete;
+        dynamic_implementation_registry_entry&
+        operator=(const dynamic_implementation_registry_entry&) = delete;
+
+        void unregister()
+        {
+            unregister_implementation(this);
+        }
+
+        std::string_view component_name() const noexcept override
+        {
+            return m_component_name;
+        }
+
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
+
+        std::string_view alias_names() const noexcept override
+        {
+            return m_alias_names;
+        }
+
+        std::shared_ptr<component_base> create() const override
+        {
+            return m_factory();
+        }
+
+    private:
+        void build_alias_names() {}
+
+        template <typename First, typename... Rest>
+        void build_alias_names(First&& first, Rest&&... rest)
+        {
+            if (!m_alias_names.empty()) {
+                m_alias_names += ", ";
+            }
+            m_alias_names += std::string(std::forward<First>(first));
+            build_alias_names(std::forward<Rest>(rest)...);
+        }
+
+        create_function m_factory;
+        std::string     m_component_name;
+        std::string     m_name;
+        std::string     m_alias_names;
+    };
+
     template <typename Class> class component : public component_base
     {
     protected:
@@ -270,6 +353,19 @@ namespace mge {
         std::weak_ptr<Class> m_self;
     };
 
+    /**
+     * @brief Get registered components.
+     * @return vector of registered component names
+     */
+    std::vector<std::string_view> MGECORE_EXPORT registered_components();
+
+    /**
+     * @brief Get registered implementations for a component.
+     * @param component_name component name
+     * @return vector of registered implementation names
+     */
+    std::vector<std::string_view> MGECORE_EXPORT
+    registered_implementations(std::string_view component_name);
 /**
  * @brief Register a class as component. The macro must be used within the
  * definition namespaces of the argument class.

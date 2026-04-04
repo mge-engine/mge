@@ -20,16 +20,16 @@ namespace mge::reflection {
         void reflect() const override
         {
             auto mge = module("mge");
-            mge(type<mge::fvec2>()
+            mge(type<mge::fvec2>("fvec2")
                     .field("x", &mge::fvec2::x)
                     .field("y", &mge::fvec2::y));
 
-            mge(type<mge::fvec3>()
+            mge(type<mge::fvec3>("fvec3")
                     .field("x", &mge::fvec3::x)
                     .field("y", &mge::fvec3::y)
                     .field("z", &mge::fvec3::z));
 
-            mge(type<mge::fvec4>()
+            mge(type<mge::fvec4>("fvec4")
                     .field("x", &mge::fvec4::x)
                     .field("y", &mge::fvec4::y)
                     .field("z", &mge::fvec4::z)

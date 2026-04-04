@@ -107,7 +107,7 @@ namespace mge {
         auto stem = name.stem();
         if (stem.string().starts_with("libmge_module_")) {
             auto suffix = name.extension();
-            if (suffix.string() == ".dylib"sv) {
+            if (suffix.string() == ".so"sv) {
                 return true;
             }
         }
@@ -166,6 +166,11 @@ namespace mge {
             s_all_modules->modules.insert(
                 std::make_pair(current_ref->name(), current_ref));
         }
+    }
+
+    void module::unload_all()
+    {
+        s_all_modules->modules.clear();
     }
 
 } // namespace mge

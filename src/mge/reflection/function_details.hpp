@@ -8,6 +8,7 @@
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type.hpp"
+#include "mge/reflection/visitor.hpp"
 
 #include <tuple>
 
@@ -134,6 +135,8 @@ namespace mge::reflection {
         {
             return m_module;
         }
+
+        void apply(visitor& v) const;
 
     private:
         mge::reflection::signature m_signature;

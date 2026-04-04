@@ -111,4 +111,12 @@ namespace mge::reflection {
         EXPECT_EQ(child_details->parent(), parent1.details());
     }
 
+    TEST(module, root)
+    {
+        auto root = module::root();
+        EXPECT_TRUE(root.is_root());
+        EXPECT_EQ(root.name(), "");
+        EXPECT_EQ(root.full_name(), "");
+    }
+
 } // namespace mge::reflection

@@ -1,0 +1,83 @@
+# mge - Modern Game Engine
+# Copyright (c) 2017-2023 by Alexander Schroeder
+# All rights reserved.
+
+SET(LUA_TEST_SOURCES
+    luatest.cpp
+    test_context.cpp
+)
+
+SET(LUA_INVOCATION_TEST_SOURCES
+    test_invocation_context.cpp
+    ../lua_invocation_context.cpp
+    ../lua_error.cpp
+)
+
+SET(LUA_TESTS
+    test001_smoke.lua 
+    test002_std.lua
+    test003_vec.lua
+    test004_class.lua
+    test005_proxy.lua
+    test006_function.lua
+    test007_component.lua
+    test008_proxy_dispatch.lua
+    test009_reflection_bindings.lua
+    test010_callbacks.lua
+    test011_application_main.lua
+)
+
+COPY_FILE(unittest.lua "${CMAKE_BINARY_DIR}/unittest.lua")
+
+LIST(TRANSFORM
+    LUA_TESTS
+    PREPEND "${CMAKE_CURRENT_BINARY_DIR}/"
+    OUTPUT_VARIABLE LUA_TESTS_IN_TARGET)
+
+ADD_CUSTOM_TARGET(all-lua-tests)
+
+FOREACH(LUA_TEST ${LUA_TESTS})
+    COPY_FILE(${LUA_TEST} "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}")
+    GET_FILENAME_COMPONENT(LUA_TEST_NAME ${LUA_TEST} NAME_WE)
+    IF(APPLE)
+        ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
+            COMMAND lldb --batch -o run --one-line-on-crash "bt all" --one-line-on-crash quit
+                -- $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+    ELSE()
+        ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
+            COMMAND $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+    ENDIF()
+    ADD_CUSTOM_TARGET("lua_${LUA_TEST_NAME}_run" 
+        DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
+        COMMAND ${CMAKE_CTEST_COMMAND} -VV -R "lua_${LUA_TEST_NAME}")
+    ADD_DEPENDENCIES(all-lua-tests "lua_${LUA_TEST_NAME}_run")
+ENDFOREACH()
+
+ADD_CUSTOM_TARGET(lua-copy-tests ALL DEPENDS
+    ${LUA_TESTS_IN_TARGET})
+
+MGE_TEST(
+    TARGET      test_lua
+    SOURCES     ${LUA_TEST_SOURCES}
+    NOMAIN
+    LIBRARIES   mgescript mgereflection mgeapplication mgecore
+)
+
+MGE_TEST(
+    TARGET      test_lua_invocation_context
+    SOURCES     ${LUA_INVOCATION_TEST_SOURCES}
+    LIBRARIES   mgereflection mgecore PkgConfig::LUAJIT
+)
+
+TARGET_INCLUDE_DIRECTORIES(test_lua_invocation_context PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
+
+ADD_CUSTOM_TARGET(run-lua-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -R "lua"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    DEPENDS test_lua lua-copy-tests
+)
+

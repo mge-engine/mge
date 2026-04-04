@@ -52,4 +52,9 @@ namespace mge::reflection {
         m_details->add(details);
     }
 
+    reflection::module module::root()
+    {
+        return reflection::module();
+    }
+
 } // namespace mge::reflection

@@ -7,10 +7,13 @@
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_identifier.hpp"
+#include "mge/reflection/visitor.hpp"
 
 #include <variant>
 
 namespace mge::reflection {
+
+    class invocation_context;
 
     class MGEREFLECTION_EXPORT type_details
     {
@@ -32,6 +35,8 @@ namespace mge::reflection {
         static const type_details_ref& put(const type_identifier&  id,
                                            const type_details_ref& details);
 
+        void apply(visitor& v) const;
+
         bool                    is_void = false;
         bool                    is_bool = false;
         bool                    is_integral = false;
@@ -41,9 +46,12 @@ namespace mge::reflection {
         bool                    is_pointer = false;
         bool                    is_array = false;
         bool                    is_reference = false;
+        bool                    is_primitive_vector = false;
         size_t                  size = 0;
         size_t                  alignment_of = 0;
         std::string_view        name;
+        std::string_view        alias;
+        type_details_ref        primitive_vector_element_type;
         module_details_weak_ref module;
 
         struct enum_specific_details
@@ -58,6 +66,7 @@ namespace mge::reflection {
             std::vector<type_details_ref>                       bases;
             std::vector<std::tuple<signature, invoke_function>> constructors;
             invoke_function                                     destructor;
+            std::function<void(void*)>                          raw_destructor;
             std::vector<std::tuple<std::string_view,
                                    type_identifier,
                                    invoke_function,
@@ -88,6 +97,26 @@ namespace mge::reflection {
             unsigned int has_virtual_destructor : 1;
             unsigned int is_destructible : 1;
             unsigned int is_empty : 1;
+            unsigned int is_shared_ptr : 1;
+
+            // set when is_shared_ptr is true: the element type T of
+            // std::shared_ptr<T>
+            type_details_ref shared_ptr_element_type;
+
+            // proxy type implementing this interface type
+            type_details_ref proxy_type;
+            // interface type this proxy type implements
+            type_details_ref interface_type;
+
+            // function to call set_context on a proxy instance
+            // signature: void(void* proxy_ptr, invocation_context* ctx)
+            using set_context_function =
+                std::function<void(void*, invocation_context*)>;
+            set_context_function set_context;
+
+            using get_context_function =
+                std::function<invocation_context*(void*)>;
+            get_context_function get_context;
 
             void add_base(const type_details_ref& base)
             {
@@ -133,6 +162,20 @@ namespace mge::reflection {
             if (!std::holds_alternative<enum_specific_details>(
                     specific_details)) {
                 specific_details = enum_specific_details{};
+            }
+            return std::get<enum_specific_details>(specific_details);
+        }
+
+        const enum_specific_details& enum_specific() const
+        {
+            if (!is_enum) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " is not an enum";
+            }
+            if (!std::holds_alternative<enum_specific_details>(
+                    specific_details)) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " has no enum specific details";
             }
             return std::get<enum_specific_details>(specific_details);
         }

@@ -8,8 +8,11 @@
 
 #include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
+#include "mge/core/is_primitive_vector.hpp"
+#include "mge/core/is_shared_ptr.hpp"
 #include "mge/reflection/call_context.hpp"
 #include "mge/reflection/function_parameter_helper.hpp"
+#include "mge/reflection/proxy.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <iostream>
@@ -646,7 +649,8 @@ namespace mge::reflection {
              std::is_same_v<T, uint8_t> || std::is_same_v<T, int16_t> ||
              std::is_same_v<T, uint16_t> || std::is_same_v<T, int32_t> ||
              std::is_same_v<T, uint32_t> || std::is_same_v<T, int64_t> ||
-             std::is_same_v<T, uint64_t> || std::is_same_v<T, float> ||
+             std::is_same_v<T, uint64_t> || std::is_same_v<T, long> ||
+             std::is_same_v<T, unsigned long> || std::is_same_v<T, float> ||
              std::is_same_v<T, double> || std::is_same_v<T, long double>);
     }
 
@@ -690,6 +694,12 @@ namespace mge::reflection {
         using self_type = type<T>;
 
         type() = default;
+
+        explicit type(std::string_view alias)
+        {
+            get_or_create_type_details<T>()->alias = alias;
+        }
+
         type(const type&) = default;
         type(type&&) noexcept = default;
         type& operator=(const type&) = default;
@@ -838,6 +848,8 @@ namespace mge::reflection {
         self_type& static_method(const char* name, R (*method_ptr)(Args...))
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            // ensure return type details exist (needed for pointer resolution)
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -862,6 +874,7 @@ namespace mge::reflection {
         self_type& method(const char* name, R (T::*method_ptr)(Args...))
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -889,6 +902,7 @@ namespace mge::reflection {
         self_type& method(const char* name, R (T::*method_ptr)(Args...) const)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -918,6 +932,7 @@ namespace mge::reflection {
                           R (T::*method_ptr)(Args...) noexcept)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -939,6 +954,7 @@ namespace mge::reflection {
                           R (T::*method_ptr)(Args...) const noexcept)
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
+            (void)get_or_create_type_details<R>();
             signature sig(make_type_identifier<R>(),
                           {make_type_identifier<Args>()...});
 
@@ -950,6 +966,25 @@ namespace mge::reflection {
             };
 
             specific.methods.emplace_back(name, sig, invoke_fn, true, true);
+            return *this;
+        }
+
+        template <typename Proxy>
+            requires(std::is_base_of_v<proxy<T>, Proxy> &&
+                     !std::is_abstract_v<Proxy>)
+        self_type& proxy_type()
+        {
+            type<Proxy> pt;
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            specific.proxy_type = pt.details();
+            specific.set_context = [](void* obj, invocation_context* ctx) {
+                static_cast<Proxy*>(obj)->set_context(ctx);
+            };
+            specific.get_context = [](void* obj) -> invocation_context* {
+                return static_cast<Proxy*>(obj)->context();
+            };
+            pt.details()->class_specific().interface_type =
+                get_or_create_type_details<T>();
             return *this;
         }
     };
@@ -1413,6 +1448,16 @@ namespace mge::reflection {
                 std::has_virtual_destructor_v<T>;
             class_details.is_destructible = std::is_destructible_v<T>;
             class_details.is_empty = std::is_empty_v<T>;
+            class_details.is_shared_ptr = mge::is_shared_ptr_v<T>;
+            if constexpr (mge::is_shared_ptr_v<T>) {
+                class_details.shared_ptr_element_type =
+                    get_or_create_type_details<typename T::element_type>();
+            }
+            if constexpr (mge::is_primitive_vector_v<T>) {
+                details->is_primitive_vector = true;
+                details->primitive_vector_element_type =
+                    get_or_create_type_details<typename T::value_type>();
+            }
 
             // Register default constructor if available
             if constexpr (std::is_default_constructible_v<T>) {
@@ -1449,6 +1494,9 @@ namespace mge::reflection {
                             ctx.exception_thrown();
                         }
                     }
+                };
+                class_details.raw_destructor = [](void* ptr) {
+                    static_cast<T*>(ptr)->~T();
                 };
             }
         }

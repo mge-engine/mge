@@ -38,6 +38,11 @@ namespace mge {
         static void load_all();
 
         /**
+         * @brief Unload all modules.
+         */
+        static void unload_all();
+
+        /**
          * @brief Module name.
          *
          * @return name of module

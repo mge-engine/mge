@@ -26,6 +26,13 @@ using the :any:`MGE_REGISTER_IMPLEMENTATION` macro.
 
 .. doxygendefine:: MGE_REGISTER_IMPLEMENTATION
 
+Querying Components and Implementations
+========================================
+
+.. doxygenfunction:: mge::registered_components
+
+.. doxygenfunction:: mge::registered_implementations
+
 Modules
 =======
 

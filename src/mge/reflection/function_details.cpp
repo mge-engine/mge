@@ -11,4 +11,11 @@ namespace mge::reflection {
 
     function_details::~function_details() {}
 
+    void function_details::apply(visitor& v) const
+    {
+        v.before(*this);
+        v.on(*this);
+        v.after(*this);
+    }
+
 } // namespace mge::reflection

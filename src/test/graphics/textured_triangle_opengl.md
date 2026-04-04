@@ -31,6 +31,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
@@ -94,6 +96,8 @@
 - Call: glUseProgram
   - program: null
 - Call: glDisable
+  - cap: GL_SCISSOR_TEST
+- Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 2
@@ -126,6 +130,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
@@ -154,6 +160,8 @@
   - texture: null
 - Call: glUseProgram
   - program: null
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -187,6 +195,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
@@ -215,6 +225,8 @@
   - texture: null
 - Call: glUseProgram
   - program: null
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -248,6 +260,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
@@ -276,6 +290,8 @@
   - texture: null
 - Call: glUseProgram
   - program: null
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
@@ -309,6 +325,8 @@
   - mask: GL_DEPTH_BUFFER_BIT
 - Call: glEnable
   - cap: GL_DEPTH_TEST
+- Call: glEnable
+  - cap: GL_SCISSOR_TEST
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
@@ -337,6 +355,8 @@
   - texture: null
 - Call: glUseProgram
   - program: null
+- Call: glDisable
+  - cap: GL_SCISSOR_TEST
 - Call: glDisable
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers

@@ -2,9 +2,15 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/is_primitive_vector.hpp"
+#include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
+
+#include <memory>
+#include <typeindex>
+#include <vector>
 
 namespace mge::reflection {
 
@@ -34,8 +40,8 @@ namespace mge::reflection {
         virtual double           double_parameter(size_t index) = 0;
         virtual long double      long_double_parameter(size_t index) = 0;
         virtual std::string_view string_view_parameter(size_t index) = 0;
-        virtual void*            pointer_parameter(size_t              index,
-                                                   const type_details& details) = 0;
+        virtual void* pointer_parameter(size_t              index,
+                                        const type_details& details) = 0;
 
         template <typename T>
             requires std::is_pointer_v<T>
@@ -71,6 +77,10 @@ namespace mge::reflection {
                 return int64_t_parameter(index);
             } else if constexpr (std::is_same_v<T, uint64_t>) {
                 return uint64_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, long>) {
+                return static_cast<long>(int64_t_parameter(index));
+            } else if constexpr (std::is_same_v<T, unsigned long>) {
+                return static_cast<unsigned long>(uint64_t_parameter(index));
             } else if constexpr (std::is_same_v<T, float>) {
                 return float_parameter(index);
             } else if constexpr (std::is_same_v<T, double>) {
@@ -79,6 +89,13 @@ namespace mge::reflection {
                 return long_double_parameter(index);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 return string_view_parameter(index);
+            } else if constexpr (mge::is_primitive_vector_v<T>) {
+                T vec;
+                primitive_vector_parameter(
+                    index,
+                    &vec,
+                    std::type_index(typeid(typename T::value_type)));
+                return vec;
             }
         }
 
@@ -116,12 +133,42 @@ namespace mge::reflection {
         virtual void long_double_result(long double value) = 0;
         virtual void string_view_result(std::string_view value) = 0;
         virtual void pointer_result(void* value) = 0;
+        virtual void shared_ptr_result(std::shared_ptr<void> value) = 0;
+        virtual void
+        primitive_vector_result(const void*            data,
+                                size_t                 count,
+                                const std::type_index& element_type) = 0;
+        virtual void
+        primitive_vector_parameter(size_t                 index,
+                                   void*                  out_vector,
+                                   const std::type_index& element_type) = 0;
+
+        /**
+         * Extract a callable parameter (std::function) from the call.
+         * Returns a pointer to a call_context-owned object of the
+         * callable type identified by @p callable_type.
+         * The returned pointer is valid for the lifetime of the
+         * call_context.
+         *
+         * @param index parameter index
+         * @param callable_type type_index of the std::function<Sig> type
+         * @return pointer to the callable object
+         */
+        virtual void*
+        callable_parameter(size_t                 index,
+                           const std::type_index& callable_type) = 0;
 
         template <typename T> void result(T value)
         {
-            if constexpr (std::is_pointer_v<T>) {
+            if constexpr (std::is_lvalue_reference_v<T>) {
+                pointer_result(const_cast<void*>(
+                    static_cast<const void*>(std::addressof(value))));
+            } else if constexpr (mge::is_shared_ptr_v<T>) {
+                shared_ptr_result(std::static_pointer_cast<void>(value));
+            } else if constexpr (std::is_pointer_v<T>) {
                 if constexpr (std::is_const_v<std::remove_pointer_t<T>>) {
-                    pointer_result(const_cast<void*>(static_cast<const void*>(value)));
+                    pointer_result(
+                        const_cast<void*>(static_cast<const void*>(value)));
                 } else {
                     pointer_result(static_cast<void*>(value));
                 }
@@ -146,6 +193,10 @@ namespace mge::reflection {
                 int64_t_result(value);
             } else if constexpr (std::is_same_v<T, uint64_t>) {
                 uint64_t_result(value);
+            } else if constexpr (std::is_same_v<T, long>) {
+                int64_t_result(static_cast<int64_t>(value));
+            } else if constexpr (std::is_same_v<T, unsigned long>) {
+                uint64_t_result(static_cast<uint64_t>(value));
             } else if constexpr (std::is_same_v<T, float>) {
                 float_result(value);
             } else if constexpr (std::is_same_v<T, double>) {
@@ -154,6 +205,11 @@ namespace mge::reflection {
                 long_double_result(value);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 string_view_result(value);
+            } else if constexpr (mge::is_primitive_vector_v<T>) {
+                primitive_vector_result(
+                    value.data(),
+                    value.size(),
+                    std::type_index(typeid(typename T::value_type)));
             }
         }
 
