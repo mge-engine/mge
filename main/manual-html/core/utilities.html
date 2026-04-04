@@ -1375,7 +1375,7 @@ On demand initialization. Usually static variables of <code class="docutils lite
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singletonD0Ev">
 <span id="_CPPv3N3mge9singletonD0Ev"></span><span id="_CPPv2N3mge9singletonD0Ev"></span><span id="mge::singleton::~singleton"></span><span class="target" id="classmge_1_1singleton_1a15ecae3e078ca81feddfdd393973802d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~singleton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonD0Ev" title="Link to this definition"></a><br /></dt>
-<dd><p>Destructor. Exchanges the contained instance pointer with the null pointer, and deletes the contained object. </p>
+<dd><p>Destructor. Intentionally leaks the contained object. During static destruction, the allocator (jemalloc) may already be torn down, making delete unsafe. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -1384,7 +1384,7 @@ On demand initialization. Usually static variables of <code class="docutils lite
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>contained object </p>
+<dd class="field-odd"><p>contained object, nullptr if destroyed </p>
 </dd>
 </dl>
 </dd></dl>
