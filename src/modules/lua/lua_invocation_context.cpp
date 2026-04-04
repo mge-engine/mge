@@ -192,9 +192,7 @@ namespace mge::lua {
         }
 
         // Push self as first argument (stored in weak table at index 1)
-        lua_rawgeti(m_lua_state, LUA_REGISTRYINDEX, m_self_ref);
-        lua_rawgeti(m_lua_state, -1, 1);
-        lua_remove(m_lua_state, -2); // remove weak table, keep userdata
+        push_self(m_lua_state);
 
         // Push stored arguments
         int nargs = 1; // self
