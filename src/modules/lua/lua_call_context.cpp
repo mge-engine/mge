@@ -11,8 +11,7 @@
 
 namespace mge::lua {
 
-    std::unordered_map<std::type_index,
-                       lua_call_context::callable_factory_fn>&
+    std::unordered_map<std::type_index, lua_call_context::callable_factory_fn>&
     lua_call_context::callable_factories()
     {
         static std::unordered_map<std::type_index, callable_factory_fn>
@@ -20,8 +19,9 @@ namespace mge::lua {
         return factories;
     }
 
-    void* lua_call_context::callable_parameter(
-        size_t index, const std::type_index& callable_type)
+    void*
+    lua_call_context::callable_parameter(size_t                 index,
+                                         const std::type_index& callable_type)
     {
         auto& factories = callable_factories();
         auto  it = factories.find(callable_type);
@@ -287,12 +287,12 @@ namespace mge::lua {
                                 static_cast<lua_Integer>(
                                     static_cast<const uint64_t*>(data)[i]));
             } else if (element_type == std::type_index(typeid(long))) {
-                lua_pushinteger(m_lua_state,
-                                static_cast<const long*>(data)[i]);
+                lua_pushinteger(m_lua_state, static_cast<const long*>(data)[i]);
             } else if (element_type == std::type_index(typeid(unsigned long))) {
-                lua_pushinteger(m_lua_state,
-                                static_cast<lua_Integer>(
-                                    static_cast<const unsigned long*>(data)[i]));
+                lua_pushinteger(
+                    m_lua_state,
+                    static_cast<lua_Integer>(
+                        static_cast<const unsigned long*>(data)[i]));
             } else if (element_type == std::type_index(typeid(float))) {
                 lua_pushnumber(m_lua_state, static_cast<const float*>(data)[i]);
             } else if (element_type == std::type_index(typeid(double))) {
@@ -365,8 +365,8 @@ namespace mge::lua {
                         static_cast<long>(lua_tointeger(m_lua_state, -1)));
             } else if (element_type == std::type_index(typeid(unsigned long))) {
                 static_cast<std::vector<unsigned long>*>(out_vector)
-                    ->push_back(
-                        static_cast<unsigned long>(lua_tointeger(m_lua_state, -1)));
+                    ->push_back(static_cast<unsigned long>(
+                        lua_tointeger(m_lua_state, -1)));
             } else if (element_type == std::type_index(typeid(float))) {
                 static_cast<std::vector<float>*>(out_vector)
                     ->push_back(
