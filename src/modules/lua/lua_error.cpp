@@ -13,6 +13,7 @@ namespace mge::lua {
         }
 
         std::string errmsg(lua_tostring(state, -1));
+        lua_pop(state, 1);
         MGE_THROW(mge::lua::error) << "Lua error: " << errmsg;
     }
 

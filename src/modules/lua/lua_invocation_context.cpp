@@ -51,6 +51,9 @@ namespace mge::lua {
 
     bool lua_invocation_context::call_implemented(const char* method)
     {
+        if (m_class_ref == LUA_NOREF) {
+            return false;
+        }
         // Look up method in the class table
         lua_rawgeti(m_lua_state, LUA_REGISTRYINDEX, m_class_ref);
         lua_getfield(m_lua_state, -1, method);
