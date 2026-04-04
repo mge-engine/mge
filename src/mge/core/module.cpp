@@ -4,7 +4,6 @@
 #include "mge/core/module.hpp"
 #include "boost/boost_algorithm_string.hpp"
 #include "mge/core/parameter.hpp"
-#include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
 #include <filesystem>
 #include <iostream>
@@ -58,7 +57,14 @@ namespace mge {
         std::map<std::string, module_ref> modules;
     };
 
-    singleton<module_dictionary> s_all_modules;
+    // Intentionally leaked to avoid freeing through jemalloc
+    // during exit, when jemalloc's internal state may already
+    // be torn down.
+    static module_dictionary& all_modules()
+    {
+        static module_dictionary* dict = new module_dictionary();
+        return *dict;
+    }
 
     MGE_DEFINE_PARAMETER(std::string,
                          core,
@@ -163,9 +169,14 @@ namespace mge {
         for (const auto& m : modules) {
             auto current_ref = std::make_shared<module>(m);
 
-            s_all_modules->modules.insert(
+            all_modules().modules.insert(
                 std::make_pair(current_ref->name(), current_ref));
         }
+    }
+
+    void module::unload_all()
+    {
+        all_modules().modules.clear();
     }
 
 } // namespace mge
