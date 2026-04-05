@@ -31,7 +31,9 @@ namespace mge {
 
         private:
             static void glfw_close_callback(GLFWwindow* w);
-            void        process_input();
+            static void glfw_key_callback(
+                GLFWwindow* w, int key, int scancode, int action, int mods);
+            void process_input();
 
             GLFWwindow*                     m_handle;
             application::quit_listener_key  m_quit_listener;
