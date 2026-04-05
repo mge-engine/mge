@@ -51,6 +51,8 @@ TEST(string_pool, size)
 
     auto sv1 = p.get("wurst");
     auto sv2 = p.get("kaese");
+    (void)sv1;
+    (void)sv2;
 
     EXPECT_EQ(2u, p.size());
 }
