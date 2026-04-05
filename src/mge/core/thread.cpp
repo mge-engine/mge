@@ -51,6 +51,11 @@ namespace mge {
         return running_thread_type::hardware_concurrency();
     }
 
+    thread* thread::this_thread()
+    {
+        return t_this_thread;
+    }
+
     void thread::on_start()
     {
         t_this_thread = this;

@@ -27,6 +27,7 @@
     "assimp",
     "sqlite3",
     "fmt",
+    "luajit",
     "nanobench",
     "nuklear"
   ],

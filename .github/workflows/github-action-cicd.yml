@@ -34,12 +34,12 @@ jobs:
             run: |
               ninja --version
           - name: Checkout source code
-            uses: actions/checkout@v4
+            uses: actions/checkout@v6
             with:
               clean: false
           - name: Cache vcpkg
             id: cache-vcpkg
-            uses: actions/cache@v4
+            uses: actions/cache@v5
             with:
               path: ${{ github.workspace }}/vcpkg
               key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -47,7 +47,7 @@ jobs:
                 vcpkg-${{ runner.os }}-
           - name: Cache vcpkg binary cache
             id: cache-vcpkg-binary
-            uses: actions/cache@v4
+            uses: actions/cache@v5
             with:
               path: ${{ github.workspace }}/vcpkg_binary_cache
               key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -68,7 +68,7 @@ jobs:
                 mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
           - name: Checkout vcpkg
             if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
-            uses: actions/checkout@v4
+            uses: actions/checkout@v6
             with:
               repository: mge-engine/vcpkg
               path: ${{ github.workspace }}/vcpkg
@@ -79,7 +79,7 @@ jobs:
             run: |
               git pull origin master
           - name: Export GitHub Actions cache environment variables
-            uses: actions/github-script@v7
+            uses: actions/github-script@v8
             with:
               script: |
                   core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
@@ -117,12 +117,12 @@ jobs:
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               ctest --verbose
           - name: Upload test results
-            uses: actions/upload-artifact@v4
+            uses: actions/upload-artifact@v6
             with:
               name: test-results-macos-latest
               path: ${{ github.workspace }}/build/test_*.xml
           - name: Publish Test Results
-            uses: mikepenz/action-junit-report@v3
+            uses: mikepenz/action-junit-report@v6
             with:
               report_paths: '${{ github.workspace }}/build/test_*.xml'
 #  -- linux ubuntu latest runner
@@ -157,12 +157,12 @@ jobs:
             run: |
               sudo apt-get install -y automake autoconf autoconf-archive libtool
           - name: Checkout source code
-            uses: actions/checkout@v4
+            uses: actions/checkout@v6
             with:
               clean: false
           - name: Cache vcpkg
             id: cache-vcpkg
-            uses: actions/cache@v4
+            uses: actions/cache@v5
             with:
               path: ${{ github.workspace }}/vcpkg
               key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -170,7 +170,7 @@ jobs:
                 vcpkg-${{ runner.os }}-
           - name: Cache vcpkg binary cache
             id: cache-vcpkg-binary
-            uses: actions/cache@v4
+            uses: actions/cache@v5
             with:
               path: ${{ github.workspace }}/vcpkg_binary_cache
               key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -191,7 +191,7 @@ jobs:
                 mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
           - name: Checkout vcpkg
             if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
-            uses: actions/checkout@v4
+            uses: actions/checkout@v6
             with:
               repository: mge-engine/vcpkg
               path: ${{ github.workspace }}/vcpkg
@@ -202,7 +202,7 @@ jobs:
             run: |
               git pull origin master
           - name: Export GitHub Actions cache environment variables
-            uses: actions/github-script@v7
+            uses: actions/github-script@v8
             with:
               script: |
                   core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
@@ -249,12 +249,12 @@ jobs:
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               ctest --verbose
           - name: Upload test results
-            uses: actions/upload-artifact@v4
+            uses: actions/upload-artifact@v6
             with:
               name: test-results-ubuntu-latest
               path: ${{ github.workspace }}/build/test_*.xml
           - name: Publish Test Results
-            uses: mikepenz/action-junit-report@v3
+            uses: mikepenz/action-junit-report@v6
             with:
               report_paths: '${{ github.workspace }}/build/test_*.xml'
 # -- windows latest runner - msvc
@@ -283,12 +283,12 @@ jobs:
                 ninja --version
                 Write-Output "Ninja location: $(Get-Command ninja | Select-Object -ExpandProperty Source)"
             - name: Checkout source code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                 clean: false
             - name: Cache vcpkg
               id: cache-vcpkg
-              uses: actions/cache@v4
+              uses: actions/cache@v5
               with:
                 path: ${{ github.workspace }}/vcpkg
                 key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -296,7 +296,7 @@ jobs:
                   vcpkg-${{ runner.os }}-
             - name: Cache vcpkg binary cache
               id: cache-vcpkg-binary
-              uses: actions/cache@v4
+              uses: actions/cache@v5
               with:
                 path: ${{ github.workspace }}/vcpkg_binary_cache
                 key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -319,7 +319,7 @@ jobs:
                 }
             - name: Checkout vcpkg
               if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                 repository: mge-engine/vcpkg
                 path: ${{ github.workspace }}/vcpkg
@@ -330,7 +330,7 @@ jobs:
               run: |
                 git pull origin master
             - name: Export GitHub Actions cache environment variables
-              uses: actions/github-script@v7
+              uses: actions/github-script@v8
               with:
                 script: |
                     core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
@@ -354,7 +354,7 @@ jobs:
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
                 $env:VCPKG_VERBOSE="1" 
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 $maxAttempts = 3
                 $attempt = 0
@@ -388,7 +388,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --parallel 8 --target all
             - name: Run Tests
@@ -396,16 +396,16 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 ctest --verbose
             - name: Upload test results
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v6
               with:
                 name: test-results-windows-latest
                 path: ${{ github.workspace }}/build/test_*.xml
             - name: Publish Test Results
-              uses: mikepenz/action-junit-report@v3
+              uses: mikepenz/action-junit-report@v6
               with:
                 report_paths: '${{ github.workspace }}/build/test_*.xml'
     build-documentation-windows-latest:
@@ -429,7 +429,7 @@ jobs:
               run: |
                 choco install doxygen.install
             - name: Checkout source code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                 clean: false
             - name: Install Sphinx
@@ -437,7 +437,7 @@ jobs:
                 python tools/ci/sphinx.py
             - name: Cache vcpkg
               id: cache-vcpkg
-              uses: actions/cache@v4
+              uses: actions/cache@v5
               with:
                 path: ${{ github.workspace }}/vcpkg
                 key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -445,7 +445,7 @@ jobs:
                   vcpkg-${{ runner.os }}-
             - name: Cache vcpkg binary cache
               id: cache-vcpkg-binary
-              uses: actions/cache@v4
+              uses: actions/cache@v5
               with:
                 path: ${{ github.workspace }}/vcpkg_binary_cache
                 key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
@@ -468,7 +468,7 @@ jobs:
                 }
             - name: Checkout vcpkg
               if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                 repository: mge-engine/vcpkg
                 path: ${{ github.workspace }}/vcpkg
@@ -479,7 +479,7 @@ jobs:
               run: |
                 git pull origin master
             - name: Export GitHub Actions cache environment variables
-              uses: actions/github-script@v7
+              uses: actions/github-script@v8
               with:
                 script: |
                     core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
@@ -510,7 +510,7 @@ jobs:
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --target documentation
             - name: Checkout gh-pages
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                 ref: gh-pages
                 path: ./build/gh-pages
@@ -528,7 +528,7 @@ jobs:
                 echo "Event: $env:CURRENT_EVENT"
                 python tools/ci/commit-gh-pages.py
             - name: Push to gh-pages
-              uses: ad-m/github-push-action@v0.8.0
+              uses: ad-m/github-push-action@v1
               with:
                 branch: gh-pages
                 directory: ./build/gh-pages

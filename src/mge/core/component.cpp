@@ -59,6 +59,41 @@ namespace mge {
             do_register_implementation(component_name, i);
         }
 
+        void unregister_implementation(implementation_registry_entry_base* i)
+        {
+            auto component_name = i->component_name();
+            auto implementation_name = i->name();
+            MGE_TRACE_OBJECT(CORE, DEBUG)
+                << "Unregistering implementation " << implementation_name
+                << " of component " << component_name;
+
+            auto impl_it = m_implementations.find(component_name);
+            if (impl_it != m_implementations.end()) {
+                impl_it->second.erase(implementation_name);
+            }
+
+            auto alias_it = m_aliases.find(component_name);
+            if (alias_it != m_aliases.end()) {
+                auto it = alias_it->second.begin();
+                while (it != alias_it->second.end()) {
+                    if (it->second == implementation_name) {
+                        it = alias_it->second.erase(it);
+                    } else {
+                        ++it;
+                    }
+                }
+            }
+
+            auto pit = m_pending_implementations.begin();
+            while (pit != m_pending_implementations.end()) {
+                if (*pit == i) {
+                    pit = m_pending_implementations.erase(pit);
+                } else {
+                    ++pit;
+                }
+            }
+        }
+
         bool component_registered(std::string_view name) const
         {
             return contains(m_components, name);
@@ -101,6 +136,30 @@ namespace mge {
                     callback(e.first);
                 }
             }
+        }
+
+        std::vector<std::string_view> registered_components() const
+        {
+            std::vector<std::string_view> result;
+            result.reserve(m_components.size());
+            for (const auto& e : m_components) {
+                result.push_back(e.first);
+            }
+            return result;
+        }
+
+        std::vector<std::string_view>
+        registered_implementations(std::string_view component_name) const
+        {
+            std::vector<std::string_view> result;
+            auto impl_it = m_implementations.find(component_name);
+            if (impl_it != m_implementations.end()) {
+                result.reserve(impl_it->second.size());
+                for (const auto& e : impl_it->second) {
+                    result.push_back(e.first);
+                }
+            }
+            return result;
         }
 
         std::shared_ptr<component_base>
@@ -189,6 +248,12 @@ namespace mge {
         s_component_registry->register_implementation(i);
     }
 
+    void implementation_registry_entry_base::unregister_implementation(
+        implementation_registry_entry_base* i)
+    {
+        s_component_registry->unregister_implementation(i);
+    }
+
     bool component_base::component_registered(std::string_view name)
     {
         return s_component_registry->component_registered(name);
@@ -215,5 +280,16 @@ namespace mge {
     {
         return s_component_registry->create(component_name,
                                             implementation_name);
+    }
+
+    std::vector<std::string_view> registered_components()
+    {
+        return s_component_registry->registered_components();
+    }
+
+    std::vector<std::string_view>
+    registered_implementations(std::string_view component_name)
+    {
+        return s_component_registry->registered_implementations(component_name);
     }
 } // namespace mge
