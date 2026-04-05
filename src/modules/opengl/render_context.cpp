@@ -299,6 +299,15 @@ namespace mge::opengl {
         , m_glfw_window(context_window->handle())
     {
         glfwMakeContextCurrent(m_glfw_window);
+
+        // Use framebuffer size instead of window size for correct rendering
+        // on HiDPI/Retina displays
+        int fb_width = 0;
+        int fb_height = 0;
+        glfwGetFramebufferSize(m_glfw_window, &fb_width, &fb_height);
+        m_extent = mge::extent(static_cast<uint32_t>(fb_width),
+                               static_cast<uint32_t>(fb_height));
+
         init_gl3w();
         collect_opengl_info();
 
@@ -393,12 +402,12 @@ namespace mge::opengl {
 
     mge::rectangle render_context::default_scissor() const
     {
-        return mge::rectangle(m_window->position(), m_window->extent());
+        return mge::rectangle(0, 0, m_extent.width, m_extent.height);
     }
 
     uint32_t render_context::window_height() const
     {
-        return m_window->extent().height;
+        return m_extent.height;
     }
 
     void render_context::draw_geometry(mge::program*       program,
