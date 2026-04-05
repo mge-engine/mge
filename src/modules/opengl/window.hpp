@@ -14,7 +14,7 @@ namespace mge {
 
         class render_system;
 
-        class window : public platform::window
+        class window : public ui_platform::window
         {
         public:
             window(mge::opengl::render_system&  system,

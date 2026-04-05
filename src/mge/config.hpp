@@ -35,14 +35,20 @@
 namespace mge {
 
 #if defined MGE_OS_WINDOWS
+    namespace windows {}
+    namespace platform = windows;
     namespace win32 {}
-    namespace platform = win32;
+    namespace ui_platform = win32;
 #elif defined MGE_OS_LINUX
+    namespace linux_ {}
+    namespace platform = linux;
     namespace glfw {}
-    namespace platform = glfw;
+    namespace ui_platform = glfw;
 #elif defined MGE_OS_MACOSX
+    namespace macos {}
+    namespace platform = macos;
     namespace glfw {}
-    namespace platform = glfw;
+    namespace ui_platform = glfw;
 #else
 #    error Missing port.
 #endif

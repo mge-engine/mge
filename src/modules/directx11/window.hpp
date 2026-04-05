@@ -13,7 +13,7 @@ namespace mge::dx11 {
 
     class render_system;
 
-    class window : public mge::platform::window
+    class window : public mge::ui_platform::window
     {
     public:
         window(render_system&        system,

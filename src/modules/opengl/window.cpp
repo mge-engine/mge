@@ -14,9 +14,9 @@ namespace mge {
                        const mge::extent&          extent,
                        const mge::window_options&  options)
 #ifdef MGE_OS_WINDOWS
-            : platform::window(system, extent, options)
+            : ui_platform::window(system, extent, options)
 #else
-            : platform::window(system, extent, options, GLFW_OPENGL_API)
+            : ui_platform::window(system, extent, options, GLFW_OPENGL_API)
 #endif
         {
 
