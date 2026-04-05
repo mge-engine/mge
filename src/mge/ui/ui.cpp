@@ -782,8 +782,7 @@ namespace mge {
         // coordinates, but scissor rects must be in framebuffer pixels
         auto  fb_extent = m_render_context->extent();
         auto  win_extent = m_render_context->window_extent();
-        float scale_x =
-            static_cast<float>(fb_extent.width) / win_extent.width;
+        float scale_x = static_cast<float>(fb_extent.width) / win_extent.width;
         float scale_y =
             static_cast<float>(fb_extent.height) / win_extent.height;
 
@@ -797,14 +796,10 @@ namespace mge {
 
             // Set scissor rectangle, scaling from logical to framebuffer
             // coordinates and clamping to valid range
-            int32_t sx =
-                static_cast<int32_t>(nk_cmd->clip_rect.x * scale_x);
-            int32_t sy =
-                static_cast<int32_t>(nk_cmd->clip_rect.y * scale_y);
-            int32_t sw =
-                static_cast<int32_t>(nk_cmd->clip_rect.w * scale_x);
-            int32_t sh =
-                static_cast<int32_t>(nk_cmd->clip_rect.h * scale_y);
+            int32_t sx = static_cast<int32_t>(nk_cmd->clip_rect.x * scale_x);
+            int32_t sy = static_cast<int32_t>(nk_cmd->clip_rect.y * scale_y);
+            int32_t sw = static_cast<int32_t>(nk_cmd->clip_rect.w * scale_x);
+            int32_t sh = static_cast<int32_t>(nk_cmd->clip_rect.h * scale_y);
             if (sx < 0) {
                 sw += sx;
                 sx = 0;
