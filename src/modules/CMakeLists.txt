@@ -5,7 +5,7 @@
 
 
 IF(OpenGL_FOUND)
-    IF (NOT APPLE AND NOT LINUX)
+    IF (NOT LINUX)
         MESSAGE("-- OpenGL found and enabled")
         ADD_SUBDIRECTORY(opengl)
 
