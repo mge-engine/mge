@@ -41,7 +41,7 @@ namespace mge {
     namespace ui_platform = win32;
 #elif defined MGE_OS_LINUX
     namespace linux_ {}
-    namespace platform = linux;
+    namespace platform = linux_;
     namespace glfw {}
     namespace ui_platform = glfw;
 #elif defined MGE_OS_MACOSX
