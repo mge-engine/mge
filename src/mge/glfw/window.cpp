@@ -50,6 +50,10 @@ namespace mge {
             glfwSetWindowUserPointer(m_handle, this);
             glfwSetWindowCloseCallback(m_handle, glfw_close_callback);
             glfwSetKeyCallback(m_handle, glfw_key_callback);
+            glfwSetMouseButtonCallback(m_handle, glfw_mouse_button_callback);
+            glfwSetCursorPosCallback(m_handle, glfw_cursor_pos_callback);
+            glfwSetScrollCallback(m_handle, glfw_scroll_callback);
+            glfwSetCharCallback(m_handle, glfw_char_callback);
 
             m_quit_listener =
                 mge::application::instance()->add_quit_listener([this] {
@@ -240,6 +244,57 @@ namespace mge {
             if (k != mge::key::INVALID) {
                 self->on_key_action(k, translate_action(action));
             }
+        }
+
+        void window::glfw_mouse_button_callback(GLFWwindow* w,
+                                                int         button,
+                                                int         action,
+                                                int         mods)
+        {
+            auto*  self = static_cast<window*>(glfwGetWindowUserPointer(w));
+            double cx = 0;
+            double cy = 0;
+            glfwGetCursorPos(w, &cx, &cy);
+            uint32_t x = static_cast<uint32_t>(cx);
+            uint32_t y = static_cast<uint32_t>(cy);
+            // GLFW buttons: 0=left, 1=right, 2=middle
+            // mge buttons: 1=left, 2=right, 3=middle
+            uint32_t mge_button = static_cast<uint32_t>(button) + 1;
+
+            mge::mouse_action ma;
+            switch (action) {
+            case GLFW_PRESS:
+                ma = mge::mouse_action::PRESS;
+                break;
+            case GLFW_RELEASE:
+                ma = mge::mouse_action::RELEASE;
+                break;
+            default:
+                return;
+            }
+            self->on_mouse_action(mge_button, ma, x, y);
+        }
+
+        void window::glfw_cursor_pos_callback(GLFWwindow* w, double x, double y)
+        {
+            auto* self = static_cast<window*>(glfwGetWindowUserPointer(w));
+            self->on_mouse_move(static_cast<uint32_t>(x),
+                                static_cast<uint32_t>(y));
+        }
+
+        void
+        window::glfw_scroll_callback(GLFWwindow* w, double xoff, double yoff)
+        {
+            auto* self = static_cast<window*>(glfwGetWindowUserPointer(w));
+            // Scale to match Win32 WHEEL_DELTA (120 per notch)
+            self->on_mouse_wheel(static_cast<int32_t>(xoff * 120.0),
+                                 static_cast<int32_t>(yoff * 120.0));
+        }
+
+        void window::glfw_char_callback(GLFWwindow* w, unsigned int codepoint)
+        {
+            auto* self = static_cast<window*>(glfwGetWindowUserPointer(w));
+            self->on_character(static_cast<uint32_t>(codepoint));
         }
 
     } // namespace glfw
