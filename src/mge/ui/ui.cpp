@@ -38,7 +38,6 @@
 #include "mge/input/mouse_action.hpp"
 #include "mge/math/mat.hpp"
 
-
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
@@ -181,7 +180,7 @@ namespace mge {
             m_render_context->create_texture(texture_type::TYPE_2D);
         image_format format(image_format::data_format::RGBA, data_type::UINT8);
         extent       tex_extent(static_cast<uint32_t>(width),
-                          static_cast<uint32_t>(height));
+                                static_cast<uint32_t>(height));
         m_font_texture->set_data(format,
                                  tex_extent,
                                  image,
@@ -542,9 +541,9 @@ namespace mge {
     {
         nk_size cur = static_cast<nk_size>(current);
         int     result = nk_progress(m_context,
-                                 &cur,
-                                 static_cast<nk_size>(max),
-                                 modifiable ? nk_true : nk_false);
+                                     &cur,
+                                     static_cast<nk_size>(max),
+                                     modifiable ? nk_true : nk_false);
         current = static_cast<size_t>(cur);
         return result != 0;
     }
@@ -572,11 +571,11 @@ namespace mge {
     ui_edit_events ui::edit_string(char* buffer, int* length, int max_length)
     {
         nk_flags       result = nk_edit_string(m_context,
-                                         NK_EDIT_SIMPLE,
-                                         buffer,
-                                         length,
-                                         max_length,
-                                         nk_filter_default);
+                                               NK_EDIT_SIMPLE,
+                                               buffer,
+                                               length,
+                                               max_length,
+                                               nk_filter_default);
         ui_edit_events events;
         for (uint32_t i = 0; i < static_cast<uint32_t>(ui_edit_event_flag::MAX);
              ++i) {
@@ -761,7 +760,7 @@ namespace mge {
         m_index_buffer->set_data(make_buffer(indices, index_size));
 
         // Get command buffer for drawing
-        auto& cmd = m_render_context->command_buffer(false);
+        auto& cmd = m_render_context->command_buffer(true);
 
         // Bind uniform block with projection matrix
         cmd.bind_uniform_block(m_uniform_block);
