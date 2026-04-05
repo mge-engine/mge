@@ -386,6 +386,7 @@ TEST(input_handler, remove_handler)
             execution_order.push_back(1);
             return false;
         });
+    (void)key1;
 
     auto key2 = handler.add_key_action_handler(
         [&](mge::key k, mge::key_action a, const mge::modifier& m) {
@@ -398,6 +399,7 @@ TEST(input_handler, remove_handler)
             execution_order.push_back(3);
             return false;
         });
+    (void)key3;
 
     // Remove middle handler
     handler.remove_key_action_handler(key2);
@@ -419,6 +421,7 @@ TEST(input_handler, execution_order_after_removal_and_addition)
             execution_order.push_back(1);
             return false;
         });
+    (void)keyA;
 
     auto keyB = handler.add_key_action_handler(
         [&](mge::key k, mge::key_action a, const mge::modifier& m) {
@@ -431,6 +434,7 @@ TEST(input_handler, execution_order_after_removal_and_addition)
             execution_order.push_back(3);
             return false;
         });
+    (void)keyC;
 
     // Remove B
     handler.remove_key_action_handler(keyB);
