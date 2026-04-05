@@ -31,9 +31,11 @@ namespace mge {
 
         private:
             static void glfw_close_callback(GLFWwindow* w);
+            void        process_input();
 
-            GLFWwindow*                    m_handle;
-            application::quit_listener_key m_quit_listener;
+            GLFWwindow*                     m_handle;
+            application::quit_listener_key  m_quit_listener;
+            application::input_listener_key m_input_listener;
         };
 
     } // namespace glfw

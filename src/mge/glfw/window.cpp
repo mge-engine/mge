@@ -18,6 +18,7 @@ namespace mge {
             : mge::window(render_system, ext, options)
             , m_handle(nullptr)
             , m_quit_listener(0)
+            , m_input_listener(0)
         {
             MGE_DEBUG_TRACE(GLFW, "Creating GLFW window");
 
@@ -53,10 +54,15 @@ namespace mge {
                         glfwSetWindowShouldClose(m_handle, GLFW_TRUE);
                     }
                 });
+
+            m_input_listener = mge::application::instance()->add_input_listener(
+                [this]() { this->process_input(); });
         }
 
         window::~window()
         {
+            mge::application::instance()->remove_input_listener(
+                m_input_listener);
             mge::application::instance()->remove_quit_listener(m_quit_listener);
             if (m_handle) {
                 glfwDestroyWindow(m_handle);
@@ -72,6 +78,11 @@ namespace mge {
         void window::on_hide()
         {
             glfwHideWindow(m_handle);
+        }
+
+        void window::process_input()
+        {
+            glfwPollEvents();
         }
 
         void window::glfw_close_callback(GLFWwindow* w)
