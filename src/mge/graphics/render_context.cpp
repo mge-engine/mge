@@ -90,6 +90,7 @@ namespace mge {
                                    const mge::extent&  ext)
         : m_render_system(rs)
         , m_extent(ext)
+        , m_window_extent(ext)
         , m_prepare_frame_resource(m_prepare_frame_memory.data(),
                                    m_prepare_frame_memory.size())
         , m_prepare_frame_actions(&m_prepare_frame_resource)
