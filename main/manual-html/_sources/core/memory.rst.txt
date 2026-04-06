@@ -2,7 +2,7 @@
 Memory Management
 *****************
 
-MGE integrates the _jemalloc_ library for general purpose memory management.
+MGE provides wrappers for general purpose memory management.
 
 For C-style memory management, the following functions are provided:
 
