@@ -239,9 +239,22 @@ has a 1:1 relationship with the window.</p>
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge14render_context6extentEv">
 <span id="_CPPv3NK3mge14render_context6extentEv"></span><span id="_CPPv2NK3mge14render_context6extentEv"></span><span id="mge::render_context::extentC"></span><span class="target" id="classmge_1_1render__context_1a99b7639ad8efcd4c7253cc4eaa4997b0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge14render_context6extentEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the extent of the render context. </p>
+<p>This is the framebuffer extent in pixels, which may differ from the window extent on HiDPI displays.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>extent </p>
+<dd class="field-odd"><p>extent in pixels </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge14render_context13window_extentEv">
+<span id="_CPPv3NK3mge14render_context13window_extentEv"></span><span id="_CPPv2NK3mge14render_context13window_extentEv"></span><span id="mge::render_context::window_extentC"></span><span class="target" id="classmge_1_1render__context_1a09a97cddc36157b89e25056a36272f7d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">window_extent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge14render_context13window_extentEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the logical window extent. </p>
+<p>On HiDPI displays, this is smaller than <a class="reference internal" href="#classmge_1_1render__context_1a99b7639ad8efcd4c7253cc4eaa4997b0"><span class="std std-ref">extent()</span></a>. On non-HiDPI displays, both are the same.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>logical window extent </p>
 </dd>
 </dl>
 </dd></dl>
