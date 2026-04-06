@@ -10,7 +10,7 @@ IF(OpenGL_FOUND)
         ADD_SUBDIRECTORY(opengl)
 
     ELSE()
-        MESSAGE("-- On Apple or Linux platform, skipping OpenGL render system")
+        MESSAGE("-- On Linux platform, skipping OpenGL render system")
     ENDIF()
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
