@@ -56,7 +56,7 @@ namespace mge {
 
         /**
          * Destructor. Intentionally leaks the contained object.
-         * During static destruction, the allocator (jemalloc) may
+         * During static destruction, the allocator may
          * already be torn down, making delete unsafe.
          */
         ~singleton()

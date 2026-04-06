@@ -118,7 +118,6 @@ TARGET_LINK_LIBRARIES(mgecore
     boost-all 
     linenoise 
     nlohmann_json::nlohmann_json
-    jemalloc::jemalloc
     fmt::fmt
     PkgConfig::LIBFFI
 )
