@@ -39,18 +39,10 @@ ADD_CUSTOM_TARGET(all-lua-tests)
 FOREACH(LUA_TEST ${LUA_TESTS})
     COPY_FILE(${LUA_TEST} "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}")
     GET_FILENAME_COMPONENT(LUA_TEST_NAME ${LUA_TEST} NAME_WE)
-    IF(APPLE)
-        ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
-            COMMAND lldb --batch -o run --one-line-on-crash "bt all" --one-line-on-crash quit
-                -- $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        )
-    ELSE()
-        ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
-            COMMAND $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
-            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        )
-    ENDIF()
+    ADD_TEST(NAME "lua_${LUA_TEST_NAME}"
+        COMMAND $<TARGET_FILE:mgelua> "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    )
     ADD_CUSTOM_TARGET("lua_${LUA_TEST_NAME}_run" 
         DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/${LUA_TEST}"
         COMMAND ${CMAKE_CTEST_COMMAND} -VV -R "lua_${LUA_TEST_NAME}")
