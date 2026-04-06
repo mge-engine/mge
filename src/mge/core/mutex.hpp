@@ -45,8 +45,8 @@ namespace mge {
         bool try_lock();
 
     private:
-        std::mutex  m_mutex;
-        const char* m_name;
+        std::mutex                   m_mutex;
+        [[maybe_unused]] const char* m_name;
     };
 
 } // namespace mge

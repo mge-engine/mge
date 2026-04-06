@@ -155,9 +155,9 @@ namespace mge {
 
         void assert_this_thread_is_this_thread();
 
-        std::string         m_name;
-        thread_group*       m_group;
-        running_thread_type m_running_thread;
+        std::string                    m_name;
+        [[maybe_unused]] thread_group* m_group;
+        running_thread_type            m_running_thread;
     };
 
     /**
