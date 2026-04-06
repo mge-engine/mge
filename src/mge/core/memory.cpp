@@ -5,6 +5,9 @@
 #include "mge/core/stdexceptions.hpp"
 
 #include <cstdlib>
+#ifdef MGE_OS_WINDOWS
+#    include <malloc.h>
+#endif
 
 namespace mge {
 
@@ -37,7 +40,11 @@ namespace mge {
 
     MGECORE_EXPORT void* allocate(size_t bytes, size_t alignment)
     {
+#ifdef MGE_OS_WINDOWS
+        void* ptr = ::_aligned_malloc(bytes, alignment);
+#else
         void* ptr = ::aligned_alloc(alignment, bytes);
+#endif
         if (ptr == nullptr) {
             MGE_THROW(out_of_memory) << "Cannot allocate " << bytes
                                      << " bytes with alignment " << alignment;
@@ -50,7 +57,11 @@ namespace mge {
         if (ptr == nullptr) {
             return;
         }
+#ifdef MGE_OS_WINDOWS
+        ::_aligned_free(ptr);
+#else
         ::free(ptr);
+#endif
     }
 
 } // namespace mge
