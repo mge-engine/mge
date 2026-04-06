@@ -38,7 +38,6 @@
 #include "mge/input/mouse_action.hpp"
 #include "mge/math/mat.hpp"
 
-
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
@@ -181,7 +180,7 @@ namespace mge {
             m_render_context->create_texture(texture_type::TYPE_2D);
         image_format format(image_format::data_format::RGBA, data_type::UINT8);
         extent       tex_extent(static_cast<uint32_t>(width),
-                          static_cast<uint32_t>(height));
+                                static_cast<uint32_t>(height));
         m_font_texture->set_data(format,
                                  tex_extent,
                                  image,
@@ -542,9 +541,9 @@ namespace mge {
     {
         nk_size cur = static_cast<nk_size>(current);
         int     result = nk_progress(m_context,
-                                 &cur,
-                                 static_cast<nk_size>(max),
-                                 modifiable ? nk_true : nk_false);
+                                     &cur,
+                                     static_cast<nk_size>(max),
+                                     modifiable ? nk_true : nk_false);
         current = static_cast<size_t>(cur);
         return result != 0;
     }
@@ -572,11 +571,11 @@ namespace mge {
     ui_edit_events ui::edit_string(char* buffer, int* length, int max_length)
     {
         nk_flags       result = nk_edit_string(m_context,
-                                         NK_EDIT_SIMPLE,
-                                         buffer,
-                                         length,
-                                         max_length,
-                                         nk_filter_default);
+                                               NK_EDIT_SIMPLE,
+                                               buffer,
+                                               length,
+                                               max_length,
+                                               nk_filter_default);
         ui_edit_events events;
         for (uint32_t i = 0; i < static_cast<uint32_t>(ui_edit_event_flag::MAX);
              ++i) {
@@ -709,7 +708,9 @@ namespace mge {
                 m_uniform_block = new uniform_block(uniform_buffers[0]);
 
                 // Set up orthographic projection matrix
-                auto  extent = m_render_context->extent();
+                // Use logical window extent (not framebuffer extent) because
+                // nuklear generates vertex coordinates in logical window space
+                auto  extent = m_render_context->window_extent();
                 float vp_width = static_cast<float>(extent.width);
                 float vp_height = static_cast<float>(extent.height);
 
@@ -761,7 +762,7 @@ namespace mge {
         m_index_buffer->set_data(make_buffer(indices, index_size));
 
         // Get command buffer for drawing
-        auto& cmd = m_render_context->command_buffer(false);
+        auto& cmd = m_render_context->command_buffer(true);
 
         // Bind uniform block with projection matrix
         cmd.bind_uniform_block(m_uniform_block);
@@ -777,6 +778,14 @@ namespace mge {
         // Bind font texture as default
         cmd.bind_texture(m_font_texture.get());
 
+        // Compute scale factor for HiDPI: nuklear uses logical window
+        // coordinates, but scissor rects must be in framebuffer pixels
+        auto  fb_extent = m_render_context->extent();
+        auto  win_extent = m_render_context->window_extent();
+        float scale_x = static_cast<float>(fb_extent.width) / win_extent.width;
+        float scale_y =
+            static_cast<float>(fb_extent.height) / win_extent.height;
+
         // Iterate through nuklear draw commands
         const nk_draw_command* nk_cmd = nullptr;
         nk_size                offset = 0;
@@ -785,11 +794,12 @@ namespace mge {
             if (nk_cmd->elem_count == 0)
                 continue;
 
-            // Set scissor rectangle, clamping to valid range
-            int32_t sx = static_cast<int32_t>(nk_cmd->clip_rect.x);
-            int32_t sy = static_cast<int32_t>(nk_cmd->clip_rect.y);
-            int32_t sw = static_cast<int32_t>(nk_cmd->clip_rect.w);
-            int32_t sh = static_cast<int32_t>(nk_cmd->clip_rect.h);
+            // Set scissor rectangle, scaling from logical to framebuffer
+            // coordinates and clamping to valid range
+            int32_t sx = static_cast<int32_t>(nk_cmd->clip_rect.x * scale_x);
+            int32_t sy = static_cast<int32_t>(nk_cmd->clip_rect.y * scale_y);
+            int32_t sw = static_cast<int32_t>(nk_cmd->clip_rect.w * scale_x);
+            int32_t sh = static_cast<int32_t>(nk_cmd->clip_rect.h * scale_y);
             if (sx < 0) {
                 sw += sx;
                 sx = 0;

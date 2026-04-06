@@ -13,7 +13,7 @@ namespace mge::vulkan {
 
     class render_system;
 
-    class window : public platform::window
+    class window : public ui_platform::window
     {
     public:
         window(render_system&               render_system_,

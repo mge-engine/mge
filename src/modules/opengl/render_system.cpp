@@ -9,6 +9,8 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/monitor.hpp"
+#else
+#    include "mge/glfw/monitor.hpp"
 #endif
 namespace mge {
 
@@ -19,7 +21,9 @@ namespace mge {
         render_system::render_system()
         {
             MGE_INFO_TRACE(OPENGL, "Creating opengl render system");
+            MGE_DEBUG_TRACE(OPENGL, "Initializing capabilities");
             init_capabilities();
+            MGE_DEBUG_TRACE(OPENGL, "Capabilities initialized");
         }
 
         mge::window_ref
@@ -35,6 +39,8 @@ namespace mge {
         {
 #ifdef MGE_OS_WINDOWS
             return mge::win32::monitor::all_monitors();
+#else
+            return mge::glfw::monitor::all_monitors();
 #endif
         }
 

@@ -13,7 +13,11 @@ namespace mge {
         window::window(mge::opengl::render_system& system,
                        const mge::extent&          extent,
                        const mge::window_options&  options)
-            : platform::window(system, extent, options)
+#ifdef MGE_OS_WINDOWS
+            : ui_platform::window(system, extent, options)
+#else
+            : ui_platform::window(system, extent, options, GLFW_OPENGL_API)
+#endif
         {
 
             create_render_context(system);

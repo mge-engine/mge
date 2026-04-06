@@ -11,6 +11,10 @@
 #include "opengl.hpp"
 #include "opengl_info.hpp"
 #include "window.hpp"
+#ifndef MGE_OS_WINDOWS
+#    define GLFW_INCLUDE_NONE
+#    include <GLFW/glfw3.h>
+#endif
 
 namespace mge {
 
@@ -84,7 +88,25 @@ namespace mge {
             mge::mutex                  m_lock;
             std::map<thread::id, HGLRC> m_thread_glrcs;
 #else
-#    error Missing port
+        private:
+            void   init_gl3w();
+            void   collect_opengl_info();
+            GLuint create_vao(mge::opengl::vertex_buffer* vb,
+                              mge::opengl::index_buffer*  ib);
+
+            void draw_geometry(mge::program*       program,
+                               mge::vertex_buffer* vb,
+                               mge::index_buffer*  ib,
+                               mge::uniform_block* ub,
+                               mge::texture*       tex,
+                               uint32_t            index_count = 0,
+                               uint32_t            index_offset = 0);
+
+            void bind_uniform_block(mge::opengl::program& gl_program,
+                                    mge::uniform_block&   ub);
+
+            mge::opengl::window* m_window;
+            GLFWwindow*          m_glfw_window;
 #endif
             static singleton<opengl_info> s_glinfo;
 
