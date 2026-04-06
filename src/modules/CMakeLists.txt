@@ -16,10 +16,10 @@ ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
 ENDIF()
 
-IF(Vulkan_FOUND)
+IF(Vulkan_FOUND AND NOT APPLE)
     ADD_SUBDIRECTORY(vulkan)
 ELSE()
-    MESSAGE("-- Vulkan not found, not building vulkan render system")
+    MESSAGE("-- Vulkan not found or not supported on this platform, not building vulkan render system")
 ENDIF()
 
 IF(MSVC)
