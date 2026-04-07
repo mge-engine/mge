@@ -111,6 +111,18 @@ namespace mge {
         render_context_registry::instance->unregister_context(m_index, this);
     }
 
+    void render_context::reset_prepare_frame_actions()
+    {
+        // Swap with empty vector to detach from resource memory before
+        // releasing. Direct clear() + release() leaves the vector's
+        // internal buffer pointing into released resource memory, causing
+        // corruption when the vector later grows and overlaps with new
+        // allocations from the reset resource.
+        std::pmr::vector<prepare_frame_action> tmp(&m_prepare_frame_resource);
+        m_prepare_frame_actions.swap(tmp);
+        m_prepare_frame_resource.release();
+    }
+
     void render_context::frame()
     {
         if (m_first_frame) {
@@ -130,12 +142,10 @@ namespace mge {
                     action();
                 }
             } catch (...) {
-                m_prepare_frame_actions.clear();
-                m_prepare_frame_resource.release();
+                reset_prepare_frame_actions();
                 throw;
             }
-            m_prepare_frame_actions.clear();
-            m_prepare_frame_resource.release();
+            reset_prepare_frame_actions();
         }
         bool rendered = false;
         if (m_passes.size() > 0) {
