@@ -95,6 +95,6 @@ namespace mge::vulkan {
                                              m_physical_device_features;
         std::vector<VkQueueFamilyProperties> m_queue_family_properties;
         size_t                               m_graphics_queue_index{0};
-        static std::once_flag                s_glslang_initialized;
+        static bool                          s_glslang_initialized;
     };
 } // namespace mge::vulkan

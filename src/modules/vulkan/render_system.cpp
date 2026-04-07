@@ -62,7 +62,7 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    std::once_flag render_system::s_glslang_initialized;
+    bool render_system::s_glslang_initialized = false;
 
     render_system::render_system()
     {
@@ -90,18 +90,15 @@ namespace mge::vulkan {
 
     void render_system::init_glslang()
     {
-        std::call_once(s_glslang_initialized, []() {
+        if (!s_glslang_initialized) {
             MGE_DEBUG_TRACE(VULKAN, "Initializing shader compiler");
             auto rc = glslang_initialize_process();
             if (!rc) {
                 MGE_THROW(vulkan::error)
                     << "Failed to initialize shader compiler: " << rc;
             }
-            mge::atexit::run([]() {
-                MGE_DEBUG_TRACE(VULKAN, "Finalizing shader compiler");
-                glslang_finalize_process();
-            });
-        });
+            s_glslang_initialized = true;
+        }
     }
 
     void render_system::init_capabilities()
@@ -475,6 +472,11 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
+        if (s_glslang_initialized) {
+            MGE_DEBUG_TRACE(VULKAN, "Finalizing shader compiler");
+            glslang_finalize_process();
+            s_glslang_initialized = false;
+        }
         m_graphics_queue_index = 0;
         m_queue_family_properties.clear();
         m_physical_device = VK_NULL_HANDLE;
