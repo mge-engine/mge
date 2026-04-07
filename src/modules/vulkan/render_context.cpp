@@ -135,6 +135,7 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
+            find_depth_format();
             create_depth_resources();
             create_render_pass();
             create_graphics_command_pool();
@@ -665,10 +666,35 @@ namespace mge::vulkan {
         }
     }
 
+    void render_context::find_depth_format()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Find depth format");
+        const VkFormat candidates[] = {
+            VK_FORMAT_D24_UNORM_S8_UINT,
+            VK_FORMAT_D32_SFLOAT,
+        };
+
+        for (auto format : candidates) {
+            VkFormatProperties props;
+            m_render_system->vkGetPhysicalDeviceFormatProperties(
+                m_render_system->physical_device(),
+                format,
+                &props);
+            if (props.optimalTilingFeatures &
+                VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+                m_depth_format = format;
+                MGE_DEBUG_TRACE(VULKAN,
+                                "Selected depth format: {}",
+                                static_cast<int>(format));
+                return;
+            }
+        }
+        MGE_THROW(mge::vulkan::error) << "No supported depth format found";
+    }
+
     void render_context::create_depth_resources()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create depth resources");
-        VkFormat depth_format = VK_FORMAT_D24_UNORM_S8_UINT;
 
         m_depth_images.resize(m_swap_chain_images.size());
         m_depth_image_allocations.resize(m_swap_chain_images.size());
@@ -683,7 +709,7 @@ namespace mge::vulkan {
             image_info.extent.depth = 1;
             image_info.mipLevels = 1;
             image_info.arrayLayers = 1;
-            image_info.format = depth_format;
+            image_info.format = m_depth_format;
             image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
             image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
             image_info.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
@@ -704,7 +730,7 @@ namespace mge::vulkan {
             view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             view_info.image = m_depth_images[i];
             view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
-            view_info.format = depth_format;
+            view_info.format = m_depth_format;
             view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
             view_info.subresourceRange.baseMipLevel = 0;
             view_info.subresourceRange.levelCount = 1;
@@ -755,7 +781,7 @@ namespace mge::vulkan {
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
         VkAttachmentDescription depth_attachment = {};
-        depth_attachment.format = VK_FORMAT_D24_UNORM_S8_UINT;
+        depth_attachment.format = m_depth_format;
         depth_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
         depth_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         depth_attachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;

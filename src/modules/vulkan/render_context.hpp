@@ -150,6 +150,7 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void find_depth_format();
         void create_depth_resources();
         void create_render_pass();
         void create_graphics_command_pool();
@@ -197,6 +198,7 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
         VkExtent2D                      m_extent;
+        VkFormat                        m_depth_format{VK_FORMAT_UNDEFINED};
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
