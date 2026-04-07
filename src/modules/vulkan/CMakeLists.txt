@@ -39,6 +39,12 @@ IF(WIN32)
         "${CMAKE_CURRENT_BINARY_DIR}/vulkan_win32.inc"
         "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h")
 ENDIF()
+IF(NOT WIN32)
+    SET(mge_vulkan_platform_SOURCES
+        "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
+        "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h"
+    )
+ENDIF()
 
 ADD_LIBRARY(mge_module_vulkan MODULE
     ${mge_vulkan_module_SOURCES}
@@ -49,6 +55,11 @@ TARGET_INCLUDE_DIRECTORIES(mge_module_vulkan PRIVATE "${CMAKE_BINARY_DIR}/src/mo
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan PRIVATE mge_win32 mgeapplication)
+ELSEIF(APPLE)
+    TARGET_LINK_LIBRARIES(mge_module_vulkan PRIVATE mge_glfw mgeapplication)
+    GET_FILENAME_COMPONENT(MGE_VULKAN_LIBRARY_DIR "${Vulkan_LIBRARY}" DIRECTORY)
+    TARGET_COMPILE_DEFINITIONS(mge_module_vulkan PRIVATE
+        MGE_VULKAN_LIBRARY_DIR="${MGE_VULKAN_LIBRARY_DIR}")
 ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_vulkan
     PRIVATE

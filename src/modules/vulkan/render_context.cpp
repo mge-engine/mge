@@ -16,6 +16,10 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 
+#ifdef MGE_OS_MACOSX
+#    include <GLFW/glfw3.h>
+#endif
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -218,7 +222,12 @@ namespace mge::vulkan {
             &create_info,
             nullptr,
             &m_surface));
-
+#elif defined MGE_OS_MACOSX
+        MGE_DEBUG_TRACE(VULKAN, "Create Vulkan surface (GLFW)");
+        CHECK_VK_CALL(glfwCreateWindowSurface(m_render_system->instance(),
+                                              m_window.handle(),
+                                              nullptr,
+                                              &m_surface));
 #else
 #    error Missing port
 #endif
@@ -245,6 +254,9 @@ namespace mge::vulkan {
 
         std::vector<const char*> device_extensions;
         device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+#ifdef MGE_OS_MACOSX
+        device_extensions.push_back("VK_KHR_portability_subset");
+#endif
 
         std::vector<const char*> device_layers;
         if (m_render_system->debug()) {
@@ -406,7 +418,7 @@ namespace mge::vulkan {
             // MGE_DEBUG_TRACE(VULKAN)
             //    << "Replace " << name << ": " << (void*)(original) << " by "
             //    << (void*)ptr;
-            result = ptr;
+            result = reinterpret_cast<void*>(ptr);
         }
         return result;
     }
@@ -1135,7 +1147,7 @@ namespace mge::vulkan {
         }
 
         // Get or create descriptor set
-        auto            desc_key = std::make_tuple(&ub,
+        auto desc_key = std::make_tuple(&ub,
                                         static_cast<mge::texture*>(nullptr),
                                         vk_program.descriptor_set_layout());
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;

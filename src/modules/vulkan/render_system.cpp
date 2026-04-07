@@ -15,6 +15,9 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/monitor.hpp"
+#elif defined MGE_OS_MACOSX
+#    include "mge/glfw/monitor.hpp"
+#    include <GLFW/glfw3.h>
 #endif
 
 template <> struct fmt::formatter<VkDebugUtilsMessageTypeFlagBitsEXT>
@@ -67,6 +70,12 @@ namespace mge::vulkan {
             MGE_INFO_TRACE(VULKAN, "Creating Vulkan render system");
             init_capabilities();
             m_library = std::make_shared<vulkan_library>();
+#ifdef MGE_OS_MACOSX
+            glfwInitVulkanLoader(m_library->vkGetInstanceProcAddr);
+            if (!glfwInit()) {
+                MGE_THROW(mge::runtime_exception) << "glfwInit failed";
+            }
+#endif
             resolve_basic_instance_functions();
             resolve_layer_properties();
             create_instance();
@@ -143,6 +152,21 @@ namespace mge::vulkan {
 #ifdef MGE_OS_WINDOWS
     static const char* s_default_extensions[] = {"VK_KHR_surface",
                                                  "VK_KHR_win32_surface"};
+#elif defined MGE_OS_MACOSX
+    static const char** s_glfw_extensions = nullptr;
+    static uint32_t     s_glfw_extension_count = 0;
+
+    static const char** get_default_extensions(uint32_t& count)
+    {
+        s_glfw_extensions =
+            glfwGetRequiredInstanceExtensions(&s_glfw_extension_count);
+        if (!s_glfw_extensions) {
+            MGE_THROW(mge::runtime_exception)
+                << "glfwGetRequiredInstanceExtensions failed";
+        }
+        count = s_glfw_extension_count;
+        return s_glfw_extensions;
+    }
 #else
 #    error Missing port
 #endif
@@ -263,9 +287,17 @@ namespace mge::vulkan {
         // : manage instance layers and extensions externally
         std::vector<const char*> extensions;
         std::vector<const char*> layers;
+#ifdef MGE_OS_WINDOWS
         for (const auto& e : s_default_extensions) {
             extensions.push_back(e);
         }
+#elif defined MGE_OS_MACOSX
+        uint32_t     ext_count = 0;
+        const char** exts = get_default_extensions(ext_count);
+        for (uint32_t i = 0; i < ext_count; ++i) {
+            extensions.push_back(exts[i]);
+        }
+#endif
 
         if (debug()) {
             MGE_DEBUG_TRACE(VULKAN,
@@ -274,9 +306,17 @@ namespace mge::vulkan {
             layers.push_back("VK_LAYER_KHRONOS_validation");
         }
 
+#ifdef MGE_OS_MACOSX
+        extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+#endif
+
         VkInstanceCreateInfo instance_create_info = {};
         instance_create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         instance_create_info.pApplicationInfo = &application_info;
+#ifdef MGE_OS_MACOSX
+        instance_create_info.flags =
+            VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+#endif
         instance_create_info.enabledExtensionCount =
             static_cast<uint32_t>(extensions.size());
         instance_create_info.ppEnabledExtensionNames = extensions.data();
@@ -361,7 +401,7 @@ namespace mge::vulkan {
         // Too much output
         // MGE_DEBUG_TRACE(VULKAN)
         //     << "Resolve instance proc: " << name << ": " << (void*)ptr;
-        return ptr;
+        return reinterpret_cast<void*>(ptr);
     }
 
     void render_system::resolve_basic_instance_functions()
@@ -400,7 +440,7 @@ namespace mge::vulkan {
     {
         auto ptr = getInstanceProc(instance, name);
         // MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
-        return ptr;
+        return reinterpret_cast<void*>(ptr);
     }
 
     void render_system::resolve_instance_functions()
@@ -458,6 +498,8 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         return mge::win32::monitor::all_monitors();
+#elif defined MGE_OS_MACOSX
+        return mge::glfw::monitor::all_monitors();
 #else
 #    error Missing Port
 #endif
@@ -534,7 +576,17 @@ namespace mge::vulkan {
         }
 
         if (m_physical_device == VK_NULL_HANDLE) {
-            MGE_THROW(error) << "No discrete GPU found to use as Vulkan device";
+            for (const auto& device : m_all_physical_devices) {
+                if (m_physical_device_properties[device].deviceType ==
+                    VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU) {
+                    m_physical_device = device;
+                    break;
+                }
+            }
+        }
+
+        if (m_physical_device == VK_NULL_HANDLE) {
+            MGE_THROW(error) << "No suitable GPU found to use as Vulkan device";
         }
     }
 

@@ -5,6 +5,8 @@
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/window.hpp"
+#elif defined MGE_OS_MACOSX
+#    include "mge/glfw/window.hpp"
 #else
 #    error Missing port
 #endif
