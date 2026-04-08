@@ -186,11 +186,12 @@ namespace mge::vulkan {
         VkDevice                                    m_device{VK_NULL_HANDLE};
         VmaAllocator                                m_allocator{VK_NULL_HANDLE};
         VkQueue                                     m_queue{VK_NULL_HANDLE};
-        VkRenderPass  m_render_pass{VK_NULL_HANDLE};
-        VkCommandPool m_graphics_command_pool{VK_NULL_HANDLE};
-        VkSemaphore   m_image_available_semaphore{VK_NULL_HANDLE};
-        VkSemaphore   m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence       m_frame_finished_fence{VK_NULL_HANDLE};
+        VkRenderPass             m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool            m_graphics_command_pool{VK_NULL_HANDLE};
+        std::vector<VkSemaphore> m_image_available_semaphores;
+        std::vector<VkSemaphore> m_render_finished_semaphores;
+        std::vector<VkFence>     m_frame_finished_fences;
+        uint32_t                 m_current_frame{0};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;

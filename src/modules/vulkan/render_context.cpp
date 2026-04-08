@@ -171,7 +171,9 @@ namespace mge::vulkan {
             }
         }
 
-        wait_for_frame_finished();
+        if (m_device) {
+            vkDeviceWaitIdle(m_device);
+        }
         teardown();
     }
 
@@ -298,23 +300,27 @@ namespace mge::vulkan {
         m_descriptor_sets.clear();
 
         if (vkDestroySemaphore) {
-            if (m_image_available_semaphore) {
-                vkDestroySemaphore(m_device,
-                                   m_image_available_semaphore,
-                                   nullptr);
-                m_image_available_semaphore = VK_NULL_HANDLE;
+            for (auto s : m_image_available_semaphores) {
+                if (s != VK_NULL_HANDLE) {
+                    vkDestroySemaphore(m_device, s, nullptr);
+                }
             }
-            if (m_render_finished_semaphore) {
-                vkDestroySemaphore(m_device,
-                                   m_render_finished_semaphore,
-                                   nullptr);
-                m_render_finished_semaphore = VK_NULL_HANDLE;
+            m_image_available_semaphores.clear();
+            for (auto s : m_render_finished_semaphores) {
+                if (s != VK_NULL_HANDLE) {
+                    vkDestroySemaphore(m_device, s, nullptr);
+                }
             }
+            m_render_finished_semaphores.clear();
         }
 
-        if (vkDestroyFence && m_frame_finished_fence) {
-            vkDestroyFence(m_device, m_frame_finished_fence, nullptr);
-            m_frame_finished_fence = VK_NULL_HANDLE;
+        if (vkDestroyFence) {
+            for (auto f : m_frame_finished_fences) {
+                if (f != VK_NULL_HANDLE) {
+                    vkDestroyFence(m_device, f, nullptr);
+                }
+            }
+            m_frame_finished_fences.clear();
         }
 
         if (vkDestroyFramebuffer) {
@@ -899,30 +905,37 @@ namespace mge::vulkan {
 
     void render_context::create_fence()
     {
-        MGE_DEBUG_TRACE(VULKAN, "Create fence");
+        MGE_DEBUG_TRACE(VULKAN, "Create fences");
+        m_frame_finished_fences.resize(m_swap_chain_images.size());
         VkFenceCreateInfo fence_info = {};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         // enable first draw begin to pass through
         fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        CHECK_VK_CALL(vkCreateFence(m_device,
-                                    &fence_info,
-                                    nullptr,
-                                    &m_frame_finished_fence));
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            CHECK_VK_CALL(vkCreateFence(m_device,
+                                        &fence_info,
+                                        nullptr,
+                                        &m_frame_finished_fences[i]));
+        }
     }
 
     void render_context::create_semaphores()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create semaphores");
+        m_image_available_semaphores.resize(m_swap_chain_images.size());
+        m_render_finished_semaphores.resize(m_swap_chain_images.size());
         VkSemaphoreCreateInfo semaphore_info = {};
         semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        CHECK_VK_CALL(vkCreateSemaphore(m_device,
-                                        &semaphore_info,
-                                        nullptr,
-                                        &m_image_available_semaphore));
-        CHECK_VK_CALL(vkCreateSemaphore(m_device,
-                                        &semaphore_info,
-                                        nullptr,
-                                        &m_render_finished_semaphore));
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                            &semaphore_info,
+                                            nullptr,
+                                            &m_image_available_semaphores[i]));
+            CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                            &semaphore_info,
+                                            nullptr,
+                                            &m_render_finished_semaphores[i]));
+        }
     }
 
     void render_context::create_descriptor_pool()
@@ -953,12 +966,14 @@ namespace mge::vulkan {
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
-                                      &m_frame_finished_fence,
+                                      &m_frame_finished_fences[m_current_frame],
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
         ++m_frame;
         // reset fence
-        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finished_fence));
+        CHECK_VK_CALL(vkResetFences(m_device,
+                                    1,
+                                    &m_frame_finished_fences[m_current_frame]));
     }
 
     void render_context::acquire_next_image()
@@ -967,7 +982,7 @@ namespace mge::vulkan {
             vkAcquireNextImageKHR(m_device,
                                   m_swap_chain_khr,
                                   std::numeric_limits<uint64_t>::max(),
-                                  m_image_available_semaphore,
+                                  m_image_available_semaphores[m_current_frame],
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
     }
@@ -1064,8 +1079,10 @@ namespace mge::vulkan {
 
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore wait_semaphores[] = {
+            m_image_available_semaphores[m_current_frame]};
+        VkSemaphore signal_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         submit_info.waitSemaphoreCount = 1;
@@ -1077,7 +1094,7 @@ namespace mge::vulkan {
         submit_info.pCommandBuffers = &m_tmp_command_buffer;
 
         CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fences[m_current_frame]));
 
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -1636,8 +1653,10 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore wait_semaphores[] = {
+            m_image_available_semaphores[m_current_frame]};
+        VkSemaphore signal_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
@@ -1649,11 +1668,14 @@ namespace mge::vulkan {
         submit_info.commandBufferCount = 1;
         submit_info.pCommandBuffers = command_buffers;
 
-        CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+        CHECK_VK_CALL(vkQueueSubmit(m_queue,
+                                    1,
+                                    &submit_info,
+                                    m_frame_finished_fences[m_current_frame]));
         m_current_frame_state = frame_state::DRAW_FINISHED;
 
-        VkSemaphore present_wait_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore present_wait_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         present_info.waitSemaphoreCount = 1;
@@ -1663,6 +1685,8 @@ namespace mge::vulkan {
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
         m_current_frame_state = frame_state::BEFORE_DRAW;
+        m_current_frame = (m_current_frame + 1) %
+                          static_cast<uint32_t>(m_swap_chain_images.size());
     }
 
     const std::vector<VkVertexInputAttributeDescription>&
