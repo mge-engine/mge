@@ -88,21 +88,31 @@ FUNCTION(MGE_TEST)
                 ADD_TEST(NAME ${MGE_TEST_TARGET}
                         COMMAND ${_TEST_COMMAND}
                         WORKING_DIRECTORY "${_BINARY_DIR}")
+                IF(MGE_TEST_SHOWTRACE)
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+                ENDIF()
+                IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+                ENDIF()
             ENDIF()
         ELSE()
             ADD_TEST(NAME ${MGE_TEST_TARGET}
                     COMMAND ${_TEST_COMMAND}
                     WORKING_DIRECTORY "${_BINARY_DIR}")
-        ENDIF()
-        IF(MGE_TEST_SHOWTRACE)
-            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                        PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
-            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                        APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
-        ENDIF()
-        IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
-            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                        APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+            IF(MGE_TEST_SHOWTRACE)
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+            ENDIF()
+            IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+            ENDIF()
         ENDIF()
     ENDIF()
 ENDFUNCTION()
