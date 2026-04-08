@@ -79,7 +79,8 @@ namespace mge {
     static void* nk_mge_alloc(nk_handle unused, void* old, nk_size size)
     {
         (void)unused;
-        return mge::realloc(old, size);
+        (void)old;
+        return mge::malloc(size);
     }
 
     static void nk_mge_free(nk_handle unused, void* ptr)
