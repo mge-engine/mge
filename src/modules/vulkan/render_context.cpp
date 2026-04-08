@@ -133,6 +133,8 @@ namespace mge::vulkan {
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();
+            // Update base class extent to actual framebuffer pixel size
+            mge::render_context::m_extent = {m_extent.width, m_extent.height};
             create_swap_chain();
             create_image_views();
             find_depth_format();
