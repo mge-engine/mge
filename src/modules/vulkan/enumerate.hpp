@@ -6,8 +6,7 @@
 
 namespace mge::vulkan {
 
-    template <typename F, typename C = std::vector>
-    void enumerate(const F& f, C& container)
+    template <typename F, typename C> void enumerate(const F& f, C& container)
     {
         uint32_t count = 0;
         f(&count, nullptr);

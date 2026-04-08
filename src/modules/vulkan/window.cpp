@@ -18,12 +18,14 @@ namespace mge::vulkan {
     {
         MGE_DEBUG_TRACE(VULKAN, "Create window");
         create_render_context(system);
+#ifdef MGE_OS_WINDOWS
         auto fd = system.frame_debugger();
         if (fd) {
             fd->set_context(
                 frame_debugger::capture_context{system.renderdoc_device(),
                                                 hwnd()});
         }
+#endif
     }
 
     window::~window() {}

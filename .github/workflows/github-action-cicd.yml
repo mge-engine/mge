@@ -30,6 +30,9 @@ jobs:
           - name: Install Automake and related tools
             run: |
               brew install automake autoconf autoconf-archive libtool
+          - name: Install Vulkan SDK components
+            run: |
+              brew install molten-vk vulkan-loader vulkan-validationlayers glslang shaderc volk
           - name: Install Ninja
             run: |
               ninja --version

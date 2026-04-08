@@ -388,6 +388,8 @@ namespace mge {
 
         using prepare_frame_action = std::function<void()>;
 
+        void reset_prepare_frame_actions();
+
         std::array<std::byte, 65536>           m_prepare_frame_memory;
         std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
