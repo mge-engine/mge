@@ -86,8 +86,8 @@ namespace mge {
         ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
         if (len == -1) {
             len = 0;
-            buffer[0] = '\0';
         }
+        buffer[len] = '\0';
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
             return "";
