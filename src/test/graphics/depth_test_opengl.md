@@ -2,6 +2,39 @@
 - Driver: OpenGL
 # Frames
 ## Frame 1
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #1
+- Call: glBufferData
+  - buffer: GLResource #1
+  - bytesize: 36
+  - data: _ignored_
+  - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #2
+- Call: glBufferData
+  - buffer: GLResource #2
+  - bytesize: 36
+  - data: _ignored_
+  - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #3
+- Call: glBufferData
+  - buffer: GLResource #3
+  - bytesize: 12
+  - data: _ignored_
+  - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: null
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null
@@ -36,21 +69,21 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #4
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glBindBuffer
   - target: GL_ARRAY_BUFFER
-  - buffer: GLResource #3
+  - buffer: GLResource #1
 - Call: glBindBuffer
   - target: GL_ELEMENT_ARRAY_BUFFER
-  - buffer: GLResource #4
+  - buffer: GLResource #3
 - Call: glEnableVertexAttribArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
   - index: 0
 - Call: glVertexAttribPointer
-  - vaobj: GLResource #2
-  - buffer: GLResource #3
+  - vaobj: GLResource #5
+  - buffer: GLResource #1
   - index: 0
   - size: 3
   - type: GL_FLOAT
@@ -58,36 +91,36 @@
   - stride: 12
   - offset: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #6
+  - program: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glBindBuffer
   - target: GL_ARRAY_BUFFER
-  - buffer: GLResource #8
+  - buffer: GLResource #2
 - Call: glBindBuffer
   - target: GL_ELEMENT_ARRAY_BUFFER
-  - buffer: GLResource #4
+  - buffer: GLResource #3
 - Call: glEnableVertexAttribArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
   - index: 0
 - Call: glVertexAttribPointer
-  - vaobj: GLResource #7
-  - buffer: GLResource #8
+  - vaobj: GLResource #8
+  - buffer: GLResource #2
   - index: 0
   - size: 3
   - type: GL_FLOAT
@@ -95,16 +128,16 @@
   - stride: 12
   - offset: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDisable
@@ -147,31 +180,31 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #4
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #6
+  - program: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDisable
@@ -214,31 +247,31 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #4
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #6
+  - program: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDisable
@@ -281,31 +314,31 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #4
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #6
+  - program: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDisable
@@ -348,31 +381,31 @@
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #4
 - Call: glBindVertexArray
-  - vaobj: GLResource #2
+  - vaobj: GLResource #5
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDepthFunc
   - func: GL_LESS
 - Call: glUseProgram
-  - program: GLResource #6
+  - program: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #7
+  - vaobj: GLResource #8
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 3
   - type: GL_UNSIGNED_INT
   - indices: 0
 - Call: glBindVertexArray
-  - vaobj: GLResource #5
+  - vaobj: GLResource #6
 - Call: glUseProgram
   - program: null
 - Call: glDisable
