@@ -119,9 +119,7 @@ namespace mge {
                             m_render_system->implementation_name());
 
             if (m_render_system->implementation_name() ==
-                    "mge::opengl::render_system" ||
-                m_render_system->implementation_name() ==
-                    "mge::vulkan::render_system") {
+                "mge::opengl::render_system") {
 
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
@@ -142,6 +140,40 @@ namespace mge {
                     layout(location = 0) out vec4 color;
 
                     uniform sampler2D texSampler;
+
+                    void main() {
+                        color = texture(texSampler, fragTexCoord);
+                    }
+                )shader";
+
+                MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Compile fragment shader");
+                pixel_shader->compile(fragment_shader_glsl);
+                MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Compile vertex shader");
+                vertex_shader->compile(vertex_shader_glsl);
+                MGE_DEBUG_TRACE(TEXTURED_TRIANGLE, "Shaders compiled");
+
+            } else if (m_render_system->implementation_name() ==
+                       "mge::vulkan::render_system") {
+
+                const char* vertex_shader_glsl = R"shader(
+                    #version 460
+                    layout(location = 0) in vec3 vertexPosition;
+                    layout(location = 1) in vec2 vertexTexCoord;
+
+                    layout(location = 0) out vec2 fragTexCoord;
+
+                    void main() {
+                        gl_Position = vec4(vertexPosition, 1.0);
+                        fragTexCoord = vertexTexCoord;
+                    }
+                )shader";
+
+                const char* fragment_shader_glsl = R"shader(
+                    #version 460
+                    layout(location = 0) in vec2 fragTexCoord;
+                    layout(location = 0) out vec4 color;
+
+                    layout(binding = 0) uniform sampler2D texSampler;
 
                     void main() {
                         color = texture(texSampler, fragTexCoord);
