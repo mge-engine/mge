@@ -4,6 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/application/loop.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/dump.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/module.hpp"
 #include "mge/core/stdexceptions.hpp"
@@ -65,6 +66,7 @@ namespace mge {
         SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
                      SEM_NOOPENFILEERRORBOX);
 #endif
+        install_dump_handler();
         if (!configuration::loaded()) {
             configuration::load();
         }

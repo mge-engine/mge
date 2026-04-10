@@ -126,6 +126,18 @@ namespace mge {
          * @brief Construct stacktrace of current thread.
          */
         stacktrace();
+
+        /**
+         * @brief Construct stacktrace from native thread and context.
+         *
+         * On Windows, @p native_thread is a HANDLE and @p native_context
+         * is a CONTEXT*. On other platforms this is not supported.
+         *
+         * @param native_thread native thread handle
+         * @param native_context native context pointer
+         */
+        stacktrace(void* native_thread, void* native_context);
+
         /**
          * @brief Copy constructor.
          *

@@ -244,6 +244,16 @@ namespace mge {
         fill_stacktrace(m_frames, m_strings);
     }
 
+    stacktrace::stacktrace(void* native_thread, void* native_context)
+    {
+#ifdef MGE_OS_WINDOWS
+        fill_stacktrace(static_cast<HANDLE>(native_thread),
+                        static_cast<CONTEXT*>(native_context),
+                        m_frames,
+                        m_strings);
+#endif
+    }
+
     stacktrace::stacktrace(const stacktrace& src)
     {
         for (const auto& f : src.m_frames) {
