@@ -46,6 +46,13 @@ namespace mge {
         return executable_name() + "-crash-" + dump_timestamp() + ".md";
     }
 
+    dump::dump(std::string_view purpose)
+    {
+        MGE_INFO_TRACE(DUMP, "Creating dump for {}", purpose);
+    }
+
+    dump::~dump() {}
+
     static void write_dump(const stacktrace& st)
     {
         auto filename = dump_filename();

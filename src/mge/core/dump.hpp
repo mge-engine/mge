@@ -4,24 +4,31 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 
+#include <string_view>
+
 namespace mge {
 
+    /**
+     * @brief Crash dump.
+     *
+     * A crash dump provides useful information for debugging crashes.
+     */
     class MGECORE_EXPORT dump
     {
     public:
+        dump(std::string_view purpose = "crash");
+        ~dump();
+
+        dump(const dump&) = delete;
+        dump& operator=(const dump&) = delete;
+
         /**
          * @brief Install crash dump handler.
-         *
-         * On Windows, registers an unhandled exception filter that writes
-         * a crash dump file. On other platforms, this is a no-op.
          */
         static void install_handler();
 
         /**
          * @brief Uninstall crash dump handler.
-         *
-         * On Windows, resets the unhandled exception filter. On other
-         * platforms, this is a no-op.
          */
         static void uninstall_handler();
     };
