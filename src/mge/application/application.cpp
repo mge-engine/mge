@@ -66,7 +66,6 @@ namespace mge {
         SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
                      SEM_NOOPENFILEERRORBOX);
 #endif
-        install_dump_handler();
         if (!configuration::loaded()) {
             configuration::load();
         }
@@ -175,6 +174,8 @@ namespace mge {
                           int              argc,
                           const char**     argv)
     {
+        dump::install_handler();
+
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
         try {
@@ -242,23 +243,27 @@ namespace mge {
             if (!rc) {
                 configuration::store();
             }
+            dump::uninstall_handler();
             return rc;
         } catch (const mge::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Exception in application '{}': {}",
                             used_application_name,
                             ex.details());
+            dump::uninstall_handler();
             return 1;
         } catch (const std::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Exception in application '{}': {}",
                             used_application_name,
                             ex.what());
+            dump::uninstall_handler();
             return 1;
         } catch (...) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Unknown exception in application '{}'",
                             used_application_name);
+            dump::uninstall_handler();
             return 1;
         }
     }

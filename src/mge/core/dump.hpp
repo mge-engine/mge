@@ -6,12 +6,24 @@
 
 namespace mge {
 
-    /**
-     * @brief Install crash dump handler.
-     *
-     * On Windows, registers an unhandled exception filter that writes
-     * a crash dump file. On other platforms, this is a no-op.
-     */
-    MGECORE_EXPORT void install_dump_handler();
+    class MGECORE_EXPORT dump
+    {
+    public:
+        /**
+         * @brief Install crash dump handler.
+         *
+         * On Windows, registers an unhandled exception filter that writes
+         * a crash dump file. On other platforms, this is a no-op.
+         */
+        static void install_handler();
+
+        /**
+         * @brief Uninstall crash dump handler.
+         *
+         * On Windows, resets the unhandled exception filter. On other
+         * platforms, this is a no-op.
+         */
+        static void uninstall_handler();
+    };
 
 } // namespace mge

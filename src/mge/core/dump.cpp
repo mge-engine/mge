@@ -108,14 +108,24 @@ namespace mge {
         return EXCEPTION_EXECUTE_HANDLER;
     }
 
-    void install_dump_handler()
+    void dump::install_handler()
     {
         SetUnhandledExceptionFilter(unhandled_exception_filter);
     }
 
+    void dump::uninstall_handler()
+    {
+        SetUnhandledExceptionFilter(nullptr);
+    }
+
 #else
 
-    void install_dump_handler()
+    void dump::install_handler()
+    {
+        // No automatic crash handler on non-Windows platforms yet
+    }
+
+    void dump::uninstall_handler()
     {
         // No automatic crash handler on non-Windows platforms yet
     }
