@@ -45,6 +45,7 @@ SET(mgecore_sources
     closure.cpp
     package.cpp
     program_options.cpp
+    markdown_document.cpp
 )
 
 SET(mgecore_headers
@@ -107,6 +108,7 @@ SET(mgecore_headers
     closure.hpp
     package.hpp
     program_options.hpp
+    markdown_document.hpp
 )
 
 MGE_LIBRARY(
