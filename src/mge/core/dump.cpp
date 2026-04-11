@@ -47,6 +47,7 @@ namespace mge {
     }
 
     dump::dump(std::string_view purpose)
+        : m_purpose(purpose)
     {
         MGE_INFO_TRACE(DUMP, "Creating dump for {}", purpose);
     }

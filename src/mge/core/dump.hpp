@@ -4,7 +4,9 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 
+#include <string>
 #include <string_view>
+
 
 namespace mge {
 
@@ -31,6 +33,9 @@ namespace mge {
          * @brief Uninstall crash dump handler.
          */
         static void uninstall_handler();
+
+    private:
+        std::string m_purpose;
     };
 
 } // namespace mge
