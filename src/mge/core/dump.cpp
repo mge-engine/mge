@@ -44,7 +44,12 @@ namespace mge {
 
     static std::string dump_filename()
     {
-        return executable_name() + "-crash-" + dump_timestamp() + ".md";
+        auto        name = executable_name();
+        std::string result(name.begin(), name.end());
+        result += "-crash-";
+        result += dump_timestamp();
+        result += ".md";
+        return result;
     }
 
     dump::dump(std::string_view          purpose,

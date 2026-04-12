@@ -150,7 +150,8 @@ namespace mge {
     configuration_instance::find_config_file(const std::string& config_name)
     {
         const char* suffixes[] = {"json", 0};
-        std::string base_name = config_name;
+        std::pmr::string base_name(config_name.begin(),
+                                   config_name.end());
         if (base_name.empty()) {
             base_name = executable_name();
         }
@@ -158,20 +159,20 @@ namespace mge {
             fs::path dir("config");
 
             for (const char** suffix = suffixes; *suffix; ++suffix) {
-                std::string fname(base_name);
+                std::pmr::string fname(base_name);
                 fname += ".";
                 fname += *suffix;
-                fs::path fullpath = dir / fname;
+                fs::path fullpath = dir / fname.c_str();
                 if (fs::exists(fullpath) && fs::is_regular_file(fullpath)) {
                     return fullpath;
                 }
             }
         }
         for (const char** suffix = suffixes; *suffix; ++suffix) {
-            std::string fname(base_name);
+            std::pmr::string fname(base_name);
             fname += ".";
             fname += *suffix;
-            fs::path fullpath(fname);
+            fs::path fullpath(fname.c_str());
             if (fs::exists(fullpath) && fs::is_regular_file(fullpath)) {
                 return fullpath;
             }
@@ -255,9 +256,10 @@ namespace mge {
             m_raw_settings = json::json::object();
         }
 
-        std::string name = executable_name();
+        auto             exe_name = executable_name();
+        std::pmr::string name(exe_name);
         name += ".json";
-        fs::path file_path = fs::path(name);
+        fs::path file_path(name.c_str());
 
         std::ofstream ofs(file_path);
         ofs << m_raw_settings.dump(4);
