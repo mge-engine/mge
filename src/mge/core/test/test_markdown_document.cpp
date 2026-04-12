@@ -98,33 +98,39 @@ TEST(markdown_document, line_and_blank_line)
 
 TEST(markdown_document, bold)
 {
-    EXPECT_EQ("**strong**", markdown_document::bold("strong"));
+    markdown_document doc;
+    EXPECT_EQ("**strong**", doc.bold("strong"));
 }
 
 TEST(markdown_document, italic)
 {
-    EXPECT_EQ("*emphasis*", markdown_document::italic("emphasis"));
+    markdown_document doc;
+    EXPECT_EQ("*emphasis*", doc.italic("emphasis"));
 }
 
 TEST(markdown_document, strikethrough)
 {
-    EXPECT_EQ("~~removed~~", markdown_document::strikethrough("removed"));
+    markdown_document doc;
+    EXPECT_EQ("~~removed~~", doc.strikethrough("removed"));
 }
 
 TEST(markdown_document, inline_code)
 {
-    EXPECT_EQ("`code`", markdown_document::inline_code("code"));
+    markdown_document doc;
+    EXPECT_EQ("`code`", doc.inline_code("code"));
 }
 
 TEST(markdown_document, link)
 {
+    markdown_document doc;
     EXPECT_EQ("[MGE](https://example.com)",
-              markdown_document::link("MGE", "https://example.com"));
+              doc.link("MGE", "https://example.com"));
 }
 
 TEST(markdown_document, image)
 {
-    EXPECT_EQ("![logo](img.png)", markdown_document::image("logo", "img.png"));
+    markdown_document doc;
+    EXPECT_EQ("![logo](img.png)", doc.image("logo", "img.png"));
 }
 
 TEST(markdown_document, fluent_chaining)
@@ -151,12 +157,20 @@ TEST(markdown_document, stream_output)
 
     std::stringstream ss;
     ss << doc;
-    EXPECT_EQ(doc.str(), ss.str());
+    EXPECT_EQ(std::string(doc.str()), ss.str());
 }
 
 TEST(markdown_document, inline_in_paragraph)
 {
     markdown_document doc;
-    doc.paragraph(markdown_document::bold("important") + " text");
+    doc.paragraph(doc.bold("important") + " text");
     EXPECT_EQ("**important** text\n\n", doc.str());
+}
+
+TEST(markdown_document, custom_memory_resource)
+{
+    std::pmr::monotonic_buffer_resource resource;
+    markdown_document                   doc(&resource);
+    doc.heading(1, "Test").paragraph("Content");
+    EXPECT_EQ("# Test\n\nContent\n\n", doc.str());
 }

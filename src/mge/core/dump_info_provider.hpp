@@ -4,8 +4,9 @@
 #pragma once
 #include "mge/core/component.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/markdown_document.hpp"
 
-#include <iostream>
+#include <memory_resource>
 #include <string>
 
 namespace mge {
@@ -19,8 +20,10 @@ namespace mge {
     public:
         virtual ~dump_info_provider() = default;
 
-        virtual std::string section_name() const = 0;
-        virtual void        dump_info(std::ostream& os) const = 0;
+        virtual std::pmr::string section_name(
+            std::pmr::memory_resource* resource =
+                std::pmr::get_default_resource()) const = 0;
+        virtual void dump_info(markdown_document& doc) const = 0;
     };
 
 } // namespace mge

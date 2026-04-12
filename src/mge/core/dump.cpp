@@ -4,6 +4,7 @@
 #include "mge/core/dump.hpp"
 #include "mge/core/dump_info_provider.hpp"
 #include "mge/core/executable_name.hpp"
+#include "mge/core/markdown_document.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/trace.hpp"
 
@@ -46,15 +47,19 @@ namespace mge {
         return executable_name() + "-crash-" + dump_timestamp() + ".md";
     }
 
-    dump::dump(std::string_view purpose)
-        : m_purpose(purpose)
+    dump::dump(std::string_view          purpose,
+               std::pmr::memory_resource* resource)
+        : m_purpose(purpose, resource)
+        , m_resource(resource)
     {
         MGE_INFO_TRACE(DUMP, "Creating dump for {}", purpose);
     }
 
     dump::~dump() {}
 
-    static void write_dump(const stacktrace& st)
+    static void write_dump(const stacktrace&          st,
+                           std::pmr::memory_resource* resource =
+                               std::pmr::get_default_resource())
     {
         auto filename = dump_filename();
 
@@ -66,38 +71,40 @@ namespace mge {
             return;
         }
 
-        os << "# Crash Dump" << std::endl;
-        os << std::endl;
-        os << "- Executable: " << executable_name() << std::endl;
-        os << "- Timestamp: " << dump_timestamp() << std::endl;
-        os << std::endl;
+        markdown_document doc(resource);
 
-        os << "## Stack Trace" << std::endl;
-        os << std::endl;
-        os << "```" << std::endl;
-        os << st;
-        os << "```" << std::endl;
-        os << std::endl;
+        doc.heading(1, "Crash Dump");
+
+        std::pmr::vector<std::pmr::string> info_items(resource);
+        info_items.emplace_back(
+            std::pmr::string("Executable: ", resource) +
+            executable_name().c_str());
+        info_items.emplace_back(
+            std::pmr::string("Timestamp: ", resource) +
+            dump_timestamp().c_str());
+        doc.unordered_list(info_items);
+
+        std::ostringstream st_stream;
+        st_stream << st;
+        doc.heading(2, "Stack Trace")
+            .code_block(st_stream.str());
 
         dump_info_provider::implementations(
-            [&os](std::string_view implementation_name) {
+            [&doc, resource](std::string_view implementation_name) {
                 try {
                     auto provider =
                         dump_info_provider::create(implementation_name);
                     if (provider) {
-                        os << "## " << provider->section_name() << std::endl;
-                        os << std::endl;
-                        provider->dump_info(os);
-                        os << std::endl;
+                        doc.heading(2, provider->section_name(resource));
+                        provider->dump_info(doc);
                     }
                 } catch (...) {
-                    os << "## " << implementation_name << std::endl;
-                    os << std::endl;
-                    os << "Error collecting dump info." << std::endl;
-                    os << std::endl;
+                    doc.heading(2, implementation_name)
+                        .paragraph("Error collecting dump info.");
                 }
             });
 
+        os << doc;
         os.flush();
         MGE_INFO_TRACE(DUMP, "Crash dump written to {}", filename);
     }

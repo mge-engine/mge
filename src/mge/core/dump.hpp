@@ -4,9 +4,9 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 
+#include <memory_resource>
 #include <string>
 #include <string_view>
-
 
 namespace mge {
 
@@ -18,7 +18,9 @@ namespace mge {
     class MGECORE_EXPORT dump
     {
     public:
-        dump(std::string_view purpose = "crash");
+        dump(std::string_view        purpose = "crash",
+             std::pmr::memory_resource* resource =
+                 std::pmr::get_default_resource());
         ~dump();
 
         dump(const dump&) = delete;
@@ -35,7 +37,8 @@ namespace mge {
         static void uninstall_handler();
 
     private:
-        std::string m_purpose;
+        std::pmr::string           m_purpose;
+        std::pmr::memory_resource* m_resource;
     };
 
 } // namespace mge

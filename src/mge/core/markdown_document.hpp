@@ -5,7 +5,7 @@
 #include "mge/core/dllexport.hpp"
 
 #include <iosfwd>
-#include <sstream>
+#include <memory_resource>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -18,7 +18,9 @@ namespace mge {
     class MGECORE_EXPORT markdown_document
     {
     public:
-        markdown_document();
+        markdown_document(
+            std::pmr::memory_resource* resource =
+                std::pmr::get_default_resource());
         ~markdown_document() = default;
 
         markdown_document& heading(unsigned int level, std::string_view text);
@@ -30,30 +32,34 @@ namespace mge {
         markdown_document& horizontal_rule();
 
         markdown_document&
-        unordered_list(const std::vector<std::string>& items);
-        markdown_document& ordered_list(const std::vector<std::string>& items);
-
+        unordered_list(const std::pmr::vector<std::pmr::string>& items);
         markdown_document&
-        table(const std::vector<std::string>&              headers,
-              const std::vector<std::vector<std::string>>& rows);
+        ordered_list(const std::pmr::vector<std::pmr::string>& items);
+
+        markdown_document& table(
+            const std::pmr::vector<std::pmr::string>&              headers,
+            const std::pmr::vector<std::pmr::vector<std::pmr::string>>& rows);
 
         markdown_document& line(std::string_view text);
         markdown_document& blank_line();
 
-        static std::string bold(std::string_view text);
-        static std::string italic(std::string_view text);
-        static std::string strikethrough(std::string_view text);
-        static std::string inline_code(std::string_view text);
-        static std::string link(std::string_view text, std::string_view url);
-        static std::string image(std::string_view alt, std::string_view url);
+        std::pmr::string bold(std::string_view text) const;
+        std::pmr::string italic(std::string_view text) const;
+        std::pmr::string strikethrough(std::string_view text) const;
+        std::pmr::string inline_code(std::string_view text) const;
+        std::pmr::string link(std::string_view text,
+                              std::string_view url) const;
+        std::pmr::string image(std::string_view alt,
+                               std::string_view url) const;
 
-        std::string str() const;
+        std::pmr::string str() const;
 
         friend MGECORE_EXPORT std::ostream&
         operator<<(std::ostream& os, const markdown_document& doc);
 
     private:
-        std::stringstream m_buffer;
+        std::pmr::memory_resource* m_resource;
+        std::pmr::string           m_buffer;
     };
 
 } // namespace mge
