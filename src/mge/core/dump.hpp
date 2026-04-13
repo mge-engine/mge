@@ -36,6 +36,11 @@ namespace mge {
          */
         static void uninstall_handler();
 
+        /**
+         * @brief Write the dump to a file.
+         */
+        void write();
+
     private:
         std::pmr::string           m_purpose;
         std::pmr::memory_resource* m_resource;

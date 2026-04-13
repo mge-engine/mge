@@ -1,11 +1,13 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/crash.hpp"
 #include "mge/core/dump.hpp"
 #include "mge/core/dump_info_provider.hpp"
 #include "mge/core/markdown_document.hpp"
 #include "test/googletest.hpp"
 
+#include <filesystem>
 #include <memory_resource>
 
 namespace {
@@ -42,7 +44,10 @@ namespace {
             return std::pmr::string("Empty Section", m_resource);
         }
 
-        bool has_info() const override { return false; }
+        bool has_info() const override
+        {
+            return false;
+        }
 
         void dump_info(mge::markdown_document& doc) const override
         {
@@ -97,4 +102,61 @@ TEST(dump, construct_with_resource)
 {
     std::pmr::monotonic_buffer_resource mbr;
     mge::dump                           d("test", &mbr);
+}
+
+TEST(dump, write)
+{
+    namespace fs = std::filesystem;
+
+    // Remove any pre-existing crash dump files
+    for (const auto& entry : fs::directory_iterator(fs::current_path())) {
+        if (entry.path().filename().string().find("-crash-") !=
+                std::string::npos &&
+            entry.path().extension() == ".md") {
+            fs::remove(entry.path());
+        }
+    }
+
+    mge::dump d("crash");
+    d.write();
+
+    bool found = false;
+    for (const auto& entry : fs::directory_iterator(fs::current_path())) {
+        if (entry.path().filename().string().find("-crash-") !=
+                std::string::npos &&
+            entry.path().extension() == ".md") {
+            EXPECT_GT(fs::file_size(entry.path()), 0u);
+            found = true;
+            // fs::remove(entry.path());
+        }
+    }
+    EXPECT_TRUE(found);
+}
+
+TEST(crash, writes_dump_and_aborts)
+{
+    namespace fs = std::filesystem;
+
+    // Remove any pre-existing crash dump files
+    for (const auto& entry : fs::directory_iterator(fs::current_path())) {
+        if (entry.path().filename().string().find("-crash-") !=
+                std::string::npos &&
+            entry.path().extension() == ".md") {
+            fs::remove(entry.path());
+        }
+    }
+
+    EXPECT_DEATH(mge::crash(), "Crash!!!");
+
+    bool found = false;
+    for (const auto& entry : fs::directory_iterator(fs::current_path())) {
+        if (entry.path().filename().string().find("-crash-") !=
+                std::string::npos &&
+            entry.path().extension() == ".md") {
+            EXPECT_GT(fs::file_size(entry.path()), 0u);
+            found = true;
+            fs::remove(entry.path());
+        }
+    }
+    EXPECT_TRUE(found);
 }

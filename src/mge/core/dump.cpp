@@ -52,13 +52,22 @@ namespace mge {
         struct tm tm_buf;
 #ifdef MGE_OS_WINDOWS
         localtime_s(&tm_buf, &time);
+        long tz_seconds = 0;
+        _get_timezone(&tz_seconds);
+        int  tz_offset_minutes = -static_cast<int>(tz_seconds) / 60;
+        int  tz_hours = tz_offset_minutes / 60;
+        int  tz_mins = std::abs(tz_offset_minutes) % 60;
+        auto tz_str = fmt::format("{:+03d}{:02d}", tz_hours, tz_mins);
 #else
         localtime_r(&time, &tm_buf);
+        auto tz_str = fmt::format("{:+03d}{:02d}",
+                                  tm_buf.tm_gmtoff / 3600,
+                                  std::abs(tm_buf.tm_gmtoff % 3600) / 60);
 #endif
-        return fmt::format(fmt::runtime("{:%Y-%m-%d %H:%M:%S}.{:03d} {:%z}"),
+        return fmt::format(fmt::runtime("{:%Y-%m-%d %H:%M:%S}.{:03d} {}"),
                            tm_buf,
                            ms.count(),
-                           tm_buf);
+                           tz_str);
     }
 
     static std::string dump_utc_timestamp()
@@ -134,6 +143,7 @@ namespace mge {
 
         // Collect provider section names for TOC
         std::pmr::vector<std::pmr::string> section_names(resource);
+        section_names.emplace_back(std::pmr::string("Overview", resource));
         section_names.emplace_back(std::pmr::string("Stack Trace", resource));
         dump_info_provider::implementations(
             [&section_names, resource](std::string_view implementation_name) {
@@ -159,6 +169,8 @@ namespace mge {
                          std::pmr::string("#", resource) + anchor.c_str()));
         }
         doc.heading(2, "Table of Contents").unordered_list(toc_items);
+
+        doc.heading(2, "Overview");
 
         std::pmr::vector<std::pmr::string> info_items(resource);
         info_items.emplace_back(std::pmr::string("Executable: ", resource) +
@@ -198,6 +210,12 @@ namespace mge {
         os << doc;
         os.flush();
         MGE_INFO_TRACE(DUMP, "Crash dump written to {}", filename);
+    }
+
+    void dump::write()
+    {
+        stacktrace st;
+        write_dump(st, m_resource);
     }
 
 #ifdef MGE_OS_WINDOWS
