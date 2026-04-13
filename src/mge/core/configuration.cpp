@@ -57,6 +57,14 @@ namespace mge {
             return m_raw_settings;
         }
 
+        void for_each_parameter(
+            const std::function<void(const basic_parameter&)>& callback)
+        {
+            for (const auto& p : m_parameters) {
+                callback(*p.second);
+            }
+        }
+
     private:
         fs::path find_config_file(const std::string& config_name);
         void     set_registered_parameters();
@@ -149,9 +157,8 @@ namespace mge {
     fs::path
     configuration_instance::find_config_file(const std::string& config_name)
     {
-        const char* suffixes[] = {"json", 0};
-        std::pmr::string base_name(config_name.begin(),
-                                   config_name.end());
+        const char*      suffixes[] = {"json", 0};
+        std::pmr::string base_name(config_name.begin(), config_name.end());
         if (base_name.empty()) {
             base_name = executable_name();
         }
@@ -383,6 +390,12 @@ namespace mge {
     const mge::json::json& configuration::root()
     {
         return s_configuration_instance->root();
+    }
+
+    void configuration::for_each_parameter(
+        const std::function<void(const basic_parameter&)>& callback)
+    {
+        s_configuration_instance->for_each_parameter(callback);
     }
 
     MGE_DEFINE_EXCEPTION_CLASS(bad_configuration)
