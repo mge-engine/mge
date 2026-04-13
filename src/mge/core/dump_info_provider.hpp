@@ -48,6 +48,12 @@ namespace mge {
         virtual std::pmr::string section_name() const = 0;
 
         /**
+         * @brief Whether this provider has information to contribute.
+         * @return @c true if dump_info will produce output
+         */
+        virtual bool has_info() const { return true; }
+
+        /**
          * @brief Append diagnostic information to the dump document.
          * @param doc markdown document to write into
          */

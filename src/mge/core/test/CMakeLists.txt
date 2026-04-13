@@ -48,6 +48,7 @@ SET(MGECORE_TEST_SOURCES
     test_file_streams.cpp
     test_contains.cpp
     test_markdown_document.cpp
+    test_dump.cpp
 )
 
 SET(MGECORE_BENCH_SOURCES

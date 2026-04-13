@@ -141,7 +141,7 @@ namespace mge {
                     auto provider =
                         dump_info_provider::create(resource,
                                                    implementation_name);
-                    if (provider) {
+                    if (provider && provider->has_info()) {
                         section_names.emplace_back(provider->section_name());
                     }
                 } catch (...) {
@@ -185,7 +185,7 @@ namespace mge {
                     auto provider =
                         dump_info_provider::create(resource,
                                                    implementation_name);
-                    if (provider) {
+                    if (provider && provider->has_info()) {
                         doc.heading(2, provider->section_name());
                         provider->dump_info(doc);
                     }
