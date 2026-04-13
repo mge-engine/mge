@@ -9,6 +9,7 @@ SET(mgecore_sources
     configuration.cpp
     parameter.cpp
     trace_topic.cpp
+    trace_dump_info_provider.cpp
     trace_sink.cpp
     memory_trace_sink.cpp
     stream_trace_sink.cpp
