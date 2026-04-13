@@ -15,6 +15,8 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
+#else
+#    include <unistd.h>
 #endif
 
 namespace mge {
@@ -87,6 +89,15 @@ namespace mge {
         info_items.emplace_back(
             std::pmr::string("Timestamp: ", resource) +
             dump_timestamp().c_str());
+#ifdef MGE_OS_WINDOWS
+        info_items.emplace_back(
+            std::pmr::string("Process ID: ", resource) +
+            std::to_string(GetCurrentProcessId()).c_str());
+#else
+        info_items.emplace_back(
+            std::pmr::string("Process ID: ", resource) +
+            std::to_string(getpid()).c_str());
+#endif
         doc.unordered_list(info_items);
 
         std::ostringstream st_stream;
