@@ -8,7 +8,9 @@
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <memory_resource>
 #include <string_view>
+#include <type_traits>
 
 using namespace std::string_view_literals;
 
@@ -36,6 +38,11 @@ namespace mge {
         virtual std::string_view component_name() const noexcept = 0;
         virtual std::string_view alias_names() const noexcept = 0;
         virtual std::shared_ptr<component_base> create() const = 0;
+        virtual std::shared_ptr<component_base>
+        create(std::pmr::memory_resource* resource) const
+        {
+            return create();
+        }
 
     protected:
         void register_implementation(implementation_registry_entry_base*);
@@ -60,6 +67,17 @@ namespace mge {
                 create(type_name<T>(), implementation_name));
         }
 
+        template <typename T>
+        static inline std::shared_ptr<T>
+        create(std::pmr::memory_resource* resource,
+               std::string_view           implementation_name)
+        {
+            return std::dynamic_pointer_cast<T, component_base>(
+                create(resource,
+                       type_name<T>(),
+                       implementation_name));
+        }
+
         /**
          * @brief Create component instance.
          * @param component_name component name
@@ -69,6 +87,11 @@ namespace mge {
         static std::shared_ptr<component_base>
         create(std::string_view component_name,
                std::string_view implementation_name);
+
+        static std::shared_ptr<component_base>
+        create(std::pmr::memory_resource* resource,
+               std::string_view           component_name,
+               std::string_view           implementation_name);
 
         template <typename T>
         static inline void
@@ -194,6 +217,18 @@ namespace mge {
             return std::make_shared<ImplementationType>();
         }
 
+        std::shared_ptr<component_base>
+        create(std::pmr::memory_resource* resource) const override
+        {
+            if constexpr (std::is_constructible_v<
+                              ImplementationType,
+                              std::pmr::memory_resource*>) {
+                return std::make_shared<ImplementationType>(resource);
+            } else {
+                return std::make_shared<ImplementationType>();
+            }
+        }
+
     private:
         std::string m_component_name{mge::type_name<ComponentType>()};
         std::string m_name{mge::type_name<ImplementationType>()};
@@ -278,6 +313,8 @@ namespace mge {
             return m_factory();
         }
 
+        using implementation_registry_entry_base::create;
+
     private:
         void build_alias_names() {}
 
@@ -325,6 +362,18 @@ namespace mge {
         create(std::string_view implementation)
         {
             auto instance = component_base::create<Class>(implementation);
+            if (instance) {
+                instance->set_self(instance);
+            }
+            return instance;
+        }
+
+        static inline std::shared_ptr<Class>
+        create(std::pmr::memory_resource* resource,
+               std::string_view           implementation)
+        {
+            auto instance =
+                component_base::create<Class>(resource, implementation);
             if (instance) {
                 instance->set_self(instance);
             }
