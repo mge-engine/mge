@@ -6,6 +6,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/noncopyable.hpp"
 #include "mge/core/shared_library.hpp"
+#include <functional>
 
 namespace mge {
 
@@ -41,6 +42,13 @@ namespace mge {
          * @brief Unload all modules.
          */
         static void unload_all();
+
+        /**
+         * @brief Enumerate loaded modules.
+         * @param callback callback invoked for each loaded module
+         */
+        static void for_each_loaded_module(
+            const std::function<void(const module&)>& callback);
 
         /**
          * @brief Module name.
