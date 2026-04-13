@@ -139,10 +139,10 @@ namespace mge {
             [&section_names, resource](std::string_view implementation_name) {
                 try {
                     auto provider =
-                        dump_info_provider::create(implementation_name);
+                        dump_info_provider::create(resource,
+                                                   implementation_name);
                     if (provider) {
-                        section_names.emplace_back(
-                            provider->section_name(resource));
+                        section_names.emplace_back(provider->section_name());
                     }
                 } catch (...) {
                     section_names.emplace_back(
@@ -183,9 +183,10 @@ namespace mge {
             [&doc, resource](std::string_view implementation_name) {
                 try {
                     auto provider =
-                        dump_info_provider::create(implementation_name);
+                        dump_info_provider::create(resource,
+                                                   implementation_name);
                     if (provider) {
-                        doc.heading(2, provider->section_name(resource));
+                        doc.heading(2, provider->section_name());
                         provider->dump_info(doc);
                     }
                 } catch (...) {
