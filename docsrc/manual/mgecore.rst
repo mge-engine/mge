@@ -23,6 +23,7 @@ which are not directly related to graphics or game programming.
     core/configuration.rst
     core/statistics.rst
     core/component.rst
+    core/dump.rst
     core/system.rst
     core/concurrency.rst
     core/version.rst
