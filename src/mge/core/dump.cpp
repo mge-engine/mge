@@ -141,10 +141,8 @@ namespace mge {
 #endif
         doc.unordered_list(info_items);
 
-        std::ostringstream st_stream;
-        st_stream << st;
         doc.heading(2, "Stack Trace")
-            .code_block(st_stream.str());
+            .code_block(fmt::format("{}", st));
 
         dump_info_provider::implementations(
             [&doc, resource](std::string_view implementation_name) {
