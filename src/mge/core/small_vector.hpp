@@ -8,6 +8,7 @@
 #include <functional>
 #include <iterator>
 #include <limits>
+#include <memory_resource>
 #include <variant>
 #include <vector>
 
@@ -107,6 +108,10 @@ namespace mge {
     public:
         explicit small_vector() {}
 
+        explicit small_vector(const allocator_type& alloc)
+            : m_allocator(alloc)
+        {}
+
         explicit small_vector(size_type         size,
                               const value_type& val = value_type())
         {
@@ -115,7 +120,21 @@ namespace mge {
             } else if (size <= S) {
                 m_data.template emplace<1>(size, val);
             } else {
-                m_data.template emplace<2>(size, val);
+                m_data.template emplace<2>(size, val, m_allocator);
+            }
+        }
+
+        explicit small_vector(size_type             size,
+                              const value_type&     val,
+                              const allocator_type& alloc)
+            : m_allocator(alloc)
+        {
+            if (size == 0) {
+                // nothing
+            } else if (size <= S) {
+                m_data.template emplace<1>(size, val);
+            } else {
+                m_data.template emplace<2>(size, val, m_allocator);
             }
         }
 
@@ -129,7 +148,22 @@ namespace mge {
                     std::get<1>(m_data).emplace_back(val);
                 }
             } else {
-                m_data.template emplace<2>(init);
+                m_data.template emplace<2>(init, m_allocator);
+            }
+        }
+
+        small_vector(std::initializer_list<T> init, const allocator_type& alloc)
+            : m_allocator(alloc)
+        {
+            if (init.size() == 0) {
+                // nothing
+            } else if (init.size() <= S) {
+                m_data.template emplace<1>(small_data());
+                for (const auto& val : init) {
+                    std::get<1>(m_data).emplace_back(val);
+                }
+            } else {
+                m_data.template emplace<2>(init, m_allocator);
             }
         }
 
@@ -643,7 +677,7 @@ namespace mge {
             } else if (n < S) {
                 m_data.template emplace<1>(n, value_type());
             } else {
-                m_data.template emplace<2>(n, value_type());
+                m_data.template emplace<2>(n, value_type(), m_allocator);
             }
         }
 
@@ -654,7 +688,7 @@ namespace mge {
             } else if (n < S) {
                 m_data.template emplace<1>(n, fill);
             } else {
-                m_data.template emplace<2>(n, fill);
+                m_data.template emplace<2>(n, fill, m_allocator);
             }
         }
 
@@ -722,8 +756,8 @@ namespace mge {
 
         void convert_to_vector()
         {
-            std::vector<value_type> v(begin(), end(), m_allocator);
-            m_data.template emplace<2>(v);
+            std::vector<value_type, Alloc> v(begin(), end(), m_allocator);
+            m_data.template emplace<2>(std::move(v));
         }
 
         using data_type =
@@ -733,6 +767,12 @@ namespace mge {
         Alloc     m_allocator;
     };
 
+} // namespace mge
+
+namespace mge {
+    template <typename T, size_t S>
+    using pmr_small_vector =
+        small_vector<T, S, std::pmr::polymorphic_allocator<T>>;
 } // namespace mge
 
 namespace std {
