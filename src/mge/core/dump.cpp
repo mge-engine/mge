@@ -9,9 +9,8 @@
 #include "mge/core/trace.hpp"
 
 #include <chrono>
+#include <fmt/chrono.h>
 #include <fstream>
-#include <iomanip>
-#include <sstream>
 
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
@@ -27,21 +26,60 @@ namespace mge {
 
     static std::string dump_timestamp()
     {
-        auto      now = std::chrono::system_clock::now();
-        auto      ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                           now.time_since_epoch()) %
-                       1000;
-        auto      time = std::chrono::system_clock::to_time_t(now);
+        auto now = std::chrono::system_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      now.time_since_epoch()) %
+                  1000;
+        auto time = std::chrono::system_clock::to_time_t(now);
         struct tm tm_buf;
 #ifdef MGE_OS_WINDOWS
         localtime_s(&tm_buf, &time);
 #else
         localtime_r(&time, &tm_buf);
 #endif
-        std::ostringstream oss;
-        oss << std::put_time(&tm_buf, "%Y%m%d%H%M%S") << std::setw(3)
-            << std::setfill('0') << ms.count();
-        return oss.str();
+        return fmt::format(
+            fmt::runtime("{:%Y%m%d%H%M%S}{:03d}"),
+            tm_buf,
+            ms.count());
+    }
+
+    static std::string dump_timestamp_display()
+    {
+        auto now = std::chrono::system_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      now.time_since_epoch()) %
+                  1000;
+        auto time = std::chrono::system_clock::to_time_t(now);
+        struct tm tm_buf;
+#ifdef MGE_OS_WINDOWS
+        localtime_s(&tm_buf, &time);
+#else
+        localtime_r(&time, &tm_buf);
+#endif
+        return fmt::format(
+            fmt::runtime("{:%Y-%m-%d %H:%M:%S}.{:03d} {:%z}"),
+            tm_buf,
+            ms.count(),
+            tm_buf);
+    }
+
+    static std::string dump_utc_timestamp()
+    {
+        auto now = std::chrono::system_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                      now.time_since_epoch()) %
+                  1000;
+        auto time = std::chrono::system_clock::to_time_t(now);
+        struct tm tm_buf;
+#ifdef MGE_OS_WINDOWS
+        gmtime_s(&tm_buf, &time);
+#else
+        gmtime_r(&time, &tm_buf);
+#endif
+        return fmt::format(
+            fmt::runtime("{:%Y-%m-%d %H:%M:%S}.{:03d} UTC"),
+            tm_buf,
+            ms.count());
     }
 
     static std::string dump_filename()
@@ -88,7 +126,10 @@ namespace mge {
             executable_name().c_str());
         info_items.emplace_back(
             std::pmr::string("Timestamp: ", resource) +
-            dump_timestamp().c_str());
+            dump_timestamp_display().c_str());
+        info_items.emplace_back(
+            std::pmr::string("Timestamp (UTC): ", resource) +
+            dump_utc_timestamp().c_str());
 #ifdef MGE_OS_WINDOWS
         info_items.emplace_back(
             std::pmr::string("Process ID: ", resource) +
