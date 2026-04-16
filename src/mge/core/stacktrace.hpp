@@ -6,6 +6,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/format.hpp"
 #include "mge/core/string_pool.hpp"
+#include <memory_resource>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -112,7 +113,7 @@ namespace mge {
         };
 
     private:
-        using frame_vector = std::vector<frame>;
+        using frame_vector = std::pmr::vector<frame>;
 
     public:
         /// stack trace size
@@ -124,8 +125,11 @@ namespace mge {
 
         /**
          * @brief Construct stacktrace of current thread.
+         *
+         * @param resource memory resource
          */
-        stacktrace();
+        stacktrace(std::pmr::memory_resource* resource =
+                       std::pmr::get_default_resource());
 
         /**
          * @brief Construct stacktrace from native thread and context.
@@ -135,8 +139,12 @@ namespace mge {
          *
          * @param native_thread native thread handle
          * @param native_context native context pointer
+         * @param resource memory resource
          */
-        stacktrace(void* native_thread, void* native_context);
+        stacktrace(void*                      native_thread,
+                   void*                      native_context,
+                   std::pmr::memory_resource* resource =
+                       std::pmr::get_default_resource());
 
         /**
          * @brief Copy constructor.
