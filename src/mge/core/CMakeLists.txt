@@ -112,6 +112,7 @@ SET(mgecore_headers
     closure.hpp
     package.hpp
     program_options.hpp
+    markdown.hpp
     markdown_document.hpp
 )
 

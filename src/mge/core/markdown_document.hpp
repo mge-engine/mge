@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/markdown.hpp"
 
 #include <iosfwd>
 #include <memory_resource>
@@ -18,9 +19,8 @@ namespace mge {
     class MGECORE_EXPORT markdown_document
     {
     public:
-        markdown_document(
-            std::pmr::memory_resource* resource =
-                std::pmr::get_default_resource());
+        markdown_document(std::pmr::memory_resource* resource =
+                              std::pmr::get_default_resource());
         ~markdown_document() = default;
 
         markdown_document& heading(unsigned int level, std::string_view text);
@@ -36,11 +36,12 @@ namespace mge {
         markdown_document&
         ordered_list(const std::pmr::vector<std::pmr::string>& items);
 
-        markdown_document& table(
-            const std::pmr::vector<std::pmr::string>&              headers,
-            const std::pmr::vector<std::pmr::vector<std::pmr::string>>& rows);
+        markdown_document&
+        table(const std::pmr::vector<std::pmr::string>& headers,
+              const std::pmr::vector<std::pmr::vector<std::pmr::string>>& rows);
 
         markdown_document& line(std::string_view text);
+        markdown_document& text(std::string_view text);
         markdown_document& blank_line();
 
         std::pmr::string bold(std::string_view text) const;

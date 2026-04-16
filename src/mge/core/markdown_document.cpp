@@ -7,14 +7,13 @@
 
 namespace mge {
 
-    markdown_document::markdown_document(
-        std::pmr::memory_resource* resource)
+    markdown_document::markdown_document(std::pmr::memory_resource* resource)
         : m_resource(resource)
         , m_buffer(resource)
     {}
 
-    markdown_document&
-    markdown_document::heading(unsigned int level, std::string_view text)
+    markdown_document& markdown_document::heading(unsigned int     level,
+                                                  std::string_view text)
     {
         for (unsigned int i = 0; i < level; ++i) {
             m_buffer += '#';
@@ -25,17 +24,15 @@ namespace mge {
         return *this;
     }
 
-    markdown_document&
-    markdown_document::paragraph(std::string_view text)
+    markdown_document& markdown_document::paragraph(std::string_view text)
     {
         m_buffer += text;
         m_buffer += "\n\n";
         return *this;
     }
 
-    markdown_document&
-    markdown_document::code_block(std::string_view language,
-                                  std::string_view code)
+    markdown_document& markdown_document::code_block(std::string_view language,
+                                                     std::string_view code)
     {
         m_buffer += "```";
         m_buffer += language;
@@ -45,8 +42,7 @@ namespace mge {
         return *this;
     }
 
-    markdown_document&
-    markdown_document::code_block(std::string_view code)
+    markdown_document& markdown_document::code_block(std::string_view code)
     {
         m_buffer += "```\n";
         m_buffer += code;
@@ -54,8 +50,7 @@ namespace mge {
         return *this;
     }
 
-    markdown_document&
-    markdown_document::blockquote(std::string_view text)
+    markdown_document& markdown_document::blockquote(std::string_view text)
     {
         std::string_view remaining = text;
         while (!remaining.empty()) {
@@ -109,7 +104,7 @@ namespace mge {
     }
 
     markdown_document& markdown_document::table(
-        const std::pmr::vector<std::pmr::string>&              headers,
+        const std::pmr::vector<std::pmr::string>&                   headers,
         const std::pmr::vector<std::pmr::vector<std::pmr::string>>& rows)
     {
         m_buffer += "|";
@@ -143,14 +138,19 @@ namespace mge {
         return *this;
     }
 
+    markdown_document& markdown_document::text(std::string_view text)
+    {
+        m_buffer += text;
+        return *this;
+    }
+
     markdown_document& markdown_document::blank_line()
     {
         m_buffer += "\n";
         return *this;
     }
 
-    std::pmr::string
-    markdown_document::bold(std::string_view text) const
+    std::pmr::string markdown_document::bold(std::string_view text) const
     {
         std::pmr::string result(m_resource);
         result.reserve(text.size() + 4);
@@ -160,8 +160,7 @@ namespace mge {
         return result;
     }
 
-    std::pmr::string
-    markdown_document::italic(std::string_view text) const
+    std::pmr::string markdown_document::italic(std::string_view text) const
     {
         std::pmr::string result(m_resource);
         result.reserve(text.size() + 2);
@@ -182,8 +181,7 @@ namespace mge {
         return result;
     }
 
-    std::pmr::string
-    markdown_document::inline_code(std::string_view text) const
+    std::pmr::string markdown_document::inline_code(std::string_view text) const
     {
         std::pmr::string result(m_resource);
         result.reserve(text.size() + 2);
@@ -224,8 +222,7 @@ namespace mge {
         return std::pmr::string(m_buffer, m_resource);
     }
 
-    std::ostream& operator<<(std::ostream&            os,
-                              const markdown_document& doc)
+    std::ostream& operator<<(std::ostream& os, const markdown_document& doc)
     {
         os << std::string_view(doc.m_buffer);
         return os;
