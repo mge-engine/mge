@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/crash.hpp"
+#include "mge/core/dump.hpp"
 #include "mge/core/stacktrace.hpp"
 
 #include <cstdlib>
@@ -28,6 +29,10 @@ namespace mge {
         fflush(stdout);
         fflush(stderr);
         va_end(args);
+
+        dump d("crash");
+        d.write();
+
         abort();
     }
 

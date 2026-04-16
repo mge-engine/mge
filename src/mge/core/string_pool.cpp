@@ -6,25 +6,28 @@
 #include <stdexcept>
 
 namespace mge {
-    string_pool::string_pool() {}
+    string_pool::string_pool(std::pmr::memory_resource* resource)
+        : m_values(resource)
+    {}
 
     std::string_view string_pool::get(std::string_view str)
     {
-        auto it = m_values.find(str);
+        auto*            resource = m_values.get_allocator().resource();
+        std::pmr::string key(str, resource);
+        auto             it = m_values.find(key);
         if (it != m_values.end()) {
-            return it->first;
+            return std::string_view(it->second);
         } else {
-            auto value = std::make_shared<std::string>(str.begin(), str.end());
-            std::string_view key(value->begin(), value->end());
-            m_values.emplace(key, std::move(value));
-            return key;
+            std::pmr::string value(str, resource);
+            auto [pos, inserted] =
+                m_values.emplace(std::move(key), std::move(value));
+            return std::string_view(pos->second);
         }
     }
 
     std::string_view string_pool::get(const std::string& str)
     {
-        std::string_view str_sv(str.begin(), str.end());
-        return get(str_sv);
+        return get(std::string_view(str));
     }
 
     std::string_view string_pool::get(const char* str)
@@ -32,11 +35,7 @@ namespace mge {
         if (!str) {
             throw std::runtime_error("Unexpected null pointer");
         }
-
-        size_t l = strlen(str);
-
-        std::string_view str_sv(str, str + l);
-        return get(str_sv);
+        return get(std::string_view(str, strlen(str)));
     }
 
     string_pool::size_type string_pool::size() const

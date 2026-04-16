@@ -4,7 +4,7 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include <map>
-#include <memory>
+#include <memory_resource>
 #include <string>
 #include <string_view>
 namespace mge {
@@ -17,8 +17,7 @@ namespace mge {
     class MGECORE_EXPORT string_pool
     {
     private:
-        typedef std::map<std::string_view, std::shared_ptr<std::string>>
-            string_map;
+        typedef std::pmr::map<std::pmr::string, std::pmr::string> string_map;
 
     public:
         /// Size of pool.
@@ -26,8 +25,11 @@ namespace mge {
 
         /**
          * @brief Create empty pool.
+         *
+         * @param resource memory resource
          */
-        string_pool();
+        string_pool(std::pmr::memory_resource* resource =
+                        std::pmr::get_default_resource());
 
         /**
          * @brief Get pooled string.

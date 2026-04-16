@@ -34,3 +34,14 @@ TEST(stacktrace, assignment)
     stack2 = stack1;
     EXPECT_TRUE(stack1 == stack2);
 }
+
+TEST(stacktrace, markdown_format)
+{
+    auto        stack = mge::stacktrace();
+    std::string result = fmt::format("{}", mge::markdown(stack));
+    EXPECT_TRUE(result.find("| # | Address | Source Location | Module |") !=
+                std::string::npos);
+    EXPECT_TRUE(result.find("| --- | --- | --- | --- |") != std::string::npos);
+    EXPECT_TRUE(result.find("mge::stacktrace::stacktrace") !=
+                std::string::npos);
+}

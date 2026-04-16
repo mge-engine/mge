@@ -7,6 +7,7 @@
 #include "mge/core/path.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include <functional>
 #include <string_view>
 #include <vector>
 
@@ -100,6 +101,13 @@ namespace mge {
          * @brief Root configuration.
          */
         static const mge::json::json& root();
+
+        /**
+         * @brief Enumerate all registered parameters.
+         * @param callback called for each parameter
+         */
+        static void for_each_parameter(
+            const std::function<void(const basic_parameter&)>& callback);
     };
 
     /** @brief Throw if a configuration does not fulfill constraints. */

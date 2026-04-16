@@ -10,6 +10,8 @@
 
 #include <atomic>
 #include <iostream>
+#include <mutex>
+#include <set>
 
 using namespace std::string_literals;
 using namespace std::string_view_literals;
@@ -27,6 +29,30 @@ namespace mge {
                          trace,
                          globally_enabled,
                          "Whether all trace shall be enabled");
+
+    static std::mutex&              topic_registry_mutex()
+    {
+        static std::mutex m;
+        return m;
+    }
+
+    static std::set<trace_topic*>& topic_registry()
+    {
+        static std::set<trace_topic*> r;
+        return r;
+    }
+
+    static void register_topic(trace_topic* t)
+    {
+        std::lock_guard lock(topic_registry_mutex());
+        topic_registry().insert(t);
+    }
+
+    static void unregister_topic(trace_topic* t)
+    {
+        std::lock_guard lock(topic_registry_mutex());
+        topic_registry().erase(t);
+    }
 
     static std::atomic<bool> global_topic_configured;
     static bool              global_topic_initially_configured = false;
@@ -79,10 +105,12 @@ namespace mge {
         m_level_config.set_change_handler(
             [&] { this->update_configuration(); });
         configure();
+        register_at_registry(this);
     }
 
     trace_topic::~trace_topic()
     {
+        unregister_at_registry(this);
         m_level_config.set_change_handler(nullptr);
     }
 
@@ -237,6 +265,25 @@ namespace mge {
                 m_sinks.erase(i);
                 break;
             }
+        }
+    }
+
+    void trace_topic::register_at_registry(trace_topic* t)
+    {
+        register_topic(t);
+    }
+
+    void trace_topic::unregister_at_registry(trace_topic* t)
+    {
+        unregister_topic(t);
+    }
+
+    void trace_topic::topics(
+        const std::function<void(const trace_topic&)>& callback)
+    {
+        std::lock_guard lock(topic_registry_mutex());
+        for (const auto* t : topic_registry()) {
+            callback(*t);
         }
     }
 } // namespace mge

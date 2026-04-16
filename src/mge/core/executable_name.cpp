@@ -15,7 +15,8 @@
 #endif
 
 namespace mge {
-    std::string executable_name()
+    std::pmr::string
+    executable_name(std::pmr::memory_resource* resource)
     {
 #ifdef MGE_OS_WINDOWS
         char buffer[2048];
@@ -35,7 +36,10 @@ namespace mge {
                    << "Cannot compute executable name (directory not found).";
             }
 #    endif
-        return std::string((const char*)basenamestart + 1, (const char*)dot);
+        return std::pmr::string(
+            basenamestart + 1,
+            static_cast<size_t>(dot - basenamestart - 1),
+            resource);
 #elif defined(MGE_OS_LINUX)
         char    buffer[2048];
         ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
@@ -46,28 +50,29 @@ namespace mge {
 
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
-            return std::string(buffer);
+            return std::pmr::string(buffer, resource);
         } else {
-            return std::string(slash + 1);
+            return std::pmr::string(slash + 1, resource);
         }
 #elif defined(MGE_OS_MACOSX)
         char     buffer[2048];
         uint32_t size = sizeof(buffer);
         if (_NSGetExecutablePath(buffer, &size) != 0) {
-            return "";
+            return std::pmr::string(resource);
         }
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
-            return std::string(buffer);
+            return std::pmr::string(buffer, resource);
         } else {
-            return std::string(slash + 1);
+            return std::pmr::string(slash + 1, resource);
         }
 #else
 #    error Missing port
 #endif
     }
 
-    std::string executable_path()
+    std::pmr::string
+    executable_path(std::pmr::memory_resource* resource)
     {
 #ifdef MGE_OS_WINDOWS
         char buffer[2048];
@@ -80,7 +85,10 @@ namespace mge {
                 << "Cannot compute executable path (directory not found).";
         }
 #    endif
-        return std::string(buffer, basenamestart);
+        return std::pmr::string(
+            buffer,
+            static_cast<size_t>(basenamestart - buffer),
+            resource);
 #elif defined(MGE_OS_LINUX)
         char    buffer[2048];
         ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
@@ -90,21 +98,27 @@ namespace mge {
         buffer[len] = '\0';
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
-            return "";
+            return std::pmr::string(resource);
         } else {
-            return std::string(buffer, slash);
+            return std::pmr::string(
+                buffer,
+                static_cast<size_t>(slash - buffer),
+                resource);
         }
 #elif defined(MGE_OS_MACOSX)
         char     buffer[2048];
         uint32_t size = sizeof(buffer);
         if (_NSGetExecutablePath(buffer, &size) != 0) {
-            return "";
+            return std::pmr::string(resource);
         }
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
-            return "";
+            return std::pmr::string(resource);
         } else {
-            return std::string(buffer, slash);
+            return std::pmr::string(
+                buffer,
+                static_cast<size_t>(slash - buffer),
+                resource);
         }
 #else
 #    error Missing port
