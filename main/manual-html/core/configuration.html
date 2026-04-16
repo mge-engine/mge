@@ -68,6 +68,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dump.html">Dumps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
 <li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
@@ -642,12 +643,23 @@ are intentionally meant to be value within their compilation unit only.</p>
 <dd><p>Root configuration. </p>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration18for_each_parameterERKNSt8functionIFvRK15basic_parameterEEE">
+<span id="_CPPv3N3mge13configuration18for_each_parameterERKNSt8functionIFvRK15basic_parameterEEE"></span><span id="_CPPv2N3mge13configuration18for_each_parameterERKNSt8functionIFvRK15basic_parameterEEE"></span><span class="target" id="classmge_1_1configuration_1ae681a3da4f5d956da3c0934e7229b1be"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">for_each_parameter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration18for_each_parameterERKNSt8functionIFvRK15basic_parameterEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enumerate all registered parameters. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – called for each parameter </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
 <p>For loading the configuration, the following process is used:</p>
 <ol class="arabic simple">
-<li><p><a class="reference internal" href="utilities.html#_CPPv4N3mge15executable_nameEv" title="mge::executable_name"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::executable_name()</span></code></a> is used to retrieve the base name
+<li><p><a class="reference internal" href="utilities.html#_CPPv4N3mge15executable_nameEPNSt3pmr15memory_resourceE" title="mge::executable_name"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::executable_name()</span></code></a> is used to retrieve the base name
 of the configuration</p></li>
 <li><p>a valid configuration file is looked up, in json format, named
 <cite>&lt;executable_name&gt;.json</cite></p></li>

@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="System Abstractions" href="system.html" />
+    <link rel="next" title="Dumps" href="dump.html" />
     <link rel="prev" title="Statistics" href="statistics.html" /> 
 </head>
 
@@ -68,6 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dump.html">Dumps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
 <li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
@@ -117,7 +118,7 @@
            <div itemprop="articleBody">
              
   <section id="components">
-<h1>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h1>
+<span id="mge-core-components"></span><h1>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h1>
 <p>Components and implementations are the base of MGEs plugin system.</p>
 <p>A <em>component</em> is the definition of an interface and registered under a name
 as component. Implementations of that interface can be registered, and an
@@ -127,7 +128,7 @@ implementation can be selected when creating an instance.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14component_baseE">
 <span id="_CPPv3N3mge14component_baseE"></span><span id="_CPPv2N3mge14component_baseE"></span><span id="mge::component_base"></span><span class="target" id="classmge_1_1component__base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">component_base</span></span></span><a class="headerlink" href="#_CPPv4N3mge14component_baseE" title="Link to this definition"></a><br /></dt>
-<dd><p>Subclassed by mge::component&lt; application &gt;, mge::component&lt; asset_handler &gt;, mge::component&lt; asset_source &gt;, mge::component&lt; frame_debugger &gt;, mge::component&lt; loop &gt;, mge::component&lt; package &gt;, mge::component&lt; reflector &gt;, mge::component&lt; render_system &gt;, mge::component&lt; script_engine &gt;, mge::component&lt; Class &gt;</p>
+<dd><p>Subclassed by mge::component&lt; application &gt;, mge::component&lt; asset_handler &gt;, mge::component&lt; asset_source &gt;, mge::component&lt; dump_info_provider &gt;, mge::component&lt; frame_debugger &gt;, mge::component&lt; loop &gt;, mge::component&lt; package &gt;, mge::component&lt; reflector &gt;, mge::component&lt; render_system &gt;, mge::component&lt; script_engine &gt;, mge::component&lt; Class &gt;</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -340,6 +341,17 @@ implementations during module initialization.</p>
 <dd><p>Unload all modules. </p>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge6module22for_each_loaded_moduleERKNSt8functionIFvRK6moduleEEE">
+<span id="_CPPv3N3mge6module22for_each_loaded_moduleERKNSt8functionIFvRK6moduleEEE"></span><span id="_CPPv2N3mge6module22for_each_loaded_moduleERKNSt8functionIFvRK6moduleEEE"></span><span class="target" id="classmge_1_1module_1af9ede13cecba98fd00d828a97f3e487a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">for_each_loaded_module</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6moduleE" title="mge::module"><span class="n"><span class="pre">module</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6module22for_each_loaded_moduleERKNSt8functionIFvRK6moduleEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Enumerate loaded modules. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>callback</strong> – callback invoked for each loaded module </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -360,7 +372,7 @@ shared library.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="statistics.html" class="btn btn-neutral float-left" title="Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="system.html" class="btn btn-neutral float-right" title="System Abstractions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dump.html" class="btn btn-neutral float-right" title="Dumps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

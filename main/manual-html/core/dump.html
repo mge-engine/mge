@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dumps &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="System Abstractions" href="system.html" />
+    <link rel="prev" title="Components" href="component.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Dumps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Dumps</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/dump.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dumps">
+<h1>Dumps<a class="headerlink" href="#dumps" title="Link to this heading"></a></h1>
+<p>MGE provides a crash dump facility that captures diagnostic information when
+an unhandled exception or fatal error occurs. The dump is written as a
+GitHub Flavored Markdown file containing a stack trace and additional
+information contributed by dump info providers.</p>
+<section id="dump-class">
+<h2>Dump Class<a class="headerlink" href="#dump-class" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4N3mge4dumpE" title="mge::dump"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::dump</span></code></a> class manages crash dump generation and handler
+installation.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4dumpE">
+<span id="_CPPv3N3mge4dumpE"></span><span id="_CPPv2N3mge4dumpE"></span><span id="mge::dump"></span><span class="target" id="classmge_1_1dump"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump</span></span></span><a class="headerlink" href="#_CPPv4N3mge4dumpE" title="Link to this definition"></a><br /></dt>
+<dd><p>Crash dump. </p>
+<p>A crash dump provides useful information for debugging crashes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4dump5writeEv">
+<span id="_CPPv3N3mge4dump5writeEv"></span><span id="_CPPv2N3mge4dump5writeEv"></span><span id="mge::dump::write"></span><span class="target" id="classmge_1_1dump_1a7151916fe1d2f607cd161e5a0aa1ed14"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4dump5writeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Write the dump to a file. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4dump15install_handlerEv">
+<span id="_CPPv3N3mge4dump15install_handlerEv"></span><span id="_CPPv2N3mge4dump15install_handlerEv"></span><span id="mge::dump::install_handler"></span><span class="target" id="classmge_1_1dump_1a583138c44fb2a5f13af6c166cb85dfaa"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">install_handler</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4dump15install_handlerEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Install crash dump handler. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4dump17uninstall_handlerEv">
+<span id="_CPPv3N3mge4dump17uninstall_handlerEv"></span><span id="_CPPv2N3mge4dump17uninstall_handlerEv"></span><span id="mge::dump::uninstall_handler"></span><span class="target" id="classmge_1_1dump_1a9a471753739d41609f678a10eed203c1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uninstall_handler</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4dump17uninstall_handlerEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Uninstall crash dump handler. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="dump-output">
+<h2>Dump Output<a class="headerlink" href="#dump-output" title="Link to this heading"></a></h2>
+<p>When a crash occurs, a Markdown file is created in the current working
+directory. The filename follows the pattern
+<code class="docutils literal notranslate"><span class="pre">&lt;executable&gt;-&lt;purpose&gt;-&lt;timestamp&gt;.md</span></code>.</p>
+<p>The dump document contains:</p>
+<ul class="simple">
+<li><p><strong>Table of Contents</strong> with links to all sections</p></li>
+<li><p><strong>Crash Dump</strong> heading with general information (executable name,
+timestamps, process ID)</p></li>
+<li><p><strong>Stack Trace</strong> as a code block</p></li>
+<li><p>Additional sections from registered dump info providers</p></li>
+</ul>
+</section>
+<section id="dump-info-providers">
+<h2>Dump Info Providers<a class="headerlink" href="#dump-info-providers" title="Link to this heading"></a></h2>
+<p>Dump info providers are components that contribute additional diagnostic
+sections to the crash dump. They are discovered and instantiated via the
+<a class="reference internal" href="component.html#mge-core-components"><span class="std std-ref">component system</span></a>.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18dump_info_providerE">
+<span id="_CPPv3N3mge18dump_info_providerE"></span><span id="_CPPv2N3mge18dump_info_providerE"></span><span id="mge::dump_info_provider"></span><span class="target" id="classmge_1_1dump__info__provider"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump_info_provider</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge18dump_info_providerE" title="mge::dump_info_provider"><span class="n"><span class="pre">dump_info_provider</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge18dump_info_providerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Component interface for providing sections in crash dumps. </p>
+<p>Implementations contribute a named section with diagnostic information to the markdown crash dump document. Each provider is discovered and instantiated via the component system during dump generation.</p>
+<p>Implementations should derive from this class, register via <code class="docutils literal notranslate"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code>, and override <code class="docutils literal notranslate"><span class="pre">section_name</span></code> and <code class="docutils literal notranslate"><span class="pre">dump_info</span></code>. </p>
+<p>Subclassed by mge::component_dump_info_provider, mge::module_dump_info_provider, mge::parameter_dump_info_provider, mge::trace_dump_info_provider</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18dump_info_provider12section_nameEv">
+<span id="_CPPv3NK3mge18dump_info_provider12section_nameEv"></span><span id="_CPPv2NK3mge18dump_info_provider12section_nameEv"></span><span id="mge::dump_info_provider::section_nameC"></span><span class="target" id="classmge_1_1dump__info__provider_1a0edf825c322ba96d465e7b35760429f1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">section_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge18dump_info_provider12section_nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Section heading for this provider’s dump output. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>section name string allocated with <code class="docutils literal notranslate"><span class="pre">m_resource</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18dump_info_provider8has_infoEv">
+<span id="_CPPv3NK3mge18dump_info_provider8has_infoEv"></span><span id="_CPPv2NK3mge18dump_info_provider8has_infoEv"></span><span id="mge::dump_info_provider::has_infoC"></span><span class="target" id="classmge_1_1dump__info__provider_1a1ae5dbcc5ba47cd26dceb6c917b90cf5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_info</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge18dump_info_provider8has_infoEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Whether this provider has information to contribute. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if dump_info will produce output </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18dump_info_provider9dump_infoER17markdown_document">
+<span id="_CPPv3NK3mge18dump_info_provider9dump_infoER17markdown_document"></span><span id="_CPPv2NK3mge18dump_info_provider9dump_infoER17markdown_document"></span><span id="mge::dump_info_provider::dump_info__markdown_documentRC"></span><span class="target" id="classmge_1_1dump__info__provider_1ab20ae1aeeba6cabe37602cfbd571e202"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump_info</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17markdown_documentE" title="mge::markdown_document"><span class="n"><span class="pre">markdown_document</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">doc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge18dump_info_provider9dump_infoER17markdown_document" title="Link to this definition"></a><br /></dt>
+<dd><p>Append diagnostic information to the dump document. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>doc</strong> – markdown document to write into </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18dump_info_provider18dump_info_providerEv">
+<span id="_CPPv3N3mge18dump_info_provider18dump_info_providerEv"></span><span id="_CPPv2N3mge18dump_info_provider18dump_info_providerEv"></span><span id="mge::dump_info_provider::dump_info_provider"></span><span class="target" id="classmge_1_1dump__info__provider_1a5b01f180d6383a3151a9053c8b2cd4e7"></span><span class="sig-name descname"><span class="n"><span class="pre">dump_info_provider</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge18dump_info_provider18dump_info_providerEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18dump_info_provider18dump_info_providerEPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge18dump_info_provider18dump_info_providerEPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge18dump_info_provider18dump_info_providerEPNSt3pmr15memory_resourceE"></span><span id="mge::dump_info_provider::dump_info_provider__std::pmr::memory_resourceP"></span><span class="target" id="classmge_1_1dump__info__provider_1a9663d55b4971bfa92e6205e28568ca65"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dump_info_provider</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge18dump_info_provider18dump_info_providerEPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct with a specific memory resource. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource</strong> – memory resource for PMR allocations </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18dump_info_provider10m_resourceE">
+<span id="_CPPv3N3mge18dump_info_provider10m_resourceE"></span><span id="_CPPv2N3mge18dump_info_provider10m_resourceE"></span><span id="mge::dump_info_provider::m_resource__std::pmr::memory_resourceP"></span><span class="target" id="classmge_1_1dump__info__provider_1a48b7562aef4461ab5556e87772aeaa6b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">m_resource</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N3mge18dump_info_provider10m_resourceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Memory resource for PMR allocations. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<section id="implementing-a-dump-info-provider">
+<h3>Implementing a Dump Info Provider<a class="headerlink" href="#implementing-a-dump-info-provider" title="Link to this heading"></a></h3>
+<p>To add a custom section to crash dumps:</p>
+<ol class="arabic simple">
+<li><p>Derive from <a class="reference internal" href="#_CPPv4N3mge18dump_info_providerE" title="mge::dump_info_provider"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::dump_info_provider</span></code></a>.</p></li>
+<li><p>Implement <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">section_name()</span></code> and <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dump_info()</span></code>.</p></li>
+<li><p>Register using <a class="reference internal" href="component.html#c.MGE_REGISTER_IMPLEMENTATION" title="MGE_REGISTER_IMPLEMENTATION"><code class="xref c c-macro docutils literal notranslate"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code></a>.</p></li>
+</ol>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">my_info_provider</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">dump_info_provider</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">my_info_provider</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span>
+<span class="w">    </span><span class="n">my_info_provider</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">memory_resource</span><span class="o">*</span><span class="w"> </span><span class="n">resource</span><span class="p">)</span>
+<span class="w">        </span><span class="o">:</span><span class="w"> </span><span class="n">dump_info_provider</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">section_name</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">pmr</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;My Info&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m_resource</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">dump_info</span><span class="p">(</span><span class="n">mge</span><span class="o">::</span><span class="n">markdown_document</span><span class="o">&amp;</span><span class="w"> </span><span class="n">doc</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">doc</span><span class="p">.</span><span class="n">paragraph</span><span class="p">(</span><span class="s">&quot;Custom diagnostic information.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">MGE_REGISTER_IMPLEMENTATION</span><span class="p">(</span><span class="n">my_info_provider</span><span class="p">,</span>
+<span class="w">                            </span><span class="n">mge</span><span class="o">::</span><span class="n">dump_info_provider</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The provider constructor receives a <code class="docutils literal notranslate"><span class="pre">std::pmr::memory_resource*</span></code> when
+created through the component system with PMR support. Use <code class="docutils literal notranslate"><span class="pre">m_resource</span></code>
+for all PMR allocations within the provider.</p>
+</section>
+</section>
+<section id="markdown-document">
+<h2>Markdown Document<a class="headerlink" href="#markdown-document" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4N3mge17markdown_documentE" title="mge::markdown_document"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::markdown_document</span></code></a> class is a fluent builder for
+composing GitHub Flavored Markdown documents. It is used internally by
+the dump system and available for use by dump info providers.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17markdown_documentE">
+<span id="_CPPv3N3mge17markdown_documentE"></span><span id="_CPPv2N3mge17markdown_documentE"></span><span id="mge::markdown_document"></span><span class="target" id="classmge_1_1markdown__document"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">markdown_document</span></span></span><a class="headerlink" href="#_CPPv4N3mge17markdown_documentE" title="Link to this definition"></a><br /></dt>
+<dd><p>Simple markdown document builder. </p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="component.html" class="btn btn-neutral float-left" title="Components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="system.html" class="btn btn-neutral float-right" title="System Abstractions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

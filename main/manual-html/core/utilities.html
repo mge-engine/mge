@@ -68,6 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dump.html">Dumps</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
 <li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
 <li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
@@ -123,23 +124,29 @@
 <section id="executable-name-and-path">
 <h3>Executable Name and Path<a class="headerlink" href="#executable-name-and-path" title="Link to this heading"></a></h3>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge15executable_nameEv">
-<span id="_CPPv3N3mge15executable_nameEv"></span><span id="_CPPv2N3mge15executable_nameEv"></span><span id="mge::executable_name"></span><span class="target" id="namespacemge_1acf11b4dc34d5d5fb0559a9ea8416f15b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_nameEv" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15executable_nameEPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge15executable_nameEPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge15executable_nameEPNSt3pmr15memory_resourceE"></span><span id="mge::executable_name__std::pmr::memory_resourceP"></span><span class="target" id="namespacemge_1a8b241612996c813df864fc4a2878cd06"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_name</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_nameEPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Get name of the current executable. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>name of executable program, without path or system-dependent suffixes. </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource</strong> – memory resource to use for the returned string </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>name of executable program, without path or system-dependent suffixes. </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge15executable_pathEv">
-<span id="_CPPv3N3mge15executable_pathEv"></span><span id="_CPPv2N3mge15executable_pathEv"></span><span id="mge::executable_path"></span><span class="target" id="namespacemge_1ab0450f72f3b1fc4224bd2f6a00f175b7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_path</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_pathEv" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15executable_pathEPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge15executable_pathEPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge15executable_pathEPNSt3pmr15memory_resourceE"></span><span id="mge::executable_path__std::pmr::memory_resourceP"></span><span class="target" id="namespacemge_1a1012de2abedf087621b763102dd3c95f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_path</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_pathEPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Get path of the current executable. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>path of executable program. </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource</strong> – memory resource to use for the returned string </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>path of executable program. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -265,9 +272,30 @@ can be used.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace10stacktraceEv">
-<span id="_CPPv3N3mge10stacktrace10stacktraceEv"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEv"></span><span id="mge::stacktrace::stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1ace1081ab87cc926fb6b82abb9aee1abe"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEv" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace10stacktraceEPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge10stacktrace10stacktraceEPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEPNSt3pmr15memory_resourceE"></span><span id="mge::stacktrace::stacktrace__std::pmr::memory_resourceP"></span><span class="target" id="classmge_1_1stacktrace_1a74ed0018db68a7fae9add5ac5c6bd5e8"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct stacktrace of current thread. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource</strong> – memory resource </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace10stacktraceEPvPvPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge10stacktrace10stacktraceEPvPvPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEPvPvPNSt3pmr15memory_resourceE"></span><span id="mge::stacktrace::stacktrace__voidP.voidP.std::pmr::memory_resourceP"></span><span class="target" id="classmge_1_1stacktrace_1af33061e94daa12461ef72d8d165a0f85"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">native_thread</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">native_context</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEPvPvPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct stacktrace from native thread and context. </p>
+<p>On Windows, <code class="docutils literal notranslate"><span class="pre">native_thread</span></code> is a HANDLE and <code class="docutils literal notranslate"><span class="pre">native_context</span></code> is a CONTEXT*. On other platforms this is not supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>native_thread</strong> – native thread handle </p></li>
+<li><p><strong>native_context</strong> – native context pointer </p></li>
+<li><p><strong>resource</strong> – memory resource </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
@@ -516,9 +544,14 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool11string_poolEv">
-<span id="_CPPv3N3mge11string_pool11string_poolEv"></span><span id="_CPPv2N3mge11string_pool11string_poolEv"></span><span id="mge::string_pool::string_pool"></span><span class="target" id="classmge_1_1string__pool_1a480bf4f0976bf4326848ca004fe3acdf"></span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool11string_poolEv" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool11string_poolEPNSt3pmr15memory_resourceE">
+<span id="_CPPv3N3mge11string_pool11string_poolEPNSt3pmr15memory_resourceE"></span><span id="_CPPv2N3mge11string_pool11string_poolEPNSt3pmr15memory_resourceE"></span><span id="mge::string_pool::string_pool__std::pmr::memory_resourceP"></span><span class="target" id="classmge_1_1string__pool_1ac6a000492e4d746ed4b14a08f5b1fbbf"></span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">memory_resource</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resource</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pmr</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">get_default_resource</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool11string_poolEPNSt3pmr15memory_resourceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Create empty pool. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resource</strong> – memory resource </p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="cpp function">
