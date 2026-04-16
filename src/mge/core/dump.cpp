@@ -189,7 +189,7 @@ namespace mge {
 #endif
         doc.unordered_list(info_items);
 
-        doc.heading(2, "Stack Trace").code_block(fmt::format("{}", st));
+        doc.heading(2, "Stack Trace").text(fmt::format("{}", markdown(st)));
 
         dump_info_provider::implementations(
             [&doc, resource](std::string_view implementation_name) {
