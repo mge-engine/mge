@@ -127,7 +127,7 @@ TEST(dump, write)
             entry.path().extension() == ".md") {
             EXPECT_GT(fs::file_size(entry.path()), 0u);
             found = true;
-            // fs::remove(entry.path());
+            fs::remove(entry.path());
         }
     }
     EXPECT_TRUE(found);
