@@ -5,6 +5,11 @@
 #include "error.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
+#include "slang_compiler.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(VULKAN);
+}
 
 namespace mge::vulkan {
 
@@ -123,4 +128,51 @@ namespace mge::vulkan {
                 nullptr,
                 &m_pipeline_layout));
     }
+
+    void program::on_compile_and_link(const mge::shader_language& language,
+                                      const std::string_view      source)
+    {
+        if (language.name() != "slang") {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported shader language: " << language;
+        }
+
+        auto compile_result = slang_compile(source);
+
+        if (compile_result.shader_code.empty()) {
+            MGE_THROW(mge::illegal_state)
+                << "Slang compilation produced no shader stages";
+        }
+
+        m_owned_shaders.clear();
+        m_shaders.clear();
+        m_shader_stage_create_infos.clear();
+        m_uniform_block_metadata.clear();
+        m_attributes.clear();
+        m_uniforms.clear();
+        m_sampler_bindings.clear();
+
+        for (auto& [type, shader_code] : compile_result.shader_code) {
+            auto  handle = context().create_shader(type);
+            auto* vk_s = static_cast<shader*>(handle.get());
+            vk_s->set_code_immediate(shader_code.spirv_code,
+                                     shader_code.entry_point_name);
+            m_shaders.push_back(vk_s);
+            m_owned_shaders.push_back(handle);
+        }
+
+        std::vector<std::pair<std::string, uint32_t>> sampler_bindings_raw;
+        for (const auto& s : m_shaders) {
+            m_shader_stage_create_infos.push_back(s->pipeline_stage_info());
+            s->reflect(m_attributes,
+                       m_uniforms,
+                       m_uniform_block_metadata,
+                       sampler_bindings_raw);
+        }
+        for (const auto& [name, binding] : sampler_bindings_raw) {
+            m_sampler_bindings.push_back({name, binding});
+        }
+        create_pipeline_layout();
+    }
+
 } // namespace mge::vulkan

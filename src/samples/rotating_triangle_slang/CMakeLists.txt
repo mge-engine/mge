@@ -14,4 +14,4 @@ TARGET_LINK_LIBRARIES(rotating_triangle_slang
     mgeasset
     mgemath)
 
-MGE_CAPTURE_TEST(TARGET rotating_triangle_slang RENDER_SYSTEMS directx11 directx12)
+MGE_CAPTURE_TEST(TARGET rotating_triangle_slang RENDER_SYSTEMS directx11 directx12 vulkan)

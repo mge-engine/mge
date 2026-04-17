@@ -3,7 +3,10 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "vulkan.hpp"
+
+#include <vector>
 
 namespace mge::vulkan {
     class render_context;
@@ -44,6 +47,9 @@ namespace mge::vulkan {
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(mge::shader* shader) override;
+        virtual void
+        on_compile_and_link(const mge::shader_language& language,
+                            const std::string_view      source) override;
 
     private:
         void create_pipeline_layout();
@@ -52,7 +58,8 @@ namespace mge::vulkan {
                                           m_shader_stage_create_infos;
         std::vector<mge::vulkan::shader*> m_shaders;
         VkPipelineLayout                  m_pipeline_layout{VK_NULL_HANDLE};
-        VkDescriptorSetLayout m_descriptor_set_layout{VK_NULL_HANDLE};
-        sampler_binding_list  m_sampler_bindings;
+        VkDescriptorSetLayout           m_descriptor_set_layout{VK_NULL_HANDLE};
+        sampler_binding_list            m_sampler_bindings;
+        std::vector<mge::shader_handle> m_owned_shaders;
     };
 } // namespace mge::vulkan
