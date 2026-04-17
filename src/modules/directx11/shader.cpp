@@ -248,15 +248,57 @@ namespace mge::dx11 {
                         cbuffer->GetVariableByIndex(j);
                     D3D11_SHADER_VARIABLE_DESC variable_desc = {};
                     variable->GetDesc(&variable_desc);
-                    mge::program::uniform u;
-                    u.name = variable_desc.Name;
                     ID3D11ShaderReflectionType* variable_type =
                         variable->GetType();
                     D3D11_SHADER_TYPE_DESC variable_type_desc = {};
                     variable_type->GetDesc(&variable_type_desc);
-                    u.type = data_type_of_variable(variable_type_desc);
-                    u.array_size = variable_desc.Size;
-                    uniform_block_metadata.uniforms.push_back(u);
+
+                    MGE_DEBUG_TRACE(DX11,
+                                    "cbuffer '{}' var[{}]: name='{}', "
+                                    "type={}, class={}, members={}, "
+                                    "size={}",
+                                    cbuffer_desc.Name,
+                                    j,
+                                    variable_desc.Name,
+                                    variable_type_desc.Type,
+                                    variable_type_desc.Class,
+                                    variable_type_desc.Members,
+                                    variable_desc.Size);
+
+                    if (variable_type_desc.Type == D3D_SVT_VOID &&
+                        variable_type_desc.Class == D3D_SVC_STRUCT) {
+                        // Struct type: iterate members
+                        for (uint32_t k = 0; k < variable_type_desc.Members;
+                             ++k) {
+                            ID3D11ShaderReflectionType* member_type =
+                                variable_type->GetMemberTypeByIndex(k);
+                            const char* member_name =
+                                variable_type->GetMemberTypeName(k);
+                            D3D11_SHADER_TYPE_DESC member_type_desc = {};
+                            member_type->GetDesc(&member_type_desc);
+                            MGE_DEBUG_TRACE(DX11,
+                                            "  struct member[{}]: name='{}', "
+                                            "type={}, class={}",
+                                            k,
+                                            member_name ? member_name
+                                                        : "(null)",
+                                            member_type_desc.Type,
+                                            member_type_desc.Class);
+                            mge::program::uniform u;
+                            u.name = member_name ? member_name : "";
+                            u.type = data_type_of_variable(member_type_desc);
+                            u.array_size = member_type_desc.Elements > 0
+                                               ? member_type_desc.Elements
+                                               : 1;
+                            uniform_block_metadata.uniforms.push_back(u);
+                        }
+                    } else {
+                        mge::program::uniform u;
+                        u.name = variable_desc.Name;
+                        u.type = data_type_of_variable(variable_type_desc);
+                        u.array_size = variable_desc.Size;
+                        uniform_block_metadata.uniforms.push_back(u);
+                    }
                 }
                 if (uniform_block_metadata.name == "$Globals") {
                     uniforms.insert(uniforms.begin(),

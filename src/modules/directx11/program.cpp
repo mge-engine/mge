@@ -6,6 +6,7 @@
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
+#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX11);
@@ -44,7 +45,9 @@ namespace mge::dx11 {
         for (const auto& s : m_shaders) {
             if (s) {
                 dx11::shader* dx11_s = static_cast<dx11::shader*>(s);
-                dx11_s->reflect(m_attributes, m_uniforms, m_uniform_block_metadata);
+                dx11_s->reflect(m_attributes,
+                                m_uniforms,
+                                m_uniform_block_metadata);
 
                 // Collect which buffers are used by this shader stage
                 auto index = mge::to_underlying(s->type());
@@ -82,6 +85,34 @@ namespace mge::dx11 {
         auto index = mge::to_underlying(mge::shader_type::FRAGMENT);
         return m_shader_buffers[index].find(name) !=
                m_shader_buffers[index].end();
+    }
+
+    void program::on_compile_and_link(const mge::shader_language& language,
+                                      const std::string_view      source)
+    {
+        if (language.name() != "slang") {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported shader language: " << language;
+        }
+
+        auto compile_result = slang_compile(source);
+
+        if (compile_result.shader_code.empty()) {
+            MGE_THROW(mge::illegal_state)
+                << "Slang compilation produced no shader stages";
+        }
+
+        m_owned_shaders.clear();
+
+        for (auto& [type, code] : compile_result.shader_code) {
+            auto  handle = context().create_shader(type);
+            auto* dx11_s = static_cast<shader*>(handle.get());
+            dx11_s->set_code_immediate(code);
+            m_shaders[mge::to_underlying(type)] = dx11_s;
+            m_owned_shaders.push_back(handle);
+        }
+
+        collect_information();
     }
 
 } // namespace mge::dx11
