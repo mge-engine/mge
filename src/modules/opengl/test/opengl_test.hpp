@@ -4,10 +4,13 @@
 #pragma once
 #include "mge/application/application.hpp"
 #include "mge/application/loop.hpp"
+#include "mge/config.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/window.hpp"
-#include "mge/win32/window.hpp"
+#ifdef MGE_OS_WINDOWS
+#    include "mge/win32/window.hpp"
+#endif
 #include "test/applicationtest.hpp"
 #include "test/googlemock.hpp"
 #include "test/googletest.hpp"

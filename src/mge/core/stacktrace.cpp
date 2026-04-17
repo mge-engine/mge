@@ -239,12 +239,30 @@ namespace mge {
         , m_source_line(line)
     {}
 
-    stacktrace::stacktrace()
+    stacktrace::stacktrace(std::pmr::memory_resource* resource)
+        : m_frames(resource)
+        , m_strings(resource)
     {
         fill_stacktrace(m_frames, m_strings);
     }
 
+    stacktrace::stacktrace(void*                      native_thread,
+                           void*                      native_context,
+                           std::pmr::memory_resource* resource)
+        : m_frames(resource)
+        , m_strings(resource)
+    {
+#ifdef MGE_OS_WINDOWS
+        fill_stacktrace(static_cast<HANDLE>(native_thread),
+                        static_cast<CONTEXT*>(native_context),
+                        m_frames,
+                        m_strings);
+#endif
+    }
+
     stacktrace::stacktrace(const stacktrace& src)
+        : m_frames(src.m_frames.get_allocator())
+        , m_strings(src.m_frames.get_allocator().resource())
     {
         for (const auto& f : src.m_frames) {
             m_frames.emplace_back(f.address(),
@@ -258,7 +276,7 @@ namespace mge {
     stacktrace& stacktrace::operator=(const stacktrace& src)
     {
         if (&src != this) {
-            decltype(m_frames) tmp_frames;
+            decltype(m_frames) tmp_frames(m_frames.get_allocator());
             for (const auto& f : src.m_frames) {
                 tmp_frames.emplace_back(f.address(),
                                         m_strings.get(f.module()),

@@ -72,3 +72,48 @@ TEST(small_vector, initializer_list)
     EXPECT_EQ(1u, v4.size());
     EXPECT_EQ(42, v4[0]);
 }
+
+TEST(small_vector, pmr_small_vector)
+{
+    std::pmr::monotonic_buffer_resource resource;
+    std::pmr::polymorphic_allocator<int> alloc(&resource);
+
+    mge::pmr_small_vector<int, 3> v1(alloc);
+    EXPECT_EQ(0u, v1.size());
+
+    v1.push_back(1);
+    v1.push_back(2);
+    EXPECT_EQ(2u, v1.size());
+    EXPECT_EQ(1, v1[0]);
+    EXPECT_EQ(2, v1[1]);
+
+    // Overflow to vector, should use the pmr allocator
+    v1.push_back(3);
+    v1.push_back(4);
+    EXPECT_EQ(4u, v1.size());
+    EXPECT_EQ(4, v1[3]);
+}
+
+TEST(small_vector, pmr_small_vector_sized_ctor)
+{
+    std::pmr::monotonic_buffer_resource  resource;
+    std::pmr::polymorphic_allocator<int> alloc(&resource);
+
+    mge::pmr_small_vector<int, 3> v(5, 42, alloc);
+    EXPECT_EQ(5u, v.size());
+    for (size_t i = 0; i < v.size(); ++i) {
+        EXPECT_EQ(42, v[i]);
+    }
+}
+
+TEST(small_vector, pmr_small_vector_initializer_list)
+{
+    std::pmr::monotonic_buffer_resource  resource;
+    std::pmr::polymorphic_allocator<int> alloc(&resource);
+
+    mge::pmr_small_vector<int, 2> v({10, 20, 30}, alloc);
+    EXPECT_EQ(3u, v.size());
+    EXPECT_EQ(10, v[0]);
+    EXPECT_EQ(20, v[1]);
+    EXPECT_EQ(30, v[2]);
+}

@@ -4,6 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/application/loop.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/dump.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/module.hpp"
 #include "mge/core/stdexceptions.hpp"
@@ -173,6 +174,8 @@ namespace mge {
                           int              argc,
                           const char**     argv)
     {
+        dump::install_handler();
+
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
         try {
@@ -240,23 +243,27 @@ namespace mge {
             if (!rc) {
                 configuration::store();
             }
+            dump::uninstall_handler();
             return rc;
         } catch (const mge::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Exception in application '{}': {}",
                             used_application_name,
                             ex.details());
+            dump::uninstall_handler();
             return 1;
         } catch (const std::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Exception in application '{}': {}",
                             used_application_name,
                             ex.what());
+            dump::uninstall_handler();
             return 1;
         } catch (...) {
             MGE_ERROR_TRACE(APPLICATION,
                             "Unknown exception in application '{}'",
                             used_application_name);
+            dump::uninstall_handler();
             return 1;
         }
     }

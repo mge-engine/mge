@@ -44,6 +44,9 @@ namespace mge::opengl {
         void dump_info_log();
         void collect_uniforms();
         void collect_uniform_buffers();
+        void collect_uniform_buffers_43();
+        void collect_uniform_buffers_31();
+        void cache_block_indices();
         void collect_attributes();
 
         GLuint                        m_program;

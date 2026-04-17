@@ -178,11 +178,27 @@ namespace mge {
         /**
          * @brief Get the extent of the render context.
          *
-         * @return extent
+         * This is the framebuffer extent in pixels, which may differ
+         * from the window extent on HiDPI displays.
+         *
+         * @return extent in pixels
          */
         const mge::extent& extent() const noexcept
         {
             return m_extent;
+        }
+
+        /**
+         * @brief Get the logical window extent.
+         *
+         * On HiDPI displays, this is smaller than extent().
+         * On non-HiDPI displays, both are the same.
+         *
+         * @return logical window extent
+         */
+        const mge::extent& window_extent() const noexcept
+        {
+            return m_window_extent;
         }
 
         /**
@@ -361,6 +377,7 @@ namespace mge {
     protected:
         mge::render_system& m_render_system;
         mge::extent         m_extent;
+        mge::extent         m_window_extent;
         uint16_t            m_index{0xFFFF}; //!< index in registry
 
         std::vector<shader*>        m_shaders;
@@ -370,6 +387,8 @@ namespace mge {
         std::vector<frame_buffer*>  m_frame_buffers;
 
         using prepare_frame_action = std::function<void()>;
+
+        void reset_prepare_frame_actions();
 
         std::array<std::byte, 65536>           m_prepare_frame_memory;
         std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;

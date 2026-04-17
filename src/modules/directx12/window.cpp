@@ -15,7 +15,7 @@ namespace mge::dx12 {
     window::window(render_system&             system,
                    const mge::extent&         extent,
                    const mge::window_options& options)
-        : platform::window(system, extent, options)
+        : ui_platform::window(system, extent, options)
     {
         MGE_DEBUG_TRACE(DX12, "Create window");
         create_render_context(system);
@@ -24,8 +24,7 @@ namespace mge::dx12 {
     void window::create_render_context(render_system& system)
     {
         auto context =
-            std::make_shared<::mge::dx12::render_context>(system,
-                                                          *this);
+            std::make_shared<::mge::dx12::render_context>(system, *this);
         context->initialize();
         m_render_context = context;
     }

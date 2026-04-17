@@ -150,6 +150,7 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void find_depth_format();
         void create_depth_resources();
         void create_render_pass();
         void create_graphics_command_pool();
@@ -185,11 +186,12 @@ namespace mge::vulkan {
         VkDevice                                    m_device{VK_NULL_HANDLE};
         VmaAllocator                                m_allocator{VK_NULL_HANDLE};
         VkQueue                                     m_queue{VK_NULL_HANDLE};
-        VkRenderPass  m_render_pass{VK_NULL_HANDLE};
-        VkCommandPool m_graphics_command_pool{VK_NULL_HANDLE};
-        VkSemaphore   m_image_available_semaphore{VK_NULL_HANDLE};
-        VkSemaphore   m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence       m_frame_finished_fence{VK_NULL_HANDLE};
+        VkRenderPass             m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool            m_graphics_command_pool{VK_NULL_HANDLE};
+        std::vector<VkSemaphore> m_image_available_semaphores;
+        std::vector<VkSemaphore> m_render_finished_semaphores;
+        std::vector<VkFence>     m_frame_finished_fences;
+        uint32_t                 m_current_frame{0};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
@@ -197,6 +199,7 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
         VkExtent2D                      m_extent;
+        VkFormat                        m_depth_format{VK_FORMAT_UNDEFINED};
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;

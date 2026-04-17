@@ -174,4 +174,12 @@ namespace mge {
         s_all_modules->modules.clear();
     }
 
+    void module::for_each_loaded_module(
+        const std::function<void(const module&)>& callback)
+    {
+        for (const auto& [name, mod] : s_all_modules->modules) {
+            callback(*mod);
+        }
+    }
+
 } // namespace mge

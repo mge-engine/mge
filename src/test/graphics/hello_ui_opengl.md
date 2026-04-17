@@ -39,6 +39,28 @@
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 2
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #1
+- Call: glBufferData
+  - buffer: GLResource #1
+  - bytesize: 7520
+  - data: _ignored_
+  - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #2
+- Call: glBufferData
+  - buffer: GLResource #2
+  - bytesize: 1680
+  - data: _ignored_
+  - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: null
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null
@@ -87,55 +109,55 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glBufferData
-  - buffer: GLResource #2
+  - buffer: GLResource #4
   - bytesize: 64
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
 - Call: glBindBuffer
   - target: GL_UNIFORM_BUFFER
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glBufferSubData
-  - buffer: GLResource #2
+  - buffer: GLResource #4
   - offset: 0
   - bytesize: 64
   - data: _ignored_
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glBindBuffer
   - target: GL_ARRAY_BUFFER
-  - buffer: GLResource #5
+  - buffer: GLResource #1
 - Call: glBindBuffer
   - target: GL_ELEMENT_ARRAY_BUFFER
-  - buffer: GLResource #6
+  - buffer: GLResource #2
 - Call: glEnableVertexAttribArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
   - index: 0
 - Call: glVertexAttribPointer
-  - vaobj: GLResource #4
-  - buffer: GLResource #5
+  - vaobj: GLResource #6
+  - buffer: GLResource #1
   - index: 0
   - size: 2
   - type: GL_FLOAT
@@ -143,11 +165,11 @@
   - stride: 20
   - offset: 0
 - Call: glEnableVertexAttribArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
   - index: 1
 - Call: glVertexAttribPointer
-  - vaobj: GLResource #4
-  - buffer: GLResource #5
+  - vaobj: GLResource #6
+  - buffer: GLResource #1
   - index: 1
   - size: 2
   - type: GL_FLOAT
@@ -155,11 +177,11 @@
   - stride: 20
   - offset: 8
 - Call: glEnableVertexAttribArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
   - index: 2
 - Call: glVertexAttribPointer
-  - vaobj: GLResource #4
-  - buffer: GLResource #5
+  - vaobj: GLResource #6
+  - buffer: GLResource #1
   - index: 2
   - size: 4
   - type: GL_UNSIGNED_BYTE
@@ -169,7 +191,7 @@
 - Call: glBindVertexArray
   - vaobj: GLResource #7
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 30
@@ -199,27 +221,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 738
@@ -249,27 +271,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 72
@@ -292,16 +314,28 @@
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 3
-- Call: glNamedBufferData
-  - buffer: GLResource #5
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #1
+- Call: glBufferData
+  - buffer: GLResource #1
   - bytesize: 7520
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
-- Call: glNamedBufferData
-  - buffer: GLResource #6
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #2
+- Call: glBufferData
+  - buffer: GLResource #2
   - bytesize: 1680
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: null
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null
@@ -350,27 +384,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 30
@@ -400,27 +434,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 738
@@ -450,177 +484,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 72
@@ -643,16 +527,28 @@
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 4
-- Call: glNamedBufferData
-  - buffer: GLResource #5
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #1
+- Call: glBufferData
+  - buffer: GLResource #1
   - bytesize: 7520
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
-- Call: glNamedBufferData
-  - buffer: GLResource #6
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #2
+- Call: glBufferData
+  - buffer: GLResource #2
   - bytesize: 1680
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: null
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null
@@ -701,27 +597,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 30
@@ -751,27 +647,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 738
@@ -801,327 +697,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 72
@@ -1144,16 +740,28 @@
   - cap: GL_DEPTH_TEST
 - Call: SwapBuffers
 ## Frame 5
-- Call: glNamedBufferData
-  - buffer: GLResource #5
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: GLResource #1
+- Call: glBufferData
+  - buffer: GLResource #1
   - bytesize: 7520
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
-- Call: glNamedBufferData
-  - buffer: GLResource #6
+- Call: glBindBuffer
+  - target: GL_ARRAY_BUFFER
+  - buffer: null
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: GLResource #2
+- Call: glBufferData
+  - buffer: GLResource #2
   - bytesize: 1680
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
+- Call: glBindBuffer
+  - target: GL_ELEMENT_ARRAY_BUFFER
+  - buffer: null
 - Call: glBindFramebuffer
   - target: GL_FRAMEBUFFER
   - framebuffer: null
@@ -1202,27 +810,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 30
@@ -1252,27 +860,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 738
@@ -1302,477 +910,27 @@
 - Call: glDepthMask
   - flag: false
 - Call: glUseProgram
-  - program: GLResource #1
+  - program: GLResource #3
 - Call: glUniformBlockBinding
-  - program: GLResource #1
+  - program: GLResource #3
   - uniformBlockIndex: 0
   - uniformBlockBinding: 0
 - Call: glBindBufferBase
   - target: GL_UNIFORM_BUFFER
   - index: 0
-  - buffer: GLResource #2
+  - buffer: GLResource #4
 - Call: glActiveTexture
   - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
-  - texture: GLResource #3
+  - texture: GLResource #5
 - Call: glUniform1i
-  - Program: GLResource #1
+  - Program: GLResource #3
   - location: 0
   - count: 1
   - values: [0]
 - Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 72
-  - type: GL_UNSIGNED_SHORT
-  - indices: 1536
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 0
-  - y: -7592
-  - width: 8192
-  - height: 8192
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 30
-  - type: GL_UNSIGNED_SHORT
-  - indices: 0
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 54
-  - y: 360
-  - width: 282
-  - height: 190
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
-- Call: glDrawElements
-  - mode: GL_TRIANGLES
-  - count: 738
-  - type: GL_UNSIGNED_SHORT
-  - indices: 60
-- Call: glBindVertexArray
-  - vaobj: GLResource #7
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: null
-- Call: glUseProgram
-  - program: null
-- Call: glDepthMask
-  - flag: true
-- Call: glScissor
-  - x: 59
-  - y: 419
-  - width: 272
-  - height: 20
-- Call: glDepthFunc
-  - func: GL_ALWAYS
-- Call: glBlendFunc
-  - sfactor: GL_SRC_ALPHA
-  - dfactor: GL_ONE_MINUS_SRC_ALPHA
-- Call: glBlendEquation
-  - mode: GL_FUNC_ADD
-- Call: glDepthMask
-  - flag: false
-- Call: glUseProgram
-  - program: GLResource #1
-- Call: glUniformBlockBinding
-  - program: GLResource #1
-  - uniformBlockIndex: 0
-  - uniformBlockBinding: 0
-- Call: glBindBufferBase
-  - target: GL_UNIFORM_BUFFER
-  - index: 0
-  - buffer: GLResource #2
-- Call: glActiveTexture
-  - texture: GL_TEXTURE0
-- Call: glBindTexture
-  - target: GL_TEXTURE_2D
-  - texture: GLResource #3
-- Call: glUniform1i
-  - Program: GLResource #1
-  - location: 0
-  - count: 1
-  - values: [0]
-- Call: glBindVertexArray
-  - vaobj: GLResource #4
+  - vaobj: GLResource #6
 - Call: glDrawElements
   - mode: GL_TRIANGLES
   - count: 72

@@ -4,6 +4,8 @@
 #include "mge/core/component.hpp"
 #include "test/googletest.hpp"
 
+#include <memory_resource>
+
 using mge::component;
 
 class a_component : public mge::component<a_component>
@@ -170,4 +172,70 @@ TEST(dynamic_implementation, unregister)
             mge::component_base::implementation_registered("a_component",
                                                            "unreg_alias"));
     }
+}
+
+class pmr_component : public mge::component<pmr_component>
+{
+public:
+    pmr_component(std::pmr::memory_resource* resource)
+        : m_resource(resource)
+    {}
+    virtual ~pmr_component() = default;
+    virtual std::pmr::memory_resource* resource() const = 0;
+
+protected:
+    std::pmr::memory_resource* m_resource;
+};
+
+MGE_REGISTER_COMPONENT(pmr_component);
+
+class pmr_implementation : public pmr_component
+{
+public:
+    pmr_implementation()
+        : pmr_component(std::pmr::get_default_resource())
+    {}
+    pmr_implementation(std::pmr::memory_resource* resource)
+        : pmr_component(resource)
+    {}
+    ~pmr_implementation() override = default;
+
+    std::pmr::memory_resource* resource() const override
+    {
+        return m_resource;
+    }
+};
+
+MGE_REGISTER_IMPLEMENTATION(pmr_implementation, pmr_component);
+
+TEST(implementation, create_with_resource)
+{
+    std::pmr::monotonic_buffer_resource mbr;
+    auto c = pmr_component::create(&mbr, "pmr_implementation");
+    ASSERT_TRUE(c);
+    EXPECT_EQ(&mbr, c->resource());
+}
+
+TEST(implementation, create_with_default_resource)
+{
+    auto c = pmr_component::create(std::pmr::get_default_resource(),
+                                   "pmr_implementation");
+    ASSERT_TRUE(c);
+    EXPECT_EQ(std::pmr::get_default_resource(), c->resource());
+}
+
+TEST(implementation, create_pmr_without_resource)
+{
+    // Non-PMR create still works for PMR-aware components
+    auto c = pmr_component::create("pmr_implementation");
+    ASSERT_TRUE(c);
+    EXPECT_EQ(std::pmr::get_default_resource(), c->resource());
+}
+
+TEST(implementation, create_non_pmr_no_resource_overload)
+{
+    // a_component has no memory_resource ctor,
+    // so create(resource, impl) should not be available
+    EXPECT_FALSE(
+        (std::is_constructible_v<a_component, std::pmr::memory_resource*>));
 }

@@ -5,6 +5,8 @@
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/window.hpp"
+#elif defined MGE_OS_MACOSX
+#    include "mge/glfw/window.hpp"
 #else
 #    error Missing port
 #endif
@@ -13,7 +15,7 @@ namespace mge::vulkan {
 
     class render_system;
 
-    class window : public platform::window
+    class window : public ui_platform::window
     {
     public:
         window(render_system&               render_system_,

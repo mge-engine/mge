@@ -100,8 +100,8 @@ namespace mge {
         virtual buffer_ref indices() const = 0;
 
     private:
-        vertex_layout m_vertex_layout;
-        data_type     m_index_element_type;
+        vertex_layout              m_vertex_layout;
+        [[maybe_unused]] data_type m_index_element_type;
     };
 
 } // namespace mge

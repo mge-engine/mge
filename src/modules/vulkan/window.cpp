@@ -6,7 +6,6 @@
 #include "render_context.hpp"
 #include "render_system.hpp"
 
-
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -15,16 +14,18 @@ namespace mge::vulkan {
     window::window(render_system&             system,
                    const mge::extent&         extent,
                    const mge::window_options& options)
-        : platform::window(system, extent, options)
+        : ui_platform::window(system, extent, options)
     {
         MGE_DEBUG_TRACE(VULKAN, "Create window");
         create_render_context(system);
+#ifdef MGE_OS_WINDOWS
         auto fd = system.frame_debugger();
         if (fd) {
             fd->set_context(
                 frame_debugger::capture_context{system.renderdoc_device(),
                                                 hwnd()});
         }
+#endif
     }
 
     window::~window() {}

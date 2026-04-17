@@ -9,6 +9,10 @@ INCLUDE(thirdparty/opengl)
 INCLUDE(thirdparty/vulkan)
 INCLUDE(thirdparty/directx)
 
+IF(APPLE AND Vulkan_FOUND)
+    GET_FILENAME_COMPONENT(MGE_VULKAN_LIBRARY_DIR "${Vulkan_LIBRARY}" DIRECTORY)
+ENDIF()
+
 IF (HEADLESS_ENVIRONMENT)
     MESSAGE("-- Headless environment detected, skipping capture tests")
     SET(MGE_NO_CAPTURE_TESTS TRUE)
@@ -76,11 +80,7 @@ FUNCTION(MGE_TEST)
     IF(MGE_TEST_DISABLED)
         MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to DISABLED flag")
     ELSE()
-        IF(APPLE)
-            SET(_TEST_COMMAND lldb --batch -o run --one-line-on-crash "bt all" --one-line-on-crash quit -- ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml)
-        ELSE()
             SET(_TEST_COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml)
-        ENDIF()
         IF(MGE_TEST_NEEDSDISPLAY)
             IF(HEADLESS_ENVIRONMENT)
                 MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to headless environment")
@@ -88,17 +88,31 @@ FUNCTION(MGE_TEST)
                 ADD_TEST(NAME ${MGE_TEST_TARGET}
                         COMMAND ${_TEST_COMMAND}
                         WORKING_DIRECTORY "${_BINARY_DIR}")
+                IF(MGE_TEST_SHOWTRACE)
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+                ENDIF()
+                IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
+                    SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                                APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+                ENDIF()
             ENDIF()
         ELSE()
             ADD_TEST(NAME ${MGE_TEST_TARGET}
                     COMMAND ${_TEST_COMMAND}
                     WORKING_DIRECTORY "${_BINARY_DIR}")
-        ENDIF()
-        IF(MGE_TEST_SHOWTRACE)
-            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                        PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
-            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                        APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+            IF(MGE_TEST_SHOWTRACE)
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+            ENDIF()
+            IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
+                SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                            APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+            ENDIF()
         ENDIF()
     ENDIF()
 ENDFUNCTION()
@@ -168,6 +182,11 @@ FUNCTION(MGE_CAPTURE_TEST)
                 PROPERTIES
                     RESOURCE_LOCK "gpu_capture"
             )
+            IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
+                SET_PROPERTY(
+                    TEST test_${MGE_CAPTURE_TEST_TARGET}_capture_${RENDER_SYSTEM}
+                    APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
+            ENDIF()
             ADD_CUSTOM_TARGET(capture-${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}
                 COMMAND "${Python3_EXECUTABLE}" 
                     "${CMAKE_BINARY_DIR}/capturetest.py"

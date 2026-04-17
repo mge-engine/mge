@@ -1,3 +1,5 @@
+.. _mge-core-components:
+
 **********
 Components
 **********

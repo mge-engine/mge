@@ -16,6 +16,10 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 
+#ifdef MGE_OS_MACOSX
+#    include <GLFW/glfw3.h>
+#endif
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -129,8 +133,11 @@ namespace mge::vulkan {
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();
+            // Update base class extent to actual framebuffer pixel size
+            mge::render_context::m_extent = {m_extent.width, m_extent.height};
             create_swap_chain();
             create_image_views();
+            find_depth_format();
             create_depth_resources();
             create_render_pass();
             create_graphics_command_pool();
@@ -166,7 +173,9 @@ namespace mge::vulkan {
             }
         }
 
-        wait_for_frame_finished();
+        if (m_device) {
+            vkDeviceWaitIdle(m_device);
+        }
         teardown();
     }
 
@@ -218,7 +227,12 @@ namespace mge::vulkan {
             &create_info,
             nullptr,
             &m_surface));
-
+#elif defined MGE_OS_MACOSX
+        MGE_DEBUG_TRACE(VULKAN, "Create Vulkan surface (GLFW)");
+        CHECK_VK_CALL(glfwCreateWindowSurface(m_render_system->instance(),
+                                              m_window.handle(),
+                                              nullptr,
+                                              &m_surface));
 #else
 #    error Missing port
 #endif
@@ -245,6 +259,9 @@ namespace mge::vulkan {
 
         std::vector<const char*> device_extensions;
         device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+#ifdef MGE_OS_MACOSX
+        device_extensions.push_back("VK_KHR_portability_subset");
+#endif
 
         std::vector<const char*> device_layers;
         if (m_render_system->debug()) {
@@ -285,23 +302,27 @@ namespace mge::vulkan {
         m_descriptor_sets.clear();
 
         if (vkDestroySemaphore) {
-            if (m_image_available_semaphore) {
-                vkDestroySemaphore(m_device,
-                                   m_image_available_semaphore,
-                                   nullptr);
-                m_image_available_semaphore = VK_NULL_HANDLE;
+            for (auto s : m_image_available_semaphores) {
+                if (s != VK_NULL_HANDLE) {
+                    vkDestroySemaphore(m_device, s, nullptr);
+                }
             }
-            if (m_render_finished_semaphore) {
-                vkDestroySemaphore(m_device,
-                                   m_render_finished_semaphore,
-                                   nullptr);
-                m_render_finished_semaphore = VK_NULL_HANDLE;
+            m_image_available_semaphores.clear();
+            for (auto s : m_render_finished_semaphores) {
+                if (s != VK_NULL_HANDLE) {
+                    vkDestroySemaphore(m_device, s, nullptr);
+                }
             }
+            m_render_finished_semaphores.clear();
         }
 
-        if (vkDestroyFence && m_frame_finished_fence) {
-            vkDestroyFence(m_device, m_frame_finished_fence, nullptr);
-            m_frame_finished_fence = VK_NULL_HANDLE;
+        if (vkDestroyFence) {
+            for (auto f : m_frame_finished_fences) {
+                if (f != VK_NULL_HANDLE) {
+                    vkDestroyFence(m_device, f, nullptr);
+                }
+            }
+            m_frame_finished_fences.clear();
         }
 
         if (vkDestroyFramebuffer) {
@@ -406,7 +427,7 @@ namespace mge::vulkan {
             // MGE_DEBUG_TRACE(VULKAN)
             //    << "Replace " << name << ": " << (void*)(original) << " by "
             //    << (void*)ptr;
-            result = ptr;
+            result = reinterpret_cast<void*>(ptr);
         }
         return result;
     }
@@ -653,10 +674,35 @@ namespace mge::vulkan {
         }
     }
 
+    void render_context::find_depth_format()
+    {
+        MGE_DEBUG_TRACE(VULKAN, "Find depth format");
+        const VkFormat candidates[] = {
+            VK_FORMAT_D24_UNORM_S8_UINT,
+            VK_FORMAT_D32_SFLOAT,
+        };
+
+        for (auto format : candidates) {
+            VkFormatProperties props;
+            m_render_system->vkGetPhysicalDeviceFormatProperties(
+                m_render_system->physical_device(),
+                format,
+                &props);
+            if (props.optimalTilingFeatures &
+                VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+                m_depth_format = format;
+                MGE_DEBUG_TRACE(VULKAN,
+                                "Selected depth format: {}",
+                                static_cast<int>(format));
+                return;
+            }
+        }
+        MGE_THROW(mge::vulkan::error) << "No supported depth format found";
+    }
+
     void render_context::create_depth_resources()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create depth resources");
-        VkFormat depth_format = VK_FORMAT_D24_UNORM_S8_UINT;
 
         m_depth_images.resize(m_swap_chain_images.size());
         m_depth_image_allocations.resize(m_swap_chain_images.size());
@@ -671,7 +717,7 @@ namespace mge::vulkan {
             image_info.extent.depth = 1;
             image_info.mipLevels = 1;
             image_info.arrayLayers = 1;
-            image_info.format = depth_format;
+            image_info.format = m_depth_format;
             image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
             image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
             image_info.usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
@@ -692,7 +738,7 @@ namespace mge::vulkan {
             view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             view_info.image = m_depth_images[i];
             view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
-            view_info.format = depth_format;
+            view_info.format = m_depth_format;
             view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
             view_info.subresourceRange.baseMipLevel = 0;
             view_info.subresourceRange.levelCount = 1;
@@ -743,7 +789,7 @@ namespace mge::vulkan {
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
         VkAttachmentDescription depth_attachment = {};
-        depth_attachment.format = VK_FORMAT_D24_UNORM_S8_UINT;
+        depth_attachment.format = m_depth_format;
         depth_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
         depth_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         depth_attachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -861,30 +907,37 @@ namespace mge::vulkan {
 
     void render_context::create_fence()
     {
-        MGE_DEBUG_TRACE(VULKAN, "Create fence");
+        MGE_DEBUG_TRACE(VULKAN, "Create fences");
+        m_frame_finished_fences.resize(m_swap_chain_images.size());
         VkFenceCreateInfo fence_info = {};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         // enable first draw begin to pass through
         fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        CHECK_VK_CALL(vkCreateFence(m_device,
-                                    &fence_info,
-                                    nullptr,
-                                    &m_frame_finished_fence));
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            CHECK_VK_CALL(vkCreateFence(m_device,
+                                        &fence_info,
+                                        nullptr,
+                                        &m_frame_finished_fences[i]));
+        }
     }
 
     void render_context::create_semaphores()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create semaphores");
+        m_image_available_semaphores.resize(m_swap_chain_images.size());
+        m_render_finished_semaphores.resize(m_swap_chain_images.size());
         VkSemaphoreCreateInfo semaphore_info = {};
         semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-        CHECK_VK_CALL(vkCreateSemaphore(m_device,
-                                        &semaphore_info,
-                                        nullptr,
-                                        &m_image_available_semaphore));
-        CHECK_VK_CALL(vkCreateSemaphore(m_device,
-                                        &semaphore_info,
-                                        nullptr,
-                                        &m_render_finished_semaphore));
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                            &semaphore_info,
+                                            nullptr,
+                                            &m_image_available_semaphores[i]));
+            CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                            &semaphore_info,
+                                            nullptr,
+                                            &m_render_finished_semaphores[i]));
+        }
     }
 
     void render_context::create_descriptor_pool()
@@ -915,12 +968,14 @@ namespace mge::vulkan {
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
-                                      &m_frame_finished_fence,
+                                      &m_frame_finished_fences[m_current_frame],
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
         ++m_frame;
         // reset fence
-        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finished_fence));
+        CHECK_VK_CALL(vkResetFences(m_device,
+                                    1,
+                                    &m_frame_finished_fences[m_current_frame]));
     }
 
     void render_context::acquire_next_image()
@@ -929,7 +984,7 @@ namespace mge::vulkan {
             vkAcquireNextImageKHR(m_device,
                                   m_swap_chain_khr,
                                   std::numeric_limits<uint64_t>::max(),
-                                  m_image_available_semaphore,
+                                  m_image_available_semaphores[m_current_frame],
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
     }
@@ -1026,8 +1081,10 @@ namespace mge::vulkan {
 
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore wait_semaphores[] = {
+            m_image_available_semaphores[m_current_frame]};
+        VkSemaphore signal_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         submit_info.waitSemaphoreCount = 1;
@@ -1039,7 +1096,7 @@ namespace mge::vulkan {
         submit_info.pCommandBuffers = &m_tmp_command_buffer;
 
         CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fences[m_current_frame]));
 
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -1135,7 +1192,7 @@ namespace mge::vulkan {
         }
 
         // Get or create descriptor set
-        auto            desc_key = std::make_tuple(&ub,
+        auto desc_key = std::make_tuple(&ub,
                                         static_cast<mge::texture*>(nullptr),
                                         vk_program.descriptor_set_layout());
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
@@ -1598,8 +1655,10 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore wait_semaphores[] = {
+            m_image_available_semaphores[m_current_frame]};
+        VkSemaphore signal_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
@@ -1611,11 +1670,14 @@ namespace mge::vulkan {
         submit_info.commandBufferCount = 1;
         submit_info.pCommandBuffers = command_buffers;
 
-        CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+        CHECK_VK_CALL(vkQueueSubmit(m_queue,
+                                    1,
+                                    &submit_info,
+                                    m_frame_finished_fences[m_current_frame]));
         m_current_frame_state = frame_state::DRAW_FINISHED;
 
-        VkSemaphore present_wait_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore present_wait_semaphores[] = {
+            m_render_finished_semaphores[m_current_frame]};
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         present_info.waitSemaphoreCount = 1;
@@ -1625,6 +1687,8 @@ namespace mge::vulkan {
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
         m_current_frame_state = frame_state::BEFORE_DRAW;
+        m_current_frame = (m_current_frame + 1) %
+                          static_cast<uint32_t>(m_swap_chain_images.size());
     }
 
     const std::vector<VkVertexInputAttributeDescription>&

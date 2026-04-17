@@ -94,13 +94,13 @@
 - Call: vkWaitForFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #2]
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #2]
 - Call: vkBeginCommandBuffer
   - CommandBuffer: VkCommandBuffer #2
   - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
@@ -162,22 +162,22 @@
 - Call: vkQueueSubmit
   - queue: VkQueue #1
   - submitCount: 1
-  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
-  - fence: VkFence #1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #3], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #4]}]
+  - fence: VkFence #2
 - Call: vkQueuePresentKHR
   - queue: VkQueue #1
-  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #4], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
 ## Frame 3
 - Call: vkWaitForFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #3]
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #3]
 - Call: vkBeginCommandBuffer
   - CommandBuffer: VkCommandBuffer #3
   - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
@@ -239,11 +239,11 @@
 - Call: vkQueueSubmit
   - queue: VkQueue #1
   - submitCount: 1
-  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #3], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
-  - fence: VkFence #1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #5], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #3], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #6]}]
+  - fence: VkFence #3
 - Call: vkQueuePresentKHR
   - queue: VkQueue #1
-  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [2], pResults: []}
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #6], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [2], pResults: []}
 ## Frame 4
 - Call: vkWaitForFences
   - device: VkDevice #1
@@ -325,13 +325,13 @@
 - Call: vkWaitForFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #2]
   - waitAll: 1
   - timeout: 18446744073709551615
 - Call: vkResetFences
   - device: VkDevice #1
   - fenceCount: 1
-  - pFences: [VkFence #1]
+  - pFences: [VkFence #2]
 - Call: vkBeginCommandBuffer
   - CommandBuffer: VkCommandBuffer #2
   - BeginInfo: {sType: VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO, pNext: null, flags: VkCommandBufferUsageFlagBits(0), pInheritanceInfo: null}
@@ -393,9 +393,9 @@
 - Call: vkQueueSubmit
   - queue: VkQueue #1
   - submitCount: 1
-  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #1], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #2]}]
-  - fence: VkFence #1
+  - pSubmits: [{sType: VK_STRUCTURE_TYPE_SUBMIT_INFO, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #3], pWaitDstStageMask: [VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT], commandBufferCount: 1, pCommandBuffers: [VkCommandBuffer #2], signalSemaphoreCount: 1, pSignalSemaphores: [VkSemaphore #4]}]
+  - fence: VkFence #2
 - Call: vkQueuePresentKHR
   - queue: VkQueue #1
-  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #2], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
+  - PresentInfo: {sType: VK_STRUCTURE_TYPE_PRESENT_INFO_KHR, pNext: null, waitSemaphoreCount: 1, pWaitSemaphores: [VkSemaphore #4], swapchainCount: 1, pSwapchains: [VkSwapchainKHR #1], pImageIndices: [1], pResults: []}
 

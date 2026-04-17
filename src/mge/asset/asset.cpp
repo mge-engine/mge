@@ -448,7 +448,8 @@ namespace mge {
             MGE_THROW(runtime_exception) << "Cannot open magic database";
         }
 
-        std::string magic_file = mge::executable_path();
+        auto             exe_path = mge::executable_path();
+        std::pmr::string magic_file(exe_path);
 #ifdef MGE_OS_WINDOWS
         magic_file += "\\mge_magic.mgc";
 #else

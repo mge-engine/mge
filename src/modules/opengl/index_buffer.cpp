@@ -14,8 +14,8 @@ namespace mge::opengl {
         , m_buffer(0)
     {
         context.prepare_frame([this]() {
-            glCreateBuffers(1, &this->m_buffer);
-            CHECK_OPENGL_ERROR(glCreateBuffers);
+            glGenBuffers(1, &this->m_buffer);
+            CHECK_OPENGL_ERROR(glGenBuffers);
             set_ready(true);
         });
     }
@@ -33,11 +33,14 @@ namespace mge::opengl {
     }
     void index_buffer::on_set_data(void* data, size_t size)
     {
-        glNamedBufferData(m_buffer,
-                          mge::checked_cast<GLsizeiptr>(size),
-                          data,
-                          GL_DYNAMIC_DRAW);
-        CHECK_OPENGL_ERROR(glNamedBufferData);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+        CHECK_OPENGL_ERROR(glBindBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                     mge::checked_cast<GLsizeiptr>(size),
+                     data,
+                     GL_DYNAMIC_DRAW);
+        CHECK_OPENGL_ERROR(glBufferData);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         set_ready(true);
     }
 

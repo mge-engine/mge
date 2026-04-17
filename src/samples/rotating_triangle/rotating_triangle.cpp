@@ -187,9 +187,39 @@ namespace mge {
                             m_render_system->implementation_name());
 
             if (m_render_system->implementation_name() ==
-                    "mge::opengl::render_system" ||
-                m_render_system->implementation_name() ==
-                    "mge::vulkan::render_system") {
+                "mge::opengl::render_system") {
+                const char* vertex_shader_glsl = R"shader(
+                    #version 330 core
+                    layout(location = 0) in vec3 vertexPosition;
+
+                    layout(std140) uniform TransformBlock {
+                        float angle;
+                    };
+
+                    void main() {
+                      float rad = radians(angle);
+                      float c = cos(rad);
+                      float s = sin(rad);
+                      mat2 rotation = mat2(c, s, -s, c);
+                      vec2 rotated = rotation * vertexPosition.xy;
+                      gl_Position = vec4(rotated, vertexPosition.z, 1.0);
+                    }
+                )shader";
+
+                const char* fragment_shader_glsl = R"shader(
+                    #version 330 core
+                    layout(location = 0) out vec3 color;
+                    void main() {
+                        color = vec3(1,1,0);
+                    }
+                )shader";
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
+                pixel_shader->compile(fragment_shader_glsl);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");
+                vertex_shader->compile(vertex_shader_glsl);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled");
+            } else if (m_render_system->implementation_name() ==
+                       "mge::vulkan::render_system") {
                 const char* vertex_shader_glsl = R"shader(
                     #version 450 core
                     layout(location = 0) in vec3 vertexPosition;
@@ -296,7 +326,7 @@ namespace mge {
     private:
         render_system_ref              m_render_system;
         window_ref                     m_window;
-        std::atomic<bool>              m_initialized;
+        std::atomic<bool>              m_initialized{false};
         program_handle                 m_program;
         vertex_buffer_handle           m_vertices;
         index_buffer_handle            m_indices;

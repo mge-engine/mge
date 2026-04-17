@@ -20,6 +20,13 @@ namespace mge {
     public:
         hello_ui() = default;
 
+        void teardown() override
+        {
+            m_ui.reset();
+            m_window.reset();
+            m_render_system.reset();
+        }
+
         void setup() override
         {
             MGE_DEBUG_TRACE(HELLO_UI, "Setup hello_ui");

@@ -5,7 +5,9 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/format.hpp"
+#include "mge/core/markdown.hpp"
 #include "mge/core/string_pool.hpp"
+#include <memory_resource>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -112,7 +114,7 @@ namespace mge {
         };
 
     private:
-        using frame_vector = std::vector<frame>;
+        using frame_vector = std::pmr::vector<frame>;
 
     public:
         /// stack trace size
@@ -124,8 +126,27 @@ namespace mge {
 
         /**
          * @brief Construct stacktrace of current thread.
+         *
+         * @param resource memory resource
          */
-        stacktrace();
+        stacktrace(std::pmr::memory_resource* resource =
+                       std::pmr::get_default_resource());
+
+        /**
+         * @brief Construct stacktrace from native thread and context.
+         *
+         * On Windows, @p native_thread is a HANDLE and @p native_context
+         * is a CONTEXT*. On other platforms this is not supported.
+         *
+         * @param native_thread native thread handle
+         * @param native_context native context pointer
+         * @param resource memory resource
+         */
+        stacktrace(void*                      native_thread,
+                   void*                      native_context,
+                   std::pmr::memory_resource* resource =
+                       std::pmr::get_default_resource());
+
         /**
          * @brief Copy constructor.
          *
@@ -248,3 +269,43 @@ namespace mge {
         return os;
     }
 } // namespace mge
+
+template <> struct fmt::formatter<mge::markdown<mge::stacktrace>>
+{
+    template <typename ParseContext> constexpr auto parse(ParseContext& ctx)
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const mge::markdown<mge::stacktrace>& m,
+                FormatContext&                        ctx) const
+    {
+        const auto& stack = m.value;
+        fmt::format_to(ctx.out(),
+                       "| # | Address | Source Location | Module |\n");
+        fmt::format_to(ctx.out(), "| --- | --- | --- | --- |\n");
+        uint32_t fno = 0;
+        for (const auto& frame : stack) {
+            std::string_view source_location;
+            std::string      source_location_str;
+            if (!frame.source_file().empty()) {
+                source_location_str = fmt::format("{}:{}",
+                                                  frame.source_file(),
+                                                  frame.source_line());
+                source_location = source_location_str;
+            }
+            std::string_view name =
+                frame.name().empty() ? std::string_view("??") : frame.name();
+            fmt::format_to(ctx.out(),
+                           "| {} | {} {} | {} | {} |\n",
+                           fno,
+                           frame.address(),
+                           name,
+                           source_location,
+                           frame.module());
+            fno++;
+        }
+        return ctx.out();
+    }
+};

@@ -5,6 +5,8 @@
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/window.hpp"
+#else
+#    include "mge/glfw/window.hpp"
 #endif
 
 namespace mge {
@@ -12,10 +14,10 @@ namespace mge {
 
         class render_system;
 
-        class window : public platform::window
+        class window : public ui_platform::window
         {
         public:
-            window(mge::opengl::render_system&               system,
+            window(mge::opengl::render_system&  system,
                    const ::mge::extent&         extent,
                    const ::mge::window_options& options);
             ~window();

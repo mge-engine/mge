@@ -9,6 +9,7 @@
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_record.hpp"
 #include "mge/core/trace_sink.hpp"
+#include <functional>
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -41,6 +42,7 @@ namespace mge {
             m_level_config.set_change_handler(
                 [&] { this->update_configuration(); });
             configure();
+            register_at_registry(this);
         }
 
         /**
@@ -125,7 +127,26 @@ namespace mge {
          */
         void remove_sink(const std::shared_ptr<trace_sink>& sink);
 
+        /**
+         * @brief Enabled trace levels.
+         * @return bitmask of enabled trace levels
+         */
+        uint8_t enabled_levels() const noexcept
+        {
+            return m_enabled_levels;
+        }
+
+        /**
+         * @brief Enumerate all registered trace topics.
+         * @param callback called for each registered topic
+         */
+        static void topics(
+            const std::function<void(const trace_topic&)>& callback);
+
     private:
+        static void register_at_registry(trace_topic* t);
+        static void unregister_at_registry(trace_topic* t);
+
         void update_configuration();
         void initialize();
         void configure();

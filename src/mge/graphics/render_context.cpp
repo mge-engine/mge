@@ -90,6 +90,7 @@ namespace mge {
                                    const mge::extent&  ext)
         : m_render_system(rs)
         , m_extent(ext)
+        , m_window_extent(ext)
         , m_prepare_frame_resource(m_prepare_frame_memory.data(),
                                    m_prepare_frame_memory.size())
         , m_prepare_frame_actions(&m_prepare_frame_resource)
@@ -108,6 +109,19 @@ namespace mge {
     render_context::~render_context()
     {
         render_context_registry::instance->unregister_context(m_index, this);
+    }
+
+    void render_context::reset_prepare_frame_actions()
+    {
+        // Swap with empty vector to detach from resource memory before
+        // releasing. The scoped block ensures tmp (holding the old
+        // elements) is destroyed while the resource memory is still valid.
+        {
+            std::pmr::vector<prepare_frame_action> tmp(
+                &m_prepare_frame_resource);
+            m_prepare_frame_actions.swap(tmp);
+        }
+        m_prepare_frame_resource.release();
     }
 
     void render_context::frame()
@@ -129,12 +143,10 @@ namespace mge {
                     action();
                 }
             } catch (...) {
-                m_prepare_frame_actions.clear();
-                m_prepare_frame_resource.release();
+                reset_prepare_frame_actions();
                 throw;
             }
-            m_prepare_frame_actions.clear();
-            m_prepare_frame_resource.release();
+            reset_prepare_frame_actions();
         }
         bool rendered = false;
         if (m_passes.size() > 0) {

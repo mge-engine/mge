@@ -23,7 +23,6 @@ TEST_F(program_test, compile_and_link)
 
     const char* fragment_shader_glsl = R"shader(
                     #version 330 core
-                    #extension GL_ARB_explicit_uniform_location : enable
                     out vec3 color;
 
                     struct a_struct
@@ -34,7 +33,7 @@ TEST_F(program_test, compile_and_link)
                     };
 
                     uniform vec3 one_uniform;
-                    layout(location = 7) uniform a_struct two_uniform[5];
+                    uniform a_struct two_uniform[5];
                     uniform float third_uniform[3];
 
                     uniform ExtraBlock  {

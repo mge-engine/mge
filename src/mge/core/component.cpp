@@ -193,6 +193,41 @@ namespace mge {
             return std::shared_ptr<component_base>();
         }
 
+        std::shared_ptr<component_base>
+        create(std::pmr::memory_resource* resource,
+               std::string_view           component_name,
+               std::string_view           implementation_name)
+        {
+            MGE_TRACE_OBJECT(CORE, DEBUG)
+                << "Create instance of " << component_name
+                << " using implementation " << implementation_name
+                << " with memory resource";
+
+            auto impl_it = m_implementations.find(component_name);
+            if (impl_it != m_implementations.end()) {
+                auto regentry_it = impl_it->second.find(implementation_name);
+                if (regentry_it != impl_it->second.end()) {
+                    auto result = regentry_it->second->create(resource);
+                    result->m_impl_regentry = regentry_it->second;
+                    return result;
+                }
+            }
+
+            auto alias_it = m_aliases.find(component_name);
+            if (alias_it != m_aliases.end()) {
+                std::string alias_implementation_name(implementation_name);
+                auto        implname_it =
+                    alias_it->second.find(alias_implementation_name);
+                if (implname_it != alias_it->second.end()) {
+                    return create(resource,
+                                  component_name,
+                                  implname_it->second);
+                }
+            }
+
+            return std::shared_ptr<component_base>();
+        }
+
     private:
         void update_pending_implementations(std::string_view component_name)
         {
@@ -279,6 +314,16 @@ namespace mge {
                            std::string_view implementation_name)
     {
         return s_component_registry->create(component_name,
+                                            implementation_name);
+    }
+
+    std::shared_ptr<component_base>
+    component_base::create(std::pmr::memory_resource* resource,
+                           std::string_view           component_name,
+                           std::string_view           implementation_name)
+    {
+        return s_component_registry->create(resource,
+                                            component_name,
                                             implementation_name);
     }
 

@@ -9,6 +9,10 @@ SET(mgecore_sources
     configuration.cpp
     parameter.cpp
     trace_topic.cpp
+    trace_dump_info_provider.cpp
+    parameter_dump_info_provider.cpp
+    component_dump_info_provider.cpp
+    module_dump_info_provider.cpp
     trace_sink.cpp
     memory_trace_sink.cpp
     stream_trace_sink.cpp
@@ -25,6 +29,7 @@ SET(mgecore_sources
     system_error.cpp
     module.cpp
     crash.cpp
+    dump.cpp
     thread.cpp
     thread_group.cpp
     semantic_version.cpp
@@ -44,6 +49,7 @@ SET(mgecore_sources
     closure.cpp
     package.cpp
     program_options.cpp
+    markdown_document.cpp
 )
 
 SET(mgecore_headers
@@ -80,6 +86,8 @@ SET(mgecore_headers
     system_error.hpp
     module.hpp
     crash.hpp
+    dump.hpp
+    dump_info_provider.hpp
     copy_struct.hpp
     zero_memory.hpp
     thread.hpp
@@ -104,6 +112,8 @@ SET(mgecore_headers
     closure.hpp
     package.hpp
     program_options.hpp
+    markdown.hpp
+    markdown_document.hpp
 )
 
 MGE_LIBRARY(
@@ -118,7 +128,6 @@ TARGET_LINK_LIBRARIES(mgecore
     boost-all 
     linenoise 
     nlohmann_json::nlohmann_json
-    jemalloc::jemalloc
     fmt::fmt
     PkgConfig::LIBFFI
 )

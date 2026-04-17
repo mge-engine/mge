@@ -2,7 +2,7 @@
 # Copyright (c) 2017-2026 by Alexander Schroeder
 # All rights reserved.
 
-ADD_LIBRARY(mge_glfw STATIC
+ADD_LIBRARY(mge_glfw SHARED
     monitor.cpp
     window.cpp)
 
