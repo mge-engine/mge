@@ -253,18 +253,6 @@ namespace mge::dx11 {
                     D3D11_SHADER_TYPE_DESC variable_type_desc = {};
                     variable_type->GetDesc(&variable_type_desc);
 
-                    MGE_DEBUG_TRACE(DX11,
-                                    "cbuffer '{}' var[{}]: name='{}', "
-                                    "type={}, class={}, members={}, "
-                                    "size={}",
-                                    cbuffer_desc.Name,
-                                    j,
-                                    variable_desc.Name,
-                                    variable_type_desc.Type,
-                                    variable_type_desc.Class,
-                                    variable_type_desc.Members,
-                                    variable_desc.Size);
-
                     if (variable_type_desc.Type == D3D_SVT_VOID &&
                         variable_type_desc.Class == D3D_SVC_STRUCT) {
                         // Struct type: iterate members
@@ -276,14 +264,6 @@ namespace mge::dx11 {
                                 variable_type->GetMemberTypeName(k);
                             D3D11_SHADER_TYPE_DESC member_type_desc = {};
                             member_type->GetDesc(&member_type_desc);
-                            MGE_DEBUG_TRACE(DX11,
-                                            "  struct member[{}]: name='{}', "
-                                            "type={}, class={}",
-                                            k,
-                                            member_name ? member_name
-                                                        : "(null)",
-                                            member_type_desc.Type,
-                                            member_type_desc.Class);
                             mge::program::uniform u;
                             u.name = member_name ? member_name : "";
                             u.type = data_type_of_variable(member_type_desc);
