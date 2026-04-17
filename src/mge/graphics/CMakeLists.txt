@@ -36,7 +36,6 @@ SET(mgegraphics_sources
     frame_debugger.cpp
     uniform_block.cpp
     uniform.cpp
-    shader_compiler.cpp
 )
 
 SET(mgegraphics_headers
@@ -89,7 +88,6 @@ SET(mgegraphics_headers
     std140.hpp
     uniform_block.hpp
     uniform.hpp
-    shader_compiler.hpp
 )
 
 MGE_LIBRARY(
