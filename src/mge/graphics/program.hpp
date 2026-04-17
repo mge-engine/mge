@@ -10,6 +10,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/shader_handle.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
@@ -97,6 +98,18 @@ namespace mge {
         void link();
 
         /**
+         * Compile and link the program from source code.
+         * This method is especially used for SLANG shaders, which contain
+         * multiple stages of the graphics pipeline in a single source
+         * file.
+         *
+         * @param language shader language to use for compilation
+         * @param source shader source code
+         */
+        void compile_and_link(const shader_language& language,
+                              const std::string_view source);
+
+        /**
          * Return whether this program needs the link step.
          *
          * @return @c true if program needs to be linked
@@ -146,6 +159,8 @@ namespace mge {
 
         virtual void on_link() = 0;
         virtual void on_set_shader(shader* shader) = 0;
+        virtual void on_compile_and_link(const shader_language& language,
+                                         const std::string_view source);
     };
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,

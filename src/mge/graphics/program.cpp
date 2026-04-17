@@ -51,6 +51,25 @@ namespace mge {
         }
     }
 
+    void program::compile_and_link(const shader_language& language,
+                                   const std::string_view source)
+    {
+        context().prepare_frame([this, language, source]() {
+            this->on_compile_and_link(language, source);
+            this->m_needs_link = false;
+            set_ready(true);
+        });
+    }
+
+    void program::on_compile_and_link(const shader_language& language,
+                                      const std::string_view source)
+    {
+        MGE_THROW(mge::not_implemented)
+            << "Unsupported program compilation and linking for shader "
+               "language: "
+            << language;
+    }
+
     const program::attribute_list& program::attributes() const
     {
         assert_linked();
