@@ -13,7 +13,8 @@ SET(mge_opengl_module_SOURCES
     error.cpp
     common.cpp
     program.cpp
-    texture.cpp)
+    texture.cpp
+    slang_compiler.cpp)
 
 ADD_LIBRARY(mge_module_opengl SHARED
             ${mge_opengl_module_SOURCES})
@@ -26,6 +27,7 @@ TARGET_LINK_LIBRARIES(mge_module_opengl
     mgeapplication
     mgeinput
     gl3w
+    slang::slang
     ${OPENGL_LIBRARIES})
 ELSE()
 TARGET_LINK_LIBRARIES(mge_module_opengl
@@ -35,6 +37,7 @@ TARGET_LINK_LIBRARIES(mge_module_opengl
     mgeapplication
     mgeinput
     gl3w
+    slang::slang
     ${OPENGL_LIBRARIES})
 ENDIF()
 ADD_SUBDIRECTORY(test)

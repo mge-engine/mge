@@ -26,6 +26,12 @@ namespace mge::opengl {
         }
     }
 
+    void shader::compile_immediate(std::string_view source)
+    {
+        on_compile(source);
+        m_initialized = true;
+    }
+
     void shader::on_compile(std::string_view source)
     {
         if (source.empty()) {

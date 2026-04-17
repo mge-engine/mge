@@ -2,9 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "opengl.hpp"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -21,6 +22,8 @@ namespace mge::opengl {
 
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;
+        void on_compile_and_link(const mge::shader_language& language,
+                                 const std::string_view      source) override;
 
         GLuint program_name() const noexcept
         {
@@ -49,9 +52,10 @@ namespace mge::opengl {
         void cache_block_indices();
         void collect_attributes();
 
-        GLuint                        m_program;
-        std::map<std::string, GLuint> m_block_indices;
-        std::vector<sampler_info>     m_sampler_locations;
+        GLuint                          m_program;
+        std::map<std::string, GLuint>   m_block_indices;
+        std::vector<sampler_info>       m_sampler_locations;
+        std::vector<mge::shader_handle> m_owned_shaders;
     };
 
     inline GLuint gl_program(const mge::program& p)

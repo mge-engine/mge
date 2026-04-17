@@ -18,6 +18,8 @@ namespace mge::opengl {
             return m_shader;
         }
 
+        void compile_immediate(std::string_view source);
+
     protected:
         void on_compile(std::string_view source) override;
         void on_set_code(const mge::buffer& code) override;

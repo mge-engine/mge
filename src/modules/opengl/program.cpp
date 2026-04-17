@@ -6,6 +6,7 @@
 #include "mge/graphics/data_type.hpp" // Include data_type.hpp
 #include "render_context.hpp"
 #include "shader.hpp"
+#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
@@ -814,4 +815,34 @@ namespace mge::opengl {
         }
         return GL_INVALID_INDEX;
     }
+
+    void program::on_compile_and_link(const mge::shader_language& language,
+                                      const std::string_view      source)
+    {
+        if (language.name() != "slang") {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported shader language: " << language;
+        }
+
+        auto compile_result = slang_compile(source);
+
+        if (compile_result.shader_code.empty()) {
+            MGE_THROW(mge::illegal_state)
+                << "Slang compilation produced no shader stages";
+        }
+
+        m_owned_shaders.clear();
+
+        for (auto& [type, glsl_source] : compile_result.shader_code) {
+            auto  handle = context().create_shader(type);
+            auto* gl_s = static_cast<shader*>(handle.get());
+            gl_s->compile_immediate(glsl_source);
+            glAttachShader(m_program, gl_s->gl_shader());
+            CHECK_OPENGL_ERROR(glAttachShader);
+            m_owned_shaders.push_back(handle);
+        }
+
+        on_link();
+    }
+
 } // namespace mge::opengl
