@@ -14,10 +14,11 @@ SET(mge_dx12_module_SOURCES
     texture.cpp
     vertex_buffer.cpp
     index_buffer.cpp
+    slang_compiler.cpp
 )
 
 ADD_LIBRARY(mge_module_dx12 MODULE
     ${mge_dx12_module_SOURCES})
 
-TARGET_LINK_LIBRARIES(mge_module_dx12 mgecore mgegraphics mge_win32 mgeapplication dx12)
+TARGET_LINK_LIBRARIES(mge_module_dx12 mgecore mgegraphics mge_win32 mgeapplication dx12 slang::slang)
 ADD_SUBDIRECTORY(test)

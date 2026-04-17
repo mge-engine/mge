@@ -5,12 +5,14 @@
 #include "dx12_fwd.hpp"
 #include "mge/core/to_underlying.hpp"
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "shader.hpp"
 
 #include <array>
 #include <unordered_set>
+#include <vector>
 
 namespace mge::dx12 {
 
@@ -43,6 +45,8 @@ namespace mge::dx12 {
     protected:
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;
+        void on_compile_and_link(const mge::shader_language& language,
+                                 const std::string_view      source) override;
 
     private:
         void collect_information();
@@ -55,6 +59,7 @@ namespace mge::dx12 {
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
                                           m_shader_buffers{};
         mge::com_ptr<ID3D12RootSignature> m_root_signature;
+        std::vector<mge::shader_handle>   m_owned_shaders;
     };
 
     inline program& dx12_program(mge::program& p)
