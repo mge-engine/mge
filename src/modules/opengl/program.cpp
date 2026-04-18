@@ -4,9 +4,9 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/graphics/data_type.hpp" // Include data_type.hpp
+#include "mge/slang/slang_compiler.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
-#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
@@ -824,7 +824,8 @@ namespace mge::opengl {
                 << "Unsupported shader language: " << language;
         }
 
-        auto compile_result = slang_compile(source);
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::GLSL, source);
 
         if (compile_result.shader_code.empty()) {
             MGE_THROW(mge::illegal_state)
@@ -833,10 +834,10 @@ namespace mge::opengl {
 
         m_owned_shaders.clear();
 
-        for (auto& [type, glsl_source] : compile_result.shader_code) {
+        for (auto& [type, shader_code] : compile_result.shader_code) {
             auto  handle = context().create_shader(type);
             auto* gl_s = static_cast<shader*>(handle.get());
-            gl_s->compile_immediate(glsl_source);
+            gl_s->compile_immediate(shader_code.text_code);
             glAttachShader(m_program, gl_s->gl_shader());
             CHECK_OPENGL_ERROR(glAttachShader);
             m_owned_shaders.push_back(handle);
