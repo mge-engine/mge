@@ -633,16 +633,47 @@ namespace mge {
         target_desc.format = slang_format;
         target_desc.profile = global_session->findProfile(profile_name);
 
+        std::vector<slang::CompilerOptionEntry> options;
+
         slang::CompilerOptionEntry no_mangle_option = {};
         no_mangle_option.name = slang::CompilerOptionName::NoMangle;
         no_mangle_option.value.kind = slang::CompilerOptionValueKind::Int;
         no_mangle_option.value.intValue0 = 1;
+        options.push_back(no_mangle_option);
+
+        if (target == slang_target::SPIRV || target == slang_target::GLSL) {
+            // Apply Vulkan binding shifts so HLSL register classes
+            // map to non-overlapping Vulkan binding ranges:
+            //   b# -> binding 0..15
+            //   t# -> binding 16..31
+            //   s# -> binding 32..47
+            //   u# -> binding 48..63
+            struct
+            {
+                int kind;
+                int shift;
+            } shifts[] = {
+                {SLANG_PARAMETER_CATEGORY_CONSTANT_BUFFER, 0},
+                {SLANG_PARAMETER_CATEGORY_SHADER_RESOURCE, 16},
+                {SLANG_PARAMETER_CATEGORY_SAMPLER_STATE, 32},
+                {SLANG_PARAMETER_CATEGORY_UNORDERED_ACCESS, 48},
+            };
+            for (const auto& s : shifts) {
+                slang::CompilerOptionEntry entry = {};
+                entry.name = slang::CompilerOptionName::VulkanBindShiftAll;
+                entry.value.kind = slang::CompilerOptionValueKind::Int;
+                entry.value.intValue0 = s.kind;
+                entry.value.intValue1 = s.shift;
+                options.push_back(entry);
+            }
+        }
 
         slang::SessionDesc session_desc = {};
         session_desc.targets = &target_desc;
         session_desc.targetCount = 1;
-        session_desc.compilerOptionEntries = &no_mangle_option;
-        session_desc.compilerOptionEntryCount = 1;
+        session_desc.compilerOptionEntries = options.data();
+        session_desc.compilerOptionEntryCount =
+            static_cast<uint32_t>(options.size());
         session_desc.defaultMatrixLayoutMode = SLANG_MATRIX_LAYOUT_COLUMN_MAJOR;
 
         Slang::ComPtr<slang::ISession> session;
