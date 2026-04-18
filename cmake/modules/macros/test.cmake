@@ -205,21 +205,11 @@ FUNCTION(MGE_CAPTURE_TEST)
 
     IF(NOT MGE_NO_SCREENSHOT_TARGETS)
         FOREACH(RENDER_SYSTEM ${USED_RENDER_SYSTEMS})
-            SET(_SCREENSHOT_CONFIG_NAME "screenshot_${MGE_CAPTURE_TEST_TARGET}_${RENDER_SYSTEM}")
-            FILE(WRITE "${_BINARY_DIR}/${_SCREENSHOT_CONFIG_NAME}.json"
-                "{\n"
-                "    \"application\": {\n"
-                "        \"stop_at_cycle\": 11\n"
-                "    },\n"
-                "    \"graphics\": {\n"
-                "        \"screenshot_at_frame\": 10,\n"
-                "        \"render_system\": \"${RENDER_SYSTEM}\"\n"
-                "    }\n"
-                "}\n"
-            )
             ADD_CUSTOM_TARGET(${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}-screenshot
                 COMMAND "$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
-                    --config-name "${_SCREENSHOT_CONFIG_NAME}"
+                    -c "application.stop_at_cycle=11"
+                    -c "graphics.screenshot_at_frame=10"
+                    -c "graphics.render_system=${RENDER_SYSTEM}"
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
             ADD_DEPENDENCIES(${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}-screenshot
