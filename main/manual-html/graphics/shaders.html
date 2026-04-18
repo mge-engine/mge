@@ -472,6 +472,20 @@ render pipeline on a graphics card.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program16compile_and_linkERK15shader_languageKNSt11string_viewE">
+<span id="_CPPv3N3mge7program16compile_and_linkERK15shader_languageKNSt11string_viewE"></span><span id="_CPPv2N3mge7program16compile_and_linkERK15shader_languageKNSt11string_viewE"></span><span id="mge::program::compile_and_link__shader_languageCR.std::string_viewC"></span><span class="target" id="classmge_1_1program_1ac934cebdd4cd276cc087100f5815accc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compile_and_link</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15shader_languageE" title="mge::shader_language"><span class="n"><span class="pre">shader_language</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">language</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">source</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7program16compile_and_linkERK15shader_languageKNSt11string_viewE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compile and link the program from source code. This method is especially used for SLANG shaders, which contain multiple stages of the graphics pipeline in a single source file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>language</strong> – shader language to use for compilation </p></li>
+<li><p><strong>source</strong> – shader source code </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7program10needs_linkEv">
 <span id="_CPPv3NK3mge7program10needs_linkEv"></span><span id="_CPPv2NK3mge7program10needs_linkEv"></span><span id="mge::program::needs_linkC"></span><span class="target" id="classmge_1_1program_1a66a996aac1c10110403c55d9bb7c5427"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">needs_link</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge7program10needs_linkEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether this program needs the link step.</p>
@@ -516,6 +530,17 @@ render pipeline on a graphics card.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program16sampler_bindingsEv">
+<span id="_CPPv3NK3mge7program16sampler_bindingsEv"></span><span id="_CPPv2NK3mge7program16sampler_bindingsEv"></span><span id="mge::program::sampler_bindingsC"></span><span class="target" id="classmge_1_1program_1aa785a6646605c1243cc4bf6dbdeb4a1f"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">sampler_binding_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">sampler_bindings</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program16sampler_bindingsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get sampler bindings. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sampler bindings </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7program20create_uniform_blockERKNSt6stringE">
 <span id="_CPPv3NK3mge7program20create_uniform_blockERKNSt6stringE"></span><span id="_CPPv2NK3mge7program20create_uniform_blockERKNSt6stringE"></span><span id="mge::program::create_uniform_block__ssCRC"></span><span class="target" id="classmge_1_1program_1a169cddf7920ee0bf4a22203bda21f5c0"></span><a class="reference internal" href="buffers.html#_CPPv4N3mge13uniform_blockE" title="mge::uniform_block"><span class="n"><span class="pre">uniform_block</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_uniform_block</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block_name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program20create_uniform_blockERKNSt6stringE" title="Link to this definition"></a><br /></dt>
 <dd><p>Create a uniform block instance from one of this program’s uniform buffers. </p>
@@ -552,6 +577,27 @@ render pipeline on a graphics card.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge7program9attribute4sizeE">
 <span id="_CPPv3N3mge7program9attribute4sizeE"></span><span id="_CPPv2N3mge7program9attribute4sizeE"></span><span id="mge::program::attribute::size__uint8_t"></span><span class="target" id="structmge_1_1program_1_1attribute_1ac5d7c4950da5d44f5da4483b558a675c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program9attribute4sizeE" title="Link to this definition"></a><br /></dt>
 <dd><p>attribute size (array size) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program15sampler_bindingE">
+<span id="_CPPv3N3mge7program15sampler_bindingE"></span><span id="_CPPv2N3mge7program15sampler_bindingE"></span><span id="mge::program::sampler_binding"></span><span class="target" id="structmge_1_1program_1_1sampler__binding"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sampler_binding</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program15sampler_bindingE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sampler binding description. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program15sampler_binding4nameE">
+<span id="_CPPv3N3mge7program15sampler_binding4nameE"></span><span id="_CPPv2N3mge7program15sampler_binding4nameE"></span><span id="mge::program::sampler_binding::name__ss"></span><span class="target" id="structmge_1_1program_1_1sampler__binding_1aeeea1e6fe23600d1184b339b423cadbd"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program15sampler_binding4nameE" title="Link to this definition"></a><br /></dt>
+<dd><p>sampler name </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program15sampler_binding7bindingE">
+<span id="_CPPv3N3mge7program15sampler_binding7bindingE"></span><span id="_CPPv2N3mge7program15sampler_binding7bindingE"></span><span id="mge::program::sampler_binding::binding__uint32_t"></span><span class="target" id="structmge_1_1program_1_1sampler__binding_1abf18a60043fad28a09a9b86198f14dcd"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binding</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program15sampler_binding7bindingE" title="Link to this definition"></a><br /></dt>
+<dd><p>binding point/location </p>
 </dd></dl>
 
 </div>
