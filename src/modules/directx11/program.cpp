@@ -4,9 +4,9 @@
 #include "program.hpp"
 #include "mge/core/to_underlying.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/slang/slang_compiler.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
-#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX11);
@@ -95,7 +95,8 @@ namespace mge::dx11 {
                 << "Unsupported shader language: " << language;
         }
 
-        auto compile_result = slang_compile(source);
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::DXBC, source);
 
         if (compile_result.shader_code.empty()) {
             MGE_THROW(mge::illegal_state)
@@ -104,10 +105,10 @@ namespace mge::dx11 {
 
         m_owned_shaders.clear();
 
-        for (auto& [type, code] : compile_result.shader_code) {
+        for (auto& [type, shader_code] : compile_result.shader_code) {
             auto  handle = context().create_shader(type);
             auto* dx11_s = static_cast<shader*>(handle.get());
-            dx11_s->set_code_immediate(code);
+            dx11_s->set_code_immediate(shader_code.binary_code);
             m_shaders[mge::to_underlying(type)] = dx11_s;
             m_owned_shaders.push_back(handle);
         }

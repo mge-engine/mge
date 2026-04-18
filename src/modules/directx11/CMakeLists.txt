@@ -13,7 +13,6 @@ SET(mge_dx11_module_SOURCES
     program.cpp
     input_layout_cache.cpp
     texture.cpp
-    slang_compiler.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE
@@ -25,8 +24,8 @@ TARGET_LINK_LIBRARIES(mge_module_dx11
     mgeapplication
     
     mge_win32 
+    mge_slang
     
-    dx11
-    slang::slang)
+    dx11)
 ADD_SUBDIRECTORY(test)
   
