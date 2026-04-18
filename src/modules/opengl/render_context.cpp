@@ -444,8 +444,8 @@ namespace mge::opengl {
             glBindTexture(GL_TEXTURE_2D, gl_tex.texture_name());
             CHECK_OPENGL_ERROR(glBindTexture);
             // Set all sampler uniforms to texture unit 0
-            for (const auto& sampler : gl_program.sampler_locations()) {
-                glUniform1i(sampler.location, 0);
+            for (const auto& sampler : gl_program.sampler_bindings()) {
+                glUniform1i(static_cast<GLint>(sampler.binding), 0);
                 CHECK_OPENGL_ERROR(glUniform1i);
             }
         }

@@ -81,6 +81,15 @@ namespace mge {
         using uniform_block_metadata_list =
             small_vector<uniform_block_metadata, 3>;
 
+        /// Sampler binding description
+        struct sampler_binding
+        {
+            std::string name;    //!< sampler name
+            uint32_t    binding; //!< binding point/location
+        };
+
+        using sampler_binding_list = small_vector<sampler_binding, 2>;
+
         virtual ~program();
 
         /**
@@ -140,6 +149,12 @@ namespace mge {
         const uniform_block_metadata_list& uniform_buffers() const;
 
         /**
+         * Get sampler bindings.
+         * @return sampler bindings
+         */
+        const sampler_binding_list& sampler_bindings() const;
+
+        /**
          * @brief Create a uniform block instance from one of this program's
          * uniform buffers.
          *
@@ -153,6 +168,7 @@ namespace mge {
         attribute_list              m_attributes;
         uniform_list                m_uniforms;
         uniform_block_metadata_list m_uniform_block_metadata;
+        sampler_binding_list        m_sampler_bindings;
 
     private:
         void assert_linked() const;

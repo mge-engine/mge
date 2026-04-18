@@ -302,7 +302,7 @@ namespace mge::opengl {
     void program::collect_uniforms()
     {
         m_uniforms.clear();
-        m_sampler_locations.clear();
+        m_sampler_bindings.clear();
 
         GLint num_uniforms = 0;
         glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &num_uniforms);
@@ -359,7 +359,8 @@ namespace mge::opengl {
 
             // Collect sampler uniforms separately
             if (is_sampler_type(gl_type)) {
-                m_sampler_locations.push_back({name, location});
+                m_sampler_bindings.push_back(
+                    {name, static_cast<uint32_t>(location)});
                 MGE_DEBUG_TRACE(OPENGL,
                                 "Sampler uniform: '{}', location: {}",
                                 name,

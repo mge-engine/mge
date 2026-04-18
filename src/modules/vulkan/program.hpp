@@ -31,19 +31,6 @@ namespace mge::vulkan {
             return m_descriptor_set_layout;
         }
 
-        struct sampler_binding
-        {
-            std::string name;
-            uint32_t    binding;
-        };
-
-        using sampler_binding_list = std::vector<sampler_binding>;
-
-        const sampler_binding_list& sampler_bindings() const noexcept
-        {
-            return m_sampler_bindings;
-        }
-
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(mge::shader* shader) override;
@@ -59,7 +46,6 @@ namespace mge::vulkan {
         std::vector<mge::vulkan::shader*> m_shaders;
         VkPipelineLayout                  m_pipeline_layout{VK_NULL_HANDLE};
         VkDescriptorSetLayout           m_descriptor_set_layout{VK_NULL_HANDLE};
-        sampler_binding_list            m_sampler_bindings;
         std::vector<mge::shader_handle> m_owned_shaders;
     };
 } // namespace mge::vulkan

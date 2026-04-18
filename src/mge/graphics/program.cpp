@@ -88,6 +88,12 @@ namespace mge {
         return m_uniform_block_metadata;
     }
 
+    const program::sampler_binding_list& program::sampler_bindings() const
+    {
+        assert_linked();
+        return m_sampler_bindings;
+    }
+
     uniform_block
     program::create_uniform_block(const std::string& block_name) const
     {
