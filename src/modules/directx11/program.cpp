@@ -113,7 +113,31 @@ namespace mge::dx11 {
             m_owned_shaders.push_back(handle);
         }
 
-        collect_information();
+        // Use SLANG reflection instead of D3D reflection
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
+        // Use per-shader D3D reflection for stage buffer tracking
+        for (auto& buffers : m_shader_buffers) {
+            buffers.clear();
+        }
+        attribute_list              dummy_attrs;
+        uniform_list                dummy_uniforms;
+        uniform_block_metadata_list dummy_blocks;
+        for (const auto& s : m_shaders) {
+            if (s) {
+                dx11::shader* dx11_s = static_cast<dx11::shader*>(s);
+                dx11_s->reflect(dummy_attrs, dummy_uniforms, dummy_blocks);
+                auto index = mge::to_underlying(s->type());
+                for (const auto& ub : m_uniform_block_metadata) {
+                    if (dx11_s->uses_uniform_buffer(ub.name)) {
+                        m_shader_buffers[index].insert(ub.name);
+                    }
+                }
+            }
+        }
     }
 
 } // namespace mge::dx11

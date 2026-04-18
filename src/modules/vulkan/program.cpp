@@ -148,10 +148,6 @@ namespace mge::vulkan {
         m_owned_shaders.clear();
         m_shaders.clear();
         m_shader_stage_create_infos.clear();
-        m_uniform_block_metadata.clear();
-        m_attributes.clear();
-        m_uniforms.clear();
-        m_sampler_bindings.clear();
 
         for (auto& [type, shader_code] : compile_result.shader_code) {
             auto  handle = context().create_shader(type);
@@ -162,17 +158,16 @@ namespace mge::vulkan {
             m_owned_shaders.push_back(handle);
         }
 
-        std::vector<std::pair<std::string, uint32_t>> sampler_bindings_raw;
         for (const auto& s : m_shaders) {
             m_shader_stage_create_infos.push_back(s->pipeline_stage_info());
-            s->reflect(m_attributes,
-                       m_uniforms,
-                       m_uniform_block_metadata,
-                       sampler_bindings_raw);
         }
-        for (const auto& [name, binding] : sampler_bindings_raw) {
-            m_sampler_bindings.push_back({name, binding});
-        }
+
+        // Use SLANG reflection instead of SPIRV-Reflect
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
         create_pipeline_layout();
     }
 

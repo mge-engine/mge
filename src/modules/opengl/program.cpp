@@ -795,15 +795,35 @@ namespace mge::opengl {
 
     void program::cache_block_indices()
     {
+        // When using SLANG, the GLSL block names may differ from SLANG
+        // reflection names. Enumerate GL blocks and match by binding index.
+        GLint num_blocks = 0;
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_BLOCKS, &num_blocks);
+        CHECK_OPENGL_ERROR(glGetProgramiv);
+
+        // Build a map from binding → GL block index
+        std::map<GLint, GLuint> binding_to_gl_index;
+        for (GLint i = 0; i < num_blocks; ++i) {
+            GLint binding = 0;
+            glGetActiveUniformBlockiv(m_program,
+                                      static_cast<GLuint>(i),
+                                      GL_UNIFORM_BLOCK_BINDING,
+                                      &binding);
+            CHECK_OPENGL_ERROR(glGetActiveUniformBlockiv);
+            binding_to_gl_index[binding] = static_cast<GLuint>(i);
+            MGE_DEBUG_TRACE(OPENGL, "GL block {} has binding {}", i, binding);
+        }
+
+        // Map SLANG names to GL indices via binding
         for (const auto& ub : m_uniform_block_metadata) {
-            GLuint index = glGetUniformBlockIndex(m_program, ub.name.c_str());
-            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
-            if (index != GL_INVALID_INDEX) {
-                m_block_indices[ub.name] = index;
+            auto it = binding_to_gl_index.find(static_cast<GLint>(ub.location));
+            if (it != binding_to_gl_index.end()) {
+                m_block_indices[ub.name] = it->second;
                 MGE_DEBUG_TRACE(OPENGL,
-                                "Cached block index {} for '{}'",
-                                index,
-                                ub.name);
+                                "Cached block index {} for '{}' (binding {})",
+                                it->second,
+                                ub.name,
+                                ub.location);
             }
         }
     }
@@ -844,7 +864,25 @@ namespace mge::opengl {
             m_owned_shaders.push_back(handle);
         }
 
-        on_link();
+        // Link the GL program
+        glLinkProgram(m_program);
+        CHECK_OPENGL_ERROR(glLinkProgram);
+        GLint link_status = GL_FALSE;
+        dump_info_log();
+        glGetProgramiv(m_program, GL_LINK_STATUS, &link_status);
+        if (!link_status) {
+            MGE_THROW(error) << "glLinkProgram failed";
+        }
+
+        // Use SLANG reflection instead of GL reflection
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
+        // Still need GL block indices for uniform buffer binding
+        m_block_indices.clear();
+        cache_block_indices();
     }
 
 } // namespace mge::opengl

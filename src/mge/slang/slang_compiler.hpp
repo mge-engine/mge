@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/buffer.hpp"
+#include "mge/graphics/program.hpp"
 #include "mge/graphics/shader_type.hpp"
 
 #include <map>
@@ -29,6 +30,11 @@ namespace mge {
     struct slang_compile_result
     {
         std::map<mge::shader_type, slang_shader_code> shader_code;
+
+        program::attribute_list              attributes;
+        program::uniform_list                uniforms;
+        program::uniform_block_metadata_list uniform_buffers;
+        program::sampler_binding_list        sampler_bindings;
     };
 
     slang_compile_result slang_compile(slang_target     target,

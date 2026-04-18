@@ -215,7 +215,23 @@ namespace mge::dx12 {
             m_owned_shaders.push_back(handle);
         }
 
-        collect_information();
+        // Use SLANG reflection instead of D3D reflection
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
+        // Mark all uniform buffers as used by all present stages
+        for (auto& buffers : m_shader_buffers) {
+            buffers.clear();
+        }
+        for (const auto& [type, shader_code] : compile_result.shader_code) {
+            auto index = mge::to_underlying(type);
+            for (const auto& ub : m_uniform_block_metadata) {
+                m_shader_buffers[index].insert(ub.name);
+            }
+        }
+
         create_root_signature();
     }
 
