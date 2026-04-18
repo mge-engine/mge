@@ -9,6 +9,7 @@ SET(mgegraphics_sources
     monitor.cpp
     render_context.cpp
     shader_language.cpp
+    shader_profile.cpp
     context_object.cpp
     color_names.cpp
     rgb_color.cpp
@@ -50,6 +51,7 @@ SET(mgegraphics_headers
     render_context.hpp
     shader_type.hpp
     shader_language.hpp
+    shader_profile.hpp
     context_object.hpp
     rgb_color.hpp
     rgba_color.hpp
@@ -98,5 +100,5 @@ MGE_LIBRARY(
     ${mgegraphics_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgegraphics mgemath mgecore mgeinput boost-all)
+TARGET_LINK_LIBRARIES(mgegraphics mgemath mgecore mgeinput mgeasset boost-all)
 ADD_SUBDIRECTORY(test)

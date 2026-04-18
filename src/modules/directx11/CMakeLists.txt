@@ -24,6 +24,7 @@ TARGET_LINK_LIBRARIES(mge_module_dx11
     mgeapplication
     
     mge_win32 
+    mge_slang
     
     dx11)
 ADD_SUBDIRECTORY(test)

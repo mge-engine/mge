@@ -3,8 +3,13 @@
 // All rights reserved.
 #include "program.hpp"
 #include "error.hpp"
+#include "mge/slang/slang_compiler.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(VULKAN);
+}
 
 namespace mge::vulkan {
 
@@ -123,4 +128,47 @@ namespace mge::vulkan {
                 nullptr,
                 &m_pipeline_layout));
     }
+
+    void program::on_compile_and_link(const mge::shader_language& language,
+                                      const std::string_view      source)
+    {
+        if (language.name() != "slang") {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported shader language: " << language;
+        }
+
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::SPIRV, source);
+
+        if (compile_result.shader_code.empty()) {
+            MGE_THROW(mge::illegal_state)
+                << "Slang compilation produced no shader stages";
+        }
+
+        m_owned_shaders.clear();
+        m_shaders.clear();
+        m_shader_stage_create_infos.clear();
+
+        for (auto& [type, shader_code] : compile_result.shader_code) {
+            auto  handle = context().create_shader(type);
+            auto* vk_s = static_cast<shader*>(handle.get());
+            vk_s->set_code_immediate(shader_code.binary_code,
+                                     shader_code.entry_point_name);
+            m_shaders.push_back(vk_s);
+            m_owned_shaders.push_back(handle);
+        }
+
+        for (const auto& s : m_shaders) {
+            m_shader_stage_create_infos.push_back(s->pipeline_stage_info());
+        }
+
+        // Use SLANG reflection instead of SPIRV-Reflect
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
+        create_pipeline_layout();
+    }
+
 } // namespace mge::vulkan

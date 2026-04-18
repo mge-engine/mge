@@ -6,18 +6,7 @@
  * @file rotating_triangle.cpp
  * @brief Sample demonstrating uniform buffer usage with animated rotation.
  *
- * This sample showcases the following MGE features:
- * - Creating and managing uniform blocks from program metadata
- * - Global uniform auto-wiring (angle uniform automatically syncs to block)
- * - Passing uniform data (rotation angle) from CPU to GPU
- * - Computing transformations in vertex shaders
- * - Separating update logic from rendering
- * - Cross-platform shader support (GLSL/HLSL)
- *
- * The triangle rotates at 45 degrees per second around the Z-axis.
- * Rotation is computed in the vertex shader using the angle uniform.
- * The angle uniform is declared globally and automatically synchronized
- * to any uniform block containing an 'angle' member.
+ * Uses Slang shaders where supported, falls back to GLSL for OpenGL.
  */
 
 #include "mge/application/application.hpp"
@@ -30,6 +19,7 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/uniform.hpp"
 #include "mge/graphics/uniform_block.hpp"
@@ -42,6 +32,44 @@ namespace mge {
 }
 
 namespace mge {
+
+    static const char* slang_shader_source = R"slang(
+        cbuffer TransformBlock : register(b0)
+        {
+            float angle;
+        };
+
+        struct VertexInput
+        {
+            float3 position : POSITION;
+        };
+
+        struct VertexOutput
+        {
+            float4 position : SV_POSITION;
+        };
+
+        [shader("vertex")]
+        VertexOutput vertexMain(VertexInput input)
+        {
+            float rad = radians(angle);
+            float c = cos(rad);
+            float s = sin(rad);
+            float2x2 rotation = float2x2(c, s, -s, c);
+            float2 rotated = mul(rotation, input.position.xy);
+
+            VertexOutput output;
+            output.position = float4(rotated, input.position.z, 1.0);
+            return output;
+        }
+
+        [shader("fragment")]
+        float4 fragmentMain() : SV_TARGET
+        {
+            return float4(1.0f, 1.0f, 0.0f, 1.0f);
+        }
+    )slang";
+
     class rotating_triangle : public application
     {
     public:
@@ -96,20 +124,9 @@ namespace mge {
                             "Screenshot saved to /temp/screenshot.png");
         }
 
-        /**
-         * @brief Update rotation angle and uniform block.
-         *
-         * Called each frame via update_listener. Updates the rotation angle
-         * and passes it to the shader via the uniform block. Only updates
-         * uniform data - does not perform any rendering.
-         *
-         * @param cycle Frame number
-         * @param delta Time since last frame in seconds
-         */
         void update_rotation(uint64_t cycle, double delta)
         {
             if (m_initialized) {
-                // Create uniform block on first frame after linking completes
                 if (!m_uniform_block && !m_program->needs_link()) {
                     const auto& uniform_buffers = m_program->uniform_buffers();
                     if (!uniform_buffers.empty()) {
@@ -127,29 +144,15 @@ namespace mge {
                 }
 
                 if (m_uniform_block) {
-                    // Update rotation angle (45 degrees per second)
-                    m_rotation_angle += static_cast<float>(
-                        45.0 * delta); // 45 degrees per second
+                    m_rotation_angle += static_cast<float>(45.0 * delta);
                     if (m_rotation_angle >= 360.0f) {
                         m_rotation_angle -= 360.0f;
                     }
-
-                    // Update global uniform - automatically syncs to uniform
-                    // block The global uniform system matches by name and
-                    // copies the value to any uniform block member named
-                    // "angle" before each draw
                     m_angle_uniform = m_rotation_angle;
                 }
             }
         }
 
-        /**
-         * @brief Render the rotating triangle.
-         *
-         * Called each frame via redraw_listener. Sets up render pass,
-         * binds uniform block, submits draw commands, and presents frame.
-         * Separated from update logic to follow proper update/render pattern.
-         */
         void draw()
         {
             if (m_initialized && m_uniform_block) {
@@ -177,17 +180,24 @@ namespace mge {
         {
             MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Initializing objects");
 
-            auto pixel_shader =
-                m_window->render_context().create_shader(shader_type::FRAGMENT);
-            auto vertex_shader =
-                m_window->render_context().create_shader(shader_type::VERTEX);
             m_program = m_window->render_context().create_program();
-            MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
-                            "render system is {}",
-                            m_render_system->implementation_name());
 
-            if (m_render_system->implementation_name() ==
-                "mge::opengl::render_system") {
+            const auto& caps = m_render_system->system_capabilities();
+            bool        slang_supported = false;
+            for (const auto& lang : caps.shader_languages()) {
+                if (lang.name() == "slang") {
+                    slang_supported = true;
+                    break;
+                }
+            }
+
+            if (slang_supported) {
+                mge::shader_language slang{"slang",
+                                           mge::semantic_version(1, 0)};
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
+                                "Compiling and linking Slang program");
+                m_program->compile_and_link(slang, slang_shader_source);
+            } else {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
@@ -213,86 +223,22 @@ namespace mge {
                         color = vec3(1,1,0);
                     }
                 )shader";
+
+                auto pixel_shader = m_window->render_context().create_shader(
+                    shader_type::FRAGMENT);
+                auto vertex_shader = m_window->render_context().create_shader(
+                    shader_type::VERTEX);
                 MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
                 pixel_shader->compile(fragment_shader_glsl);
                 MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");
                 vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled");
-            } else if (m_render_system->implementation_name() ==
-                       "mge::vulkan::render_system") {
-                const char* vertex_shader_glsl = R"shader(
-                    #version 450 core
-                    layout(location = 0) in vec3 vertexPosition;
-
-                    layout(std140, binding = 0) uniform TransformBlock {
-                        float angle;
-                    };
-
-                    void main() {
-                      float rad = radians(angle);
-                      float c = cos(rad);
-                      float s = sin(rad);
-                      mat2 rotation = mat2(c, s, -s, c);
-                      vec2 rotated = rotation * vertexPosition.xy;
-                      gl_Position = vec4(rotated, vertexPosition.z, 1.0);
-                    }
-                )shader";
-
-                const char* fragment_shader_glsl = R"shader(
-                    #version 450 core
-                    layout(location = 0) out vec3 color;
-                    void main() {
-                        color = vec3(1,1,0);
-                    }
-                )shader";
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_glsl);
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");
-                vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled");
-            } else if (m_render_system->implementation_name() ==
-                           "mge::dx11::render_system" ||
-                       m_render_system->implementation_name() ==
-                           "mge::dx12::render_system") {
-
-                const char* vertex_shader_hlsl = R"shader(
-                    cbuffer TransformBlock : register(b0)
-                    {
-                        float angle;
-                    };
-
-                    float4 main( float3 pos : POSITION ) : SV_POSITION
-                    {
-                        float rad = radians(angle);
-                        float c = cos(rad);
-                        float s = sin(rad);
-                        float2x2 rotation = float2x2(c, s, -s, c);
-                        float2 rotated = mul(rotation, pos.xy);
-                        return float4(rotated, pos.z, 1.0);
-                    }
-                )shader";
-
-                const char* fragment_shader_hlsl = R"shader(
-                    float4 main() : SV_TARGET
-                    {
-                        return float4(1.0f, 1.0f, 0.0f, 1.0f);
-                    }
-                )shader";
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_hlsl);
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");
-                vertex_shader->compile(vertex_shader_hlsl);
-                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled");
-            } else {
-                MGE_ERROR_TRACE(ROTATING_TRIANGLE,
-                                "Cannot create shaders for {} render system",
-                                m_render_system->implementation_name());
-                MGE_THROW(mge::illegal_state) << "Cannot create shaders";
+                m_program->set_shader(pixel_shader);
+                m_program->set_shader(vertex_shader);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Linking program");
+                m_program->link();
             }
-            m_program->set_shader(pixel_shader);
-            m_program->set_shader(vertex_shader);
-            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Linking program");
-            m_program->link();
+
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled and linked");
 
             float triangle_coords[] = {
                 0.0f,
@@ -332,7 +278,7 @@ namespace mge {
         index_buffer_handle            m_indices;
         std::unique_ptr<uniform_block> m_uniform_block;
         float                          m_rotation_angle{0.0f};
-        uniform<float> m_angle_uniform{"angle"}; // Global uniform
+        uniform<float>                 m_angle_uniform{"angle"};
     };
 
     MGE_REGISTER_IMPLEMENTATION(rotating_triangle,

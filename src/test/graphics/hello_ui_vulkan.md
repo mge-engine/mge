@@ -152,6 +152,12 @@
   - pDescriptorWrites: [{sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, pNext: null, dstSet: VkDescriptorSet #2, dstBinding: 1, dstArrayElement: 0, descriptorCount: 1, descriptorType: VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, pImageInfo: [{sampler: VkSampler #1, imageView: VkImageView #1, imageLayout: VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL}], pBufferInfo: [], pTexelBufferView: []}]
   - copyCount: 0
   - pDescriptorCopies: []
+- Call: vkUpdateDescriptorSets
+  - device: VkDevice #1
+  - writeCount: 1
+  - pDescriptorWrites: [{sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, pNext: null, dstSet: VkDescriptorSet #2, dstBinding: 2, dstArrayElement: 0, descriptorCount: 1, descriptorType: VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, pImageInfo: [{sampler: VkSampler #1, imageView: VkImageView #1, imageLayout: VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL}], pBufferInfo: [], pTexelBufferView: []}]
+  - copyCount: 0
+  - pDescriptorCopies: []
 - Call: vkCmdBindDescriptorSets
   - commandBuffer: VkCommandBuffer #2
   - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS

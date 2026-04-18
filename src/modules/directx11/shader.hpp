@@ -64,6 +64,12 @@ namespace mge::dx11 {
 
         bool uses_uniform_buffer(const std::string& name) const;
 
+        void set_code_immediate(const mge::buffer& code)
+        {
+            on_set_code(code);
+            m_initialized = true;
+        }
+
     private:
         std::string profile() const;
         void        create_shader();

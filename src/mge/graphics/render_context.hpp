@@ -272,6 +272,12 @@ namespace mge {
         virtual image_ref screenshot() = 0;
 
         /**
+         * @brief Set the frame number at which a screenshot is taken.
+         * @param frame frame number (1-based, 0 disables)
+         */
+        void set_screenshot_at_frame(uint64_t frame);
+
+        /**
          * @brief Get the index of this render context.
          * @return context index
          */
@@ -397,8 +403,13 @@ namespace mge {
         std::vector<mge::pass>               m_passes;
         std::unique_ptr<mge::command_buffer> m_command_buffer;
 
-        bool m_record_frames{false};
-        bool m_first_frame{true};
+        bool     m_record_frames{false};
+        bool     m_first_frame{true};
+        uint64_t m_frame_counter{1};
+        uint64_t m_screenshot_at_frame{0};
+
+    private:
+        void save_screenshot(const image_ref& img, uint64_t frame);
     };
 
 } // namespace mge

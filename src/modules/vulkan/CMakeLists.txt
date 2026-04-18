@@ -71,6 +71,7 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     glslang::glslang-default-resource-limits
     glslang::SPIRV
     unofficial::spirv-reflect
+    mge_slang
 #    glslang::SPVRemapper
 )
  

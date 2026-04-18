@@ -149,6 +149,16 @@ namespace mge::vulkan {
         create_shader_module();
     }
 
+    void shader::set_code_immediate(const mge::buffer& code,
+                                    const std::string& entry_point_name)
+    {
+        m_code = code;
+        create_shader_module();
+        m_main_function = entry_point_name;
+        m_pipeline_stage_info.pName = m_main_function.c_str();
+        m_initialized = true;
+    }
+
     VkShaderStageFlagBits shader::vk_stage_flags() const
     {
         switch (type()) {

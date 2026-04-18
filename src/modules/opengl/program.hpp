@@ -2,9 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "opengl.hpp"
+
 #include <map>
 #include <string>
 #include <vector>
@@ -29,17 +30,6 @@ namespace mge::opengl {
 
         GLuint block_index(const std::string& name) const;
 
-        struct sampler_info
-        {
-            std::string name;
-            GLint       location;
-        };
-
-        const std::vector<sampler_info>& sampler_locations() const noexcept
-        {
-            return m_sampler_locations;
-        }
-
     private:
         void dump_info_log();
         void collect_uniforms();
@@ -51,7 +41,6 @@ namespace mge::opengl {
 
         GLuint                        m_program;
         std::map<std::string, GLuint> m_block_indices;
-        std::vector<sampler_info>     m_sampler_locations;
     };
 
     inline GLuint gl_program(const mge::program& p)

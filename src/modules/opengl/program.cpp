@@ -301,7 +301,7 @@ namespace mge::opengl {
     void program::collect_uniforms()
     {
         m_uniforms.clear();
-        m_sampler_locations.clear();
+        m_sampler_bindings.clear();
 
         GLint num_uniforms = 0;
         glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &num_uniforms);
@@ -358,7 +358,8 @@ namespace mge::opengl {
 
             // Collect sampler uniforms separately
             if (is_sampler_type(gl_type)) {
-                m_sampler_locations.push_back({name, location});
+                m_sampler_bindings.push_back(
+                    {name, static_cast<uint32_t>(location)});
                 MGE_DEBUG_TRACE(OPENGL,
                                 "Sampler uniform: '{}', location: {}",
                                 name,
@@ -793,15 +794,32 @@ namespace mge::opengl {
 
     void program::cache_block_indices()
     {
+        GLint num_blocks = 0;
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_BLOCKS, &num_blocks);
+        CHECK_OPENGL_ERROR(glGetProgramiv);
+
+        // Build a map from binding → GL block index
+        std::map<GLint, GLuint> binding_to_gl_index;
+        for (GLint i = 0; i < num_blocks; ++i) {
+            GLint binding = 0;
+            glGetActiveUniformBlockiv(m_program,
+                                      static_cast<GLuint>(i),
+                                      GL_UNIFORM_BLOCK_BINDING,
+                                      &binding);
+            CHECK_OPENGL_ERROR(glGetActiveUniformBlockiv);
+            binding_to_gl_index[binding] = static_cast<GLuint>(i);
+            MGE_DEBUG_TRACE(OPENGL, "GL block {} has binding {}", i, binding);
+        }
+
         for (const auto& ub : m_uniform_block_metadata) {
-            GLuint index = glGetUniformBlockIndex(m_program, ub.name.c_str());
-            CHECK_OPENGL_ERROR(glGetUniformBlockIndex);
-            if (index != GL_INVALID_INDEX) {
-                m_block_indices[ub.name] = index;
+            auto it = binding_to_gl_index.find(static_cast<GLint>(ub.location));
+            if (it != binding_to_gl_index.end()) {
+                m_block_indices[ub.name] = it->second;
                 MGE_DEBUG_TRACE(OPENGL,
-                                "Cached block index {} for '{}'",
-                                index,
-                                ub.name);
+                                "Cached block index {} for '{}' (binding {})",
+                                it->second,
+                                ub.name,
+                                ub.location);
             }
         }
     }
@@ -814,4 +832,5 @@ namespace mge::opengl {
         }
         return GL_INVALID_INDEX;
     }
+
 } // namespace mge::opengl

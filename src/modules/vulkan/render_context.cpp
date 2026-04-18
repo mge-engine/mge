@@ -15,6 +15,8 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+#include "mge/graphics/memory_image.hpp"
+
 
 #ifdef MGE_OS_MACOSX
 #    include <GLFW/glfw3.h>
@@ -1111,7 +1113,157 @@ namespace mge::vulkan {
 
     mge::image_ref render_context::screenshot()
     {
-        return mge::image_ref();
+        VkImage      swap_image = m_swap_chain_images[m_current_image_index];
+        uint32_t     w = m_extent.width;
+        uint32_t     h = m_extent.height;
+        VkDeviceSize image_size = static_cast<VkDeviceSize>(w) * h * 4;
+
+        // Create staging buffer
+        VkBufferCreateInfo buffer_info = {};
+        buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        buffer_info.size = image_size;
+        buffer_info.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+        buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        VmaAllocationCreateInfo alloc_info = {};
+        alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
+        alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+        VkBuffer          staging_buffer = VK_NULL_HANDLE;
+        VmaAllocation     staging_alloc = VK_NULL_HANDLE;
+        VmaAllocationInfo staging_alloc_info = {};
+        CHECK_VK_CALL(vmaCreateBuffer(m_allocator,
+                                      &buffer_info,
+                                      &alloc_info,
+                                      &staging_buffer,
+                                      &staging_alloc,
+                                      &staging_alloc_info));
+
+        // Allocate temporary command buffer
+        VkCommandBufferAllocateInfo cmd_alloc_info = {};
+        cmd_alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        cmd_alloc_info.commandPool = m_graphics_command_pool;
+        cmd_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        cmd_alloc_info.commandBufferCount = 1;
+
+        VkCommandBuffer cmd = VK_NULL_HANDLE;
+        CHECK_VK_CALL(
+            vkAllocateCommandBuffers(m_device, &cmd_alloc_info, &cmd));
+
+        VkCommandBufferBeginInfo begin_info = {};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+        CHECK_VK_CALL(vkBeginCommandBuffer(cmd, &begin_info));
+
+        // Transition swap chain image: PRESENT_SRC -> TRANSFER_SRC
+        VkImageMemoryBarrier to_transfer = {};
+        to_transfer.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        to_transfer.srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+        to_transfer.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        to_transfer.oldLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        to_transfer.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        to_transfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_transfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_transfer.image = swap_image;
+        to_transfer.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        to_transfer.subresourceRange.levelCount = 1;
+        to_transfer.subresourceRange.layerCount = 1;
+        vkCmdPipelineBarrier(cmd,
+                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                             VK_PIPELINE_STAGE_TRANSFER_BIT,
+                             0,
+                             0,
+                             nullptr,
+                             0,
+                             nullptr,
+                             1,
+                             &to_transfer);
+
+        // Copy image to buffer
+        VkBufferImageCopy region = {};
+        region.bufferOffset = 0;
+        region.bufferRowLength = 0;
+        region.bufferImageHeight = 0;
+        region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        region.imageSubresource.layerCount = 1;
+        region.imageOffset = {0, 0, 0};
+        region.imageExtent = {w, h, 1};
+        vkCmdCopyImageToBuffer(cmd,
+                               swap_image,
+                               VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                               staging_buffer,
+                               1,
+                               &region);
+
+        // Transition back: TRANSFER_SRC -> PRESENT_SRC
+        VkImageMemoryBarrier to_present = {};
+        to_present.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        to_present.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        to_present.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+        to_present.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        to_present.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        to_present.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_present.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_present.image = swap_image;
+        to_present.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        to_present.subresourceRange.levelCount = 1;
+        to_present.subresourceRange.layerCount = 1;
+        vkCmdPipelineBarrier(cmd,
+                             VK_PIPELINE_STAGE_TRANSFER_BIT,
+                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                             0,
+                             0,
+                             nullptr,
+                             0,
+                             nullptr,
+                             1,
+                             &to_present);
+
+        CHECK_VK_CALL(vkEndCommandBuffer(cmd));
+
+        // Submit and wait
+        VkFenceCreateInfo fence_info = {};
+        fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        VkFence fence = VK_NULL_HANDLE;
+        CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &fence));
+
+        VkSubmitInfo submit_info = {};
+        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submit_info.commandBufferCount = 1;
+        submit_info.pCommandBuffers = &cmd;
+        CHECK_VK_CALL(vkQueueSubmit(m_queue, 1, &submit_info, fence));
+        CHECK_VK_CALL(
+            vkWaitForFences(m_device, 1, &fence, VK_TRUE, UINT64_MAX));
+
+        // Read data
+        mge::image_format fmt(mge::image_format::data_format::RGBA,
+                              mge::data_type::UINT8);
+        auto img = std::make_shared<mge::memory_image>(fmt, mge::extent(w, h));
+
+        auto* dst = static_cast<uint8_t*>(img->data());
+        auto* src = static_cast<const uint8_t*>(staging_alloc_info.pMappedData);
+        uint32_t row_size = w * 4;
+
+        bool need_swizzle =
+            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_UNORM ||
+            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_SRGB;
+
+        for (uint32_t y = 0; y < h; ++y) {
+            memcpy(dst + y * row_size, src + y * row_size, row_size);
+            if (need_swizzle) {
+                uint8_t* row = dst + y * row_size;
+                for (uint32_t x = 0; x < w; ++x) {
+                    std::swap(row[x * 4], row[x * 4 + 2]);
+                }
+            }
+        }
+
+        // Cleanup
+        vkDestroyFence(m_device, fence, nullptr);
+        vkFreeCommandBuffers(m_device, m_graphics_command_pool, 1, &cmd);
+        vmaDestroyBuffer(m_allocator, staging_buffer, staging_alloc);
+
+        return img;
     }
 
     void render_context::bind_uniform_block(VkCommandBuffer command_buffer,

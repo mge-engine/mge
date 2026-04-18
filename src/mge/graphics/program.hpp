@@ -10,6 +10,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/shader_handle.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
@@ -80,6 +81,15 @@ namespace mge {
         using uniform_block_metadata_list =
             small_vector<uniform_block_metadata, 3>;
 
+        /// Sampler binding description
+        struct sampler_binding
+        {
+            std::string name;    //!< sampler name
+            uint32_t    binding; //!< binding point/location
+        };
+
+        using sampler_binding_list = small_vector<sampler_binding, 2>;
+
         virtual ~program();
 
         /**
@@ -95,6 +105,18 @@ namespace mge {
          * shader programs.
          */
         void link();
+
+        /**
+         * Compile and link the program from source code.
+         * This method is especially used for SLANG shaders, which contain
+         * multiple stages of the graphics pipeline in a single source
+         * file.
+         *
+         * @param language shader language to use for compilation
+         * @param source shader source code
+         */
+        void compile_and_link(const shader_language& language,
+                              const std::string_view source);
 
         /**
          * Return whether this program needs the link step.
@@ -127,6 +149,12 @@ namespace mge {
         const uniform_block_metadata_list& uniform_buffers() const;
 
         /**
+         * Get sampler bindings.
+         * @return sampler bindings
+         */
+        const sampler_binding_list& sampler_bindings() const;
+
+        /**
          * @brief Create a uniform block instance from one of this program's
          * uniform buffers.
          *
@@ -140,12 +168,15 @@ namespace mge {
         attribute_list              m_attributes;
         uniform_list                m_uniforms;
         uniform_block_metadata_list m_uniform_block_metadata;
+        sampler_binding_list        m_sampler_bindings;
 
     private:
         void assert_linked() const;
 
         virtual void on_link() = 0;
         virtual void on_set_shader(shader* shader) = 0;
+        virtual void on_compile_and_link(const shader_language& language,
+                                         const std::string_view source);
     };
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,

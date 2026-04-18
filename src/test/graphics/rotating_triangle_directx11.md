@@ -71,7 +71,7 @@
   - MapType: D3D11_MAP_WRITE_DISCARD
   - MapFlags: 0
   - Byte offset to start of written data: 0
-  - Byte offset to end of written data: 64
+  - Byte offset to end of written data: 16
   - MapWrittenData: _ignored_
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1
@@ -150,7 +150,7 @@
   - MapType: D3D11_MAP_WRITE_DISCARD
   - MapFlags: 0
   - Byte offset to start of written data: 0
-  - Byte offset to end of written data: 64
+  - Byte offset to end of written data: 16
   - MapWrittenData: _ignored_
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1
@@ -229,7 +229,7 @@
   - MapType: D3D11_MAP_WRITE_DISCARD
   - MapFlags: 0
   - Byte offset to start of written data: 0
-  - Byte offset to end of written data: 64
+  - Byte offset to end of written data: 16
   - MapWrittenData: _ignored_
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1
@@ -308,7 +308,7 @@
   - MapType: D3D11_MAP_WRITE_DISCARD
   - MapFlags: 0
   - Byte offset to start of written data: 0
-  - Byte offset to end of written data: 64
+  - Byte offset to end of written data: 16
   - MapWrittenData: _ignored_
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1

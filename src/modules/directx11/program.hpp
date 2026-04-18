@@ -5,11 +5,13 @@
 #include "dx11_fwd.hpp"
 #include "mge/core/to_underlying.hpp"
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "shader.hpp"
 
 #include <array>
 #include <unordered_set>
+#include <vector>
 
 namespace mge::dx11 {
 
@@ -32,6 +34,8 @@ namespace mge::dx11 {
     protected:
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;
+        void on_compile_and_link(const mge::shader_language& language,
+                                 const std::string_view      source) override;
 
     private:
         void collect_information();
@@ -41,7 +45,8 @@ namespace mge::dx11 {
             m_shaders{};
         std::array<std::unordered_set<std::string>,
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
-            m_shader_buffers{};
+                                        m_shader_buffers{};
+        std::vector<mge::shader_handle> m_owned_shaders;
     };
 
 } // namespace mge::dx11

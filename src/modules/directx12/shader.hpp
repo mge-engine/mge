@@ -43,6 +43,12 @@ namespace mge::dx12 {
             mge::program::uniform_list&                uniforms,
             mge::program::uniform_block_metadata_list& uniform_buffers) const;
 
+        void set_code_immediate(const mge::buffer& code)
+        {
+            on_set_code(code);
+            m_initialized = true;
+        }
+
     private:
         std::string profile() const;
         void        create_input_layout();

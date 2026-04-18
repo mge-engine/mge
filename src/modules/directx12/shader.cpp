@@ -87,9 +87,9 @@ namespace mge::dx12 {
 
         ID3D12ShaderReflection* shader_reflection = nullptr;
         HRESULT                 rc = D3DReflect(m_code->GetBufferPointer(),
-                                m_code->GetBufferSize(),
-                                IID_ID3D12ShaderReflection,
-                                (void**)&shader_reflection);
+                                                m_code->GetBufferSize(),
+                                                IID_ID3D12ShaderReflection,
+                                                (void**)&shader_reflection);
         CHECK_HRESULT(rc, , D3DReflect);
 
         on_leave delete_shader_reflection([&]() {
@@ -223,9 +223,9 @@ namespace mge::dx12 {
 
         ID3D12ShaderReflection* shader_reflection = nullptr;
         HRESULT                 rc = D3DReflect(m_code->GetBufferPointer(),
-                                m_code->GetBufferSize(),
-                                IID_ID3D12ShaderReflection,
-                                (void**)&shader_reflection);
+                                                m_code->GetBufferSize(),
+                                                IID_ID3D12ShaderReflection,
+                                                (void**)&shader_reflection);
         CHECK_HRESULT(rc, , D3DReflect);
 
         on_leave delete_shader_reflection([&]() {
@@ -267,15 +267,37 @@ namespace mge::dx12 {
                         cbuffer->GetVariableByIndex(j);
                     D3D12_SHADER_VARIABLE_DESC variable_desc = {};
                     variable->GetDesc(&variable_desc);
-                    mge::program::uniform u;
-                    u.name = variable_desc.Name;
                     ID3D12ShaderReflectionType* variable_type =
                         variable->GetType();
                     D3D12_SHADER_TYPE_DESC variable_type_desc = {};
                     variable_type->GetDesc(&variable_type_desc);
-                    u.type = data_type_of_variable(variable_type_desc);
-                    u.array_size = variable_desc.Size;
-                    uniform_block_metadata.uniforms.push_back(u);
+
+                    if (variable_type_desc.Type == D3D_SVT_VOID &&
+                        variable_type_desc.Class == D3D_SVC_STRUCT) {
+                        // Struct type: iterate members
+                        for (uint32_t k = 0; k < variable_type_desc.Members;
+                             ++k) {
+                            ID3D12ShaderReflectionType* member_type =
+                                variable_type->GetMemberTypeByIndex(k);
+                            const char* member_name =
+                                variable_type->GetMemberTypeName(k);
+                            D3D12_SHADER_TYPE_DESC member_type_desc = {};
+                            member_type->GetDesc(&member_type_desc);
+                            mge::program::uniform u;
+                            u.name = member_name ? member_name : "";
+                            u.type = data_type_of_variable(member_type_desc);
+                            u.array_size = member_type_desc.Elements > 0
+                                               ? member_type_desc.Elements
+                                               : 1;
+                            uniform_block_metadata.uniforms.push_back(u);
+                        }
+                    } else {
+                        mge::program::uniform u;
+                        u.name = variable_desc.Name;
+                        u.type = data_type_of_variable(variable_type_desc);
+                        u.array_size = variable_desc.Size;
+                        uniform_block_metadata.uniforms.push_back(u);
+                    }
                 }
 
                 if (uniform_block_metadata.name == "$Globals") {

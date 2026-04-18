@@ -40,4 +40,10 @@ namespace mge {
             return false;
         }
     }
+
+    std::ostream& operator<<(std::ostream& os, const shader_language& lang)
+    {
+        os << lang.name() << " " << lang.version();
+        return os;
+    }
 } // namespace mge

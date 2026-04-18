@@ -23,6 +23,9 @@ namespace mge::vulkan {
                      std::vector<std::pair<std::string, uint32_t>>&
                          sampler_bindings) const;
 
+        void set_code_immediate(const mge::buffer& code,
+                                const std::string& entry_point_name);
+
     protected:
         virtual void on_compile(std::string_view code) override;
         virtual void on_set_code(const mge::buffer& code) override;

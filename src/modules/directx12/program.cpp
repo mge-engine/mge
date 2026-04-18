@@ -4,6 +4,7 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/core/to_underlying.hpp"
+#include "mge/slang/slang_compiler.hpp"
 #include "mge/win32/com_scope.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
@@ -186,6 +187,52 @@ namespace mge::dx12 {
         auto index = mge::to_underlying(mge::shader_type::FRAGMENT);
         return m_shader_buffers[index].find(name) !=
                m_shader_buffers[index].end();
+    }
+
+    void program::on_compile_and_link(const mge::shader_language& language,
+                                      const std::string_view      source)
+    {
+        if (language.name() != "slang") {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported shader language: " << language;
+        }
+
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::DXBC, source);
+
+        if (compile_result.shader_code.empty()) {
+            MGE_THROW(mge::illegal_state)
+                << "Slang compilation produced no shader stages";
+        }
+
+        m_owned_shaders.clear();
+
+        for (auto& [type, shader_code] : compile_result.shader_code) {
+            auto  handle = context().create_shader(type);
+            auto* dx12_s = static_cast<shader*>(handle.get());
+            dx12_s->set_code_immediate(shader_code.binary_code);
+            m_shaders[mge::to_underlying(type)] = dx12_s;
+            m_owned_shaders.push_back(handle);
+        }
+
+        // Use SLANG reflection instead of D3D reflection
+        m_attributes = std::move(compile_result.attributes);
+        m_uniforms = std::move(compile_result.uniforms);
+        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
+        m_sampler_bindings = std::move(compile_result.sampler_bindings);
+
+        // Mark all uniform buffers as used by all present stages
+        for (auto& buffers : m_shader_buffers) {
+            buffers.clear();
+        }
+        for (const auto& [type, shader_code] : compile_result.shader_code) {
+            auto index = mge::to_underlying(type);
+            for (const auto& ub : m_uniform_block_metadata) {
+                m_shader_buffers[index].insert(ub.name);
+            }
+        }
+
+        create_root_signature();
     }
 
 } // namespace mge::dx12
