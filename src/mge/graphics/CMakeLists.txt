@@ -100,5 +100,5 @@ MGE_LIBRARY(
     ${mgegraphics_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgegraphics mgemath mgecore mgeinput boost-all)
+TARGET_LINK_LIBRARIES(mgegraphics mgemath mgecore mgeinput mgeasset boost-all)
 ADD_SUBDIRECTORY(test)

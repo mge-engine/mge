@@ -16,31 +16,31 @@ ENDIF()
 IF (HEADLESS_ENVIRONMENT)
     MESSAGE("-- Headless environment detected, skipping capture tests")
     SET(MGE_NO_CAPTURE_TESTS TRUE)
+    SET(MGE_NO_SCREENSHOT_TARGETS TRUE)
 ELSE()
-    IF (NOT RENDERDOCCMD_EXECUTABLE)
-        MESSAGE("-- RenderDoc command line tool not found, skipping capture tests")
-        SET(MGE_NO_CAPTURE_TESTS TRUE)
-    ELSE()
-        IF(OpenGL_FOUND)
-            SET(MGE_RENDER_SYSTEMS "opengl")
-        ENDIF()
-        IF(Vulkan_FOUND)
-            LIST(APPEND MGE_RENDER_SYSTEMS "vulkan")
-        ENDIF()
-
-        IF(DirectX_D3D11_FOUND)
-            LIST(APPEND MGE_RENDER_SYSTEMS "directx11")
-        ENDIF()
-
-        IF(DirectX_D3D12_FOUND)
-            LIST(APPEND MGE_RENDER_SYSTEMS "directx12")
-        ENDIF()
+    IF(OpenGL_FOUND)
+        SET(MGE_RENDER_SYSTEMS "opengl")
+    ENDIF()
+    IF(Vulkan_FOUND)
+        LIST(APPEND MGE_RENDER_SYSTEMS "vulkan")
+    ENDIF()
+    IF(DirectX_D3D11_FOUND)
+        LIST(APPEND MGE_RENDER_SYSTEMS "directx11")
+    ENDIF()
+    IF(DirectX_D3D12_FOUND)
+        LIST(APPEND MGE_RENDER_SYSTEMS "directx12")
     ENDIF()
     IF (NOT MGE_RENDER_SYSTEMS)
         MESSAGE("-- No render systems available, skipping capture tests")
-        SET(MGE_NO_CAPTURE_TESTS TRUE)  
+        SET(MGE_NO_CAPTURE_TESTS TRUE)
+        SET(MGE_NO_SCREENSHOT_TARGETS TRUE)
+    ELSE()
+        MESSAGE("-- Available render systems for tests: ${MGE_RENDER_SYSTEMS}")
+        IF (NOT RENDERDOCCMD_EXECUTABLE)
+            MESSAGE("-- RenderDoc command line tool not found, skipping capture tests")
+            SET(MGE_NO_CAPTURE_TESTS TRUE)
+        ENDIF()
     ENDIF()
-    MESSAGE("-- Available render systems for tests: ${MGE_RENDER_SYSTEMS}")
 ENDIF()
 
 FUNCTION(MGE_TEST)
@@ -201,5 +201,31 @@ FUNCTION(MGE_CAPTURE_TEST)
         ENDFOREACH()
     ELSE()
         MESSAGE("-- Skipping capture tests for target ${MGE_CAPTURE_TEST_TARGET}")
+    ENDIF()
+
+    IF(NOT MGE_NO_SCREENSHOT_TARGETS)
+        FOREACH(RENDER_SYSTEM ${USED_RENDER_SYSTEMS})
+            SET(_SCREENSHOT_CONFIG_NAME "screenshot_${MGE_CAPTURE_TEST_TARGET}_${RENDER_SYSTEM}")
+            FILE(WRITE "${_BINARY_DIR}/${_SCREENSHOT_CONFIG_NAME}.json"
+                "{\n"
+                "    \"application\": {\n"
+                "        \"stop_at_cycle\": 11\n"
+                "    },\n"
+                "    \"graphics\": {\n"
+                "        \"screenshot_at_frame\": 10,\n"
+                "        \"render_system\": \"${RENDER_SYSTEM}\"\n"
+                "    }\n"
+                "}\n"
+            )
+            ADD_CUSTOM_TARGET(${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}-screenshot
+                COMMAND "$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
+                    --config-name "${_SCREENSHOT_CONFIG_NAME}"
+                WORKING_DIRECTORY "${_BINARY_DIR}"
+            )
+            ADD_DEPENDENCIES(${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}-screenshot
+                ${MGE_CAPTURE_TEST_TARGET})
+        ENDFOREACH()
+    ELSE()
+        MESSAGE("-- Skipping screenshot targets for target ${MGE_CAPTURE_TEST_TARGET}")
     ENDIF()
 ENDFUNCTION()

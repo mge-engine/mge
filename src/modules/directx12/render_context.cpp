@@ -4,13 +4,14 @@
 #include "render_context.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "message_id.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/parameter.hpp"
-#include "message_id.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+#include "mge/graphics/memory_image.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -18,6 +19,7 @@
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
+
 
 namespace mge {
     MGE_USE_TRACE(DX12);
@@ -1120,7 +1122,119 @@ namespace mge::dx12 {
 
     mge::image_ref render_context::screenshot()
     {
-        return mge::image_ref();
+        auto  backbuffer_index = m_swap_chain->GetCurrentBackBufferIndex();
+        auto* backbuffer = m_backbuffers[backbuffer_index].Get();
+        auto  bb_desc = backbuffer->GetDesc();
+
+        D3D12_PLACED_SUBRESOURCE_FOOTPRINT footprint;
+        uint32_t                           num_rows;
+        uint64_t                           row_size;
+        uint64_t                           total_size;
+        m_device->GetCopyableFootprints(&bb_desc,
+                                        0,
+                                        1,
+                                        0,
+                                        &footprint,
+                                        &num_rows,
+                                        &row_size,
+                                        &total_size);
+
+        D3D12_HEAP_PROPERTIES readback_heap = {};
+        readback_heap.Type = D3D12_HEAP_TYPE_READBACK;
+
+        D3D12_RESOURCE_DESC readback_desc = {};
+        readback_desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        readback_desc.Width = total_size;
+        readback_desc.Height = 1;
+        readback_desc.DepthOrArraySize = 1;
+        readback_desc.MipLevels = 1;
+        readback_desc.SampleDesc.Count = 1;
+        readback_desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+        mge::com_ptr<ID3D12Resource> readback_buffer;
+        auto                         rc =
+            m_device->CreateCommittedResource(&readback_heap,
+                                              D3D12_HEAP_FLAG_NONE,
+                                              &readback_desc,
+                                              D3D12_RESOURCE_STATE_COPY_DEST,
+                                              nullptr,
+                                              IID_PPV_ARGS(&readback_buffer));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommittedResource);
+
+        {
+            std::lock_guard<mge::mutex> lock(m_data_lock);
+
+            D3D12_RESOURCE_BARRIER to_copy_src = {};
+            to_copy_src.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+            to_copy_src.Transition.pResource = backbuffer;
+            to_copy_src.Transition.StateBefore =
+                D3D12_RESOURCE_STATE_RENDER_TARGET;
+            to_copy_src.Transition.StateAfter =
+                D3D12_RESOURCE_STATE_COPY_SOURCE;
+            to_copy_src.Transition.Subresource =
+                D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+            m_xfer_command_list->ResourceBarrier(1, &to_copy_src);
+
+            D3D12_TEXTURE_COPY_LOCATION dst_loc = {};
+            dst_loc.pResource = readback_buffer.Get();
+            dst_loc.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+            dst_loc.PlacedFootprint = footprint;
+
+            D3D12_TEXTURE_COPY_LOCATION src_loc = {};
+            src_loc.pResource = backbuffer;
+            src_loc.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+            src_loc.SubresourceIndex = 0;
+
+            m_xfer_command_list
+                ->CopyTextureRegion(&dst_loc, 0, 0, 0, &src_loc, nullptr);
+
+            D3D12_RESOURCE_BARRIER to_render_target = {};
+            to_render_target.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+            to_render_target.Transition.pResource = backbuffer;
+            to_render_target.Transition.StateBefore =
+                D3D12_RESOURCE_STATE_COPY_SOURCE;
+            to_render_target.Transition.StateAfter =
+                D3D12_RESOURCE_STATE_RENDER_TARGET;
+            to_render_target.Transition.Subresource =
+                D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+            m_xfer_command_list->ResourceBarrier(1, &to_render_target);
+
+            m_xfer_command_list->Close();
+            ID3D12CommandList* lists[] = {m_xfer_command_list.Get()};
+            m_command_queue->ExecuteCommandLists(1, lists);
+            wait_for_command_queue();
+
+            rc = m_xfer_command_allocator->Reset();
+            CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+            rc = m_xfer_command_list->Reset(m_xfer_command_allocator.Get(),
+                                            nullptr);
+            CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+        }
+
+        void*       mapped = nullptr;
+        D3D12_RANGE read_range = {0, static_cast<SIZE_T>(total_size)};
+        rc = readback_buffer->Map(0, &read_range, &mapped);
+        CHECK_HRESULT(rc, ID3D12Resource, Map);
+
+        mge::image_format fmt(mge::image_format::data_format::RGBA,
+                              mge::data_type::UINT8);
+        uint32_t          bb_width = static_cast<uint32_t>(bb_desc.Width);
+        uint32_t          bb_height = static_cast<uint32_t>(bb_desc.Height);
+        auto              img = std::make_shared<mge::memory_image>(
+            fmt,
+            mge::extent(bb_width, bb_height));
+        uint32_t    pixel_row_size = bb_width * 4;
+        auto*       dst = static_cast<uint8_t*>(img->data());
+        const auto* src = static_cast<const uint8_t*>(mapped);
+        for (uint32_t y = 0; y < bb_height; ++y) {
+            memcpy(dst + y * pixel_row_size,
+                   src + y * footprint.Footprint.RowPitch,
+                   pixel_row_size);
+        }
+
+        D3D12_RANGE written_range = {0, 0};
+        readback_buffer->Unmap(0, &written_range);
+        return img;
     }
 
     void render_context::on_frame_present()
@@ -1153,8 +1267,8 @@ namespace mge::dx12 {
 
     const mge::com_ptr<ID3D12PipelineState>&
     render_context::static_pipeline_state(
-        mge::dx12::program*                         program,
-        const mge::pipeline_state&                  state,
+        mge::dx12::program*                          program,
+        const mge::pipeline_state&                   state,
         const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout)
     {
         pipeline_state_key key =
@@ -1174,9 +1288,8 @@ namespace mge::dx12 {
         auto& ps = dx12_shader(*ps_ptr);
         auto  root_signature = program->root_signature();
         D3D12_GRAPHICS_PIPELINE_STATE_DESC pso_desc = {};
-        pso_desc.InputLayout = {
-            input_layout.data(),
-            static_cast<UINT>(input_layout.size())};
+        pso_desc.InputLayout = {input_layout.data(),
+                                static_cast<UINT>(input_layout.size())};
         pso_desc.pRootSignature = root_signature;
         pso_desc.VS = {vs.code()->GetBufferPointer(),
                        vs.code()->GetBufferSize()};

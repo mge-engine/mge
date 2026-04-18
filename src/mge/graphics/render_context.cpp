@@ -2,9 +2,14 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_context.hpp"
+#include "mge/asset/asset.hpp"
+#include "mge/asset/asset_source.hpp"
+#include "mge/asset/asset_type.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/mutex.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/core/properties.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
@@ -18,6 +23,12 @@
 
 namespace mge {
     extern parameter<bool> p_graphics_record_frames;
+
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(uint64_t,
+                                      graphics,
+                                      screenshot_at_frame,
+                                      "Frame number to capture screenshot",
+                                      0);
 
     class render_context_registry
     {
@@ -98,6 +109,8 @@ namespace mge {
         m_index = render_context_registry::instance->register_context(this);
 
         m_record_frames = MGE_PARAMETER(graphics, record_frames).get();
+        m_screenshot_at_frame =
+            MGE_PARAMETER(graphics, screenshot_at_frame).get();
 
         if (m_record_frames) {
             MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
@@ -160,8 +173,16 @@ namespace mge {
             }
         }
         if (rendered) {
+            if (m_screenshot_at_frame != 0 &&
+                m_frame_counter == m_screenshot_at_frame) {
+                auto img = screenshot();
+                if (img) {
+                    save_screenshot(img, m_frame_counter);
+                }
+            }
             on_frame_present();
         }
+        ++m_frame_counter;
     }
 
     void render_context::render(const mge::pass& p)
@@ -339,6 +360,37 @@ namespace mge {
     mge::rectangle render_context::default_scissor() const
     {
         return mge::rectangle{0, 0, m_extent.width, m_extent.height};
+    }
+
+    void render_context::set_screenshot_at_frame(uint64_t frame)
+    {
+        m_screenshot_at_frame = frame;
+    }
+
+    void render_context::save_screenshot(const image_ref& img, uint64_t frame)
+    {
+        try {
+            mge::properties p;
+            p.set("directory", ".");
+            mge::asset::mount("/screenshot",
+                              "file",
+                              mge::asset_source::access_mode::READ_WRITE,
+                              p);
+            auto        aliases = m_render_system.alias_names();
+            auto        comma_pos = aliases.find(',');
+            std::string render_system_name(comma_pos != std::string_view::npos
+                                               ? aliases.substr(0, comma_pos)
+                                               : aliases);
+            std::string filename = std::string(mge::executable_name()) + "-" +
+                                   render_system_name + "-" +
+                                   std::to_string(frame) + ".png";
+            mge::asset  img_asset(std::string("/screenshot/") + filename);
+            img_asset.store(mge::asset_type("image", "png"), img);
+            MGE_INFO_TRACE(GRAPHICS, "Screenshot saved to {}", filename);
+            mge::asset::umount("/screenshot");
+        } catch (const std::exception& e) {
+            MGE_INFO_TRACE(GRAPHICS, "Failed to save screenshot: {}", e.what());
+        }
     }
 
 } // namespace mge

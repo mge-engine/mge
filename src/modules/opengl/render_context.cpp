@@ -9,6 +9,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+#include "mge/graphics/memory_image.hpp"
 #include "mge/graphics/uniform_block.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -798,7 +799,37 @@ namespace mge::opengl {
 
     mge::image_ref render_context::screenshot()
     {
-        return image_ref();
+        uint32_t w = m_extent.width;
+        uint32_t h = m_extent.height;
+
+        mge::image_format fmt(mge::image_format::data_format::RGBA,
+                              mge::data_type::UINT8);
+        auto img = std::make_shared<mge::memory_image>(fmt, mge::extent(w, h));
+
+        glReadBuffer(GL_BACK);
+        CHECK_OPENGL_ERROR(glReadBuffer);
+        glReadPixels(0,
+                     0,
+                     static_cast<GLsizei>(w),
+                     static_cast<GLsizei>(h),
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     img->data());
+        CHECK_OPENGL_ERROR(glReadPixels);
+
+        // Flip vertically — OpenGL origin is bottom-left
+        uint32_t             row_size = w * 4;
+        auto*                data = static_cast<uint8_t*>(img->data());
+        std::vector<uint8_t> row(row_size);
+        for (uint32_t y = 0; y < h / 2; ++y) {
+            uint8_t* top = data + y * row_size;
+            uint8_t* bot = data + (h - 1 - y) * row_size;
+            memcpy(row.data(), top, row_size);
+            memcpy(top, bot, row_size);
+            memcpy(bot, row.data(), row_size);
+        }
+
+        return img;
     }
 
     void render_context::on_frame_present()
