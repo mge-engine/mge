@@ -22,8 +22,6 @@ namespace mge::opengl {
 
         void on_link() override;
         void on_set_shader(mge::shader* shader) override;
-        void on_compile_and_link(const mge::shader_language& language,
-                                 const std::string_view      source) override;
 
         GLuint program_name() const noexcept
         {
@@ -43,7 +41,6 @@ namespace mge::opengl {
 
         GLuint                          m_program;
         std::map<std::string, GLuint>   m_block_indices;
-        std::vector<mge::shader_handle> m_owned_shaders;
     };
 
     inline GLuint gl_program(const mge::program& p)

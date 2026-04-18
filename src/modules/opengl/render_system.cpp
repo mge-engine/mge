@@ -83,8 +83,6 @@ namespace mge {
                 dynamic_cast<render_context*>(&window->render_context());
 
             m_shader_languages.emplace_back(context->gl_info().shader_language);
-            m_shader_languages.emplace_back("slang",
-                                            mge::semantic_version(1, 0));
         }
 
         MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, opengl);

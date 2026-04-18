@@ -4,7 +4,6 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/graphics/data_type.hpp" // Include data_type.hpp
-#include "mge/slang/slang_compiler.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
 
@@ -795,8 +794,6 @@ namespace mge::opengl {
 
     void program::cache_block_indices()
     {
-        // When using SLANG, the GLSL block names may differ from SLANG
-        // reflection names. Enumerate GL blocks and match by binding index.
         GLint num_blocks = 0;
         glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_BLOCKS, &num_blocks);
         CHECK_OPENGL_ERROR(glGetProgramiv);
@@ -814,7 +811,6 @@ namespace mge::opengl {
             MGE_DEBUG_TRACE(OPENGL, "GL block {} has binding {}", i, binding);
         }
 
-        // Map SLANG names to GL indices via binding
         for (const auto& ub : m_uniform_block_metadata) {
             auto it = binding_to_gl_index.find(static_cast<GLint>(ub.location));
             if (it != binding_to_gl_index.end()) {
@@ -835,54 +831,6 @@ namespace mge::opengl {
             return it->second;
         }
         return GL_INVALID_INDEX;
-    }
-
-    void program::on_compile_and_link(const mge::shader_language& language,
-                                      const std::string_view      source)
-    {
-        if (language.name() != "slang") {
-            MGE_THROW(mge::illegal_argument)
-                << "Unsupported shader language: " << language;
-        }
-
-        auto compile_result =
-            mge::slang_compile(mge::slang_target::GLSL, source);
-
-        if (compile_result.shader_code.empty()) {
-            MGE_THROW(mge::illegal_state)
-                << "Slang compilation produced no shader stages";
-        }
-
-        m_owned_shaders.clear();
-
-        for (auto& [type, shader_code] : compile_result.shader_code) {
-            auto  handle = context().create_shader(type);
-            auto* gl_s = static_cast<shader*>(handle.get());
-            gl_s->compile_immediate(shader_code.text_code);
-            glAttachShader(m_program, gl_s->gl_shader());
-            CHECK_OPENGL_ERROR(glAttachShader);
-            m_owned_shaders.push_back(handle);
-        }
-
-        // Link the GL program
-        glLinkProgram(m_program);
-        CHECK_OPENGL_ERROR(glLinkProgram);
-        GLint link_status = GL_FALSE;
-        dump_info_log();
-        glGetProgramiv(m_program, GL_LINK_STATUS, &link_status);
-        if (!link_status) {
-            MGE_THROW(error) << "glLinkProgram failed";
-        }
-
-        // Use SLANG reflection instead of GL reflection
-        m_attributes = std::move(compile_result.attributes);
-        m_uniforms = std::move(compile_result.uniforms);
-        m_uniform_block_metadata = std::move(compile_result.uniform_buffers);
-        m_sampler_bindings = std::move(compile_result.sampler_bindings);
-
-        // Still need GL block indices for uniform buffer binding
-        m_block_indices.clear();
-        cache_block_indices();
     }
 
 } // namespace mge::opengl

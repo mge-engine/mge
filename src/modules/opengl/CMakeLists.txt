@@ -26,7 +26,6 @@ TARGET_LINK_LIBRARIES(mge_module_opengl
     mgeapplication
     mgeinput
     gl3w
-    mge_slang
     ${OPENGL_LIBRARIES})
 ELSE()
 TARGET_LINK_LIBRARIES(mge_module_opengl
@@ -36,7 +35,6 @@ TARGET_LINK_LIBRARIES(mge_module_opengl
     mgeapplication
     mgeinput
     gl3w
-    mge_slang
     ${OPENGL_LIBRARIES})
 ENDIF()
 ADD_SUBDIRECTORY(test)

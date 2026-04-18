@@ -4,12 +4,9 @@
 
 /**
  * @file rotating_triangle.cpp
- * @brief Sample demonstrating Slang shader compilation with
- * compile_and_link.
+ * @brief Sample demonstrating uniform buffer usage with animated rotation.
  *
- * Uses a single Slang source file compiled via
- * program::compile_and_link() instead of separate per-API shader
- * sources.
+ * Uses Slang shaders where supported, falls back to GLSL for OpenGL.
  */
 
 #include "mge/application/application.hpp"
@@ -21,6 +18,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/shader.hpp"
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/uniform.hpp"
@@ -30,7 +28,7 @@
 #include "mge/math/mat.hpp"
 
 namespace mge {
-    MGE_DEFINE_TRACE(rotating_triangle);
+    MGE_DEFINE_TRACE(ROTATING_TRIANGLE);
 }
 
 namespace mge {
@@ -79,7 +77,7 @@ namespace mge {
 
         void setup() override
         {
-            MGE_DEBUG_TRACE(rotating_triangle, "Setup rotating_triangle");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Setup rotating_triangle");
 
             mge::properties p;
             p.set("directory", "./assets");
@@ -118,11 +116,11 @@ namespace mge {
 
         void screenshot()
         {
-            MGE_DEBUG_TRACE(rotating_triangle, "Taking screenshot");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Taking screenshot");
             auto       img = m_window->render_context().screenshot();
             mge::asset img_asset("/temp/screenshot.png");
             img_asset.store(mge::asset_type("image", "png"), img);
-            MGE_DEBUG_TRACE(rotating_triangle,
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
                             "Screenshot saved to /temp/screenshot.png");
         }
 
@@ -132,13 +130,13 @@ namespace mge {
                 if (!m_uniform_block && !m_program->needs_link()) {
                     const auto& uniform_buffers = m_program->uniform_buffers();
                     if (!uniform_buffers.empty()) {
-                        MGE_DEBUG_TRACE(rotating_triangle,
+                        MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
                                         "Creating uniform block: {}",
                                         uniform_buffers[0].name);
                         m_uniform_block =
                             std::make_unique<uniform_block>(uniform_buffers[0]);
                     } else {
-                        MGE_ERROR_TRACE(rotating_triangle,
+                        MGE_ERROR_TRACE(ROTATING_TRIANGLE,
                                         "No uniform buffers found in program");
                         set_quit();
                         return;
@@ -180,11 +178,9 @@ namespace mge {
 
         void initialize()
         {
-            MGE_DEBUG_TRACE(rotating_triangle, "Initializing objects");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Initializing objects");
 
             m_program = m_window->render_context().create_program();
-
-            mge::shader_language slang{"slang", mge::semantic_version(1, 0)};
 
             const auto& caps = m_render_system->system_capabilities();
             bool        slang_supported = false;
@@ -194,20 +190,57 @@ namespace mge {
                     break;
                 }
             }
-            if (!slang_supported) {
-                MGE_ERROR_TRACE(
-                    rotating_triangle,
-                    "Render system '{}' does not support Slang shaders",
-                    m_render_system->implementation_name());
-                set_quit();
-                return;
+
+            if (slang_supported) {
+                mge::shader_language slang{"slang",
+                                           mge::semantic_version(1, 0)};
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
+                                "Compiling and linking Slang program");
+                m_program->compile_and_link(slang, slang_shader_source);
+            } else {
+                const char* vertex_shader_glsl = R"shader(
+                    #version 330 core
+                    layout(location = 0) in vec3 vertexPosition;
+
+                    layout(std140) uniform TransformBlock {
+                        float angle;
+                    };
+
+                    void main() {
+                      float rad = radians(angle);
+                      float c = cos(rad);
+                      float s = sin(rad);
+                      mat2 rotation = mat2(c, s, -s, c);
+                      vec2 rotated = rotation * vertexPosition.xy;
+                      gl_Position = vec4(rotated, vertexPosition.z, 1.0);
+                    }
+                )shader";
+
+                const char* fragment_shader_glsl = R"shader(
+                    #version 330 core
+                    layout(location = 0) out vec3 color;
+                    void main() {
+                        color = vec3(1,1,0);
+                    }
+                )shader";
+
+                auto pixel_shader =
+                    m_window->render_context().create_shader(
+                        shader_type::FRAGMENT);
+                auto vertex_shader =
+                    m_window->render_context().create_shader(
+                        shader_type::VERTEX);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
+                pixel_shader->compile(fragment_shader_glsl);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");
+                vertex_shader->compile(vertex_shader_glsl);
+                m_program->set_shader(pixel_shader);
+                m_program->set_shader(vertex_shader);
+                MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Linking program");
+                m_program->link();
             }
 
-            MGE_DEBUG_TRACE(rotating_triangle,
-                            "Compiling and linking Slang program");
-            m_program->compile_and_link(slang, slang_shader_source);
-            MGE_DEBUG_TRACE(rotating_triangle,
-                            "Slang program compiled and linked");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Shaders compiled and linked");
 
             float triangle_coords[] = {
                 0.0f,
@@ -223,18 +256,18 @@ namespace mge {
             int                triangle_indices[] = {0, 1, 2};
             mge::vertex_layout layout;
             layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
-            MGE_DEBUG_TRACE(rotating_triangle, "Create vertex buffer");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Create vertex buffer");
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
                 sizeof(triangle_coords),
                 mge::make_buffer(triangle_coords));
 
-            MGE_DEBUG_TRACE(rotating_triangle, "Create index buffer");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
                 mge::make_buffer(triangle_indices));
-            MGE_DEBUG_TRACE(rotating_triangle, "Initializing objects done");
+            MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Initializing objects done");
             m_initialized = true;
         }
 
