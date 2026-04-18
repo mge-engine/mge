@@ -32,7 +32,6 @@ SET(mge_vulkan_module_SOURCES
     texture.cpp
     vertex_buffer.cpp
     index_buffer.cpp
-    slang_compiler.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
@@ -72,7 +71,7 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     glslang::glslang-default-resource-limits
     glslang::SPIRV
     unofficial::spirv-reflect
-    slang::slang
+    mge_slang
 #    glslang::SPVRemapper
 )
  

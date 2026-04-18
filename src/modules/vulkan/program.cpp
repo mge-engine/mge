@@ -3,9 +3,9 @@
 // All rights reserved.
 #include "program.hpp"
 #include "error.hpp"
+#include "mge/slang/slang_compiler.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
-#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(VULKAN);
@@ -137,7 +137,8 @@ namespace mge::vulkan {
                 << "Unsupported shader language: " << language;
         }
 
-        auto compile_result = slang_compile(source);
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::SPIRV, source);
 
         if (compile_result.shader_code.empty()) {
             MGE_THROW(mge::illegal_state)
@@ -155,7 +156,7 @@ namespace mge::vulkan {
         for (auto& [type, shader_code] : compile_result.shader_code) {
             auto  handle = context().create_shader(type);
             auto* vk_s = static_cast<shader*>(handle.get());
-            vk_s->set_code_immediate(shader_code.spirv_code,
+            vk_s->set_code_immediate(shader_code.binary_code,
                                      shader_code.entry_point_name);
             m_shaders.push_back(vk_s);
             m_owned_shaders.push_back(handle);
