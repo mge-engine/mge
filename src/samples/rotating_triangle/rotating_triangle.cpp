@@ -224,12 +224,10 @@ namespace mge {
                     }
                 )shader";
 
-                auto pixel_shader =
-                    m_window->render_context().create_shader(
-                        shader_type::FRAGMENT);
-                auto vertex_shader =
-                    m_window->render_context().create_shader(
-                        shader_type::VERTEX);
+                auto pixel_shader = m_window->render_context().create_shader(
+                    shader_type::FRAGMENT);
+                auto vertex_shader = m_window->render_context().create_shader(
+                    shader_type::VERTEX);
                 MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile fragment shader");
                 pixel_shader->compile(fragment_shader_glsl);
                 MGE_DEBUG_TRACE(ROTATING_TRIANGLE, "Compile vertex shader");

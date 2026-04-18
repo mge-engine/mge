@@ -39,8 +39,8 @@ namespace mge::opengl {
         void cache_block_indices();
         void collect_attributes();
 
-        GLuint                          m_program;
-        std::map<std::string, GLuint>   m_block_indices;
+        GLuint                        m_program;
+        std::map<std::string, GLuint> m_block_indices;
     };
 
     inline GLuint gl_program(const mge::program& p)

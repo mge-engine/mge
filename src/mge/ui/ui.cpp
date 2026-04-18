@@ -250,8 +250,7 @@ namespace mge {
         }
 
         if (slang_supported) {
-            mge::shader_language slang{"slang",
-                                       mge::semantic_version(1, 0)};
+            mge::shader_language slang{"slang", mge::semantic_version(1, 0)};
             m_ui_program->compile_and_link(slang, slang_shader_source);
         } else {
             // OpenGL shaders (GLSL 330 core)
