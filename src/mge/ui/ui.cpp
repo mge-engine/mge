@@ -21,10 +21,7 @@
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
-#include "mge/graphics/shader.hpp"
-#include "mge/graphics/shader_format.hpp"
 #include "mge/graphics/shader_language.hpp"
-#include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/test.hpp"
 #include "mge/graphics/texture.hpp"
 #include "mge/graphics/texture_type.hpp"
@@ -194,159 +191,51 @@ namespace mge {
                           m_null_texture);
         m_convert_config->tex_null = *m_null_texture;
 
-        // Create shader program
-        auto vertex_shader =
-            m_render_context->create_shader(shader_type::VERTEX);
-        auto fragment_shader =
-            m_render_context->create_shader(shader_type::FRAGMENT);
+        // Create shader program using Slang
+        static const char* slang_shader_source = R"slang(
+            cbuffer UBO : register(b0)
+            {
+                float4x4 projection;
+            };
 
-        // Detect shader language from render system capabilities
-        const auto& caps =
-            m_render_context->render_system().system_capabilities();
-        const auto& languages = caps.shader_languages();
-        const auto& formats = caps.shader_formats();
-        bool        use_hlsl = false;
-        bool        use_spirv = false;
-        for (const auto& lang : languages) {
-            if (lang.name() == "hlsl") {
-                use_hlsl = true;
-                break;
+            Texture2D tex : register(t0);
+            SamplerState sam : register(s0);
+
+            struct VertexInput
+            {
+                float2 position : POSITION;
+                float2 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+
+            struct VertexOutput
+            {
+                float4 position : SV_POSITION;
+                float2 texcoord : TEXCOORD;
+                float4 color : COLOR;
+            };
+
+            [shader("vertex")]
+            VertexOutput vertexMain(VertexInput input)
+            {
+                VertexOutput output;
+                output.position = mul(projection,
+                                      float4(input.position, 0.0, 1.0));
+                output.texcoord = input.texcoord;
+                output.color = input.color;
+                return output;
             }
-        }
-        for (const auto& fmt : formats) {
-            if (fmt.name() == "spirv") {
-                use_spirv = true;
-                break;
+
+            [shader("fragment")]
+            float4 fragmentMain(VertexOutput input) : SV_TARGET
+            {
+                return input.color * tex.Sample(sam, input.texcoord);
             }
-        }
-
-        if (use_hlsl) {
-            // HLSL shaders for DirectX 11/12
-            const char* vertex_shader_hlsl = R"shader(
-                cbuffer UBO : register(b0) {
-                    float4x4 projection;
-                };
-
-                struct VS_INPUT {
-                    float2 position : POSITION;
-                    float2 texcoord : TEXCOORD;
-                    float4 color : COLOR;
-                };
-
-                struct VS_OUTPUT {
-                    float4 position : SV_POSITION;
-                    float2 texcoord : TEXCOORD;
-                    float4 color : COLOR;
-                };
-
-                VS_OUTPUT main(VS_INPUT input) {
-                    VS_OUTPUT output;
-                    output.position = mul(projection, float4(input.position, 0.0, 1.0));
-                    output.texcoord = input.texcoord;
-                    output.color = input.color;
-                    return output;
-                }
-            )shader";
-
-            const char* fragment_shader_hlsl = R"shader(
-                Texture2D tex : register(t0);
-                SamplerState sam : register(s0);
-
-                struct PS_INPUT {
-                    float4 position : SV_POSITION;
-                    float2 texcoord : TEXCOORD;
-                    float4 color : COLOR;
-                };
-
-                float4 main(PS_INPUT input) : SV_Target {
-                    return input.color * tex.Sample(sam, input.texcoord);
-                }
-            )shader";
-
-            vertex_shader->compile(vertex_shader_hlsl);
-            fragment_shader->compile(fragment_shader_hlsl);
-        } else if (use_spirv) {
-            // Vulkan shaders (GLSL 450 with Vulkan bindings)
-            const char* vertex_shader_vk = R"shader(
-                #version 450
-                layout(location = 0) in vec2 position;
-                layout(location = 1) in vec2 texcoord;
-                layout(location = 2) in vec4 color;
-
-                layout(location = 0) out vec2 frag_texcoord;
-                layout(location = 1) out vec4 frag_color;
-
-                layout(binding = 0) uniform UBO {
-                    mat4 projection;
-                };
-
-                void main() {
-                    frag_texcoord = texcoord;
-                    frag_color = color;
-                    gl_Position = projection * vec4(position, 0.0, 1.0);
-                }
-            )shader";
-
-            const char* fragment_shader_vk = R"shader(
-                #version 450
-                layout(location = 0) in vec2 frag_texcoord;
-                layout(location = 1) in vec4 frag_color;
-
-                layout(location = 0) out vec4 out_color;
-
-                layout(binding = 1) uniform sampler2D tex;
-
-                void main() {
-                    out_color = frag_color * texture(tex, frag_texcoord);
-                }
-            )shader";
-
-            vertex_shader->compile(vertex_shader_vk);
-            fragment_shader->compile(fragment_shader_vk);
-        } else {
-            // OpenGL shaders (GLSL 330 core)
-            const char* vertex_shader_glsl = R"shader(
-                #version 330 core
-                layout(location = 0) in vec2 position;
-                layout(location = 1) in vec2 texcoord;
-                layout(location = 2) in vec4 color;
-
-                out vec2 frag_texcoord;
-                out vec4 frag_color;
-
-                layout(std140) uniform UBO {
-                    mat4 projection;
-                };
-
-                void main() {
-                    frag_texcoord = texcoord;
-                    frag_color = color;
-                    gl_Position = projection * vec4(position, 0.0, 1.0);
-                }
-            )shader";
-
-            const char* fragment_shader_glsl = R"shader(
-                #version 330 core
-                in vec2 frag_texcoord;
-                in vec4 frag_color;
-
-                out vec4 out_color;
-
-                uniform sampler2D tex;
-
-                void main() {
-                    out_color = frag_color * texture(tex, frag_texcoord);
-                }
-            )shader";
-
-            vertex_shader->compile(vertex_shader_glsl);
-            fragment_shader->compile(fragment_shader_glsl);
-        }
+        )slang";
 
         m_ui_program = m_render_context->create_program();
-        m_ui_program->set_shader(vertex_shader);
-        m_ui_program->set_shader(fragment_shader);
-        m_ui_program->link();
+        mge::shader_language slang{"slang", mge::semantic_version(1, 0)};
+        m_ui_program->compile_and_link(slang, slang_shader_source);
 
         // Note: uniform block created in draw() after program linking completes
 

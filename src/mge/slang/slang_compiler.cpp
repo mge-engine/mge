@@ -643,6 +643,7 @@ namespace mge {
         session_desc.targetCount = 1;
         session_desc.compilerOptionEntries = &no_mangle_option;
         session_desc.compilerOptionEntryCount = 1;
+        session_desc.defaultMatrixLayoutMode = SLANG_MATRIX_LAYOUT_COLUMN_MAJOR;
 
         Slang::ComPtr<slang::ISession> session;
         rc = global_session->createSession(session_desc, session.writeRef());
