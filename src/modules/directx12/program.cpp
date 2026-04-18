@@ -4,10 +4,10 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/core/to_underlying.hpp"
+#include "mge/slang/slang_compiler.hpp"
 #include "mge/win32/com_scope.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
-#include "slang_compiler.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX12);
@@ -197,7 +197,8 @@ namespace mge::dx12 {
                 << "Unsupported shader language: " << language;
         }
 
-        auto compile_result = slang_compile(source);
+        auto compile_result =
+            mge::slang_compile(mge::slang_target::DXBC, source);
 
         if (compile_result.shader_code.empty()) {
             MGE_THROW(mge::illegal_state)
@@ -206,10 +207,10 @@ namespace mge::dx12 {
 
         m_owned_shaders.clear();
 
-        for (auto& [type, code] : compile_result.shader_code) {
+        for (auto& [type, shader_code] : compile_result.shader_code) {
             auto  handle = context().create_shader(type);
             auto* dx12_s = static_cast<shader*>(handle.get());
-            dx12_s->set_code_immediate(code);
+            dx12_s->set_code_immediate(shader_code.binary_code);
             m_shaders[mge::to_underlying(type)] = dx12_s;
             m_owned_shaders.push_back(handle);
         }
