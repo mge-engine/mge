@@ -14,6 +14,7 @@ jobs:
           path: "vcpkg"
           ref: "master"
           token: ${{ secrets.MGE_GITHUB_TOKEN }}
+          persist-credentials: true
       - name: Add upstream remote
         run: |
           cd vcpkg
