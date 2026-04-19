@@ -123,6 +123,17 @@
 an unhandled exception or fatal error occurs. The dump is written as a
 GitHub Flavored Markdown file containing a stack trace and additional
 information contributed by dump info providers.</p>
+<section id="crash-dump-handler">
+<h2>Crash Dump Handler<a class="headerlink" href="#crash-dump-handler" title="Link to this heading"></a></h2>
+<p>The crash dump handler is automatically installed when an MGE application
+starts (in <a class="reference internal" href="../application/application.html#_CPPv4N3mge11applicationE" title="mge::application"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::application</span></code></a>). On Windows, it registers an
+unhandled exception filter via <code class="docutils literal notranslate"><span class="pre">SetUnhandledExceptionFilter</span></code>. When a
+crash occurs, the handler captures a stack trace from the faulting thread
+and writes a Markdown crash dump file before the process terminates.</p>
+<p>The handler is uninstalled when the application shuts down.</p>
+<p>On non-Windows platforms, automatic crash handler installation is not
+yet implemented; crash dumps can still be written manually.</p>
+</section>
 <section id="dump-class">
 <h2>Dump Class<a class="headerlink" href="#dump-class" title="Link to this heading"></a></h2>
 <p>The <a class="reference internal" href="#_CPPv4N3mge4dumpE" title="mge::dump"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::dump</span></code></a> class manages crash dump generation and handler
@@ -163,18 +174,75 @@ installation.</p>
 <h2>Dump Output<a class="headerlink" href="#dump-output" title="Link to this heading"></a></h2>
 <p>When a crash occurs, a Markdown file is created in the current working
 directory. The filename follows the pattern
-<code class="docutils literal notranslate"><span class="pre">&lt;executable&gt;-&lt;purpose&gt;-&lt;timestamp&gt;.md</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">&lt;executable&gt;-crash-&lt;timestamp&gt;.md</span></code>, where the timestamp has
+millisecond precision (e.g. <code class="docutils literal notranslate"><span class="pre">myapp-crash-20260419143021123.md</span></code>).</p>
 <p>The dump document contains:</p>
 <ul class="simple">
 <li><p><strong>Table of Contents</strong> with links to all sections</p></li>
-<li><p><strong>Crash Dump</strong> heading with general information (executable name,
-timestamps, process ID)</p></li>
-<li><p><strong>Stack Trace</strong> as a code block</p></li>
+<li><p><strong>Overview</strong> with executable name, local and UTC timestamps, and
+process ID</p></li>
+<li><p><strong>Stack Trace</strong> captured at the point of the crash</p></li>
 <li><p>Additional sections from registered dump info providers</p></li>
 </ul>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h3>
+<p>A crash dump file looks like this:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># Crash Dump</span>
+
+<span class="gu">## Table of Contents</span>
+
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Overview</span>](<span class="na">#overview</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Stack Trace</span>](<span class="na">#stack-trace</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Components</span>](<span class="na">#components</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Loaded Modules</span>](<span class="na">#loaded-modules</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Parameters</span>](<span class="na">#parameters</span>)
+<span class="k">-</span><span class="w"> </span>[<span class="nt">Trace Configuration</span>](<span class="na">#trace-configuration</span>)
+
+<span class="gu">## Overview</span>
+
+<span class="k">-</span><span class="w"> </span>Executable: myapp.exe
+<span class="k">-</span><span class="w"> </span>Timestamp: 2026-04-19 14:30:21.123 +0200
+<span class="k">-</span><span class="w"> </span>Timestamp (UTC): 2026-04-19 12:30:21.123 UTC
+<span class="k">-</span><span class="w"> </span>Process ID: 12345
+
+<span class="gu">## Stack Trace</span>
+
+...
+</pre></div>
+</div>
 </section>
-<section id="dump-info-providers">
-<h2>Dump Info Providers<a class="headerlink" href="#dump-info-providers" title="Link to this heading"></a></h2>
+</section>
+<section id="built-in-dump-info-providers">
+<h2>Built-in Dump Info Providers<a class="headerlink" href="#built-in-dump-info-providers" title="Link to this heading"></a></h2>
+<p>MGE includes four dump info providers that are automatically included
+in every crash dump:</p>
+<section id="components">
+<h3>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h3>
+<p>Lists all registered component types and their implementations.
+Displayed as a table with columns <strong>Component</strong> and
+<strong>Implementations</strong>.</p>
+</section>
+<section id="loaded-modules">
+<h3>Loaded Modules<a class="headerlink" href="#loaded-modules" title="Link to this heading"></a></h3>
+<p>Lists all modules (plugins) that were loaded at the time of the
+crash, with the file path of each module’s shared library. Displayed
+as a table with columns <strong>Module</strong> and <strong>Library</strong>.</p>
+</section>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<p>Lists all configuration parameters that have a value set at the time
+of the crash. Displayed as a table with columns <strong>Parameter</strong> (the
+parameter path) and <strong>Value</strong> (the JSON-serialized value).</p>
+</section>
+<section id="trace-configuration">
+<h3>Trace Configuration<a class="headerlink" href="#trace-configuration" title="Link to this heading"></a></h3>
+<p>Shows the global trace enable/disable state, whether trace output is
+printed to stdout, and lists all trace topics that have specific
+levels enabled (e.g. <code class="docutils literal notranslate"><span class="pre">CORE</span> <span class="pre">(DEBUG,</span> <span class="pre">INFO)</span></code>).</p>
+</section>
+</section>
+<section id="custom-dump-info-providers">
+<h2>Custom Dump Info Providers<a class="headerlink" href="#custom-dump-info-providers" title="Link to this heading"></a></h2>
 <p>Dump info providers are components that contribute additional diagnostic
 sections to the crash dump. They are discovered and instantiated via the
 <a class="reference internal" href="component.html#mge-core-components"><span class="std std-ref">component system</span></a>.</p>
@@ -286,17 +354,99 @@ sections to the crash dump. They are discovered and instantiated via the
 <p>The provider constructor receives a <code class="docutils literal notranslate"><span class="pre">std::pmr::memory_resource*</span></code> when
 created through the component system with PMR support. Use <code class="docutils literal notranslate"><span class="pre">m_resource</span></code>
 for all PMR allocations within the provider.</p>
+<p>Override <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">has_info()</span></code> to return <code class="docutils literal notranslate"><span class="pre">false</span></code> if the provider has
+nothing to contribute; the section will then be omitted from the dump.</p>
 </section>
+</section>
+<section id="manual-dump-creation">
+<h2>Manual Dump Creation<a class="headerlink" href="#manual-dump-creation" title="Link to this heading"></a></h2>
+<p>A crash dump can also be created programmatically:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mge/core/dump.hpp&quot;</span>
+
+<span class="n">mge</span><span class="o">::</span><span class="n">dump</span><span class="w"> </span><span class="n">d</span><span class="p">(</span><span class="s">&quot;crash&quot;</span><span class="p">);</span>
+<span class="n">d</span><span class="p">.</span><span class="n">write</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>This writes a dump file with the current stack trace and all registered
+provider sections.</p>
 </section>
 <section id="markdown-document">
 <h2>Markdown Document<a class="headerlink" href="#markdown-document" title="Link to this heading"></a></h2>
 <p>The <a class="reference internal" href="#_CPPv4N3mge17markdown_documentE" title="mge::markdown_document"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::markdown_document</span></code></a> class is a fluent builder for
 composing GitHub Flavored Markdown documents. It is used internally by
 the dump system and available for use by dump info providers.</p>
+<p>All methods that modify the document return a reference to the document,
+allowing method chaining:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">mge</span><span class="o">::</span><span class="n">markdown_document</span><span class="w"> </span><span class="n">doc</span><span class="p">;</span>
+<span class="n">doc</span><span class="p">.</span><span class="n">heading</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Title&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="n">paragraph</span><span class="p">(</span><span class="s">&quot;Some text.&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="n">code_block</span><span class="p">(</span><span class="s">&quot;cpp&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;int x = 42;&quot;</span><span class="p">)</span>
+<span class="w">   </span><span class="p">.</span><span class="n">horizontal_rule</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Block-level methods append content to the document:</p>
+<ul class="simple">
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">heading(level,</span> <span class="pre">text)</span></code> –
+heading of given level (1-6)</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">paragraph(text)</span></code> –
+paragraph</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">code_block(language,</span> <span class="pre">code)</span></code> –
+fenced code block with language tag</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">code_block(code)</span></code> –
+fenced code block without language</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">blockquote(text)</span></code> –
+blockquote</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">horizontal_rule()</span></code> –
+horizontal rule</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">unordered_list(items)</span></code> –
+bulleted list</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">ordered_list(items)</span></code> –
+numbered list</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">table(headers,</span> <span class="pre">rows)</span></code> –
+table with headers and rows</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">text(text)</span></code> –
+raw text appended as-is</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">line(text)</span></code> –
+text followed by a newline</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">blank_line()</span></code> –
+empty line</p></li>
+</ul>
+<p>Inline formatting methods return a formatted string for embedding
+in other content:</p>
+<ul class="simple">
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bold(text)</span></code> – <code class="docutils literal notranslate"><span class="pre">**text**</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">italic(text)</span></code> – <code class="docutils literal notranslate"><span class="pre">*text*</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">strikethrough(text)</span></code> –
+<code class="docutils literal notranslate"><span class="pre">~~text~~</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">inline_code(text)</span></code> –
+inline code formatting</p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">link(text,</span> <span class="pre">url)</span></code> –
+<code class="docutils literal notranslate"><span class="pre">[text](url)</span></code></p></li>
+<li><p><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">image(alt,</span> <span class="pre">url)</span></code> –
+<code class="docutils literal notranslate"><span class="pre">![alt](url)</span></code></p></li>
+</ul>
+<p>Use <code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">str()</span></code> to obtain the
+document as a string, or stream via <code class="docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code>.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17markdown_documentE">
 <span id="_CPPv3N3mge17markdown_documentE"></span><span id="_CPPv2N3mge17markdown_documentE"></span><span id="mge::markdown_document"></span><span class="target" id="classmge_1_1markdown__document"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">markdown_document</span></span></span><a class="headerlink" href="#_CPPv4N3mge17markdown_documentE" title="Link to this definition"></a><br /></dt>
 <dd><p>Simple markdown document builder. </p>
+</dd></dl>
+
+</section>
+<section id="markdown-formatting-wrapper">
+<h2>Markdown Formatting Wrapper<a class="headerlink" href="#markdown-formatting-wrapper" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4I0EN3mge8markdownE" title="mge::markdown"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::markdown</span></code></a> template wraps a value for markdown-aware
+formatting via <code class="docutils literal notranslate"><span class="pre">fmt::format</span></code>. It is used internally to format types
+like <a class="reference internal" href="utilities.html#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::stacktrace</span></code></a> as markdown code blocks in crash dumps.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">mge</span><span class="o">::</span><span class="n">stacktrace</span><span class="w"> </span><span class="n">st</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">formatted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fmt</span><span class="o">::</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">markdown</span><span class="p">(</span><span class="n">st</span><span class="p">));</span>
+</pre></div>
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge8markdownE">
+<span id="_CPPv3I0EN3mge8markdownE"></span><span id="_CPPv2I0EN3mge8markdownE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structmge_1_1markdown"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">markdown</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge8markdownE" title="Link to this definition"></a><br /></dt>
+<dd><p>Wrapper class for markdown formatting. </p>
 </dd></dl>
 
 </section>
