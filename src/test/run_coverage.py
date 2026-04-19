@@ -47,7 +47,7 @@ def apply_gtest_exclude(command, gtest_exclude):
 
 
 def run_coverage(opencppcoverage, tests, source_dir, output_dir,
-                 gtest_exclude):
+                 gtest_exclude, html=False):
     """Run each test under OpenCppCoverage, accumulating coverage."""
     src_mge = os.path.normpath(os.path.join(source_dir, "src", "mge"))
     src_modules = os.path.normpath(
@@ -83,6 +83,9 @@ def run_coverage(opencppcoverage, tests, source_dir, output_dir,
                 "--export_type", f"binary:{step_cov}",
                 "--export_type", f"cobertura:{cobertura_path}",
             ]
+            if html:
+                html_dir = os.path.join(output_dir, "html")
+                cmd += ["--export_type", f"html:{html_dir}"]
         else:
             cmd += ["--export_type", f"binary:{step_cov}"]
 
@@ -124,6 +127,8 @@ def main():
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--gtest-exclude", action="append", default=[],
                         help="EXE:TestSuite.TestCase to exclude (repeatable)")
+    parser.add_argument("--html", action="store_true",
+                        help="Generate detailed HTML coverage report")
     args = parser.parse_args()
 
     gtest_exclude = {}
@@ -143,10 +148,15 @@ def main():
     failed = run_coverage(
         args.opencppcoverage, tests,
         args.source_dir, args.output_dir,
-        gtest_exclude
+        gtest_exclude, html=args.html
     )
 
     report_coverage(args.output_dir)
+
+    if args.html:
+        html_dir = os.path.normpath(
+            os.path.join(args.output_dir, "html"))
+        print(f"HTML report: {html_dir}")
 
     if failed:
         print(f"\n{len(failed)} test(s) failed: {', '.join(failed)}",

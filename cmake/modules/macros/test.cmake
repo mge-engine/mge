@@ -231,9 +231,7 @@ ADD_CUSTOM_TARGET(quick-tests
 )
 
 IF(OPENCPPCOVERAGE_EXECUTABLE AND Python3_FOUND)
-    ADD_CUSTOM_TARGET(quick-tests-coverage
-        COMMAND "${Python3_EXECUTABLE}"
-            "${CMAKE_BINARY_DIR}/run_coverage.py"
+    SET(MGE_COVERAGE_ARGS
             --opencppcoverage "${OPENCPPCOVERAGE_EXECUTABLE}"
             --ctest "${CMAKE_CTEST_COMMAND}"
             --source-dir "${CMAKE_SOURCE_DIR}"
@@ -244,6 +242,18 @@ IF(OPENCPPCOVERAGE_EXECUTABLE AND Python3_FOUND)
             --gtest-exclude test_core:debugging.*
             --gtest-exclude test_core:exception.rethrow
             --gtest-exclude test_core:statistics.death_on_destroy_owned
+    )
+    ADD_CUSTOM_TARGET(quick-tests-coverage
+        COMMAND "${Python3_EXECUTABLE}"
+            "${CMAKE_BINARY_DIR}/run_coverage.py"
+            ${MGE_COVERAGE_ARGS}
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    )
+    ADD_CUSTOM_TARGET(quick-tests-coverage-report
+        COMMAND "${Python3_EXECUTABLE}"
+            "${CMAKE_BINARY_DIR}/run_coverage.py"
+            ${MGE_COVERAGE_ARGS}
+            --html
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
     )
 ENDIF()
