@@ -81,4 +81,11 @@ jobs:
               --title "Update vcpkg baseline" \
               --body "Update vcpkg baseline from \`${{ steps.get-latest.outputs.current }}\` to \`${{ steps.get-latest.outputs.latest }}\`.")
             echo "Created PR: $PR_URL"
-            gh pr merge "$PR_URL" --auto --squash
+        - name: Wait for checks and merge
+          if: steps.check.outputs.update_needed == 'true'
+          env:
+            GH_TOKEN: ${{ secrets.MGE_GITHUB_TOKEN }}
+          run: |
+            BRANCH="update-vcpkg-${{ github.run_number }}"
+            gh pr checks "$BRANCH" --watch --fail-fast
+            gh pr merge "$BRANCH" --squash --delete-branch
