@@ -161,7 +161,7 @@
   - Resource: ID3D12Resource * #9
   - Subresource: 0
   - MappedData: _ignored_
-  - range: {Begin: 0, End: 1024}
+  - range: {Begin: 0, End: 256}
 - Call: ID3D12GraphicsCommandList::SetGraphicsRootConstantBufferView
   - pCommandList: ID3D12GraphicsCommandList * #5
   - RootParameterIndex: 0

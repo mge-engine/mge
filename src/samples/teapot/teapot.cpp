@@ -11,6 +11,7 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/uniform.hpp"
 #include "mge/graphics/uniform_block.hpp"
@@ -98,10 +99,6 @@ namespace mge {
                 MGE_THROW(mge::illegal_state) << "Cannot load teapot mesh";
             }
 
-            auto pixel_shader =
-                m_window->render_context().create_shader(shader_type::FRAGMENT);
-            auto vertex_shader =
-                m_window->render_context().create_shader(shader_type::VERTEX);
             m_program = m_window->render_context().create_program();
             MGE_DEBUG_TRACE(TEAPOT,
                             "render system is {}",
@@ -129,77 +126,69 @@ namespace mge {
                         color = vec3(1,1,1);
                     }
                 )shader";
+
+                auto pixel_shader = m_window->render_context().create_shader(
+                    shader_type::FRAGMENT);
+                auto vertex_shader = m_window->render_context().create_shader(
+                    shader_type::VERTEX);
                 MGE_DEBUG_TRACE(TEAPOT, "Compile fragment shader");
                 pixel_shader->compile(fragment_shader_glsl);
                 MGE_DEBUG_TRACE(TEAPOT, "Compile vertex shader");
                 vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(TEAPOT, "Shaders compiled");
+                m_program->set_shader(pixel_shader);
+                m_program->set_shader(vertex_shader);
+                MGE_DEBUG_TRACE(TEAPOT, "Linking program");
+                m_program->link();
+                MGE_DEBUG_TRACE(TEAPOT, "Program linked");
             } else if (m_render_system->implementation_name() ==
-                       "mge::vulkan::render_system") {
-                const char* vertex_shader_glsl = R"shader(
-                    #version 450
-                    layout(location = 0) in vec3 vertexPosition;
-
-                    layout(std140, binding = 0) uniform MVPBlock {
-                        mat4 mvp;
-                    };
-
-                    void main() {
-                      gl_Position = mvp * vec4(vertexPosition, 1.0);
-                    }
-                )shader";
-
-                const char* fragment_shader_glsl = R"shader(
-                    #version 450
-                    layout(location = 0) out vec4 color;
-                    void main() {
-                        color = vec4(1,1,1,1);
-                    }
-                )shader";
-                MGE_DEBUG_TRACE(TEAPOT, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_glsl);
-                MGE_DEBUG_TRACE(TEAPOT, "Compile vertex shader");
-                vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(TEAPOT, "Shaders compiled");
-            } else if (m_render_system->implementation_name() ==
+                           "mge::vulkan::render_system" ||
+                       m_render_system->implementation_name() ==
                            "mge::dx11::render_system" ||
                        m_render_system->implementation_name() ==
                            "mge::dx12::render_system") {
 
-                const char* vertex_shader_hlsl = R"shader(
+                static const char* slang_shader_source = R"slang(
                     cbuffer MVPBlock : register(b0)
                     {
                         float4x4 mvp;
                     };
 
-                    float4 main( float3 pos : POSITION ) : SV_POSITION
+                    struct VertexInput
                     {
-                        return mul(mvp, float4(pos, 1.0));
-                    }
-                )shader";
+                        float3 position : POSITION;
+                    };
 
-                const char* fragment_shader_hlsl = R"shader(
-                    float4 main() : SV_TARGET
+                    struct VertexOutput
+                    {
+                        float4 position : SV_POSITION;
+                    };
+
+                    [shader("vertex")]
+                    VertexOutput vertexMain(VertexInput input)
+                    {
+                        VertexOutput output;
+                        output.position = mul(mvp, float4(input.position, 1.0));
+                        return output;
+                    }
+
+                    [shader("fragment")]
+                    float4 fragmentMain() : SV_TARGET
                     {
                         return float4(1.0f, 1.0f, 1.0f, 1.0f);
                     }
-                )shader";
-                MGE_DEBUG_TRACE(TEAPOT, "Compile fragment shader");
-                pixel_shader->compile(fragment_shader_hlsl);
-                MGE_DEBUG_TRACE(TEAPOT, "Compile vertex shader");
-                vertex_shader->compile(vertex_shader_hlsl);
-                MGE_DEBUG_TRACE(TEAPOT, "Shaders compiled");
+                )slang";
+
+                mge::shader_language slang{"slang",
+                                           mge::semantic_version(1, 0)};
+                MGE_DEBUG_TRACE(TEAPOT, "Compile and link SLANG shaders");
+                m_program->compile_and_link(slang, slang_shader_source);
+                MGE_DEBUG_TRACE(TEAPOT, "SLANG shaders compiled");
             } else {
                 MGE_ERROR_TRACE(TEAPOT,
                                 "Cannot create shaders for {} render system",
                                 m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
-            m_program->set_shader(pixel_shader);
-            m_program->set_shader(vertex_shader);
-            MGE_DEBUG_TRACE(TEAPOT, "Linking program");
-            m_program->link();
-            MGE_DEBUG_TRACE(TEAPOT, "Program linked");
 
             MGE_DEBUG_TRACE(TEAPOT, "Create vertex buffer");
             m_vertices = m_window->render_context().create_vertex_buffer(
