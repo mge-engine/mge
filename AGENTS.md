@@ -110,6 +110,7 @@ For domain-specific procedures, read these files:
 
 - **Crash debugging**: `.github/skills/fix-crash/SKILL.md` — crash dumps, trace topics, stack traces, debugging procedures
 - **Graphical issues**: `.github/skills/fix-graphical-issue/SKILL.md` — screenshots, before/after comparison, rendering diagnosis
+- **Regenerate capture tests**: `.github/skills/regenerate-capture-test/SKILL.md` — update reference files after intentional rendering changes
 
 ## Common Pitfalls
 
