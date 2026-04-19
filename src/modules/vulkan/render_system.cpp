@@ -110,8 +110,7 @@ namespace mge::vulkan {
             {
                 shader_language glsl{"glsl"sv, mge::semantic_version(4, 6)};
                 m_shader_languages.push_back(glsl);
-                shader_language slang{"slang"sv, mge::semantic_version(1, 0)};
-                m_shader_languages.push_back(slang);
+                m_shader_languages.push_back(shader_language::SLANG);
                 shader_format spirv{"spirv"sv, mge::semantic_version(1, 5)};
                 m_shader_formats.push_back(spirv);
             }

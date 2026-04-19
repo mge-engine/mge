@@ -132,7 +132,7 @@ namespace mge::vulkan {
     void program::on_compile_and_link(const mge::shader_language& language,
                                       const std::string_view      source)
     {
-        if (language.name() != "slang") {
+        if (language.name() != shader_language::SLANG.name()) {
             MGE_THROW(mge::illegal_argument)
                 << "Unsupported shader language: " << language;
         }
