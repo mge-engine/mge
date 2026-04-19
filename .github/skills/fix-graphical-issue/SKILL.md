@@ -21,6 +21,8 @@ description: 'Debug and fix graphical rendering issues in MGE using screenshots.
 4. Build
 5. Take an **after** screenshot (same frame, same render system)
 6. View and compare both screenshots
+7. Run backend-specific capture tests: `ctest --output-on-failure --test-dir build -L {render_system}`
+8. Run remaining backends to check for regressions: `ctest --output-on-failure --test-dir build`
 
 ## Taking a Screenshot
 

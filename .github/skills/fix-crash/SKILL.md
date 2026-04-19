@@ -133,7 +133,9 @@ MGE_USE_IMPORTED_TRACE(DX11);
    - Out of bounds access (check container sizes)
    - Uninitialized state (check initialization order)
    - Graphics API errors (check return codes, validation layers)
-7. **Fix and verify** — apply the fix, build with `cmake --build build`, run tests with `ctest --output-on-failure --test-dir build`
+7. **Fix and verify** — apply the fix, build with `cmake --build build`, run appropriate tests:
+   - Non-graphical crash: `cmake --build build --target quick-tests`
+   - Graphical/rendering crash: `ctest --output-on-failure --test-dir build -L {backend}` (e.g. `-L opengl`), then `ctest --output-on-failure --test-dir build`
 
 ## Key Source Files
 
