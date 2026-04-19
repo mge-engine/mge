@@ -14,4 +14,4 @@ TARGET_LINK_LIBRARIES(teapot
     mgeasset)
 
 MGE_CAPTURE_TEST(TARGET teapot
-                 RENDER_SYSTEMS opengl)
+                 RENDER_SYSTEMS opengl directx11 directx12 vulkan)

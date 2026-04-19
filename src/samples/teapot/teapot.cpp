@@ -108,9 +108,7 @@ namespace mge {
                             m_render_system->implementation_name());
 
             if (m_render_system->implementation_name() ==
-                    "mge::opengl::render_system" ||
-                m_render_system->implementation_name() ==
-                    "mge::vulkan::render_system") {
+                "mge::opengl::render_system") {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
@@ -138,30 +136,45 @@ namespace mge {
                 MGE_DEBUG_TRACE(TEAPOT, "Shaders compiled");
             } else if (m_render_system->implementation_name() ==
                        "mge::vulkan::render_system") {
-                auto pixel_shader_code_any =
-                    mge::asset("/shaders/triangle.frag.spv").load();
-                auto vertex_shader_code_any =
-                    mge::asset("/shaders/triangle.vert.spv").load();
-                auto pixel_shader_code =
-                    std::any_cast<std::shared_ptr<mge::buffer>>(
-                        pixel_shader_code_any);
-                auto vertex_shader_code =
-                    std::any_cast<std::shared_ptr<mge::buffer>>(
-                        vertex_shader_code_any);
-                MGE_DEBUG_TRACE(TEAPOT, "Set code for fragment shader");
-                pixel_shader->set_code(*pixel_shader_code);
-                MGE_DEBUG_TRACE(TEAPOT, "Set code for vertex shader");
-                vertex_shader->set_code(*vertex_shader_code);
-                MGE_DEBUG_TRACE(TEAPOT, "Shaders created");
+                const char* vertex_shader_glsl = R"shader(
+                    #version 450
+                    layout(location = 0) in vec3 vertexPosition;
+
+                    layout(std140, binding = 0) uniform MVPBlock {
+                        mat4 mvp;
+                    };
+
+                    void main() {
+                      gl_Position = mvp * vec4(vertexPosition, 1.0);
+                    }
+                )shader";
+
+                const char* fragment_shader_glsl = R"shader(
+                    #version 450
+                    layout(location = 0) out vec4 color;
+                    void main() {
+                        color = vec4(1,1,1,1);
+                    }
+                )shader";
+                MGE_DEBUG_TRACE(TEAPOT, "Compile fragment shader");
+                pixel_shader->compile(fragment_shader_glsl);
+                MGE_DEBUG_TRACE(TEAPOT, "Compile vertex shader");
+                vertex_shader->compile(vertex_shader_glsl);
+                MGE_DEBUG_TRACE(TEAPOT, "Shaders compiled");
             } else if (m_render_system->implementation_name() ==
                            "mge::dx11::render_system" ||
                        m_render_system->implementation_name() ==
                            "mge::dx12::render_system") {
 
                 const char* vertex_shader_hlsl = R"shader(
+                    cbuffer MVPBlock : register(b0)
+                    {
+                        float4x4 mvp;
+                    };
+
                     float4 main( float3 pos : POSITION ) : SV_POSITION
                     {
-                        return float4(pos, 1.0);
+                        return mul(mvp, float4(pos, 1.0));
                     }
                 )shader";
 
