@@ -1,25 +1,84 @@
 name: Update used vcpkg version
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '30 2 * * *'  # Runs 2:30 am UTC every day, after upstream sync
 
 jobs:
-  build:
+  update-vcpkg:
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
         - name: "Checkout main"
           uses: "actions/checkout@v6"
           with:
             ref: "main"
-        - name: Create branch update-vcpkg-${{ github.run_number }}
+            persist-credentials: true
+            token: ${{ secrets.MGE_GITHUB_TOKEN }}
+        - name: Get latest vcpkg commit
+          id: get-latest
+          run: |
+            LATEST=$(git ls-remote https://github.com/mge-engine/vcpkg.git refs/heads/master | cut -f1)
+            CURRENT=$(jq -r '.["default-registry"].baseline' vcpkg-configuration.json)
+            echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+            echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+            echo "Current baseline: $CURRENT"
+            echo "Latest commit:    $LATEST"
+        - name: Check if update is needed
+          id: check
+          run: |
+            if [ "${{ steps.get-latest.outputs.latest }}" = "${{ steps.get-latest.outputs.current }}" ]; then
+              echo "update_needed=false" >> "$GITHUB_OUTPUT"
+              echo "vcpkg is already up to date"
+            else
+              echo "update_needed=true" >> "$GITHUB_OUTPUT"
+              echo "vcpkg update available"
+            fi
+        - name: Update vcpkg baseline
+          if: steps.check.outputs.update_needed == 'true'
+          run: |
+            LATEST="${{ steps.get-latest.outputs.latest }}"
+            jq --arg baseline "$LATEST" '.["default-registry"].baseline = $baseline' vcpkg-configuration.json > vcpkg-configuration.json.tmp
+            mv vcpkg-configuration.json.tmp vcpkg-configuration.json
+        - name: Update vcpkg_version.py
+          if: steps.check.outputs.update_needed == 'true'
+          run: |
+            LATEST="${{ steps.get-latest.outputs.latest }}"
+            VERSION=$(python3 -c "
+            import ast
+            code = ast.parse(open('tools/ci/vcpkg_version.py').read())
+            print(int(code.body[0].value.value) + 1)
+            ")
+            cat > tools/ci/vcpkg_version.py << EOF
+            # mge - Modern Game Engine
+            # Copyright (c) 2017-2023 by Alexander Schroeder
+            # All rights reserved.
+            version = "$VERSION"
+            vcpkg_githash = "$LATEST"
+            EOF
+            sed -i 's/^            //' tools/ci/vcpkg_version.py
+        - name: Create branch and push
+          if: steps.check.outputs.update_needed == 'true'
           run: |
             git config --global user.name 'github-actions'
             git config --global user.email 'github-actions@github.com'
-            git checkout -b update-vcpkg-${{ github.run_number }}
-        - name: Check whether vcpkg needs an update, and update it
+            BRANCH="update-vcpkg-${{ github.run_number }}"
+            git checkout -b "$BRANCH"
+            git add vcpkg-configuration.json tools/ci/vcpkg_version.py
+            git commit -m "Update vcpkg baseline to ${{ steps.get-latest.outputs.latest }}"
+            git push origin "$BRANCH"
+        - name: Create pull request
+          if: steps.check.outputs.update_needed == 'true'
+          env:
+            GH_TOKEN: ${{ secrets.MGE_GITHUB_TOKEN }}
           run: |
-            echo "Checking whether vcpkg needs an update"
-        - name: Commit and push changes
-          run: |
-            git add .
-            git commit -m "Update vcpkg"
-            git push origin update-vcpkg-${{ github.run_number }}
+            BRANCH="update-vcpkg-${{ github.run_number }}"
+            PR_URL=$(gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Update vcpkg baseline" \
+              --body "Update vcpkg baseline from \`${{ steps.get-latest.outputs.current }}\` to \`${{ steps.get-latest.outputs.latest }}\`.")
+            echo "Created PR: $PR_URL"
+            gh pr merge "$PR_URL" --auto --squash
