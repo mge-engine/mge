@@ -13,7 +13,9 @@ IF(WIN32)
         FIND_PROGRAM(OPENCPPCOVERAGE_EXECUTABLE OpenCppCoverage.exe
             HINTS "${SCOOP_OPENCPPCOVERAGE_PREFIX}")
     ELSE()
-        FIND_PROGRAM(OPENCPPCOVERAGE_EXECUTABLE OpenCppCoverage.exe)
+        FIND_PROGRAM(OPENCPPCOVERAGE_EXECUTABLE OpenCppCoverage.exe
+            HINTS "C:/Program Files/OpenCppCoverage"
+                  "$ENV{ProgramFiles}/OpenCppCoverage")
     ENDIF()
 
     IF(OPENCPPCOVERAGE_EXECUTABLE)
