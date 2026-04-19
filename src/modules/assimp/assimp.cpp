@@ -356,10 +356,6 @@ namespace mge {
                 }
             }
 
-            memcpy(result->vertex_data(),
-                   mesh->mVertices,
-                   mesh->mNumVertices * sizeof(aiVector3D));
-
             MGE_DEBUG_TRACE(ASSIMP,
                             "Mesh {} has {} faces, each with {} indices",
                             a.path().string(),

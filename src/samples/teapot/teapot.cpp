@@ -4,6 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/mesh.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -11,7 +12,11 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/topology.hpp"
+#include "mge/graphics/uniform.hpp"
+#include "mge/graphics/uniform_block.hpp"
 #include "mge/graphics/window.hpp"
+#include "mge/math/glm.hpp"
+#include "mge/math/mat.hpp"
 namespace mge {
     MGE_DEFINE_TRACE(TEAPOT);
 }
@@ -53,10 +58,19 @@ namespace mge {
             auto& ctx = m_window->render_context();
 
             if (m_initialized) {
+                if (!m_uniform_block && !m_program->needs_link()) {
+                    setup_mvp();
+                }
+            }
+
+            if (m_initialized && m_uniform_block) {
                 auto& pass = ctx.pass(0);
                 pass.default_viewport();
+                pass.default_scissor();
                 pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-                auto& command_buffer = ctx.command_buffer();
+                pass.clear_depth(1.0f);
+                auto& command_buffer = ctx.command_buffer(true);
+                command_buffer.bind_uniform_block(m_uniform_block.get());
                 command_buffer.draw(m_program, m_vertices, m_indices);
                 pass.submit(command_buffer);
             } else {
@@ -101,10 +115,12 @@ namespace mge {
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
 
+                    layout(std140) uniform MVPBlock {
+                        mat4 mvp;
+                    };
+
                     void main() {
-                      gl_Position.xyz = vertexPosition;
-                      gl_Position.y = gl_Position.y;
-                      gl_Position.w = 1.0;
+                      gl_Position = mvp * vec4(vertexPosition, 1.0);
                     }
                 )shader";
 
@@ -179,20 +195,43 @@ namespace mge {
                 mesh->vertices());
             MGE_DEBUG_TRACE(TEAPOT, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
-                mge::data_type::INT32,
+                mge::data_type::UINT32,
                 mesh->index_data_size(),
                 mesh->indices());
             MGE_DEBUG_TRACE(TEAPOT, "Initializing objects done");
             m_initialized = true;
         }
 
+        void setup_mvp()
+        {
+            const auto& uniform_buffers = m_program->uniform_buffers();
+            if (uniform_buffers.empty()) {
+                MGE_ERROR_TRACE(TEAPOT, "No uniform buffers found in program");
+                return;
+            }
+            m_uniform_block =
+                std::make_unique<mge::uniform_block>(uniform_buffers[0]);
+
+            auto       projection = glm::perspective(glm::radians(45.0f),
+                                                     16.0f / 9.0f,
+                                                     0.1f,
+                                                     100.0f);
+            auto       view = glm::lookAt(glm::vec3(0.0f, 2.0f, 8.0f),
+                                          glm::vec3(0.0f, 1.5f, 0.0f),
+                                          glm::vec3(0.0f, 1.0f, 0.0f));
+            auto       model = glm::mat4(1.0f);
+            mge::fmat4 mvp = projection * view * model;
+            m_uniform_block->set("mvp", mvp);
+        }
+
     private:
-        render_system_ref    m_render_system;
-        window_ref           m_window;
-        std::atomic<bool>    m_initialized;
-        program_handle       m_program;
-        vertex_buffer_handle m_vertices;
-        index_buffer_handle  m_indices;
+        render_system_ref                   m_render_system;
+        window_ref                          m_window;
+        std::atomic<bool>                   m_initialized;
+        program_handle                      m_program;
+        vertex_buffer_handle                m_vertices;
+        index_buffer_handle                 m_indices;
+        std::unique_ptr<mge::uniform_block> m_uniform_block;
     };
 
     MGE_REGISTER_IMPLEMENTATION(teapot, mge::application, teapot);
