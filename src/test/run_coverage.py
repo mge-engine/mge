@@ -138,6 +138,17 @@ def main():
         exe, pattern = entry.split(":", 1)
         gtest_exclude.setdefault(exe, []).append(pattern)
 
+    opencppcoverage = args.opencppcoverage
+    if not os.path.isfile(opencppcoverage):
+        resolved = shutil.which(opencppcoverage)
+        if resolved:
+            opencppcoverage = resolved
+        else:
+            print(f"OpenCppCoverage not found: {opencppcoverage}",
+                  file=sys.stderr)
+            sys.exit(1)
+    opencppcoverage = os.path.normpath(opencppcoverage)
+
     tests = discover_tests(args.ctest, args.binary_dir)
     if not tests:
         print("No headless tests found.", file=sys.stderr)
@@ -148,7 +159,7 @@ def main():
     os.makedirs(args.output_dir, exist_ok=True)
 
     failed = run_coverage(
-        args.opencppcoverage, tests,
+        opencppcoverage, tests,
         args.source_dir, args.output_dir,
         gtest_exclude, html=args.html
     )
