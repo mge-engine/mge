@@ -146,6 +146,13 @@ namespace mge::renderdoc {
                     m_enabled = false;
                     return;
                 }
+            } else {
+                MGE_DEBUG_TRACE(RENDERDOC,
+                                "RenderDoc library not found and "
+                                "MGE_RENDERDOC_LIBRARY_PATH not set, "
+                                "disabling frame debugger");
+                m_enabled = false;
+                return;
             }
         }
         pRENDERDOC_GetAPI get_api = nullptr;
