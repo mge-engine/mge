@@ -10,6 +10,7 @@
 - Always build to verify a change: `cmake --build build`
 - When checking an error: `cmake --build build -j 1`
 - After building, run appropriate tests (see below)
+- Run each test command exactly once for verification. Do not re-run the same tests multiple times.
 - Execute commands from the repository root
 
 ## Build & Test
