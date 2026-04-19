@@ -119,9 +119,6 @@ API Reference
 .. doxygenclass:: mge::command_buffer
     :members:
 
-.. doxygenclass:: mge::pipeline_state
-    :members:
-
 .. doxygenenum:: mge::blend_operation
 
 .. doxygenenum:: mge::blend_factor

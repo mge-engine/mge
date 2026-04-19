@@ -57,8 +57,6 @@ namespace mge {
          * @brief Erase callback using a registered key.
          *
          * @param k key
-         * @return erased value, it is empty if the key
-         *   was not found
          */
         void erase(key_type k)
         {
@@ -154,8 +152,6 @@ namespace mge {
          * @brief Erase callback using a registered key.
          *
          * @param k key
-         * @return erased value, it is empty if the key
-         *   was not found
          */
         void erase(key_type k)
         {

@@ -88,6 +88,8 @@ FUNCTION(MGE_TEST)
                 ADD_TEST(NAME ${MGE_TEST_TARGET}
                         COMMAND ${_TEST_COMMAND}
                         WORKING_DIRECTORY "${_BINARY_DIR}")
+                SET_TESTS_PROPERTIES(${MGE_TEST_TARGET}
+                    PROPERTIES LABELS "graphics")
                 IF(MGE_TEST_SHOWTRACE)
                     SET_PROPERTY(TEST ${MGE_TEST_TARGET}
                                 PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
@@ -103,6 +105,8 @@ FUNCTION(MGE_TEST)
             ADD_TEST(NAME ${MGE_TEST_TARGET}
                     COMMAND ${_TEST_COMMAND}
                     WORKING_DIRECTORY "${_BINARY_DIR}")
+            SET_TESTS_PROPERTIES(${MGE_TEST_TARGET}
+                PROPERTIES LABELS "unit")
             IF(MGE_TEST_SHOWTRACE)
                 SET_PROPERTY(TEST ${MGE_TEST_TARGET}
                             PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
@@ -181,6 +185,7 @@ FUNCTION(MGE_CAPTURE_TEST)
                 test_${MGE_CAPTURE_TEST_TARGET}_capture_${RENDER_SYSTEM}
                 PROPERTIES
                     RESOURCE_LOCK "gpu_capture"
+                    LABELS "capture;${RENDER_SYSTEM}"
             )
             IF(APPLE AND MGE_VULKAN_LIBRARY_DIR)
                 SET_PROPERTY(
@@ -219,3 +224,8 @@ FUNCTION(MGE_CAPTURE_TEST)
         MESSAGE("-- Skipping screenshot targets for target ${MGE_CAPTURE_TEST_TARGET}")
     ENDIF()
 ENDFUNCTION()
+
+ADD_CUSTOM_TARGET(quick-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -LE capture
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+)

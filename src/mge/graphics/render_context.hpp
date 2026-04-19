@@ -46,7 +46,6 @@ namespace mge {
          *
          * @param dt            index buffer data type
          * @param data_size     size in bytes
-         * @param data          initial data
          * @return created index buffer
          */
         virtual index_buffer* on_create_index_buffer(data_type dt,

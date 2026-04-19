@@ -57,8 +57,7 @@ namespace mge {
         /**
          * @brief Find a parameter,
          *
-         * @param section   parameter section
-         * @param name      parameter name
+         * @param path      parameter path
          * @return parameter as registered, a  @c std::runtime_error is
          * thrown if parameter is not found
          */

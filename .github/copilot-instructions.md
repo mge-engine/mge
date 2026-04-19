@@ -18,7 +18,7 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 
 * Always execute 'cmake --build build' to build the project, do a build always to verify a change
 * When checking an error, use 'cmake --build build -j 1' to do a single-threaded build for easier debugging
-* After building, run the tests using 'ctest --output-on-failure --test-dir build' to ensure everything is working correctly in build subdirectory.
+* After building, run the appropriate tests (see Test Workflow below)
 * Execute these commands from the root of the repository.
 
 # Commit Messages
@@ -61,9 +61,50 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 - Invoke in project directory:
 ```powershell
 cmake --build build          # Multi-threaded build
-ctest --output-on-failure --test-dir build
 ```
 - if build does not do anything, assume all fine (user did build it)
+
+### Test Workflow
+
+Tests are labeled with CTest labels: `unit`, `graphics`, `capture`, `lua`, `opengl`, `directx11`, `directx12`, `vulkan`.
+
+#### Test Commands
+```powershell
+# Quick tests (all except capture/ref protocol tests)
+cmake --build build --target quick-tests
+
+# All tests including capture/ref protocol
+ctest --output-on-failure --test-dir build
+
+# Backend-specific capture tests only
+ctest --output-on-failure --test-dir build -L opengl
+ctest --output-on-failure --test-dir build -L directx11
+ctest --output-on-failure --test-dir build -L directx12
+ctest --output-on-failure --test-dir build -L vulkan
+
+# Lua tests only
+ctest --output-on-failure --test-dir build -L lua
+
+# Unit tests only (no graphics, no capture)
+ctest --output-on-failure --test-dir build -L unit
+```
+
+#### Which Tests to Run (Agent Guidance)
+
+Choose tests based on which files were changed:
+
+| Changed files | Tests to run |
+|---------------|-------------|
+| `src/mge/core/`, `src/mge/math/`, `src/mge/reflection/`, `src/mge/asset/`, `src/mge/input/` | `quick-tests` |
+| `src/modules/lua/` | `ctest -L lua` first, then `quick-tests` |
+| `src/modules/directx11/` | `ctest -L directx11` first, then other backends |
+| `src/modules/directx12/` | `ctest -L directx12` first, then other backends |
+| `src/modules/opengl/` | `ctest -L opengl` first, then other backends |
+| `src/modules/vulkan/` | `ctest -L vulkan` first, then other backends |
+| `src/mge/graphics/`, `src/mge/ui/`, `assets/shaders/`, `src/samples/` | All tests: `ctest --output-on-failure --test-dir build` |
+| `cmake/`, `CMakeLists.txt`, build system changes | All tests: `ctest --output-on-failure --test-dir build` |
+
+When fixing a backend-specific issue, run that backend's capture tests first. If they pass, run other backends to check for regressions.
   
 
 ### CMake Structure
