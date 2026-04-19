@@ -107,14 +107,14 @@ def report_coverage(output_dir):
     cobertura_path = os.path.join(output_dir, "coverage.xml")
     if not os.path.exists(cobertura_path):
         print("No coverage report generated.", file=sys.stderr)
-        return False
+        return None
 
     tree = ET.parse(cobertura_path)
     root = tree.getroot()
     line_rate = float(root.get("line-rate", "0"))
     percentage = line_rate * 100.0
     print(f"\nOverall line coverage: {percentage:.1f}%")
-    return True
+    return percentage
 
 
 def main():
@@ -129,6 +129,8 @@ def main():
                         help="EXE:TestSuite.TestCase to exclude (repeatable)")
     parser.add_argument("--html", action="store_true",
                         help="Generate detailed HTML coverage report")
+    parser.add_argument("--min-coverage", type=float, default=0.0,
+                        help="Minimum coverage percentage, fail if below")
     args = parser.parse_args()
 
     gtest_exclude = {}
@@ -151,7 +153,7 @@ def main():
         gtest_exclude, html=args.html
     )
 
-    report_coverage(args.output_dir)
+    percentage = report_coverage(args.output_dir)
 
     if args.html:
         html_dir = os.path.normpath(
@@ -162,6 +164,18 @@ def main():
         print(f"\n{len(failed)} test(s) failed: {', '.join(failed)}",
               file=sys.stderr)
         sys.exit(1)
+
+    if args.min_coverage > 0.0:
+        if percentage is None:
+            print("Coverage check failed: no report.",
+                  file=sys.stderr)
+            sys.exit(1)
+        if percentage < args.min_coverage:
+            print(f"Coverage {percentage:.1f}% is below minimum "
+                  f"{args.min_coverage:.1f}%", file=sys.stderr)
+            sys.exit(1)
+        print(f"Coverage check passed: {percentage:.1f}% >= "
+              f"{args.min_coverage:.1f}%")
 
 
 if __name__ == "__main__":

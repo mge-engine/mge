@@ -231,12 +231,15 @@ ADD_CUSTOM_TARGET(quick-tests
 )
 
 IF(OPENCPPCOVERAGE_EXECUTABLE AND Python3_FOUND)
+    SET(MGE_MIN_COVERAGE "30.0" CACHE STRING
+        "Minimum coverage percentage for quick-tests-coverage")
     SET(MGE_COVERAGE_ARGS
             --opencppcoverage "${OPENCPPCOVERAGE_EXECUTABLE}"
             --ctest "${CMAKE_CTEST_COMMAND}"
             --source-dir "${CMAKE_SOURCE_DIR}"
             --binary-dir "${CMAKE_BINARY_DIR}"
             --output-dir "${CMAKE_BINARY_DIR}/coverage"
+            --min-coverage "${MGE_MIN_COVERAGE}"
             --gtest-exclude test_core:atexit.*
             --gtest-exclude test_core:crash.*
             --gtest-exclude test_core:debugging.*
