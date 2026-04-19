@@ -178,10 +178,9 @@ namespace mge {
                     }
                 )slang";
 
-                mge::shader_language slang{"slang",
-                                           mge::semantic_version(1, 0)};
                 MGE_DEBUG_TRACE(TEAPOT, "Compile and link SLANG shaders");
-                m_program->compile_and_link(slang, slang_shader_source);
+                m_program->compile_and_link(mge::shader_language::SLANG,
+                                            slang_shader_source);
                 MGE_DEBUG_TRACE(TEAPOT, "SLANG shaders compiled");
             } else {
                 MGE_ERROR_TRACE(TEAPOT,

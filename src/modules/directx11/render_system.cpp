@@ -38,8 +38,7 @@ namespace mge::dx11 {
             {
                 shader_language hlsl{"hlsl"sv, mge::semantic_version(5, 0)};
                 m_shader_languages.push_back(hlsl);
-                shader_language slang{"slang"sv, mge::semantic_version(0, 0)};
-                m_shader_languages.push_back(slang);
+                m_shader_languages.push_back(shader_language::SLANG);
                 shader_format bytecode{"bytecode"sv,
                                        mge::semantic_version(5, 0)};
                 m_shader_formats.push_back(bytecode);

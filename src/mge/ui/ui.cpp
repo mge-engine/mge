@@ -243,15 +243,15 @@ namespace mge {
         const auto& languages = caps.shader_languages();
         bool        slang_supported = false;
         for (const auto& lang : languages) {
-            if (lang.name() == "slang") {
+            if (lang.name() == shader_language::SLANG.name()) {
                 slang_supported = true;
                 break;
             }
         }
 
         if (slang_supported) {
-            mge::shader_language slang{"slang", mge::semantic_version(1, 0)};
-            m_ui_program->compile_and_link(slang, slang_shader_source);
+            m_ui_program->compile_and_link(shader_language::SLANG,
+                                           slang_shader_source);
         } else {
             // OpenGL shaders (GLSL 330 core)
             auto vertex_shader =

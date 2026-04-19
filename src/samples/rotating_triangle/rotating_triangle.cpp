@@ -185,18 +185,17 @@ namespace mge {
             const auto& caps = m_render_system->system_capabilities();
             bool        slang_supported = false;
             for (const auto& lang : caps.shader_languages()) {
-                if (lang.name() == "slang") {
+                if (lang.name() == mge::shader_language::SLANG.name()) {
                     slang_supported = true;
                     break;
                 }
             }
 
             if (slang_supported) {
-                mge::shader_language slang{"slang",
-                                           mge::semantic_version(1, 0)};
                 MGE_DEBUG_TRACE(ROTATING_TRIANGLE,
                                 "Compiling and linking Slang program");
-                m_program->compile_and_link(slang, slang_shader_source);
+                m_program->compile_and_link(mge::shader_language::SLANG,
+                                            slang_shader_source);
             } else {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core

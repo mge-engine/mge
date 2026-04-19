@@ -6,6 +6,9 @@
 
 namespace mge {
 
+    const shader_language shader_language::SLANG{"slang",
+                                                 semantic_version(1, 0)};
+
     shader_language::shader_language(std::string_view        name,
                                      const semantic_version& version)
         : m_name(name)

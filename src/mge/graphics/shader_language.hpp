@@ -80,6 +80,11 @@ namespace mge {
          */
         bool compatible(const shader_language& other) const;
 
+        /**
+         * @brief SLANG shader language constant.
+         */
+        static const shader_language SLANG;
+
     private:
         std::string      m_name;
         semantic_version m_version;
