@@ -18,7 +18,7 @@ namespace mge {
 
     MGE_USE_TRACE(CORE);
 
-    module::module(const fs::path& path)
+    module::module(const std::filesystem::path& path)
     {
         auto stem = path.stem();
         auto stem_str = stem.string();
@@ -107,8 +107,7 @@ namespace mge {
         auto stem = name.stem();
         if (stem.string().starts_with("libmge_module_")) {
             auto suffix = name.extension();
-            if (suffix.string() == ".dylib"sv
-                || suffix.string() == ".so"sv) {
+            if (suffix.string() == ".dylib"sv || suffix.string() == ".so"sv) {
                 return true;
             }
         }

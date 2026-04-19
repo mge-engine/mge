@@ -23,10 +23,10 @@ namespace mge {
         /**
          * @brief Create a texture.
          *
-         * @param context render context
-         * @param type    texture type
+         * @param ctx  render context
+         * @param type texture type
          */
-        texture(render_context&, texture_type type);
+        texture(render_context& ctx, texture_type type);
 
     public:
         /**

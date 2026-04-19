@@ -36,9 +36,7 @@ namespace mge {
         };
 
         /**
-         * @brief Constructs a frame debugger for the given render context.
-         *
-         * @param context render context
+         * @brief Constructs a frame debugger.
          */
         explicit frame_debugger();
 

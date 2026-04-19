@@ -84,7 +84,7 @@ namespace mge {
             tmp_data[std::string(key.begin(), key.end())] =
                 std::string(value.begin(), value_end);
         }
-        std::swap(m_data, tmp_data);
+        ::std::swap(m_data, tmp_data);
         return;
     }
 

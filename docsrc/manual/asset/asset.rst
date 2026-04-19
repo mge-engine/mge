@@ -92,14 +92,14 @@ Asset Not Found
 
 Thrown when an asset cannot be located at the specified path.
 
-.. doxygenclass:: mge::asset_not_found
+``mge::asset_not_found`` is an exception class derived from ``mge::exception``.
 
 Asset Corrupted
 ---------------
 
 Thrown when an asset exists but its data is corrupted or cannot be parsed.
 
-.. doxygenclass:: mge::asset_corrupted
+``mge::asset_corrupted`` is an exception class derived from ``mge::exception``.
 
 Example Usage
 -------------

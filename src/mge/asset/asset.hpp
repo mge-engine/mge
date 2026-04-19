@@ -184,7 +184,7 @@ namespace mge {
          * @param name name of asset to look up
          * @param type asset type
          * @return asset that was located
-         * @throw @c asset_not_found if asset could not be looked up
+         * @throw asset_not_found if asset could not be looked up
          */
         static asset locate(std::string_view name, const asset_type& type);
 
