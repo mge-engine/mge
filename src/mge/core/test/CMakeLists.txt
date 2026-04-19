@@ -47,6 +47,8 @@ SET(MGECORE_TEST_SOURCES
     test_properties.cpp
     test_file_streams.cpp
     test_contains.cpp
+    test_handle.cpp
+    test_line_editor.cpp
     test_markdown_document.cpp
     test_dump.cpp
 )
