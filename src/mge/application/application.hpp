@@ -237,3 +237,14 @@ namespace mge {
     {                                                                          \
         return mge::application::main(argc, argv);                             \
     }
+
+#ifdef MGE_OS_WINDOWS
+#    include <stdlib.h>
+#    include <windows.h>
+#    define MGE_WINMAINFUNCTION                                                \
+        int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)                   \
+        {                                                                      \
+            return mge::application::main(__argc,                              \
+                                          const_cast<const char**>(__argv));   \
+        }
+#endif

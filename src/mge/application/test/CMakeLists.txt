@@ -21,3 +21,12 @@ MGE_TEST(TARGET test_simple_application
          SOURCES test_simple_application.cpp
          NOMAIN
          LIBRARIES mgeapplication mgecore)
+
+IF(WIN32)
+    MGE_TEST(TARGET test_winmain_application
+             SOURCES test_winmain_application.cpp
+             NOMAIN
+             LIBRARIES mgeapplication mgecore)
+    SET_TARGET_PROPERTIES(test_winmain_application
+                          PROPERTIES WIN32_EXECUTABLE TRUE)
+ENDIF()
