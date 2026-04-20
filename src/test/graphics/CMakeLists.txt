@@ -9,6 +9,7 @@ CONFIGURE_FILE(
     COPYONLY
 )
 
+
 # Register Python-based RenderDoc capture tests
 # Note: These tests require display and will be skipped in headless environments
 IF(FALSE)

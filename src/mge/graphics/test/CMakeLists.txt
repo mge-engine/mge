@@ -20,7 +20,9 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_uniform_binding.cpp
     test_uniform_block.cpp
     test_viewport.cpp
+    test_shader_profile.cpp
     test_shader.cpp
+    test_vertex_layout.cpp
     test_command_buffer.cpp
 )
 
