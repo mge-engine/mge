@@ -54,23 +54,28 @@ namespace mge::dx11 {
                 switch (message->Severity) {
                 case D3D11_MESSAGE_SEVERITY_CORRUPTION:
                     MGE_ERROR_TRACE(DX11,
-                                    "D3D11 CORRUPTION: " << description);
+                                    "D3D11 CORRUPTION: {}",
+                                    description);
                     break;
                 case D3D11_MESSAGE_SEVERITY_ERROR:
                     MGE_ERROR_TRACE(DX11,
-                                    "D3D11 ERROR: " << description);
+                                    "D3D11 ERROR: {}",
+                                    description);
                     break;
                 case D3D11_MESSAGE_SEVERITY_WARNING:
                     MGE_WARNING_TRACE(DX11,
-                                      "D3D11 WARNING: " << description);
+                                      "D3D11 WARNING: {}",
+                                      description);
                     break;
                 case D3D11_MESSAGE_SEVERITY_INFO:
                     MGE_INFO_TRACE(DX11,
-                                   "D3D11 INFO: " << description);
+                                   "D3D11 INFO: {}",
+                                   description);
                     break;
                 case D3D11_MESSAGE_SEVERITY_MESSAGE:
                     MGE_DEBUG_TRACE(DX11,
-                                    "D3D11 MESSAGE: " << description);
+                                    "D3D11 MESSAGE: {}",
+                                    description);
                     break;
                 }
             }
