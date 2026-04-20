@@ -531,6 +531,7 @@ namespace mge::dx12 {
         if (m_info_queue && m_callback_cookie != 0) {
             m_info_queue->UnregisterMessageCallback(m_callback_cookie);
         }
+        error::set_info_queue(nullptr);
     }
 
     mge::index_buffer* render_context::on_create_index_buffer(mge::data_type dt,
@@ -712,6 +713,8 @@ namespace mge::dx12 {
         if (m_render_system.debug()) {
             MGE_DEBUG_TRACE(DX12, "Enabling debug messages");
             if (SUCCEEDED(m_device.As(&m_info_queue))) {
+                m_info_queue->AddRef();
+                error::set_info_queue(m_info_queue.Get());
                 HRESULT rc = S_OK;
 #if 0
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION,

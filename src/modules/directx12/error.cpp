@@ -5,8 +5,79 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 
+#include <string_view>
+#include <vector>
+
+namespace mge {
+    MGE_USE_TRACE(DX12);
+}
+
 namespace mge::dx12 {
     MGE_DEFINE_EXCEPTION_CLASS(error);
+
+    static ID3D12InfoQueue* s_info_queue = nullptr;
+
+    void error::set_info_queue(ID3D12InfoQueue* queue)
+    {
+        if (s_info_queue) {
+            s_info_queue->Release();
+        }
+        s_info_queue = queue;
+    }
+
+    void error::flush_debug_messages()
+    {
+        if (!s_info_queue) {
+            return;
+        }
+        UINT64 num_messages =
+            s_info_queue->GetNumStoredMessages();
+        for (UINT64 i = 0; i < num_messages; ++i) {
+            SIZE_T message_size = 0;
+            s_info_queue->GetMessage(i, nullptr, &message_size);
+            if (message_size == 0) {
+                continue;
+            }
+            std::vector<char> message_data(message_size);
+            auto*             message =
+                reinterpret_cast<D3D12_MESSAGE*>(message_data.data());
+            if (SUCCEEDED(
+                    s_info_queue->GetMessage(i, message, &message_size))) {
+                if (!message->pDescription) {
+                    continue;
+                }
+                std::string_view description(
+                    message->pDescription,
+                    message->DescriptionByteLength
+                        ? message->DescriptionByteLength - 1
+                        : 0);
+                switch (message->Severity) {
+                case D3D12_MESSAGE_SEVERITY_CORRUPTION:
+                    MGE_ERROR_TRACE(DX12,
+                                    "D3D12 CORRUPTION: {}",
+                                    description);
+                    break;
+                case D3D12_MESSAGE_SEVERITY_ERROR:
+                    MGE_ERROR_TRACE(DX12,
+                                    "D3D12 ERROR: {}",
+                                    description);
+                    break;
+                case D3D12_MESSAGE_SEVERITY_WARNING:
+                    MGE_WARNING_TRACE(DX12,
+                                      "D3D12 WARNING: {}",
+                                      description);
+                    break;
+                case D3D12_MESSAGE_SEVERITY_INFO:
+                default:
+                    MGE_INFO_TRACE(DX12,
+                                   "D3D12 INFO: {}",
+                                   description);
+                    break;
+                }
+            }
+        }
+        s_info_queue->ClearStoredMessages();
+    }
 
     error& error::set_info_from_hresult(HRESULT     rc,
                                         const char* file,
@@ -37,6 +108,7 @@ namespace mge::dx12 {
         if (rc == S_OK) {
             return;
         } else {
+            flush_debug_messages();
             dx12::error err;
             throw err.set_info_from_hresult(rc, file, line, clazz, method);
         }
@@ -107,6 +179,7 @@ namespace mge::dx12 {
         if (rc == S_OK) {
             return;
         } else {
+            flush_debug_messages();
             dx12::error err;
             std::string called_function(clazz);
             called_function.append("::");

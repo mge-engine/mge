@@ -45,6 +45,11 @@ namespace mge::dx12 {
                                        int         line,
                                        const char* clazz,
                                        const char* method);
+
+        static void set_info_queue(ID3D12InfoQueue* queue);
+
+    private:
+        static void flush_debug_messages();
     };
 } // namespace mge::dx12
 
