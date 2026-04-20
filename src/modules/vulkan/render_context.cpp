@@ -1345,7 +1345,7 @@ namespace mge::vulkan {
 
         // Get or create descriptor set
         auto desc_key = std::make_tuple(&ub,
-                                        static_cast<mge::texture*>(nullptr),
+                                        std::vector<mge::texture*>{},
                                         vk_program.descriptor_set_layout());
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
         auto            desc_it = m_descriptor_sets.find(desc_key);
@@ -1409,7 +1409,12 @@ namespace mge::vulkan {
                                       mge::texture*         tex,
                                       mge::uniform_block*   ub)
     {
-        VkDescriptorSet descriptor_set = prepare_texture(vk_program, tex, ub);
+        mge::texture_binding_list textures;
+        if (tex) {
+            textures.push_back({0, tex});
+        }
+        VkDescriptorSet descriptor_set =
+            prepare_texture(vk_program, textures, ub);
         if (descriptor_set != VK_NULL_HANDLE) {
             vkCmdBindDescriptorSets(command_buffer,
                                     VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -1423,15 +1428,13 @@ namespace mge::vulkan {
     }
 
     VkDescriptorSet
-    render_context::prepare_texture(mge::vulkan::program& vk_program,
-                                    mge::texture*         tex,
-                                    mge::uniform_block*   ub)
+    render_context::prepare_texture(mge::vulkan::program&            vk_program,
+                                    const mge::texture_binding_list& textures,
+                                    mge::uniform_block*              ub)
     {
-        if (!tex) {
+        if (textures.empty()) {
             return VK_NULL_HANDLE;
         }
-
-        auto* vk_tex = static_cast<mge::vulkan::texture*>(tex);
 
         const auto& sampler_bindings = vk_program.sampler_bindings();
         if (sampler_bindings.empty()) {
@@ -1443,13 +1446,18 @@ namespace mge::vulkan {
             return VK_NULL_HANDLE;
         }
 
-        // Reuse the descriptor set from prepare_uniform_block if available,
-        // so both UBO and sampler bindings are on the same set.
-        // Key includes texture pointer so each ub+tex pair gets its own set.
-        auto desc_key =
-            std::make_tuple(ub ? ub : static_cast<mge::uniform_block*>(nullptr),
-                            static_cast<mge::texture*>(tex),
-                            layout);
+        // Build texture pointer vector for cache key
+        // (sorted by slot for consistent key ordering)
+        std::vector<mge::texture*> tex_ptrs;
+        tex_ptrs.reserve(textures.size());
+        for (const auto& b : textures) {
+            tex_ptrs.push_back(b.texture);
+        }
+
+        auto desc_key = std::make_tuple(
+            ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+            tex_ptrs,
+            layout);
 
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
         auto            desc_it = m_descriptor_sets.find(desc_key);
@@ -1457,16 +1465,15 @@ namespace mge::vulkan {
         if (desc_it != m_descriptor_sets.end()) {
             descriptor_set = desc_it->second;
         } else {
-            // Check if there's already a set with UBO written (no texture)
-            // and copy from it, or allocate fresh
+            // Check if there's already a set with UBO written (no textures)
             auto ub_only_key = std::make_tuple(
                 ub ? ub : static_cast<mge::uniform_block*>(nullptr),
-                static_cast<mge::texture*>(nullptr),
+                std::vector<mge::texture*>{},
                 layout);
             auto ub_it = m_descriptor_sets.find(ub_only_key);
 
             if (ub && ub_it != m_descriptor_sets.end()) {
-                // Need a new set with both UBO and texture written
+                // Need a new set with both UBO and textures written
                 VkDescriptorSetAllocateInfo alloc_info = {};
                 alloc_info.sType =
                     VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
@@ -1525,8 +1532,23 @@ namespace mge::vulkan {
                 }
             }
 
-            // Write texture binding
+            // Write texture bindings — match each sampler binding to
+            // the texture bound at the corresponding slot
             for (const auto& sb : sampler_bindings) {
+                mge::texture* matched_tex = nullptr;
+                for (const auto& binding : textures) {
+                    if (binding.slot == sb.binding) {
+                        matched_tex = binding.texture;
+                        break;
+                    }
+                }
+                if (!matched_tex) {
+                    continue;
+                }
+
+                auto* vk_tex =
+                    static_cast<mge::vulkan::texture*>(matched_tex);
+
                 VkDescriptorImageInfo image_info = {};
                 image_info.imageLayout =
                     VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1556,13 +1578,13 @@ namespace mge::vulkan {
         return descriptor_set;
     }
 
-    void render_context::draw_geometry(VkCommandBuffer     command_buffer,
-                                       mge::program*       program,
-                                       mge::vertex_buffer* vb,
-                                       mge::index_buffer*  ib,
+    void render_context::draw_geometry(VkCommandBuffer            command_buffer,
+                                       mge::program*              program,
+                                       mge::vertex_buffer*        vb,
+                                       mge::index_buffer*         ib,
                                        const mge::pipeline_state& state,
                                        mge::uniform_block*        ub,
-                                       mge::texture*              tex,
+                                       const mge::texture_binding_list& textures,
                                        uint32_t                   index_count,
                                        uint32_t                   index_offset)
     {
@@ -1579,15 +1601,16 @@ namespace mge::vulkan {
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
 
-        // Bind uniform block and texture together to avoid
+        // Bind uniform block and textures together to avoid
         // updating a descriptor set that is already bound
-        if (ub || tex) {
+        if (ub || !textures.empty()) {
             VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
             if (ub) {
                 descriptor_set = prepare_uniform_block(*vk_program, *ub);
             }
-            if (tex) {
-                descriptor_set = prepare_texture(*vk_program, tex, ub);
+            if (!textures.empty()) {
+                descriptor_set =
+                    prepare_texture(*vk_program, textures, ub);
             }
             if (descriptor_set != VK_NULL_HANDLE) {
                 vkCmdBindDescriptorSets(command_buffer,
@@ -1724,7 +1747,7 @@ namespace mge::vulkan {
                 const index_buffer_handle&  index_buffer,
                 const mge::pipeline_state&  state,
                 mge::uniform_block*         ub,
-                mge::texture*               tex,
+                const mge::texture_binding_list& textures,
                 uint32_t                    index_count,
                 uint32_t                    index_offset,
                 const mge::rectangle&       cmd_scissor) {
@@ -1749,7 +1772,7 @@ namespace mge::vulkan {
                                   index_buffer.get(),
                                   state,
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                 } else {
@@ -1764,7 +1787,7 @@ namespace mge::vulkan {
                     const index_buffer_handle&  index_buffer,
                     const mge::pipeline_state&  state,
                     mge::uniform_block*         ub,
-                    mge::texture*               tex,
+                    const mge::texture_binding_list& textures,
                     uint32_t                    index_count,
                     uint32_t                    index_offset,
                     const mge::rectangle&       cmd_scissor) {
@@ -1790,7 +1813,7 @@ namespace mge::vulkan {
                                   index_buffer.get(),
                                   state,
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                 });

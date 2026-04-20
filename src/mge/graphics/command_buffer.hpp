@@ -20,6 +20,17 @@ namespace mge {
     class uniform_block;
 
     /**
+     * @brief Binding of a texture to a slot.
+     */
+    struct texture_binding
+    {
+        uint32_t      slot{0};
+        mge::texture* texture{nullptr};
+    };
+
+    using texture_binding_list = std::vector<texture_binding>;
+
+    /**
      * @brief A command buffer records rendering commands to be
      * submitted to a render context.
      */
@@ -115,15 +126,27 @@ namespace mge {
         /**
          * @brief Bind a texture for subsequent draw commands.
          *
-         * The texture is attached to the next draw() call. After draw(),
-         * the binding is cleared.
+         * The texture is attached to the next draw() call at slot 0.
+         * After draw(), the binding is cleared.
          *
          * @param tex pointer to the texture to bind (nullptr to clear)
          */
         void bind_texture(mge::texture* tex) noexcept
         {
-            m_current_texture = tex;
+            bind_texture(0, tex);
         }
+
+        /**
+         * @brief Bind a texture to a specific slot for subsequent
+         * draw commands.
+         *
+         * The texture is attached to the next draw() call. After
+         * draw(), all texture bindings are cleared.
+         *
+         * @param slot texture slot index
+         * @param tex  pointer to the texture to bind
+         */
+        void bind_texture(uint32_t slot, mge::texture* tex) noexcept;
 
         /**
          * @brief Set the scissor rectangle for subsequent draw commands.
@@ -170,7 +193,7 @@ namespace mge {
          *
          * Calls @c f for each recorded draw command with the program,
          * vertex buffer, index buffer, pipeline state, uniform block,
-         * and texture.
+         * texture bindings, index count, index offset, and scissor.
          *
          * @tparam F callable type
          * @param f callable invoked for each draw command
@@ -218,19 +241,19 @@ namespace mge {
         }
 
     private:
-        pipeline_state m_current_pipeline_state{pipeline_state::DEFAULT};
-        uniform_block* m_current_uniform_block{nullptr};
-        mge::texture*  m_current_texture{nullptr};
-        mge::rectangle m_current_scissor_rect{};
+        pipeline_state       m_current_pipeline_state{pipeline_state::DEFAULT};
+        uniform_block*       m_current_uniform_block{nullptr};
+        texture_binding_list m_current_textures;
+        mge::rectangle       m_current_scissor_rect{};
 
-        std::vector<pipeline_state>       m_pipeline_states;
-        std::vector<program_handle>       m_programs;
-        std::vector<vertex_buffer_handle> m_vertex_buffers;
-        std::vector<index_buffer_handle>  m_index_buffers;
-        std::vector<uniform_block*>       m_uniform_blocks;
-        std::vector<mge::texture*>        m_textures;
-        std::vector<uint32_t>             m_index_counts;
-        std::vector<uint32_t>             m_index_offsets;
-        std::vector<mge::rectangle>       m_scissor_rects;
+        std::vector<pipeline_state>        m_pipeline_states;
+        std::vector<program_handle>        m_programs;
+        std::vector<vertex_buffer_handle>  m_vertex_buffers;
+        std::vector<index_buffer_handle>   m_index_buffers;
+        std::vector<uniform_block*>        m_uniform_blocks;
+        std::vector<texture_binding_list>  m_textures;
+        std::vector<uint32_t>              m_index_counts;
+        std::vector<uint32_t>              m_index_offsets;
+        std::vector<mge::rectangle>        m_scissor_rects;
     };
 } // namespace mge

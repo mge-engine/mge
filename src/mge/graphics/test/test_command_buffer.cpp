@@ -50,7 +50,7 @@ TEST(command_buffer, for_each_verifies_single_draw)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& /*scissor*/) {
@@ -82,7 +82,7 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& /*scissor*/) {
@@ -127,7 +127,7 @@ TEST(command_buffer, for_each_verifies_blend_states)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& /*scissor*/) {
@@ -176,7 +176,7 @@ TEST(command_buffer, depth_write_state)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& /*scissor*/) {
@@ -216,7 +216,7 @@ TEST(command_buffer, depth_test_function_state)
                     const mge::index_buffer_handle&  i,
                     const mge::pipeline_state&       state,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& /*scissor*/) {
@@ -249,7 +249,7 @@ TEST(command_buffer, scissor_default_is_zero_area)
             const mge::index_buffer_handle& /*i*/,
             const mge::pipeline_state& /*state*/,
             mge::uniform_block* /*ub*/,
-            mge::texture* /*tex*/,
+            const mge::texture_binding_list& /*textures*/,
             uint32_t /*index_count*/,
             uint32_t /*index_offset*/,
             const mge::rectangle& scissor) { EXPECT_EQ(scissor.area(), 0u); });
@@ -273,7 +273,7 @@ TEST(command_buffer, set_scissor_persists_across_draws)
                     const mge::index_buffer_handle& /*i*/,
                     const mge::pipeline_state& /*state*/,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& scissor) {
@@ -302,7 +302,7 @@ TEST(command_buffer, clear_scissor_resets)
                     const mge::index_buffer_handle& /*i*/,
                     const mge::pipeline_state& /*state*/,
                     mge::uniform_block* /*ub*/,
-                    mge::texture* /*tex*/,
+                    const mge::texture_binding_list& /*textures*/,
                     uint32_t /*index_count*/,
                     uint32_t /*index_offset*/,
                     const mge::rectangle& scissor) {

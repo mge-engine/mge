@@ -389,7 +389,7 @@ namespace mge::dx11 {
                                      index_buffer_handle        indices,
                                      const mge::pipeline_state& state,
                                      mge::uniform_block*        ub,
-                                     mge::texture*              tex,
+                                     const mge::texture_binding_list& textures,
                                      uint32_t                   index_count,
                                      uint32_t                   index_offset,
                                      const mge::rectangle&      cmd_scissor) {
@@ -417,7 +417,7 @@ namespace mge::dx11 {
                               vertices.get(),
                               indices.get(),
                               ub,
-                              tex,
+                              textures,
                               index_count,
                               index_offset);
                 if (!state.depth_write()) {
@@ -437,7 +437,7 @@ namespace mge::dx11 {
                                         index_buffer_handle        indices,
                                         const mge::pipeline_state& state,
                                         mge::uniform_block*        ub,
-                                        mge::texture*              tex,
+                                        const mge::texture_binding_list& textures,
                                         uint32_t                   index_count,
                                         uint32_t                   index_offset,
                                         const mge::rectangle& cmd_scissor) {
@@ -475,7 +475,7 @@ namespace mge::dx11 {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                     if (!state.depth_write()) {
@@ -489,11 +489,11 @@ namespace mge::dx11 {
         }
     }
 
-    void render_context::draw_geometry(mge::program*       program,
-                                       mge::vertex_buffer* vb,
-                                       mge::index_buffer*  ib,
-                                       mge::uniform_block* ub,
-                                       mge::texture*       tex,
+    void render_context::draw_geometry(mge::program*              program,
+                                       mge::vertex_buffer*        vb,
+                                       mge::index_buffer*         ib,
+                                       mge::uniform_block*        ub,
+                                       const mge::texture_binding_list& textures,
                                        uint32_t            index_count,
                                        uint32_t            index_offset)
     {
@@ -573,13 +573,19 @@ namespace mge::dx11 {
                                       nullptr,
                                       0);
 
-        // Bind texture if provided
-        if (tex) {
-            dx11::texture& dx11_tex = static_cast<dx11::texture&>(*tex);
-            ID3D11ShaderResourceView* srv = dx11_tex.shader_resource_view();
-            m_device_context->PSSetShaderResources(0, 1, &srv);
-            ID3D11SamplerState* sampler = dx11_tex.sampler_state();
-            m_device_context->PSSetSamplers(0, 1, &sampler);
+        // Bind textures
+        for (const auto& binding : textures) {
+            if (binding.texture) {
+                dx11::texture& dx11_tex =
+                    static_cast<dx11::texture&>(*binding.texture);
+                ID3D11ShaderResourceView* srv =
+                    dx11_tex.shader_resource_view();
+                m_device_context->PSSetShaderResources(binding.slot,
+                                                       1,
+                                                       &srv);
+                ID3D11SamplerState* sampler = dx11_tex.sampler_state();
+                m_device_context->PSSetSamplers(binding.slot, 1, &sampler);
+            }
         }
 
         UINT element_count =
@@ -588,10 +594,14 @@ namespace mge::dx11 {
                 : static_cast<UINT>(dx11_index_buffer->element_count());
         m_device_context->DrawIndexed(element_count, index_offset, 0);
 
-        // Unbind texture
-        if (tex) {
-            ID3D11ShaderResourceView* null_srv = nullptr;
-            m_device_context->PSSetShaderResources(0, 1, &null_srv);
+        // Unbind textures
+        for (const auto& binding : textures) {
+            if (binding.texture) {
+                ID3D11ShaderResourceView* null_srv = nullptr;
+                m_device_context->PSSetShaderResources(binding.slot,
+                                                       1,
+                                                       &null_srv);
+            }
         }
     }
 

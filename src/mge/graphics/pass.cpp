@@ -107,7 +107,7 @@ namespace mge {
                                const index_buffer_handle&  indices,
                                const pipeline_state&       state,
                                mge::uniform_block*         ub,
-                               mge::texture*               tex,
+                               const texture_binding_list& textures,
                                uint32_t                    index_count,
                                uint32_t                    index_offset,
                                const mge::rectangle&       scissor) {
@@ -116,7 +116,7 @@ namespace mge {
                                                        indices,
                                                        state,
                                                        ub,
-                                                       tex,
+                                                       textures,
                                                        index_count,
                                                        index_offset,
                                                        scissor});

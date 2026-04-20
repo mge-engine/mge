@@ -411,11 +411,11 @@ namespace mge::opengl {
         return m_extent.height;
     }
 
-    void render_context::draw_geometry(mge::program*       program,
-                                       mge::vertex_buffer* vb,
-                                       mge::index_buffer*  ib,
-                                       mge::uniform_block* ub,
-                                       mge::texture*       tex,
+    void render_context::draw_geometry(mge::program*              program,
+                                       mge::vertex_buffer*        vb,
+                                       mge::index_buffer*         ib,
+                                       mge::uniform_block*        ub,
+                                       const mge::texture_binding_list& textures,
                                        uint32_t            index_count,
                                        uint32_t            index_offset)
     {
@@ -437,18 +437,22 @@ namespace mge::opengl {
             bind_uniform_block(gl_program, *ub);
         }
 
-        // Bind texture if provided
-        if (tex) {
-            mge::opengl::texture& gl_tex = static_cast<opengl::texture&>(*tex);
-            glActiveTexture(GL_TEXTURE0);
-            CHECK_OPENGL_ERROR(glActiveTexture);
-            glBindTexture(GL_TEXTURE_2D, gl_tex.texture_name());
-            CHECK_OPENGL_ERROR(glBindTexture);
-            // Set all sampler uniforms to texture unit 0
-            for (const auto& sampler : gl_program.sampler_bindings()) {
-                glUniform1i(static_cast<GLint>(sampler.binding), 0);
-                CHECK_OPENGL_ERROR(glUniform1i);
+        // Bind textures
+        for (const auto& binding : textures) {
+            if (binding.texture) {
+                mge::opengl::texture& gl_tex =
+                    static_cast<opengl::texture&>(*binding.texture);
+                glActiveTexture(GL_TEXTURE0 + binding.slot);
+                CHECK_OPENGL_ERROR(glActiveTexture);
+                glBindTexture(GL_TEXTURE_2D, gl_tex.texture_name());
+                CHECK_OPENGL_ERROR(glBindTexture);
             }
+        }
+        // Set sampler uniforms to their respective texture units
+        for (const auto& sampler : gl_program.sampler_bindings()) {
+            glUniform1i(static_cast<GLint>(sampler.binding),
+                        static_cast<GLint>(sampler.binding));
+            CHECK_OPENGL_ERROR(glUniform1i);
         }
 
         if (!vb) {
@@ -502,9 +506,12 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glDrawElements);
         glBindVertexArray(0);
         CHECK_OPENGL_ERROR(glBindVertexArray(0));
-        if (tex) {
-            glBindTexture(GL_TEXTURE_2D, 0);
-            CHECK_OPENGL_ERROR(glBindTexture(0));
+        // Unbind textures
+        for (const auto& binding : textures) {
+            if (binding.texture) {
+                glActiveTexture(GL_TEXTURE0 + binding.slot);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
         }
         glUseProgram(0);
         CHECK_OPENGL_ERROR(glUseProgram(0));
@@ -630,7 +637,7 @@ namespace mge::opengl {
                 const index_buffer_handle&  indices,
                 const mge::pipeline_state&  state,
                 mge::uniform_block*         ub,
-                mge::texture*               tex,
+                const mge::texture_binding_list& textures,
                 uint32_t                    index_count,
                 uint32_t                    index_offset,
                 const mge::rectangle&       cmd_scissor) {
@@ -674,7 +681,7 @@ namespace mge::opengl {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                     if (conservative_raster_enabled) {
@@ -702,7 +709,7 @@ namespace mge::opengl {
                                         const index_buffer_handle&  indices,
                                         const mge::pipeline_state&  state,
                                         mge::uniform_block*         ub,
-                                        mge::texture*               tex,
+                                        const mge::texture_binding_list& textures,
                                         uint32_t                    index_count,
                                         uint32_t              index_offset,
                                         const mge::rectangle& cmd_scissor) {
@@ -773,7 +780,7 @@ namespace mge::opengl {
                                   vertices.get(),
                                   indices.get(),
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                     if (conservative_raster_enabled) {
