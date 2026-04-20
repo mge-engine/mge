@@ -603,10 +603,25 @@ the depth buffer is updated.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer12bind_textureEPN3mge7textureE">
 <span id="_CPPv3N3mge14command_buffer12bind_textureEPN3mge7textureE"></span><span id="_CPPv2N3mge14command_buffer12bind_textureEPN3mge7textureE"></span><span id="mge::command_buffer::bind_texture__mge::textureP"></span><span class="target" id="classmge_1_1command__buffer_1a44c98db42fd32a418ecc4409b0585524"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bind_texture</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="texture.html#_CPPv4N3mge7textureE" title="mge::texture"><span class="n"><span class="pre">texture</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tex</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge14command_buffer12bind_textureEPN3mge7textureE" title="Link to this definition"></a><br /></dt>
 <dd><p>Bind a texture for subsequent draw commands. </p>
-<p>The texture is attached to the next <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a> call. After <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a>, the binding is cleared.</p>
+<p>The texture is attached to the next <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a> call at slot 0. After <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a>, the binding is cleared.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>tex</strong> – pointer to the texture to bind (nullptr to clear) </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14command_buffer12bind_textureE8uint32_tPN3mge7textureE">
+<span id="_CPPv3N3mge14command_buffer12bind_textureE8uint32_tPN3mge7textureE"></span><span id="_CPPv2N3mge14command_buffer12bind_textureE8uint32_tPN3mge7textureE"></span><span id="mge::command_buffer::bind_texture__uint32_t.mge::textureP"></span><span class="target" id="classmge_1_1command__buffer_1a4f1eeb4892601a52f0aae44cb0d5586d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bind_texture</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">slot</span></span>, <span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="texture.html#_CPPv4N3mge7textureE" title="mge::texture"><span class="n"><span class="pre">texture</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">tex</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge14command_buffer12bind_textureE8uint32_tPN3mge7textureE" title="Link to this definition"></a><br /></dt>
+<dd><p>Bind a texture to a specific slot for subsequent draw commands. </p>
+<p>The texture is attached to the next <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a> call. After <a class="reference internal" href="#classmge_1_1command__buffer_1a05adb46938bae9258e0d088053c1bd0d"><span class="std std-ref">draw()</span></a>, all texture bindings are cleared.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slot</strong> – texture slot index </p></li>
+<li><p><strong>tex</strong> – pointer to the texture to bind </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -651,7 +666,7 @@ the depth buffer is updated.</p>
 <dt class="sig sig-object cpp" id="_CPPv4I0ENK3mge14command_buffer8for_eachEvRR1F">
 <span id="_CPPv3I0ENK3mge14command_buffer8for_eachERR1F"></span><span id="_CPPv2I0ENK3mge14command_buffer8for_eachERR1F"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">F</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1command__buffer_1a7b229b763104fb398e7b3c947ec2aeed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">for_each</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0ENK3mge14command_buffer8for_eachEvRR1F" title="mge::command_buffer::for_each::F"><span class="n"><span class="pre">F</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK3mge14command_buffer8for_eachEvRR1F" title="Link to this definition"></a><br /></dt>
 <dd><p>Iterate over all recorded draw commands. </p>
-<p>Calls <code class="docutils literal notranslate"><span class="pre">f</span></code> for each recorded draw command with the program, vertex buffer, index buffer, pipeline state, uniform block, and texture.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">f</span></code> for each recorded draw command with the program, vertex buffer, index buffer, pipeline state, uniform block, texture bindings, index count, index offset, and scissor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>F</strong> – callable type </p>
