@@ -9,12 +9,6 @@ CONFIGURE_FILE(
     COPYONLY
 )
 
-# Copy coverage runner script to build directory
-CONFIGURE_FILE(
-    "${CMAKE_CURRENT_SOURCE_DIR}/../run_coverage.py"
-    "${CMAKE_BINARY_DIR}/run_coverage.py"
-    COPYONLY
-)
 
 # Register Python-based RenderDoc capture tests
 # Note: These tests require display and will be skipped in headless environments

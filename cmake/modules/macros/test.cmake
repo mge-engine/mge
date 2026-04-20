@@ -234,6 +234,11 @@ IF(NOT OPENCPPCOVERAGE_EXECUTABLE)
     SET(OPENCPPCOVERAGE_EXECUTABLE "OpenCppCoverage")
 ENDIF()
 IF(Python3_FOUND)
+    CONFIGURE_FILE(
+        "${CMAKE_SOURCE_DIR}/src/test/run_coverage.py"
+        "${CMAKE_BINARY_DIR}/run_coverage.py"
+        COPYONLY
+    )
     SET(MGE_MIN_COVERAGE "30.0" CACHE STRING
         "Minimum coverage percentage for quick-tests-coverage")
     SET(MGE_COVERAGE_ARGS
