@@ -111,7 +111,7 @@
 - Call: vkUpdateDescriptorSets
   - device: VkDevice #1
   - writeCount: 1
-  - pDescriptorWrites: [{sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, pNext: null, dstSet: VkDescriptorSet #1, dstBinding: 0, dstArrayElement: 0, descriptorCount: 1, descriptorType: VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, pImageInfo: [], pBufferInfo: [{buffer: VkBuffer #1, offset: 0, range: 64}], pTexelBufferView: []}]
+  - pDescriptorWrites: [{sType: VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET, pNext: null, dstSet: VkDescriptorSet #1, dstBinding: 0, dstArrayElement: 0, descriptorCount: 1, descriptorType: VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, pImageInfo: [], pBufferInfo: [{buffer: VkBuffer #1, offset: 0, range: 208}], pTexelBufferView: []}]
   - copyCount: 0
   - pDescriptorCopies: []
 - Call: vkCmdBindDescriptorSets

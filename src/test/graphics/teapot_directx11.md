@@ -71,9 +71,14 @@
   - MapType: D3D11_MAP_WRITE_DISCARD
   - MapFlags: 0
   - Byte offset to start of written data: 0
-  - Byte offset to end of written data: 64
+  - Byte offset to end of written data: 208
   - MapWrittenData: _ignored_
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
+  - Context: ID3D11DeviceContext * #1
+  - StartSlot: 0
+  - NumBuffers: 1
+  - ppConstantBuffers: [ID3D11Buffer * #1]
+- Call: ID3D11DeviceContext::PSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
@@ -142,6 +147,11 @@
   - StartSlot: 0
   - NumBuffers: 1
   - ppConstantBuffers: [ID3D11Buffer * #1]
+- Call: ID3D11DeviceContext::PSSetConstantBuffers
+  - Context: ID3D11DeviceContext * #1
+  - StartSlot: 0
+  - NumBuffers: 1
+  - ppConstantBuffers: [ID3D11Buffer * #1]
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -206,6 +216,11 @@
   - StartSlot: 0
   - NumBuffers: 1
   - ppConstantBuffers: [ID3D11Buffer * #1]
+- Call: ID3D11DeviceContext::PSSetConstantBuffers
+  - Context: ID3D11DeviceContext * #1
+  - StartSlot: 0
+  - NumBuffers: 1
+  - ppConstantBuffers: [ID3D11Buffer * #1]
 - Call: ID3D11DeviceContext::IASetInputLayout
   - Context: ID3D11DeviceContext * #1
   - pInputLayout: ID3D11InputLayout * #1
@@ -266,6 +281,11 @@
   - Context: ID3D11DeviceContext * #1
   - pRasterizerState: ID3D11RasterizerState * #1
 - Call: ID3D11DeviceContext::VSSetConstantBuffers
+  - Context: ID3D11DeviceContext * #1
+  - StartSlot: 0
+  - NumBuffers: 1
+  - ppConstantBuffers: [ID3D11Buffer * #1]
+- Call: ID3D11DeviceContext::PSSetConstantBuffers
   - Context: ID3D11DeviceContext * #1
   - StartSlot: 0
   - NumBuffers: 1
