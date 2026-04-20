@@ -143,13 +143,13 @@ namespace mge::dx12 {
         void create_depth_stencil_views();
         void create_command_lists();
 
-        void draw_geometry(ID3D12GraphicsCommandList* command_list,
-                           mge::program*              program,
-                           mge::vertex_buffer*        vb,
-                           mge::index_buffer*         ib,
-                           const mge::pipeline_state& state,
-                           mge::uniform_block*        ub,
-                           mge::texture*              tex,
+        void draw_geometry(ID3D12GraphicsCommandList*        command_list,
+                           mge::program*                    program,
+                           mge::vertex_buffer*              vb,
+                           mge::index_buffer*               ib,
+                           const mge::pipeline_state&       state,
+                           mge::uniform_block*              ub,
+                           const mge::texture_binding_list& textures,
                            uint32_t                   index_count = 0,
                            uint32_t                   index_offset = 0);
 

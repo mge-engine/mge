@@ -121,7 +121,7 @@ namespace mge::vulkan {
                            mge::index_buffer*         ib,
                            const mge::pipeline_state& state,
                            mge::uniform_block*        ub,
-                           mge::texture*              tex,
+                           const mge::texture_binding_list& textures,
                            uint32_t                   index_count = 0,
                            uint32_t                   index_offset = 0);
 
@@ -138,7 +138,7 @@ namespace mge::vulkan {
                                               mge::uniform_block&   ub);
 
         VkDescriptorSet prepare_texture(mge::vulkan::program& vk_program,
-                                        mge::texture*         tex,
+                                        const mge::texture_binding_list& textures,
                                         mge::uniform_block*   ub);
 
     private:
@@ -234,8 +234,10 @@ namespace mge::vulkan {
         };
         std::map<mge::uniform_block*, uniform_buffer_data> m_uniform_buffers;
         VkDescriptorPool m_descriptor_pool{VK_NULL_HANDLE};
-        using descriptor_set_key = std::
-            tuple<mge::uniform_block*, mge::texture*, VkDescriptorSetLayout>;
+        using descriptor_set_key =
+            std::tuple<mge::uniform_block*,
+                       std::vector<mge::texture*>,
+                       VkDescriptorSetLayout>;
         std::map<descriptor_set_key, VkDescriptorSet> m_descriptor_sets;
     };
 } // namespace mge::vulkan

@@ -254,7 +254,7 @@ namespace mge {
                   cmd.indices,
                   cmd.state,
                   cmd.uniform_block,
-                  cmd.texture,
+                  cmd.textures,
                   cmd.index_count,
                   cmd.index_offset,
                   cmd.scissor);
@@ -280,15 +280,15 @@ namespace mge {
 
         struct draw_command
         {
-            program_handle       program;
-            vertex_buffer_handle vertices;
-            index_buffer_handle  indices;
-            mge::pipeline_state  state;
-            mge::uniform_block*  uniform_block{nullptr};
-            mge::texture*        texture{nullptr};
-            uint32_t             index_count{0};
-            uint32_t             index_offset{0};
-            mge::rectangle       scissor{};
+            program_handle        program;
+            vertex_buffer_handle  vertices;
+            index_buffer_handle   indices;
+            mge::pipeline_state   state;
+            mge::uniform_block*   uniform_block{nullptr};
+            texture_binding_list  textures;
+            uint32_t              index_count{0};
+            uint32_t              index_offset{0};
+            mge::rectangle        scissor{};
         };
 
         std::vector<draw_command> m_draw_commands;

@@ -923,7 +923,7 @@ namespace mge::dx12 {
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
                                     mge::uniform_block*              ub,
-                                    mge::texture*                    tex,
+                                    const mge::texture_binding_list& textures,
                                     uint32_t              index_count,
                                     uint32_t              index_offset,
                                     const mge::rectangle& cmd_scissor) {
@@ -945,7 +945,7 @@ namespace mge::dx12 {
                               indices.get(),
                               state,
                               ub,
-                              tex,
+                              textures,
                               index_count,
                               index_offset);
             } else {
@@ -960,7 +960,7 @@ namespace mge::dx12 {
                     const mge::index_buffer_handle&  indices,
                     const mge::pipeline_state&       state,
                     mge::uniform_block*              ub,
-                    mge::texture*                    tex,
+                    const mge::texture_binding_list& textures,
                     uint32_t                         index_count,
                     uint32_t                         index_offset,
                     const mge::rectangle&            cmd_scissor) {
@@ -980,20 +980,20 @@ namespace mge::dx12 {
                                   indices.get(),
                                   state,
                                   ub,
-                                  tex,
+                                  textures,
                                   index_count,
                                   index_offset);
                 });
         }
     }
 
-    void render_context::draw_geometry(ID3D12GraphicsCommandList* command_list,
-                                       mge::program*              program,
-                                       mge::vertex_buffer*        vb,
-                                       mge::index_buffer*         ib,
-                                       const mge::pipeline_state& state,
-                                       mge::uniform_block*        ub,
-                                       mge::texture*              tex,
+    void render_context::draw_geometry(ID3D12GraphicsCommandList*        command_list,
+                                       mge::program*                    program,
+                                       mge::vertex_buffer*              vb,
+                                       mge::index_buffer*               ib,
+                                       const mge::pipeline_state&       state,
+                                       mge::uniform_block*              ub,
+                                       const mge::texture_binding_list& textures,
                                        uint32_t                   index_count,
                                        uint32_t                   index_offset)
     {
@@ -1025,16 +1025,21 @@ namespace mge::dx12 {
             bind_uniform_block(command_list, *dx12_program, *ub);
         }
 
-        // Bind texture if provided
-        if (tex) {
+        // Bind textures
+        if (!textures.empty()) {
             ID3D12DescriptorHeap* heaps[] = {m_srv_heap.Get()};
             command_list->SetDescriptorHeaps(1, heaps);
-            auto&    dx12_tex = static_cast<dx12::texture&>(*tex);
-            uint32_t texture_root_index =
+            uint32_t base_texture_root_index =
                 static_cast<uint32_t>(dx12_program->uniform_blocks().size());
-            command_list->SetGraphicsRootDescriptorTable(
-                texture_root_index,
-                dx12_tex.srv_gpu_handle());
+            for (const auto& binding : textures) {
+                if (binding.texture) {
+                    auto& dx12_tex =
+                        static_cast<dx12::texture&>(*binding.texture);
+                    command_list->SetGraphicsRootDescriptorTable(
+                        base_texture_root_index + binding.slot,
+                        dx12_tex.srv_gpu_handle());
+                }
+            }
         }
 
         command_list->IASetPrimitiveTopology(
