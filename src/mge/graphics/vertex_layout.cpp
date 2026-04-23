@@ -23,10 +23,10 @@ namespace mge {
 
     size_t vertex_layout::binary_size() const
     {
-        auto r = m_formats | std::views::transform([](const auto& vf) {
+        auto         r = m_formats | std::views::transform([](const auto& vf) {
                      return vf.binary_size();
-                 }) |
-                 std::views::common;
+                         }) |
+                         std::views::common;
         const size_t zero = 0;
         return std::accumulate(std::ranges::begin(r),
                                std::ranges::end(r),
@@ -85,9 +85,11 @@ namespace mge {
             std::string_view next_format(it, next_comma);
             result.push_back(parse_vertex_format(next_format));
             it = next_comma;
-            ++it;
-            while (it != e && std::isspace(*it)) {
+            if (it != e) {
                 ++it;
+                while (it != e && std::isspace(*it)) {
+                    ++it;
+                }
             }
         }
         return result;
