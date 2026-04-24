@@ -11,7 +11,7 @@
 #include "mge/graphics/test.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 
-#include <tuple>
+#include <memory_resource>
 #include <vector>
 
 namespace mge {
@@ -26,7 +26,9 @@ namespace mge {
     class MGEGRAPHICS_EXPORT command_buffer
     {
     public:
-        command_buffer() = default;
+        explicit command_buffer(
+            std::pmr::memory_resource* resource =
+                std::pmr::get_default_resource());
         ~command_buffer() = default;
 
         command_buffer(const command_buffer&) = delete;
@@ -223,14 +225,14 @@ namespace mge {
         mge::texture*  m_current_texture{nullptr};
         mge::rectangle m_current_scissor_rect{};
 
-        std::vector<pipeline_state>       m_pipeline_states;
-        std::vector<program_handle>       m_programs;
-        std::vector<vertex_buffer_handle> m_vertex_buffers;
-        std::vector<index_buffer_handle>  m_index_buffers;
-        std::vector<uniform_block*>       m_uniform_blocks;
-        std::vector<mge::texture*>        m_textures;
-        std::vector<uint32_t>             m_index_counts;
-        std::vector<uint32_t>             m_index_offsets;
-        std::vector<mge::rectangle>       m_scissor_rects;
+        std::pmr::vector<pipeline_state>       m_pipeline_states;
+        std::pmr::vector<program_handle>       m_programs;
+        std::pmr::vector<vertex_buffer_handle> m_vertex_buffers;
+        std::pmr::vector<index_buffer_handle>  m_index_buffers;
+        std::pmr::vector<uniform_block*>       m_uniform_blocks;
+        std::pmr::vector<mge::texture*>        m_textures;
+        std::pmr::vector<uint32_t>             m_index_counts;
+        std::pmr::vector<uint32_t>             m_index_offsets;
+        std::pmr::vector<mge::rectangle>       m_scissor_rects;
     };
 } // namespace mge

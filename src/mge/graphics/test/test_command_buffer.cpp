@@ -6,6 +6,43 @@
 #include "mock_render_context.hpp"
 #include "test/googletest.hpp"
 
+#include <memory_resource>
+
+namespace {
+    class counting_resource : public std::pmr::memory_resource
+    {
+    public:
+        size_t allocations() const noexcept
+        {
+            return m_allocations;
+        }
+
+    protected:
+        void* do_allocate(size_t bytes, size_t alignment) override
+        {
+            ++m_allocations;
+            return std::pmr::get_default_resource()->allocate(bytes,
+                                                              alignment);
+        }
+
+        void do_deallocate(void*  p,
+                           size_t bytes,
+                           size_t alignment) override
+        {
+            std::pmr::get_default_resource()->deallocate(p, bytes, alignment);
+        }
+
+        bool do_is_equal(const std::pmr::memory_resource& other) const
+            noexcept override
+        {
+            return this == &other;
+        }
+
+    private:
+        size_t m_allocations{0};
+    };
+} // namespace
+
 TEST(command_buffer, initially_empty)
 {
     mge::command_buffer cb;
@@ -21,6 +58,19 @@ TEST(command_buffer, draw_adds_command)
 
     cb.draw(prog, vb, ib);
     EXPECT_FALSE(cb.empty());
+}
+
+TEST(command_buffer, draw_uses_supplied_memory_resource)
+{
+    counting_resource         resource;
+    mge::command_buffer       cb(&resource);
+    mge::program_handle       prog;
+    mge::vertex_buffer_handle vb;
+    mge::index_buffer_handle  ib;
+
+    cb.draw(prog, vb, ib);
+
+    EXPECT_GT(resource.allocations(), 0u);
 }
 
 TEST(command_buffer, clear_empties_buffer)

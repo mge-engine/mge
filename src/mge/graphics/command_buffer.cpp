@@ -5,6 +5,18 @@
 
 namespace mge {
 
+    command_buffer::command_buffer(std::pmr::memory_resource* resource)
+        : m_pipeline_states(resource)
+        , m_programs(resource)
+        , m_vertex_buffers(resource)
+        , m_index_buffers(resource)
+        , m_uniform_blocks(resource)
+        , m_textures(resource)
+        , m_index_counts(resource)
+        , m_index_offsets(resource)
+        , m_scissor_rects(resource)
+    {}
+
     void command_buffer::draw(const program_handle&       program,
                               const vertex_buffer_handle& vertices,
                               const index_buffer_handle&  indices,
