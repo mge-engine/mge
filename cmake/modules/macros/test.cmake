@@ -193,14 +193,18 @@ FUNCTION(MGE_CAPTURE_TEST)
                     APPEND PROPERTY ENVIRONMENT "DYLD_LIBRARY_PATH=${MGE_VULKAN_LIBRARY_DIR}")
             ENDIF()
             ADD_CUSTOM_TARGET(capture-${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}
-                COMMAND "${Python3_EXECUTABLE}" 
-                    "${CMAKE_BINARY_DIR}/capturetest.py"
-                    --test "$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
-                    --renderdoccmd "${RENDERDOCCMD_EXECUTABLE}"
-                    --render-system "${RENDER_SYSTEM}"
-                    --frame-count 5
-                    --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
-                    --generate-reference true
+                COMMAND "${CMAKE_COMMAND}"
+                    -DLOCK_FILE="${CMAKE_BINARY_DIR}/capture-${MGE_CAPTURE_TEST_TARGET}.lock"
+                    -DPYTHON_EXECUTABLE="${Python3_EXECUTABLE}"
+                    -DCAPTURETEST="${CMAKE_BINARY_DIR}/capturetest.py"
+                    -DTEST_EXECUTABLE="$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
+                    -DRENDERDOCCMD_EXECUTABLE="${RENDERDOCCMD_EXECUTABLE}"
+                    -DRENDER_SYSTEM="${RENDER_SYSTEM}"
+                    -DFRAME_COUNT=5
+                    -DREFERENCE_DIR="${CMAKE_SOURCE_DIR}/src/test/graphics"
+                    -DGENERATE_REFERENCE=ON
+                    -DWORKING_DIRECTORY="${_BINARY_DIR}"
+                    -P "${CMAKE_SOURCE_DIR}/cmake/modules/macros/run_capture_with_lock.cmake"
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
         ENDFOREACH()
