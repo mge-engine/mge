@@ -148,6 +148,7 @@ namespace mge::opengl {
         create_primary_glrc();
         init_gl3w();
         collect_opengl_info();
+        init_capabilities();
 
         // Check for conservative rasterization support
         const auto& exts = gl_info().extensions;
@@ -292,6 +293,87 @@ namespace mge::opengl {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
     }
+
+    void render_context::init_capabilities()
+    {
+        class capabilities : public mge::render_context::capabilities
+        {
+        public:
+            capabilities()
+            {
+                GLint v = 0;
+                glGetIntegerv(GL_MAX_TEXTURE_SIZE, &v);
+                m_max_texture_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &v);
+                m_max_texture_3d_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, &v);
+                m_max_texture_cube_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &v);
+                m_max_texture_array_layers = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v);
+                m_max_vertex_attributes = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &v);
+                m_max_uniform_buffer_bindings = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &v);
+                m_max_texture_bindings = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &v);
+                m_max_color_attachments = static_cast<uint32_t>(v);
+            }
+            ~capabilities() = default;
+
+            uint32_t max_texture_size() const override
+            {
+                return m_max_texture_size;
+            }
+
+            uint32_t max_texture_3d_size() const override
+            {
+                return m_max_texture_3d_size;
+            }
+
+            uint32_t max_texture_cube_size() const override
+            {
+                return m_max_texture_cube_size;
+            }
+
+            uint32_t max_texture_array_layers() const override
+            {
+                return m_max_texture_array_layers;
+            }
+
+            uint32_t max_vertex_attributes() const override
+            {
+                return m_max_vertex_attributes;
+            }
+
+            uint32_t max_uniform_buffer_bindings() const override
+            {
+                return m_max_uniform_buffer_bindings;
+            }
+
+            uint32_t max_texture_bindings() const override
+            {
+                return m_max_texture_bindings;
+            }
+
+            uint32_t max_color_attachments() const override
+            {
+                return m_max_color_attachments;
+            }
+
+        private:
+            uint32_t m_max_texture_size{0};
+            uint32_t m_max_texture_3d_size{0};
+            uint32_t m_max_texture_cube_size{0};
+            uint32_t m_max_texture_array_layers{0};
+            uint32_t m_max_vertex_attributes{0};
+            uint32_t m_max_uniform_buffer_bindings{0};
+            uint32_t m_max_texture_bindings{0};
+            uint32_t m_max_color_attachments{0};
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
+    }
 #else
     render_context::render_context(mge::opengl::render_system& render_system_,
                                    mge::opengl::window*        context_window)
@@ -311,6 +393,7 @@ namespace mge::opengl {
 
         init_gl3w();
         collect_opengl_info();
+        init_capabilities();
 
         const auto& exts = gl_info().extensions;
         m_conservative_rasterization_supported =
@@ -356,6 +439,87 @@ namespace mge::opengl {
     {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
+    }
+
+    void render_context::init_capabilities()
+    {
+        class capabilities : public mge::render_context::capabilities
+        {
+        public:
+            capabilities()
+            {
+                GLint v = 0;
+                glGetIntegerv(GL_MAX_TEXTURE_SIZE, &v);
+                m_max_texture_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_3D_TEXTURE_SIZE, &v);
+                m_max_texture_3d_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, &v);
+                m_max_texture_cube_size = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &v);
+                m_max_texture_array_layers = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &v);
+                m_max_vertex_attributes = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &v);
+                m_max_uniform_buffer_bindings = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &v);
+                m_max_texture_bindings = static_cast<uint32_t>(v);
+                glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &v);
+                m_max_color_attachments = static_cast<uint32_t>(v);
+            }
+            ~capabilities() = default;
+
+            uint32_t max_texture_size() const override
+            {
+                return m_max_texture_size;
+            }
+
+            uint32_t max_texture_3d_size() const override
+            {
+                return m_max_texture_3d_size;
+            }
+
+            uint32_t max_texture_cube_size() const override
+            {
+                return m_max_texture_cube_size;
+            }
+
+            uint32_t max_texture_array_layers() const override
+            {
+                return m_max_texture_array_layers;
+            }
+
+            uint32_t max_vertex_attributes() const override
+            {
+                return m_max_vertex_attributes;
+            }
+
+            uint32_t max_uniform_buffer_bindings() const override
+            {
+                return m_max_uniform_buffer_bindings;
+            }
+
+            uint32_t max_texture_bindings() const override
+            {
+                return m_max_texture_bindings;
+            }
+
+            uint32_t max_color_attachments() const override
+            {
+                return m_max_color_attachments;
+            }
+
+        private:
+            uint32_t m_max_texture_size{0};
+            uint32_t m_max_texture_3d_size{0};
+            uint32_t m_max_texture_cube_size{0};
+            uint32_t m_max_texture_array_layers{0};
+            uint32_t m_max_vertex_attributes{0};
+            uint32_t m_max_uniform_buffer_bindings{0};
+            uint32_t m_max_texture_bindings{0};
+            uint32_t m_max_color_attachments{0};
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
     }
 #endif
 
@@ -411,13 +575,14 @@ namespace mge::opengl {
         return m_extent.height;
     }
 
-    void render_context::draw_geometry(mge::program*              program,
-                                       mge::vertex_buffer*        vb,
-                                       mge::index_buffer*         ib,
-                                       mge::uniform_block*        ub,
-                                       const mge::texture_binding_list& textures,
-                                       uint32_t            index_count,
-                                       uint32_t            index_offset)
+    void
+    render_context::draw_geometry(mge::program*                    program,
+                                  mge::vertex_buffer*              vb,
+                                  mge::index_buffer*               ib,
+                                  mge::uniform_block*              ub,
+                                  const mge::texture_binding_list& textures,
+                                  uint32_t                         index_count,
+                                  uint32_t                         index_offset)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -632,15 +797,15 @@ namespace mge::opengl {
         mge::rectangle current_scissor = p.scissor();
         p.for_each_draw_command(
             [this, wh, &blend_pass_needed, &current_scissor, &p](
-                const program_handle&       program,
-                const vertex_buffer_handle& vertices,
-                const index_buffer_handle&  indices,
-                const mge::pipeline_state&  state,
-                mge::uniform_block*         ub,
+                const program_handle&            program,
+                const vertex_buffer_handle&      vertices,
+                const index_buffer_handle&       indices,
+                const mge::pipeline_state&       state,
+                mge::uniform_block*              ub,
                 const mge::texture_binding_list& textures,
-                uint32_t                    index_count,
-                uint32_t                    index_offset,
-                const mge::rectangle&       cmd_scissor) {
+                uint32_t                         index_count,
+                uint32_t                         index_offset,
+                const mge::rectangle&            cmd_scissor) {
                 blend_operation op = state.color_blend_operation();
                 if (op == blend_operation::NONE) {
                     const auto& effective =
@@ -703,96 +868,99 @@ namespace mge::opengl {
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command([this, wh, &current_scissor, &p](
-                                        const program_handle&       program,
-                                        const vertex_buffer_handle& vertices,
-                                        const index_buffer_handle&  indices,
-                                        const mge::pipeline_state&  state,
-                                        mge::uniform_block*         ub,
-                                        const mge::texture_binding_list& textures,
-                                        uint32_t                    index_count,
-                                        uint32_t              index_offset,
-                                        const mge::rectangle& cmd_scissor) {
-                blend_operation color_op = state.color_blend_operation();
-                blend_operation alpha_op = state.alpha_blend_operation();
-                blend_factor    color_src = state.color_blend_factor_src();
-                blend_factor    color_dst = state.color_blend_factor_dst();
-                blend_factor    alpha_src = state.alpha_blend_factor_src();
-                blend_factor    alpha_dst = state.alpha_blend_factor_dst();
-                if (color_op != blend_operation::NONE) {
-                    const auto& effective =
-                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-                    if (effective != current_scissor) {
-                        glScissor(
-                            static_cast<const GLint>(effective.left),
-                            wh - static_cast<const GLint>(effective.bottom),
-                            static_cast<const GLsizei>(effective.width()),
-                            static_cast<const GLsizei>(effective.height()));
-                        current_scissor = effective;
-                    }
-                    mge::cull_mode cull = state.cull_mode();
-                    if (cull != mge::cull_mode::NONE) {
-                        glEnable(GL_CULL_FACE);
-                        CHECK_OPENGL_ERROR(glEnable);
-                        if (cull == mge::cull_mode::CLOCKWISE) {
-                            glCullFace(GL_FRONT);
-                        } else {
-                            glCullFace(GL_BACK);
+            p.for_each_draw_command(
+                [this, wh, &current_scissor, &p](
+                    const program_handle&            program,
+                    const vertex_buffer_handle&      vertices,
+                    const index_buffer_handle&       indices,
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block*              ub,
+                    const mge::texture_binding_list& textures,
+                    uint32_t                         index_count,
+                    uint32_t                         index_offset,
+                    const mge::rectangle&            cmd_scissor) {
+                    blend_operation color_op = state.color_blend_operation();
+                    blend_operation alpha_op = state.alpha_blend_operation();
+                    blend_factor    color_src = state.color_blend_factor_src();
+                    blend_factor    color_dst = state.color_blend_factor_dst();
+                    blend_factor    alpha_src = state.alpha_blend_factor_src();
+                    blend_factor    alpha_dst = state.alpha_blend_factor_dst();
+                    if (color_op != blend_operation::NONE) {
+                        const auto& effective =
+                            cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                        if (effective != current_scissor) {
+                            glScissor(
+                                static_cast<const GLint>(effective.left),
+                                wh - static_cast<const GLint>(effective.bottom),
+                                static_cast<const GLsizei>(effective.width()),
+                                static_cast<const GLsizei>(effective.height()));
+                            current_scissor = effective;
                         }
-                        CHECK_OPENGL_ERROR(glCullFace);
-                    }
-                    glDepthFunc(depth_test_to_gl(state.depth_test_function()));
-                    CHECK_OPENGL_ERROR(glDepthFunc);
-                    if (color_op == alpha_op && color_src == alpha_src &&
-                        color_dst == alpha_dst) {
-                        glBlendFunc(blend_factor_to_gl(color_src),
-                                    blend_factor_to_gl(color_dst));
-                        CHECK_OPENGL_ERROR(glBlendFunc);
-                        glBlendEquation(blend_operation_to_gl(color_op));
-                        CHECK_OPENGL_ERROR(glBlendEquation);
-                    } else {
-                        glBlendFuncSeparate(blend_factor_to_gl(color_src),
-                                            blend_factor_to_gl(color_dst),
-                                            blend_factor_to_gl(alpha_src),
-                                            blend_factor_to_gl(alpha_dst));
-                        CHECK_OPENGL_ERROR(glBlendFuncSeparate);
-                        glBlendEquationSeparate(
-                            blend_operation_to_gl(color_op),
-                            blend_operation_to_gl(alpha_op));
-                        CHECK_OPENGL_ERROR(glBlendEquationSeparate);
-                    }
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_FALSE);
+                        mge::cull_mode cull = state.cull_mode();
                         if (cull != mge::cull_mode::NONE) {
-                            glDisable(GL_CULL_FACE);
+                            glEnable(GL_CULL_FACE);
+                            CHECK_OPENGL_ERROR(glEnable);
+                            if (cull == mge::cull_mode::CLOCKWISE) {
+                                glCullFace(GL_FRONT);
+                            } else {
+                                glCullFace(GL_BACK);
+                            }
+                            CHECK_OPENGL_ERROR(glCullFace);
+                        }
+                        glDepthFunc(
+                            depth_test_to_gl(state.depth_test_function()));
+                        CHECK_OPENGL_ERROR(glDepthFunc);
+                        if (color_op == alpha_op && color_src == alpha_src &&
+                            color_dst == alpha_dst) {
+                            glBlendFunc(blend_factor_to_gl(color_src),
+                                        blend_factor_to_gl(color_dst));
+                            CHECK_OPENGL_ERROR(glBlendFunc);
+                            glBlendEquation(blend_operation_to_gl(color_op));
+                            CHECK_OPENGL_ERROR(glBlendEquation);
+                        } else {
+                            glBlendFuncSeparate(blend_factor_to_gl(color_src),
+                                                blend_factor_to_gl(color_dst),
+                                                blend_factor_to_gl(alpha_src),
+                                                blend_factor_to_gl(alpha_dst));
+                            CHECK_OPENGL_ERROR(glBlendFuncSeparate);
+                            glBlendEquationSeparate(
+                                blend_operation_to_gl(color_op),
+                                blend_operation_to_gl(alpha_op));
+                            CHECK_OPENGL_ERROR(glBlendEquationSeparate);
+                        }
+                        if (!state.depth_write()) {
+                            glDepthMask(GL_FALSE);
+                            if (cull != mge::cull_mode::NONE) {
+                                glDisable(GL_CULL_FACE);
+                                CHECK_OPENGL_ERROR(glDisable);
+                            }
+                            CHECK_OPENGL_ERROR(glDepthMask);
+                        }
+                        bool conservative_raster_enabled =
+                            m_conservative_rasterization_supported &&
+                            state.test(
+                                pipeline_state::CONSERVATIVE_RASTERIZATION);
+                        if (conservative_raster_enabled) {
+                            glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
+                            CHECK_OPENGL_ERROR(glEnable);
+                        }
+                        draw_geometry(program.get(),
+                                      vertices.get(),
+                                      indices.get(),
+                                      ub,
+                                      textures,
+                                      index_count,
+                                      index_offset);
+                        if (conservative_raster_enabled) {
+                            glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
                             CHECK_OPENGL_ERROR(glDisable);
                         }
-                        CHECK_OPENGL_ERROR(glDepthMask);
+                        if (!state.depth_write()) {
+                            glDepthMask(GL_TRUE);
+                            CHECK_OPENGL_ERROR(glDepthMask);
+                        }
                     }
-                    bool conservative_raster_enabled =
-                        m_conservative_rasterization_supported &&
-                        state.test(pipeline_state::CONSERVATIVE_RASTERIZATION);
-                    if (conservative_raster_enabled) {
-                        glEnable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                        CHECK_OPENGL_ERROR(glEnable);
-                    }
-                    draw_geometry(program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  ub,
-                                  textures,
-                                  index_count,
-                                  index_offset);
-                    if (conservative_raster_enabled) {
-                        glDisable(GL_CONSERVATIVE_RASTERIZATION_NV);
-                        CHECK_OPENGL_ERROR(glDisable);
-                    }
-                    if (!state.depth_write()) {
-                        glDepthMask(GL_TRUE);
-                        CHECK_OPENGL_ERROR(glDepthMask);
-                    }
-                }
-            });
+                });
             glDisable(GL_BLEND);
             CHECK_OPENGL_ERROR(glDisable);
         }

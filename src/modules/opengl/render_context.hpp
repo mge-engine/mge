@@ -70,13 +70,13 @@ namespace mge {
             GLuint create_vao(mge::opengl::vertex_buffer* vb,
                               mge::opengl::index_buffer*  ib);
 
-            void draw_geometry(mge::program*              program,
-                               mge::vertex_buffer*        vb,
-                               mge::index_buffer*         ib,
-                               mge::uniform_block*        ub,
+            void draw_geometry(mge::program*                    program,
+                               mge::vertex_buffer*              vb,
+                               mge::index_buffer*               ib,
+                               mge::uniform_block*              ub,
                                const mge::texture_binding_list& textures,
-                               uint32_t            index_count = 0,
-                               uint32_t            index_offset = 0);
+                               uint32_t                         index_count = 0,
+                               uint32_t index_offset = 0);
 
             void bind_uniform_block(mge::opengl::program& gl_program,
                                     mge::uniform_block&   ub);
@@ -94,13 +94,13 @@ namespace mge {
             GLuint create_vao(mge::opengl::vertex_buffer* vb,
                               mge::opengl::index_buffer*  ib);
 
-            void draw_geometry(mge::program*              program,
-                               mge::vertex_buffer*        vb,
-                               mge::index_buffer*         ib,
-                               mge::uniform_block*        ub,
+            void draw_geometry(mge::program*                    program,
+                               mge::vertex_buffer*              vb,
+                               mge::index_buffer*               ib,
+                               mge::uniform_block*              ub,
                                const mge::texture_binding_list& textures,
-                               uint32_t            index_count = 0,
-                               uint32_t            index_offset = 0);
+                               uint32_t                         index_count = 0,
+                               uint32_t index_offset = 0);
 
             void bind_uniform_block(mge::opengl::program& gl_program,
                                     mge::uniform_block&   ub);
@@ -109,6 +109,8 @@ namespace mge {
             GLFWwindow*          m_glfw_window;
 #endif
             static singleton<opengl_info> s_glinfo;
+
+            void init_capabilities();
 
             using vao_key = std::tuple<GLuint, GLuint>;
             std::map<vao_key, GLuint>               m_vaos;

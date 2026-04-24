@@ -97,6 +97,56 @@ namespace mge {
 
     mge::singleton<render_context_registry> render_context_registry::instance;
 
+    render_context::capabilities::capabilities() = default;
+
+    render_context::capabilities::~capabilities() = default;
+
+    uint32_t render_context::capabilities::max_texture_size() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_texture_3d_size() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_texture_cube_size() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_texture_array_layers() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_vertex_attributes() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_uniform_buffer_bindings() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_texture_bindings() const
+    {
+        return 1;
+    }
+
+    uint32_t render_context::capabilities::max_color_attachments() const
+    {
+        return 1;
+    }
+
+    const render_context::capabilities&
+    render_context::context_capabilities() const
+    {
+        return *m_capabilities;
+    }
+
     render_context::render_context(mge::render_system& rs,
                                    const mge::extent&  ext)
         : m_render_system(rs)

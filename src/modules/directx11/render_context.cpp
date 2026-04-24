@@ -294,6 +294,7 @@ namespace mge::dx11 {
         m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
         setup_context(*m_device_context);
+        init_capabilities();
     }
 
     void render_context::setup_context(ID3D11DeviceContext& context)
@@ -318,6 +319,58 @@ namespace mge::dx11 {
                                                               size_t data_size)
     {
         return new index_buffer(*this, dt, data_size);
+    }
+
+    void render_context::init_capabilities()
+    {
+        class capabilities : public mge::render_context::capabilities
+        {
+        public:
+            capabilities() = default;
+            ~capabilities() = default;
+
+            uint32_t max_texture_size() const override
+            {
+                return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+            }
+
+            uint32_t max_texture_3d_size() const override
+            {
+                return D3D11_REQ_TEXTURE3D_U_V_OR_W_DIMENSION;
+            }
+
+            uint32_t max_texture_cube_size() const override
+            {
+                return D3D11_REQ_TEXTURECUBE_DIMENSION;
+            }
+
+            uint32_t max_texture_array_layers() const override
+            {
+                return D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
+            }
+
+            uint32_t max_vertex_attributes() const override
+            {
+                return D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT;
+            }
+
+            uint32_t max_uniform_buffer_bindings() const override
+            {
+                return D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
+            }
+
+            uint32_t max_texture_bindings() const override
+            {
+                return D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+            }
+
+            uint32_t max_color_attachments() const override
+            {
+                return D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;
+            }
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
     }
 
     mge::vertex_buffer*
@@ -384,15 +437,15 @@ namespace mge::dx11 {
         p.for_each_draw_command([this,
                                  &blend_pass_needed,
                                  &current_scissor,
-                                 &p](program_handle             program,
-                                     vertex_buffer_handle       vertices,
-                                     index_buffer_handle        indices,
-                                     const mge::pipeline_state& state,
-                                     mge::uniform_block*        ub,
+                                 &p](program_handle                   program,
+                                     vertex_buffer_handle             vertices,
+                                     index_buffer_handle              indices,
+                                     const mge::pipeline_state&       state,
+                                     mge::uniform_block*              ub,
                                      const mge::texture_binding_list& textures,
-                                     uint32_t                   index_count,
-                                     uint32_t                   index_offset,
-                                     const mge::rectangle&      cmd_scissor) {
+                                     uint32_t              index_count,
+                                     uint32_t              index_offset,
+                                     const mge::rectangle& cmd_scissor) {
             blend_operation op = state.color_blend_operation();
             if (op == blend_operation::NONE) {
                 const auto& effective =
@@ -431,71 +484,74 @@ namespace mge::dx11 {
         });
 
         if (blend_pass_needed) {
-            p.for_each_draw_command([this, &current_scissor, &p](
-                                        program_handle             program,
-                                        vertex_buffer_handle       vertices,
-                                        index_buffer_handle        indices,
-                                        const mge::pipeline_state& state,
-                                        mge::uniform_block*        ub,
-                                        const mge::texture_binding_list& textures,
-                                        uint32_t                   index_count,
-                                        uint32_t                   index_offset,
-                                        const mge::rectangle& cmd_scissor) {
-                blend_operation op = state.color_blend_operation();
-                if (op != blend_operation::NONE) {
-                    const auto& effective =
-                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-                    if (effective != current_scissor) {
-                        D3D11_RECT sr = {
-                            .left = static_cast<LONG>(effective.left),
-                            .top = static_cast<LONG>(effective.top),
-                            .right = static_cast<LONG>(effective.right),
-                            .bottom = static_cast<LONG>(effective.bottom)};
-                        m_device_context->RSSetScissorRects(1, &sr);
-                        current_scissor = effective;
-                    }
-                    ID3D11RasterizerState* rs_state =
-                        this->rasterizer_state(state);
-                    m_device_context->RSSetState(rs_state);
+            p.for_each_draw_command(
+                [this, &current_scissor, &p](
+                    program_handle                   program,
+                    vertex_buffer_handle             vertices,
+                    index_buffer_handle              indices,
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block*              ub,
+                    const mge::texture_binding_list& textures,
+                    uint32_t                         index_count,
+                    uint32_t                         index_offset,
+                    const mge::rectangle&            cmd_scissor) {
+                    blend_operation op = state.color_blend_operation();
+                    if (op != blend_operation::NONE) {
+                        const auto& effective =
+                            cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                        if (effective != current_scissor) {
+                            D3D11_RECT sr = {
+                                .left = static_cast<LONG>(effective.left),
+                                .top = static_cast<LONG>(effective.top),
+                                .right = static_cast<LONG>(effective.right),
+                                .bottom = static_cast<LONG>(effective.bottom)};
+                            m_device_context->RSSetScissorRects(1, &sr);
+                            current_scissor = effective;
+                        }
+                        ID3D11RasterizerState* rs_state =
+                            this->rasterizer_state(state);
+                        m_device_context->RSSetState(rs_state);
 
-                    ID3D11BlendState* blend_state_obj =
-                        this->blend_state(state);
+                        ID3D11BlendState* blend_state_obj =
+                            this->blend_state(state);
 
-                    float blend_factor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-                    m_device_context->OMSetBlendState(blend_state_obj,
-                                                      blend_factor,
-                                                      0xffffffff);
+                        float blend_factor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+                        m_device_context->OMSetBlendState(blend_state_obj,
+                                                          blend_factor,
+                                                          0xffffffff);
 
-                    if (!state.depth_write()) {
-                        ID3D11DepthStencilState* ds_state =
-                            this->depth_stencil_state(state);
-                        m_device_context->OMSetDepthStencilState(ds_state, 1);
+                        if (!state.depth_write()) {
+                            ID3D11DepthStencilState* ds_state =
+                                this->depth_stencil_state(state);
+                            m_device_context->OMSetDepthStencilState(ds_state,
+                                                                     1);
+                        }
+                        draw_geometry(program.get(),
+                                      vertices.get(),
+                                      indices.get(),
+                                      ub,
+                                      textures,
+                                      index_count,
+                                      index_offset);
+                        if (!state.depth_write()) {
+                            m_device_context->OMSetDepthStencilState(
+                                m_depth_stencil_state.get(),
+                                1);
+                        }
                     }
-                    draw_geometry(program.get(),
-                                  vertices.get(),
-                                  indices.get(),
-                                  ub,
-                                  textures,
-                                  index_count,
-                                  index_offset);
-                    if (!state.depth_write()) {
-                        m_device_context->OMSetDepthStencilState(
-                            m_depth_stencil_state.get(),
-                            1);
-                    }
-                }
-            });
+                });
             m_device_context->OMSetBlendState(nullptr, nullptr, 0xffffffff);
         }
     }
 
-    void render_context::draw_geometry(mge::program*              program,
-                                       mge::vertex_buffer*        vb,
-                                       mge::index_buffer*         ib,
-                                       mge::uniform_block*        ub,
-                                       const mge::texture_binding_list& textures,
-                                       uint32_t            index_count,
-                                       uint32_t            index_offset)
+    void
+    render_context::draw_geometry(mge::program*                    program,
+                                  mge::vertex_buffer*              vb,
+                                  mge::index_buffer*               ib,
+                                  mge::uniform_block*              ub,
+                                  const mge::texture_binding_list& textures,
+                                  uint32_t                         index_count,
+                                  uint32_t                         index_offset)
     {
         if (!program) {
             MGE_THROW(illegal_state) << "Draw command has no program assigned";
@@ -578,11 +634,8 @@ namespace mge::dx11 {
             if (binding.texture) {
                 dx11::texture& dx11_tex =
                     static_cast<dx11::texture&>(*binding.texture);
-                ID3D11ShaderResourceView* srv =
-                    dx11_tex.shader_resource_view();
-                m_device_context->PSSetShaderResources(binding.slot,
-                                                       1,
-                                                       &srv);
+                ID3D11ShaderResourceView* srv = dx11_tex.shader_resource_view();
+                m_device_context->PSSetShaderResources(binding.slot, 1, &srv);
                 ID3D11SamplerState* sampler = dx11_tex.sampler_state();
                 m_device_context->PSSetSamplers(binding.slot, 1, &sampler);
             }

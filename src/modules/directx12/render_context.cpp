@@ -20,7 +20,6 @@
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
-
 namespace mge {
     MGE_USE_TRACE(DX12);
 }
@@ -219,6 +218,59 @@ namespace mge::dx12 {
                                     D3D_FEATURE_LEVEL_11_0,
                                     IID_PPV_ARGS(&m_device));
         CHECK_HRESULT(rc, , D3D12CreateDevice);
+        init_capabilities();
+    }
+
+    void render_context::init_capabilities()
+    {
+        class capabilities : public mge::render_context::capabilities
+        {
+        public:
+            capabilities() = default;
+            ~capabilities() = default;
+
+            uint32_t max_texture_size() const override
+            {
+                return D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+            }
+
+            uint32_t max_texture_3d_size() const override
+            {
+                return D3D12_REQ_TEXTURE3D_U_V_OR_W_DIMENSION;
+            }
+
+            uint32_t max_texture_cube_size() const override
+            {
+                return D3D12_REQ_TEXTURECUBE_DIMENSION;
+            }
+
+            uint32_t max_texture_array_layers() const override
+            {
+                return D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION;
+            }
+
+            uint32_t max_vertex_attributes() const override
+            {
+                return D3D12_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT;
+            }
+
+            uint32_t max_uniform_buffer_bindings() const override
+            {
+                return D3D12_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT;
+            }
+
+            uint32_t max_texture_bindings() const override
+            {
+                return D3D12_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+            }
+
+            uint32_t max_color_attachments() const override
+            {
+                return D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT;
+            }
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
     }
 
     void render_context::create_factory()
@@ -987,15 +1039,16 @@ namespace mge::dx12 {
         }
     }
 
-    void render_context::draw_geometry(ID3D12GraphicsCommandList*        command_list,
-                                       mge::program*                    program,
-                                       mge::vertex_buffer*              vb,
-                                       mge::index_buffer*               ib,
-                                       const mge::pipeline_state&       state,
-                                       mge::uniform_block*              ub,
-                                       const mge::texture_binding_list& textures,
-                                       uint32_t                   index_count,
-                                       uint32_t                   index_offset)
+    void
+    render_context::draw_geometry(ID3D12GraphicsCommandList*       command_list,
+                                  mge::program*                    program,
+                                  mge::vertex_buffer*              vb,
+                                  mge::index_buffer*               ib,
+                                  const mge::pipeline_state&       state,
+                                  mge::uniform_block*              ub,
+                                  const mge::texture_binding_list& textures,
+                                  uint32_t                         index_count,
+                                  uint32_t                         index_offset)
     {
         auto dx12_program = static_cast<dx12::program*>(program);
         if (!dx12_program) {
