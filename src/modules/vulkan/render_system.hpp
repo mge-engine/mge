@@ -73,6 +73,8 @@ namespace mge::vulkan {
 
         void resolve_basic_instance_functions();
         void resolve_layer_properties();
+        bool has_layer(const char* name) const;
+        std::vector<const char*> select_validation_layers() const;
         void create_instance();
         void destroy_instance();
         void resolve_instance_functions();
