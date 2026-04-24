@@ -109,21 +109,41 @@ namespace mge {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
+                    layout(location = 1) in vec3 vertexNormal;
 
                     layout(std140) uniform MVPBlock {
                         mat4 mvp;
+                        mat4 model_view;
+                        mat4 normal_matrix;
+                        vec4 light_dir;
                     };
+
+                    out vec3 fragNormal;
 
                     void main() {
                       gl_Position = mvp * vec4(vertexPosition, 1.0);
+                      fragNormal = (normal_matrix * vec4(vertexNormal, 0.0)).xyz;
                     }
                 )shader";
 
                 const char* fragment_shader_glsl = R"shader(
                     #version 330 core
+                    in vec3 fragNormal;
+
+                    layout(std140) uniform MVPBlock {
+                        mat4 mvp;
+                        mat4 model_view;
+                        mat4 normal_matrix;
+                        vec4 light_dir;
+                    };
+
                     layout(location = 0) out vec3 color;
                     void main() {
-                        color = vec3(1,1,1);
+                        vec3 N = normalize(fragNormal);
+                        vec3 L = normalize(light_dir.xyz);
+                        float diffuse = max(dot(N, L), 0.0);
+                        float ambient = 0.15;
+                        color = vec3(0.9, 0.9, 0.9) * (ambient + diffuse);
                     }
                 )shader";
 
@@ -151,16 +171,21 @@ namespace mge {
                     cbuffer MVPBlock : register(b0)
                     {
                         float4x4 mvp;
+                        float4x4 model_view;
+                        float4x4 normal_matrix;
+                        float4 light_dir;
                     };
 
                     struct VertexInput
                     {
                         float3 position : POSITION;
+                        float3 normal : NORMAL;
                     };
 
                     struct VertexOutput
                     {
                         float4 position : SV_POSITION;
+                        float3 viewNormal : TEXCOORD0;
                     };
 
                     [shader("vertex")]
@@ -168,13 +193,19 @@ namespace mge {
                     {
                         VertexOutput output;
                         output.position = mul(mvp, float4(input.position, 1.0));
+                        output.viewNormal = mul(normal_matrix, float4(input.normal, 0.0)).xyz;
                         return output;
                     }
 
                     [shader("fragment")]
-                    float4 fragmentMain() : SV_TARGET
+                    float4 fragmentMain(VertexOutput input) : SV_TARGET
                     {
-                        return float4(1.0f, 1.0f, 1.0f, 1.0f);
+                        float3 N = normalize(input.viewNormal);
+                        float3 L = normalize(light_dir.xyz);
+                        float diffuse = max(dot(N, L), 0.0);
+                        float ambient = 0.15;
+                        float3 color = float3(0.9, 0.9, 0.9) * (ambient + diffuse);
+                        return float4(color, 1.0);
                     }
                 )slang";
 
@@ -221,8 +252,15 @@ namespace mge {
                                           glm::vec3(0.0f, 1.5f, 0.0f),
                                           glm::vec3(0.0f, 1.0f, 0.0f));
             auto       model = glm::mat4(1.0f);
-            mge::fmat4 mvp = projection * view * model;
+            mge::fmat4 model_view = view * model;
+            mge::fmat4 mvp = projection * model_view;
+            mge::fmat4 normal_mat = glm::transpose(glm::inverse(model_view));
+            mge::fvec4 light_dir =
+                glm::normalize(glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
             m_uniform_block->set("mvp", mvp);
+            m_uniform_block->set("model_view", model_view);
+            m_uniform_block->set("normal_matrix", normal_mat);
+            m_uniform_block->set("light_dir", light_dir);
         }
 
     private:

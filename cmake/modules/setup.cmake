@@ -48,4 +48,5 @@ INCLUDE(thirdparty/nuklear)
 INCLUDE(thirdparty/glfw)
 INCLUDE(thirdparty/scoop)
 INCLUDE(thirdparty/renderdoc)
+INCLUDE(thirdparty/opencppcoverage)
 

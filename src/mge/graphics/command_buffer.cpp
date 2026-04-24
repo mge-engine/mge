@@ -17,6 +17,18 @@ namespace mge {
         , m_scissor_rects(resource)
     {}
 
+    void command_buffer::bind_texture(uint32_t      slot,
+                                      mge::texture* tex) noexcept
+    {
+        for (auto& b : m_current_textures) {
+            if (b.slot == slot) {
+                b.texture = tex;
+                return;
+            }
+        }
+        m_current_textures.push_back({slot, tex});
+    }
+
     void command_buffer::draw(const program_handle&       program,
                               const vertex_buffer_handle& vertices,
                               const index_buffer_handle&  indices,
@@ -28,12 +40,12 @@ namespace mge {
         m_index_buffers.push_back(indices);
         m_pipeline_states.push_back(m_current_pipeline_state);
         m_uniform_blocks.push_back(m_current_uniform_block);
-        m_textures.push_back(m_current_texture);
+        m_textures.push_back(m_current_textures);
         m_index_counts.push_back(index_count);
         m_index_offsets.push_back(index_offset);
         m_scissor_rects.push_back(m_current_scissor_rect);
         m_current_uniform_block = nullptr;
-        m_current_texture = nullptr;
+        m_current_textures.clear();
     }
 
     void command_buffer::depth_write(bool enable) noexcept

@@ -97,7 +97,7 @@
   - buffer: GLResource #4
 - Call: glBufferData
   - buffer: GLResource #4
-  - bytesize: 64
+  - bytesize: 208
   - data: _ignored_
   - usage: GL_DYNAMIC_DRAW
 - Call: glBindBuffer
@@ -106,7 +106,7 @@
 - Call: glBufferSubData
   - buffer: GLResource #4
   - offset: 0
-  - bytesize: 64
+  - bytesize: 208
   - data: _ignored_
 - Call: glUniformBlockBinding
   - program: GLResource #3

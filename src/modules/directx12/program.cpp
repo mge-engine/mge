@@ -88,46 +88,68 @@ namespace mge::dx12 {
             root_parameters.push_back(param);
         }
 
-        // Descriptor table for texture SRV (t0)
-        D3D12_DESCRIPTOR_RANGE srv_range = {};
-        srv_range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-        srv_range.NumDescriptors = 1;
-        srv_range.BaseShaderRegister = 0;
-        srv_range.RegisterSpace = 0;
-        srv_range.OffsetInDescriptorsFromTableStart =
-            D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+        // Descriptor tables for texture SRVs — one root parameter
+        // per sampler binding so each texture slot gets its own
+        // descriptor table entry.
+        std::vector<D3D12_DESCRIPTOR_RANGE> srv_ranges;
+        srv_ranges.reserve(
+            std::max<size_t>(m_sampler_bindings.size(), 1));
 
-        D3D12_ROOT_PARAMETER texture_param = {};
-        texture_param.ParameterType =
-            D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
-        texture_param.DescriptorTable.NumDescriptorRanges = 1;
-        texture_param.DescriptorTable.pDescriptorRanges = &srv_range;
-        texture_param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
-        root_parameters.push_back(texture_param);
+        for (size_t i = 0; i < std::max<size_t>(m_sampler_bindings.size(), 1);
+             ++i) {
+            D3D12_DESCRIPTOR_RANGE range = {};
+            range.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+            range.NumDescriptors = 1;
+            range.BaseShaderRegister = static_cast<UINT>(i);
+            range.RegisterSpace = 0;
+            range.OffsetInDescriptorsFromTableStart =
+                D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+            srv_ranges.push_back(range);
+        }
 
-        // Static sampler for s0
-        D3D12_STATIC_SAMPLER_DESC static_sampler = {};
-        static_sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
-        static_sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-        static_sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-        static_sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
-        static_sampler.MipLODBias = 0;
-        static_sampler.MaxAnisotropy = 0;
-        static_sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-        static_sampler.BorderColor =
-            D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
-        static_sampler.MinLOD = 0.0f;
-        static_sampler.MaxLOD = D3D12_FLOAT32_MAX;
-        static_sampler.ShaderRegister = 0;
-        static_sampler.RegisterSpace = 0;
-        static_sampler.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+        for (size_t i = 0; i < srv_ranges.size(); ++i) {
+            D3D12_ROOT_PARAMETER texture_param = {};
+            texture_param.ParameterType =
+                D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+            texture_param.DescriptorTable.NumDescriptorRanges = 1;
+            texture_param.DescriptorTable.pDescriptorRanges =
+                &srv_ranges[i];
+            texture_param.ShaderVisibility =
+                D3D12_SHADER_VISIBILITY_PIXEL;
+            root_parameters.push_back(texture_param);
+        }
+
+        // Static samplers — one per texture slot
+        std::vector<D3D12_STATIC_SAMPLER_DESC> static_samplers;
+        for (size_t i = 0;
+             i < std::max<size_t>(m_sampler_bindings.size(), 1);
+             ++i) {
+            D3D12_STATIC_SAMPLER_DESC static_sampler = {};
+            static_sampler.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
+            static_sampler.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+            static_sampler.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+            static_sampler.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+            static_sampler.MipLODBias = 0;
+            static_sampler.MaxAnisotropy = 0;
+            static_sampler.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+            static_sampler.BorderColor =
+                D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
+            static_sampler.MinLOD = 0.0f;
+            static_sampler.MaxLOD = D3D12_FLOAT32_MAX;
+            static_sampler.ShaderRegister = static_cast<UINT>(i);
+            static_sampler.RegisterSpace = 0;
+            static_sampler.ShaderVisibility =
+                D3D12_SHADER_VISIBILITY_PIXEL;
+            static_samplers.push_back(static_sampler);
+        }
 
         D3D12_ROOT_SIGNATURE_DESC desc = {
             .NumParameters = static_cast<UINT>(root_parameters.size()),
             .pParameters =
                 root_parameters.empty() ? nullptr : root_parameters.data(),
-            .NumStaticSamplers = 1,
-            .pStaticSamplers = &static_sampler,
+            .NumStaticSamplers = static_cast<UINT>(static_samplers.size()),
+            .pStaticSamplers =
+                static_samplers.empty() ? nullptr : static_samplers.data(),
             .Flags =
                 D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT,
         };

@@ -72,11 +72,11 @@ namespace mge::dx11 {
         void render(const mge::pass& p) override;
 
     private:
-        void              draw_geometry(mge::program*       program,
-                                        mge::vertex_buffer* vb,
-                                        mge::index_buffer*  ib,
-                                        mge::uniform_block* ub,
-                                        mge::texture*       tex,
+        void              draw_geometry(mge::program*              program,
+                                        mge::vertex_buffer*        vb,
+                                        mge::index_buffer*         ib,
+                                        mge::uniform_block*        ub,
+                                        const mge::texture_binding_list& textures,
                                         uint32_t            index_count = 0,
                                         uint32_t            index_offset = 0);
         void              bind_uniform_block(mge::dx11::program& dx11_program,

@@ -1,0 +1,90 @@
+name: Update Vulkan SDK version
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'  # Runs 4:00 am UTC every day
+
+jobs:
+  update-vulkan:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+        - name: "Checkout main"
+          uses: "actions/checkout@v6"
+          with:
+            ref: "main"
+            persist-credentials: true
+            token: ${{ secrets.MGE_GITHUB_TOKEN }}
+        - name: Get latest Vulkan SDK version
+          id: get-latest
+          run: |
+            LATEST=$(curl -s https://vulkan.lunarg.com/sdk/latest/windows.json | jq -r '.windows')
+            if [ -z "$LATEST" ] || [ "$LATEST" = "null" ]; then
+              LATEST=$(curl -sI "https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe" \
+                | grep -i "^location:" \
+                | sed -n 's|.*/sdk/download/\([^/]*\)/.*|\1|p' \
+                | tr -d '\r')
+            fi
+            CURRENT=$(grep -oP 'vulkan_version\s*=\s*"\K[^"]+' tools/ci/vulkan.py)
+            echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+            echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+            echo "Current version: $CURRENT"
+            echo "Latest version:  $LATEST"
+        - name: Check if update is needed
+          id: check
+          run: |
+            if [ -z "${{ steps.get-latest.outputs.latest }}" ]; then
+              echo "update_needed=false" >> "$GITHUB_OUTPUT"
+              echo "Could not determine latest Vulkan SDK version"
+              exit 0
+            fi
+            if [ "${{ steps.get-latest.outputs.latest }}" = "${{ steps.get-latest.outputs.current }}" ]; then
+              echo "update_needed=false" >> "$GITHUB_OUTPUT"
+              echo "Vulkan SDK is already up to date"
+            else
+              echo "update_needed=true" >> "$GITHUB_OUTPUT"
+              echo "Vulkan SDK update available"
+            fi
+        - name: Update vulkan.py
+          if: steps.check.outputs.update_needed == 'true'
+          run: |
+            LATEST="${{ steps.get-latest.outputs.latest }}"
+            sed -i "s/vulkan_version = \".*\"/vulkan_version = \"$LATEST\"/" tools/ci/vulkan.py
+        - name: Update CI workflow
+          if: steps.check.outputs.update_needed == 'true'
+          run: |
+            LATEST="${{ steps.get-latest.outputs.latest }}"
+            CURRENT="${{ steps.get-latest.outputs.current }}"
+            sed -i "s|C:\\\\VulkanSDK\\\\${CURRENT}|C:\\\\VulkanSDK\\\\${LATEST}|g" .github/workflows/github-action-cicd.yml
+        - name: Create branch and push
+          if: steps.check.outputs.update_needed == 'true'
+          run: |
+            git config --global user.name 'github-actions'
+            git config --global user.email 'github-actions@github.com'
+            BRANCH="update-vulkan-${{ github.run_number }}"
+            git checkout -b "$BRANCH"
+            git add tools/ci/vulkan.py .github/workflows/github-action-cicd.yml
+            git commit -m "Update Vulkan SDK to ${{ steps.get-latest.outputs.latest }}"
+            git push origin "$BRANCH"
+        - name: Create pull request
+          if: steps.check.outputs.update_needed == 'true'
+          env:
+            GH_TOKEN: ${{ secrets.MGE_GITHUB_TOKEN }}
+          run: |
+            BRANCH="update-vulkan-${{ github.run_number }}"
+            PR_URL=$(gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "Update Vulkan SDK to ${{ steps.get-latest.outputs.latest }}" \
+              --body "Update Vulkan SDK from \`${{ steps.get-latest.outputs.current }}\` to \`${{ steps.get-latest.outputs.latest }}\`.")
+            echo "Created PR: $PR_URL"
+        - name: Wait for checks and merge
+          if: steps.check.outputs.update_needed == 'true'
+          env:
+            GH_TOKEN: ${{ secrets.MGE_GITHUB_TOKEN }}
+          run: |
+            BRANCH="update-vulkan-${{ github.run_number }}"
+            gh pr checks "$BRANCH" --watch --fail-fast
+            gh pr merge "$BRANCH" --squash --delete-branch
