@@ -4,6 +4,7 @@
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
+#include <fmt/format.h>
 
 namespace mge {
     MGE_USE_TRACE(VULKAN);
@@ -12,7 +13,7 @@ namespace mge {
 namespace mge::vulkan {
     MGE_DEFINE_EXCEPTION_CLASS(error);
 
-    static const char* vkresult_message(VkResult rc)
+    static std::string vkresult_message(VkResult rc)
     {
         switch (rc) {
         case VK_SUCCESS:
@@ -56,6 +57,68 @@ namespace mge::vulkan {
                    "pool's memory";
         case VK_ERROR_UNKNOWN:
             return "An unknown error has occurred";
+        case VK_ERROR_OUT_OF_POOL_MEMORY:
+            return "A pool memory allocation has failed";
+        case VK_ERROR_INVALID_EXTERNAL_HANDLE:
+            return "An external handle is not a valid handle of the specified "
+                   "type";
+        case VK_ERROR_FRAGMENTATION:
+            return "A descriptor pool creation has failed due to "
+                   "fragmentation";
+        case VK_ERROR_INVALID_OPAQUE_CAPTURE_ADDRESS:
+            return "A buffer creation or memory allocation failed because the "
+                   "requested address is not available";
+        case VK_PIPELINE_COMPILE_REQUIRED:
+            return "A requested pipeline creation would have required "
+                   "compilation, but the application requested compilation to "
+                   "not be performed";
+        case VK_ERROR_INVALID_SHADER_NV:
+            return "One or more shaders failed to compile or link";
+        case VK_ERROR_IMAGE_USAGE_NOT_SUPPORTED_KHR:
+            return "The requested image usage is not supported";
+        case VK_ERROR_VIDEO_PICTURE_LAYOUT_NOT_SUPPORTED_KHR:
+            return "The requested video picture layout is not supported";
+        case VK_ERROR_VIDEO_PROFILE_OPERATION_NOT_SUPPORTED_KHR:
+            return "The requested video profile operation is not supported";
+        case VK_ERROR_VIDEO_PROFILE_FORMAT_NOT_SUPPORTED_KHR:
+            return "The requested video profile format is not supported";
+        case VK_ERROR_VIDEO_PROFILE_CODEC_NOT_SUPPORTED_KHR:
+            return "The requested video profile codec is not supported";
+        case VK_ERROR_VIDEO_STD_VERSION_NOT_SUPPORTED_KHR:
+            return "The requested video standard version is not supported";
+        case VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT:
+            return "The requested DRM format modifier plane layout is invalid";
+        case VK_ERROR_NOT_PERMITTED_KHR:
+            return "A requested operation is not permitted";
+        case VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT:
+            return "An operation on a swapchain created with exclusive "
+                   "full-screen access failed as it did not have exclusive "
+                   "full-screen access";
+        case VK_THREAD_IDLE_KHR:
+            return "A deferred operation is not complete but there is no "
+                   "work remaining to assign to additional threads";
+        case VK_THREAD_DONE_KHR:
+            return "A deferred operation is not complete but there is no "
+                   "work remaining to assign to this thread";
+        case VK_OPERATION_DEFERRED_KHR:
+            return "A deferred operation was requested and at least some of "
+                   "the work was deferred";
+        case VK_OPERATION_NOT_DEFERRED_KHR:
+            return "A deferred operation was requested and no work was "
+                   "deferred";
+        case VK_ERROR_INVALID_VIDEO_STD_PARAMETERS_KHR:
+            return "The provided video std parameters are invalid";
+        case VK_ERROR_COMPRESSION_EXHAUSTED_EXT:
+            return "An image creation failed because internal resources "
+                   "required for compression are exhausted";
+        case VK_INCOMPATIBLE_SHADER_BINARY_EXT:
+            return "The provided binary shader code is not compatible with "
+                   "this device";
+        case VK_PIPELINE_BINARY_MISSING_KHR:
+            return "A pipeline binary was required but was not found";
+        case VK_ERROR_NOT_ENOUGH_SPACE_KHR:
+            return "There is not enough space in the buffer to write the "
+                   "result";
         case VK_ERROR_SURFACE_LOST_KHR:
             return "A surface is no longer available";
         case VK_SUBOPTIMAL_KHR:
@@ -73,7 +136,7 @@ namespace mge::vulkan {
         case VK_ERROR_VALIDATION_FAILED_EXT:
             return "A validation layer found an error";
         default:
-            return "Unknown Vulkan error";
+            return fmt::format("Unrecognized VkResult code: {}", (int)rc);
         }
     }
 
