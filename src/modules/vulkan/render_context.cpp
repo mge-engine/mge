@@ -17,7 +17,6 @@
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/memory_image.hpp"
 
-
 #ifdef MGE_OS_MACOSX
 #    include <GLFW/glfw3.h>
 #endif
@@ -133,6 +132,7 @@ namespace mge::vulkan {
             resolve_device_functions();
             create_allocator();
             get_device_queue();
+            init_capabilities();
             fetch_surface_capabilities();
             choose_extent();
             // Update base class extent to actual framebuffer pixel size
@@ -752,6 +752,85 @@ namespace mge::vulkan {
                                             nullptr,
                                             &m_depth_image_views[i]));
         }
+    }
+
+    void render_context::init_capabilities()
+    {
+        VkPhysicalDeviceProperties props;
+        m_render_system->vkGetPhysicalDeviceProperties(
+            m_render_system->physical_device(),
+            &props);
+        const VkPhysicalDeviceLimits& limits = props.limits;
+
+        class capabilities : public mge::render_context::capabilities
+        {
+        public:
+            explicit capabilities(const VkPhysicalDeviceLimits& l)
+            {
+                m_max_texture_size = l.maxImageDimension2D;
+                m_max_texture_3d_size = l.maxImageDimension3D;
+                m_max_texture_cube_size = l.maxImageDimensionCube;
+                m_max_texture_array_layers = l.maxImageArrayLayers;
+                m_max_vertex_attributes = l.maxVertexInputAttributes;
+                m_max_uniform_buffer_bindings =
+                    l.maxDescriptorSetUniformBuffers;
+                m_max_texture_bindings = l.maxDescriptorSetSampledImages;
+                m_max_color_attachments = l.maxColorAttachments;
+            }
+            ~capabilities() = default;
+
+            uint32_t max_texture_size() const override
+            {
+                return m_max_texture_size;
+            }
+
+            uint32_t max_texture_3d_size() const override
+            {
+                return m_max_texture_3d_size;
+            }
+
+            uint32_t max_texture_cube_size() const override
+            {
+                return m_max_texture_cube_size;
+            }
+
+            uint32_t max_texture_array_layers() const override
+            {
+                return m_max_texture_array_layers;
+            }
+
+            uint32_t max_vertex_attributes() const override
+            {
+                return m_max_vertex_attributes;
+            }
+
+            uint32_t max_uniform_buffer_bindings() const override
+            {
+                return m_max_uniform_buffer_bindings;
+            }
+
+            uint32_t max_texture_bindings() const override
+            {
+                return m_max_texture_bindings;
+            }
+
+            uint32_t max_color_attachments() const override
+            {
+                return m_max_color_attachments;
+            }
+
+        private:
+            uint32_t m_max_texture_size{0};
+            uint32_t m_max_texture_3d_size{0};
+            uint32_t m_max_texture_cube_size{0};
+            uint32_t m_max_texture_array_layers{0};
+            uint32_t m_max_vertex_attributes{0};
+            uint32_t m_max_uniform_buffer_bindings{0};
+            uint32_t m_max_texture_bindings{0};
+            uint32_t m_max_color_attachments{0};
+        };
+
+        m_capabilities = std::make_unique<capabilities>(limits);
     }
 
     void render_context::create_allocator()
@@ -1454,10 +1533,10 @@ namespace mge::vulkan {
             tex_ptrs.push_back(b.texture);
         }
 
-        auto desc_key = std::make_tuple(
-            ub ? ub : static_cast<mge::uniform_block*>(nullptr),
-            tex_ptrs,
-            layout);
+        auto desc_key =
+            std::make_tuple(ub ? ub : static_cast<mge::uniform_block*>(nullptr),
+                            tex_ptrs,
+                            layout);
 
         VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
         auto            desc_it = m_descriptor_sets.find(desc_key);
@@ -1546,8 +1625,7 @@ namespace mge::vulkan {
                     continue;
                 }
 
-                auto* vk_tex =
-                    static_cast<mge::vulkan::texture*>(matched_tex);
+                auto* vk_tex = static_cast<mge::vulkan::texture*>(matched_tex);
 
                 VkDescriptorImageInfo image_info = {};
                 image_info.imageLayout =
@@ -1578,15 +1656,16 @@ namespace mge::vulkan {
         return descriptor_set;
     }
 
-    void render_context::draw_geometry(VkCommandBuffer            command_buffer,
-                                       mge::program*              program,
-                                       mge::vertex_buffer*        vb,
-                                       mge::index_buffer*         ib,
-                                       const mge::pipeline_state& state,
-                                       mge::uniform_block*        ub,
-                                       const mge::texture_binding_list& textures,
-                                       uint32_t                   index_count,
-                                       uint32_t                   index_offset)
+    void
+    render_context::draw_geometry(VkCommandBuffer            command_buffer,
+                                  mge::program*              program,
+                                  mge::vertex_buffer*        vb,
+                                  mge::index_buffer*         ib,
+                                  const mge::pipeline_state& state,
+                                  mge::uniform_block*        ub,
+                                  const mge::texture_binding_list& textures,
+                                  uint32_t                         index_count,
+                                  uint32_t                         index_offset)
     {
         mge::vulkan::program* vk_program =
             static_cast<mge::vulkan::program*>(program);
@@ -1609,8 +1688,7 @@ namespace mge::vulkan {
                 descriptor_set = prepare_uniform_block(*vk_program, *ub);
             }
             if (!textures.empty()) {
-                descriptor_set =
-                    prepare_texture(*vk_program, textures, ub);
+                descriptor_set = prepare_texture(*vk_program, textures, ub);
             }
             if (descriptor_set != VK_NULL_HANDLE) {
                 vkCmdBindDescriptorSets(command_buffer,
@@ -1742,15 +1820,15 @@ namespace mge::vulkan {
         mge::rectangle current_scissor = p.scissor();
         p.for_each_draw_command(
             [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
-                const program_handle&       program,
-                const vertex_buffer_handle& vertex_buffer,
-                const index_buffer_handle&  index_buffer,
-                const mge::pipeline_state&  state,
-                mge::uniform_block*         ub,
+                const program_handle&            program,
+                const vertex_buffer_handle&      vertex_buffer,
+                const index_buffer_handle&       index_buffer,
+                const mge::pipeline_state&       state,
+                mge::uniform_block*              ub,
                 const mge::texture_binding_list& textures,
-                uint32_t                    index_count,
-                uint32_t                    index_offset,
-                const mge::rectangle&       cmd_scissor) {
+                uint32_t                         index_count,
+                uint32_t                         index_offset,
+                const mge::rectangle&            cmd_scissor) {
                 const auto& effective =
                     cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                 if (effective != current_scissor) {
@@ -1782,15 +1860,15 @@ namespace mge::vulkan {
         if (blend_pass_needed) {
             p.for_each_draw_command(
                 [this, command_buffer, &current_scissor, &p](
-                    const program_handle&       program,
-                    const vertex_buffer_handle& vertex_buffer,
-                    const index_buffer_handle&  index_buffer,
-                    const mge::pipeline_state&  state,
-                    mge::uniform_block*         ub,
+                    const program_handle&            program,
+                    const vertex_buffer_handle&      vertex_buffer,
+                    const index_buffer_handle&       index_buffer,
+                    const mge::pipeline_state&       state,
+                    mge::uniform_block*              ub,
                     const mge::texture_binding_list& textures,
-                    uint32_t                    index_count,
-                    uint32_t                    index_offset,
-                    const mge::rectangle&       cmd_scissor) {
+                    uint32_t                         index_count,
+                    uint32_t                         index_offset,
+                    const mge::rectangle&            cmd_scissor) {
                     const auto& effective =
                         cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                     if (effective != current_scissor) {

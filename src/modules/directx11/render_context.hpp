@@ -72,24 +72,25 @@ namespace mge::dx11 {
         void render(const mge::pass& p) override;
 
     private:
-        void              draw_geometry(mge::program*              program,
-                                        mge::vertex_buffer*        vb,
-                                        mge::index_buffer*         ib,
-                                        mge::uniform_block*        ub,
-                                        const mge::texture_binding_list& textures,
-                                        uint32_t            index_count = 0,
-                                        uint32_t            index_offset = 0);
-        void              bind_uniform_block(mge::dx11::program& dx11_program,
-                                             mge::uniform_block& ub);
+        void draw_geometry(mge::program*                    program,
+                           mge::vertex_buffer*              vb,
+                           mge::index_buffer*               ib,
+                           mge::uniform_block*              ub,
+                           const mge::texture_binding_list& textures,
+                           uint32_t                         index_count = 0,
+                           uint32_t                         index_offset = 0);
+        void bind_uniform_block(mge::dx11::program& dx11_program,
+                                mge::uniform_block& ub);
         ID3D11BlendState* blend_state(const mge::pipeline_state& state);
         ID3D11DepthStencilState*
         depth_stencil_state(const mge::pipeline_state& state);
         ID3D11RasterizerState*
-                           rasterizer_state(const mge::pipeline_state& state);
-        void               create_swap_chain();
-        ID3D11InputLayout* get_or_create_input_layout(
-            const mge::vertex_layout& layout,
-            ID3DBlob*                 shader_code);
+             rasterizer_state(const mge::pipeline_state& state);
+        void create_swap_chain();
+        ID3D11InputLayout*
+             get_or_create_input_layout(const mge::vertex_layout& layout,
+                                        ID3DBlob*                 shader_code);
+        void init_capabilities();
 
         mge::dx11::render_system&              m_render_system;
         mge::dx11::window&                     m_window;
@@ -127,9 +128,9 @@ namespace mge::dx11 {
 
         struct input_layout_entry
         {
-            mge::vertex_layout                     layout;
-            ID3DBlob*                              shader_blob;
-            com_unique_ptr<ID3D11InputLayout>       input_layout;
+            mge::vertex_layout                layout;
+            ID3DBlob*                         shader_blob;
+            com_unique_ptr<ID3D11InputLayout> input_layout;
         };
         std::vector<input_layout_entry> m_cached_input_layouts;
     };

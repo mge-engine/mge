@@ -19,6 +19,8 @@
 #include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
+#include "mge/core/noncopyable.hpp"
+
 #include <memory>
 #include <memory_resource>
 
@@ -34,6 +36,30 @@ namespace mge {
      */
     class MGEGRAPHICS_EXPORT render_context
     {
+    public:
+        /**
+         * @brief Capabilities of the render context.
+         *
+         * Reports hardware limits for the active GPU and driver.
+         */
+        class MGEGRAPHICS_EXPORT capabilities : public noncopyable
+        {
+        protected:
+            capabilities();
+
+        public:
+            virtual ~capabilities();
+
+            virtual uint32_t max_texture_size() const;
+            virtual uint32_t max_texture_3d_size() const;
+            virtual uint32_t max_texture_cube_size() const;
+            virtual uint32_t max_texture_array_layers() const;
+            virtual uint32_t max_vertex_attributes() const;
+            virtual uint32_t max_uniform_buffer_bindings() const;
+            virtual uint32_t max_texture_bindings() const;
+            virtual uint32_t max_color_attachments() const;
+        };
+
     protected:
         render_context(mge::render_system& rs, const mge::extent& ext);
 
@@ -209,6 +235,13 @@ namespace mge {
         {
             return m_render_system;
         }
+
+        /**
+         * @brief Access render context capabilities.
+         *
+         * @return render context capabilities
+         */
+        const render_context::capabilities& context_capabilities() const;
 
         /**
          * @brief Get the default viewport for this render context.
@@ -406,6 +439,8 @@ namespace mge {
         bool     m_first_frame{true};
         uint64_t m_frame_counter{1};
         uint64_t m_screenshot_at_frame{0};
+
+        std::unique_ptr<render_context::capabilities> m_capabilities;
 
     private:
         void save_screenshot(const image_ref& img, uint64_t frame);

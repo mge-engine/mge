@@ -27,7 +27,8 @@ namespace mge::dx12 {
     public:
         static constexpr uint32_t buffer_count = 2;
 
-        render_context(mge::dx12::render_system& render_system, window& window_);
+        render_context(mge::dx12::render_system& render_system,
+                       window&                   window_);
         virtual ~render_context();
 
         void initialize();
@@ -124,10 +125,9 @@ namespace mge::dx12 {
             }
         }
 
-        const mge::com_ptr<ID3D12PipelineState>&
-        static_pipeline_state(
-            mge::dx12::program*                         program,
-            const mge::pipeline_state&                  state,
+        const mge::com_ptr<ID3D12PipelineState>& static_pipeline_state(
+            mge::dx12::program*                          program,
+            const mge::pipeline_state&                   state,
             const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout);
 
     private:
@@ -135,6 +135,7 @@ namespace mge::dx12 {
         void create_factory();
         void create_adapter();
         void create_device();
+        void init_capabilities();
         void enable_debug_messages();
         void create_command_queue();
         void create_descriptor_heap();
@@ -143,15 +144,15 @@ namespace mge::dx12 {
         void create_depth_stencil_views();
         void create_command_lists();
 
-        void draw_geometry(ID3D12GraphicsCommandList*        command_list,
+        void draw_geometry(ID3D12GraphicsCommandList*       command_list,
                            mge::program*                    program,
                            mge::vertex_buffer*              vb,
                            mge::index_buffer*               ib,
                            const mge::pipeline_state&       state,
                            mge::uniform_block*              ub,
                            const mge::texture_binding_list& textures,
-                           uint32_t                   index_count = 0,
-                           uint32_t                   index_offset = 0);
+                           uint32_t                         index_count = 0,
+                           uint32_t                         index_offset = 0);
 
         const std::vector<D3D12_INPUT_ELEMENT_DESC>&
         input_layout_from_vertex_buffer(mge::vertex_buffer* vb);
@@ -167,7 +168,7 @@ namespace mge::dx12 {
                                  void*                  context);
 
         mge::dx12::render_system& m_render_system;
-        mge::dx12::window& m_window;
+        mge::dx12::window&        m_window;
 
         mge::com_ptr<ID3D12Debug>                 m_debug;
         mge::com_ptr<IDXGIFactory4>               m_factory;
