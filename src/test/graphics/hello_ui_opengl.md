@@ -199,6 +199,8 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -249,6 +251,8 @@
   - indices: 60
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -299,6 +303,8 @@
   - indices: 1536
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -412,6 +418,8 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -462,6 +470,8 @@
   - indices: 60
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -512,6 +522,8 @@
   - indices: 1536
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -625,6 +637,8 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -675,6 +689,8 @@
   - indices: 60
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -725,6 +741,8 @@
   - indices: 1536
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -838,6 +856,8 @@
   - indices: 0
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -888,6 +908,8 @@
   - indices: 60
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
@@ -938,6 +960,8 @@
   - indices: 1536
 - Call: glBindVertexArray
   - vaobj: GLResource #7
+- Call: glActiveTexture
+  - texture: GL_TEXTURE0
 - Call: glBindTexture
   - target: GL_TEXTURE_2D
   - texture: null
