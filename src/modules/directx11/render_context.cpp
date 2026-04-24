@@ -127,6 +127,7 @@ namespace mge::dx11 {
 
     render_context::~render_context()
     {
+        error::set_info_queue(nullptr);
         if (m_render_system.frame_debugger()) {
             auto fd = m_render_system.frame_debugger();
             if (fd) {
@@ -198,7 +199,7 @@ namespace mge::dx11 {
                     d3d_infoqueue->SetBreakOnSeverity(
                         D3D11_MESSAGE_SEVERITY_ERROR,
                         true);
-                    d3d_infoqueue->Release();
+                    error::set_info_queue(d3d_infoqueue);
                 }
                 d3d_debug->Release();
             } else {
