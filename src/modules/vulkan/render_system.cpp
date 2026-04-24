@@ -301,7 +301,10 @@ namespace mge::vulkan {
             MGE_DEBUG_TRACE(VULKAN,
                             "Enabling Vulkan instance debug extensions");
             extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-            layers.push_back("VK_LAYER_KHRONOS_validation");
+            auto validation_layers = select_validation_layers();
+            for (const auto& l : validation_layers) {
+                layers.push_back(l);
+            }
         }
 
 #ifdef MGE_OS_MACOSX
@@ -350,6 +353,66 @@ namespace mge::vulkan {
                                                          nullptr,
                                                          &m_debug_messenger));
         }
+    }
+
+    bool render_system::has_layer(const char* name) const
+    {
+        for (const auto& layer : m_layer_properties) {
+            if (strcmp(layer.layerName, name) == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    std::vector<const char*> render_system::select_validation_layers() const
+    {
+        // Prio 1: unified Khronos validation layer
+        if (has_layer("VK_LAYER_KHRONOS_validation")) {
+            MGE_INFO_TRACE(VULKAN,
+                           "Using validation layer: "
+                           "VK_LAYER_KHRONOS_validation");
+            return {"VK_LAYER_KHRONOS_validation"};
+        }
+        // Prio 2: LunarG standard validation meta-layer
+        if (has_layer("VK_LAYER_LUNARG_standard_validation")) {
+            MGE_INFO_TRACE(VULKAN,
+                           "Using validation layer: "
+                           "VK_LAYER_LUNARG_standard_validation");
+            return {"VK_LAYER_LUNARG_standard_validation"};
+        }
+        // Prio 3: individual layers that make up the old standard set
+        static const char* s_prio3_layers[] = {
+            "VK_LAYER_GOOGLE_threading",
+            "VK_LAYER_LUNARG_parameter_validation",
+            "VK_LAYER_LUNARG_object_tracker",
+            "VK_LAYER_LUNARG_core_validation",
+            "VK_LAYER_GOOGLE_unique_objects"};
+        bool all_prio3 = true;
+        for (const auto* l : s_prio3_layers) {
+            if (!has_layer(l)) {
+                all_prio3 = false;
+                break;
+            }
+        }
+        if (all_prio3) {
+            MGE_INFO_TRACE(VULKAN,
+                           "Using individual validation layers (prio 3 set)");
+            return {s_prio3_layers[0],
+                    s_prio3_layers[1],
+                    s_prio3_layers[2],
+                    s_prio3_layers[3],
+                    s_prio3_layers[4]};
+        }
+        // Prio 4: core validation only
+        if (has_layer("VK_LAYER_LUNARG_core_validation")) {
+            MGE_INFO_TRACE(VULKAN,
+                           "Using validation layer: "
+                           "VK_LAYER_LUNARG_core_validation");
+            return {"VK_LAYER_LUNARG_core_validation"};
+        }
+        MGE_WARNING_TRACE(VULKAN, "No Vulkan validation layers available");
+        return {};
     }
 
     void render_system::resolve_layer_properties()
