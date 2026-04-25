@@ -7,9 +7,10 @@
 namespace mge {
     // MGE_USE_TRACE(GRAPHICS);
 
-    window::window(mge::render_system& render_system, const mge::extent& extent_, const window_options&)
+    window::window(mge::render_system& render_system, const mge::extent& extent_, const window_options& options)
         : m_render_system(render_system)
         , m_extent(extent_)
+        , m_options(options)
         , m_closing_listener([] { return true; })
         , m_visible(false)
     {}
@@ -50,6 +51,10 @@ namespace mge {
         return m_extent;
     }
 
+    const std::string& window::name() const
+    {
+        return m_options.name();
+    }
     mge::render_context& window::render_context()
     {
         return *m_render_context;

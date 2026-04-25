@@ -27,6 +27,17 @@ namespace mge {
         }
     }
 
+    const std::string& window_options::name() const
+    {
+        return m_name;
+    }
+
+    window_options& window_options::set_name(const std::string& name)
+    {
+        m_name = name;
+        return *this;
+    }
+
     window_options window_options::standard_options()
     {
         return window_options()

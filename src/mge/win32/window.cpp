@@ -7,6 +7,12 @@
 #include "mge/core/zero_memory.hpp"
 #include <windowsx.h>
 
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#include <codecvt>
+#include <locale>
+#pragma warning(pop)
+
 #define WM_WANT_DESTROY (WM_USER + 1)
 
 namespace mge {
@@ -101,9 +107,15 @@ namespace mge {
 
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
 
+            std::wstring title;
+            if (!name().empty()) {
+                std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+                title = conv.from_bytes(name());
+            }
+
             m_hwnd = CreateWindowExW(exstyle,
                                      (LPCWSTR)s_window_class,
-                                     L"",
+                                     title.c_str(),
                                      style,
                                      0,
                                      0,

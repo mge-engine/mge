@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <bitset>
+#include <string>
 
 namespace mge {
     /**
@@ -85,7 +86,21 @@ namespace mge {
          */
         static window_options fullscreen_options();
 
+        /**
+         * @brief Get the window name (title text).
+         * @return window name
+         */
+        const std::string& name() const;
+
+        /**
+         * @brief Set the window name (title text).
+         * @param name window name
+         * @return reference to this
+         */
+        window_options& set_name(const std::string& name);
+
     private:
         std::bitset<(size_t)MAX> m_options;
+        std::string              m_name;
     };
 } // namespace mge

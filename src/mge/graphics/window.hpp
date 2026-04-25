@@ -58,6 +58,11 @@ namespace mge {
         virtual mge::extent extent() const;
 
         /**
+         * Get window name.
+         * @return window name
+         */
+        const std::string& name() const;
+        /**
          * Shows the window.
          */
         void show();
@@ -138,6 +143,7 @@ namespace mge {
         mge::render_system&     m_render_system;
         mge::point              m_position;
         mge::extent             m_extent;
+        mge::window_options     m_options;
         mge::render_context_ref m_render_context;
         close_listener          m_close_listener;
         closing_listener        m_closing_listener;
