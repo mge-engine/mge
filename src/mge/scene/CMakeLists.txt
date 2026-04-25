@@ -25,5 +25,5 @@ MGE_LIBRARY(
     ${mgescene_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgescene mgegraphics mgecore)
+TARGET_LINK_LIBRARIES(mgescene mgegraphics mgecore flecs::flecs)
 ADD_SUBDIRECTORY(test)
