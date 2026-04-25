@@ -7,4 +7,5 @@
 TEST(scene, construct)
 {
     mge::scene s;
+    (void)s;
 }
