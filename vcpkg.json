@@ -29,7 +29,8 @@
     "luajit",
     "nanobench",
     "nuklear",
-    "shader-slang"
+    "shader-slang",
+    "flecs"
   ],
   "features": {
     "glfw": {
