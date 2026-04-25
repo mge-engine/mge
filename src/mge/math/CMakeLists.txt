@@ -6,6 +6,7 @@ SET(mgemath_sources
 
 SET(mgemath_headers
     glm.hpp
+    quat.hpp
     vec2.hpp
     vec3.hpp
     vec4.hpp)
