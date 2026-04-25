@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/format.hpp"
 #include "mge/math/vec3.hpp"
 #include "test/googletest.hpp"
 
@@ -36,4 +37,12 @@ TEST(vec3, print)
     std::stringstream ss;
     ss << v;
     EXPECT_STREQ("(1, 2, 3)", ss.str().c_str());
+}
+
+TEST(vec3, format)
+{
+    EXPECT_EQ("(1, 2, 3)", fmt::format("{}", fvec3(1.0f, 2.0f, 3.0f)));
+    EXPECT_EQ("(1, 2, 3)", fmt::format("{}", ivec3(1, 2, 3)));
+    EXPECT_EQ("(1, 2, 3)", fmt::format("{}", uvec3(1u, 2u, 3u)));
+    EXPECT_EQ("(1, 2, 3)", fmt::format("{}", dvec3(1.0, 2.0, 3.0)));
 }
