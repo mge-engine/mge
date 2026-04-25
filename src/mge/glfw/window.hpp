@@ -29,6 +29,7 @@ namespace mge {
         protected:
             void on_show() override;
             void on_hide() override;
+            void on_title_changed() override;
 
         private:
             static void glfw_close_callback(GLFWwindow* w);

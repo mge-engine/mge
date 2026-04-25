@@ -27,6 +27,7 @@ namespace mge {
         protected:
             void on_show() override;
             void on_hide() override;
+            void on_title_changed() override;
 
         private:
             static LRESULT CALLBACK wndproc(HWND   hwnd,
