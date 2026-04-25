@@ -51,10 +51,19 @@ namespace mge {
         return m_extent;
     }
 
-    const std::string& window::name() const
+    const std::string& window::title() const
     {
-        return m_options.name();
+        return m_options.title();
     }
+
+    void window::set_title(const std::string& title)
+    {
+        m_options.set_title(title);
+        on_title_changed();
+    }
+
+    void window::on_title_changed()
+    {}
     mge::render_context& window::render_context()
     {
         return *m_render_context;

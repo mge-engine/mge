@@ -37,21 +37,25 @@ namespace mge {
         }
         window_options(const window_options& o)
             : m_options(o.m_options)
+            , m_title(o.m_title)
         {}
 
         window_options(window_options&& o)
             : m_options(std::move(o.m_options))
+            , m_title(std::move(o.m_title))
         {}
 
         inline window_options& operator=(const window_options& o)
         {
             m_options = o.m_options;
+            m_title = o.m_title;
             return *this;
         }
 
         inline window_options& operator=(window_options&& o)
         {
             m_options = std::move(o.m_options);
+            m_title = std::move(o.m_title);
             return *this;
         }
 
@@ -87,20 +91,20 @@ namespace mge {
         static window_options fullscreen_options();
 
         /**
-         * @brief Get the window name (title text).
-         * @return window name
+         * @brief Get the window title text.
+         * @return window title
          */
-        const std::string& name() const;
+        const std::string& title() const;
 
         /**
-         * @brief Set the window name (title text).
-         * @param name window name
+         * @brief Set the window title text.
+         * @param title window title
          * @return reference to this
          */
-        window_options& set_name(const std::string& name);
+        window_options& set_title(const std::string& title);
 
     private:
         std::bitset<(size_t)MAX> m_options;
-        std::string              m_name;
+        std::string              m_title;
     };
 } // namespace mge
