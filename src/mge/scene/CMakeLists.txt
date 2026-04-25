@@ -8,8 +8,13 @@ SET(mgescene_sources
 
 SET(mgescene_headers
     dllexport.hpp
+    material.hpp
+    material_type.hpp
+    pbr_material.hpp
     scene_fwd.hpp
     scene.hpp
+    shader_material.hpp
+    texture_material.hpp
 )
 
 MGE_LIBRARY(
