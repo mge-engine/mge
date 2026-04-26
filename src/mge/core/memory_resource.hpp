@@ -20,17 +20,37 @@ namespace mge {
         void* do_allocate(size_t bytes, size_t alignment) override;
         void  do_deallocate(void* p, size_t bytes, size_t alignment) override;
         bool  do_is_equal(
-             const std::pmr::memory_resource& other) const noexcept override;
+            const std::pmr::memory_resource& other) const noexcept override;
+
+        memory_resource();
+        ~memory_resource() = default;
+
+        memory_resource(const memory_resource&) = delete;
+        memory_resource& operator=(const memory_resource&) = delete;
+        memory_resource(memory_resource&&) = delete;
+        memory_resource& operator=(memory_resource&&) = delete;
 
     public:
         /**
          * @brief Instance of the memory resource.
          */
-        static ::mge::memory_resource instance;
+        static ::mge::memory_resource& instance();
         /**
          * @brief Allocator using the memory resource.
          */
         static std::pmr::polymorphic_allocator<void> allocator;
+    };
+
+    class MGECORE_EXPORT named_memory_resource : public memory_resource
+    {
+    public:
+        named_memory_resource(std::string_view name,
+                              memory_resource* upstream = nullptr);
+        ~named_memory_resource() override = default;
+
+    private:
+        std::string      m_name;
+        memory_resource* m_upstream;
     };
 
 } // namespace mge
