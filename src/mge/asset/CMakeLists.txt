@@ -10,6 +10,8 @@ SET(mgeasset_sources
     asset_handler.cpp
     file_asset_access.cpp
     file_asset_source.cpp
+    db_asset_access.cpp
+    db_asset_source.cpp
     application_octet_stream_handler.cpp
     asset_corrupted.cpp
 )
@@ -24,6 +26,8 @@ SET(mgeasset_headers
     asset_handler.hpp
     file_asset_access.hpp
     file_asset_source.hpp
+    db_asset_access.hpp
+    db_asset_source.hpp
     asset_corrupted.hpp
 )
 
@@ -40,6 +44,7 @@ TARGET_LINK_LIBRARIES(mgeasset PRIVATE
     mgecore
 
     unofficial::libmagic::libmagic
+    unofficial::sqlite3::sqlite3
     boost-all
 )
 
