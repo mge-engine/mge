@@ -1,6 +1,3 @@
-ALWAYS ANSWER IN SHORTEST POSSIBLE WAY THAT IS STILL COMPLETE AND CLEAR
-AND USES THE FEWEST TOKENS POSSIBLE.
-
 # Project Overview 
 
 * MGE (Modern Game/Graphics Engine) is a framework having the following goals:
@@ -9,12 +6,12 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 
 ## General Rules
 
-* do not optimize
-* do not abstract
-* do not generalize
-* do not omit steps in reasoning
-* do not defer decisions
-* verify more, assume less, and communicate uncertainty clearly
+1. Don’t assume. Don’t hide confusion. Surface tradeoffs.
+2. Minimum code that solves the problem. Nothing speculative.
+3. Touch only what you must. Clean up only your own mess.
+4. Define success criteria. Loop until verified.
+
+## Verify Change
 
 * Always execute 'cmake --build build' to build the project, do a build always to verify a change
 * When checking an error, use 'cmake --build build -j 1' to do a single-threaded build for easier debugging
@@ -22,7 +19,7 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 * Run each test command exactly once for verification. Do not re-run the same tests multiple times.
 * Execute these commands from the root of the repository.
 
-# Commit Messages
+## Commit Messages
 
 * Use present tense ("Add feature" not "Added feature")
 * Be concise yet descriptive
@@ -167,6 +164,6 @@ namespace mge {
 
 ## Common Pitfalls
 - Don't create in-source builds (CMake rejects them)
-- Module loading depends on `MGE_RENDER_SYSTEM` environment variable
+- Graphics module loading depends on `MGE_RENDER_SYSTEM` environment variable
 - DirectX modules are Windows-only; OpenGL/Vulkan are cross-platform
 - Headless tests skip `NEEDSDISPLAY` tests automatically (CI environments)
