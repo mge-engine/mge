@@ -72,7 +72,7 @@ TEST(benchmark, pmr_monotonic_buffer_resource)
 {
     // Buffer large enough so upstream is never hit during a single iteration.
     static constexpr size_t               buffer_size = 1024 * 1024;
-    static alignas(std::max_align_t) char buf[buffer_size];
+    alignas(std::max_align_t) static char buf[buffer_size];
 
     mge::benchmark()
         .run("pmr_monotonic_64",
