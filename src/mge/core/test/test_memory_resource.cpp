@@ -56,3 +56,17 @@ TEST(named_memory_resource, statistics_tracked)
     EXPECT_EQ((mge::statistics::value_type{uint64_t{1}}),
               desc.at(dealloc_idx).get(s));
 }
+
+TEST(named_memory_resource, statistics_in_tree)
+{
+    mge::named_memory_resource r("navigation_pool"sv);
+
+    mge::statistics* mem = mge::statistics::root().child("memory"sv);
+    ASSERT_NE(nullptr, mem);
+
+    mge::statistics* pool = mem->child("navigation_pool"sv);
+    ASSERT_NE(nullptr, pool);
+
+    EXPECT_EQ("navigation_pool"sv, pool->name());
+    EXPECT_EQ(&r.resource_statistics(), pool);
+}

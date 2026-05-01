@@ -381,6 +381,22 @@ namespace mge {
          */
         virtual const description& describe() const;
 
+        /**
+         * @brief Find a direct child by name.
+         *
+         * @param name child name to look for
+         * @return pointer to child, or @c nullptr if not found
+         */
+        statistics* child(std::string_view name) const noexcept
+        {
+            for (auto* c : m_children) {
+                if (c->name() == name) {
+                    return c;
+                }
+            }
+            return nullptr;
+        }
+
     protected:
         statistics();
 
