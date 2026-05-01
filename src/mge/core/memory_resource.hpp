@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/statistics.hpp"
 #include <memory_resource>
 
 namespace mge {
@@ -41,16 +42,26 @@ namespace mge {
         static std::pmr::polymorphic_allocator<void> allocator;
     };
 
+    class named_memory_statistics;
+
     class MGECORE_EXPORT named_memory_resource : public memory_resource
     {
     public:
         named_memory_resource(std::string_view name,
                               memory_resource* upstream = nullptr);
-        ~named_memory_resource() override = default;
+        ~named_memory_resource() override;
+
+        const statistics& resource_statistics() const noexcept;
+        statistics&       resource_statistics() noexcept;
+
+    protected:
+        void* do_allocate(size_t bytes, size_t alignment) override;
+        void  do_deallocate(void* p, size_t bytes, size_t alignment) override;
 
     private:
-        memory_resource* m_upstream;
-        std::pmr::string m_name;
+        memory_resource*         m_upstream;
+        std::pmr::string         m_name;
+        named_memory_statistics* m_statistics;
     };
 
 } // namespace mge
