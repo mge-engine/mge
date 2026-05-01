@@ -9,6 +9,7 @@
 #include <atomic>
 #include <chrono>
 #include <functional>
+#include <memory_resource>
 #include <string>
 #include <variant>
 #include <vector>
@@ -30,6 +31,7 @@ namespace mge {
          * Each statistics value is one of the supported types
          * - @c std::string
          * - @c std::string_view
+         * - @c std::pmr::string
          * - @c uint64_t
          * - @c int64_t
          * - @c float
@@ -39,6 +41,7 @@ namespace mge {
          */
         using value_type = std::variant<std::string,
                                         std::string_view,
+                                        std::pmr::string,
                                         uint64_t,
                                         int64_t,
                                         float,
@@ -200,7 +203,7 @@ namespace mge {
              */
             template <typename C>
             static field_description field(std::string_view         name,
-                                           statistics::counter_type C::*p)
+                                           statistics::counter_type C::* p)
             {
                 return field_description(name, [p](void* raw_class_p) {
                     C* class_p = reinterpret_cast<C*>(raw_class_p);
