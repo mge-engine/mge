@@ -68,7 +68,7 @@ namespace mge {
 
     named_memory_resource::named_memory_resource(std::string_view name,
                                                  memory_resource* upstream)
-        : m_name(name)
-        , m_upstream(upstream ? upstream : &memory_resource::instance())
+        : m_upstream(upstream ? upstream : &memory_resource::instance())
+        , m_name(name, m_upstream)
     {}
 } // namespace mge

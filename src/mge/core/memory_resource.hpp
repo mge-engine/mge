@@ -49,8 +49,8 @@ namespace mge {
         ~named_memory_resource() override = default;
 
     private:
-        std::string      m_name;
         memory_resource* m_upstream;
+        std::pmr::string m_name;
     };
 
 } // namespace mge
