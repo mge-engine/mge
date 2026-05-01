@@ -10,6 +10,7 @@
 #include <chrono>
 #include <functional>
 #include <memory_resource>
+#include <span>
 #include <string>
 #include <variant>
 #include <vector>
@@ -27,6 +28,11 @@ namespace mge {
     {
     public:
         /**
+         * @brief Type for counter.
+         */
+        using counter_type = std::atomic<uint64_t>;
+
+        /**
          * @brief Statistics value type.
          * Each statistics value is one of the supported types
          * - @c std::string
@@ -38,6 +44,7 @@ namespace mge {
          * - @c double
          * - @c std::chrono::duration<int64_t>
          * - @c std::chrono::duration<double>
+         * - @c counter_type
          */
         using value_type = std::variant<std::string,
                                         std::string_view,
@@ -49,10 +56,6 @@ namespace mge {
                                         std::chrono::duration<int64_t>,
                                         std::chrono::duration<double>>;
 
-        /**
-         * @brief Type for counter.
-         */
-        using counter_type = std::atomic<uint64_t>;
         /**
          * @brief Description of statistics entry.
          */
@@ -134,10 +137,11 @@ namespace mge {
                  * @return  statistics field value
                  */
                 template <typename S>
-                inline statistics::value_type get(S& statistics_object) const
+                inline statistics::value_type
+                get(const S& statistics_object) const
                 {
-                    void* raw_statistics =
-                        reinterpret_cast<void*>(&statistics_object);
+                    void* raw_statistics = const_cast<void*>(
+                        reinterpret_cast<const void*>(&statistics_object));
                     return m_getter(raw_statistics);
                 }
 
@@ -210,6 +214,33 @@ namespace mge {
 
                     statistics::value_type r = (class_p->*p).load();
 
+                    return r;
+                });
+            }
+
+            /**
+             * @brief Create field descriptor for a plain value type member.
+             *
+             * Handles all non-atomic members whose type is directly
+             * storable in @c value_type: @c uint64_t, @c int64_t,
+             * @c float, @c double, @c std::string, @c std::string_view,
+             * @c std::pmr::string,
+             * @c std::chrono::duration<int64_t>,
+             * @c std::chrono::duration<double>.
+             *
+             * @tparam C statistics object class
+             * @tparam T member type
+             * @param name field name
+             * @param p pointer to member of @c C
+             * @return field description
+             */
+            template <typename C, typename T>
+                requires std::is_constructible_v<statistics::value_type, T>
+            static field_description field(std::string_view name, T C::* p)
+            {
+                return field_description(name, [p](void* raw_class_p) {
+                    C* class_p = reinterpret_cast<C*>(raw_class_p);
+                    statistics::value_type r = class_p->*p;
                     return r;
                 });
             }
@@ -395,6 +426,31 @@ namespace mge {
                 }
             }
             return nullptr;
+        }
+
+        /**
+         * @brief All direct children.
+         *
+         * @return read-only span over child pointers
+         */
+        std::span<statistics* const> children() const noexcept
+        {
+            return m_children;
+        }
+
+        /**
+         * @brief Depth-first traversal of this node and all descendants.
+         *
+         * @tparam Fn callable with signature void(const statistics&, int depth)
+         * @param fn visitor invoked for each node
+         * @param depth starting depth (default 0)
+         */
+        template <typename Fn> void visit(Fn&& fn, int depth = 0) const
+        {
+            fn(*this, depth);
+            for (auto* c : m_children) {
+                c->visit(std::forward<Fn>(fn), depth + 1);
+            }
         }
 
     protected:
