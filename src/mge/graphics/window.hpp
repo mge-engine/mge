@@ -58,6 +58,17 @@ namespace mge {
         virtual mge::extent extent() const;
 
         /**
+         * Get window title.
+         * @return window title
+         */
+        const std::string& title() const;
+
+        /**
+         * Set window title.
+         * @param title new title
+         */
+        void set_title(const std::string& title);
+        /**
          * Shows the window.
          */
         void show();
@@ -134,10 +145,16 @@ namespace mge {
          * Called when window is hidden.
          */
         virtual void on_hide() = 0;
-        
+
+        /**
+         * Called when the window title changes.
+         */
+        virtual void on_title_changed();
+
         mge::render_system&     m_render_system;
         mge::point              m_position;
         mge::extent             m_extent;
+        mge::window_options     m_options;
         mge::render_context_ref m_render_context;
         close_listener          m_close_listener;
         closing_listener        m_closing_listener;

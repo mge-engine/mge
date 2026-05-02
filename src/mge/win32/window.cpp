@@ -84,6 +84,27 @@ namespace mge {
             s_window_class_created = true;
         }
 
+        static std::wstring utf8_to_wstring(const std::string& s)
+        {
+            if (s.empty()) {
+                return {};
+            }
+            int len = MultiByteToWideChar(CP_UTF8,
+                                          0,
+                                          s.c_str(),
+                                          static_cast<int>(s.size()),
+                                          nullptr,
+                                          0);
+            std::wstring result(len, L'\0');
+            MultiByteToWideChar(CP_UTF8,
+                                0,
+                                s.c_str(),
+                                static_cast<int>(s.size()),
+                                result.data(),
+                                len);
+            return result;
+        }
+
         void window::create_window()
         {
             MGE_DEBUG_TRACE(WIN32, "Create window");
@@ -101,9 +122,11 @@ namespace mge {
 
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
 
+            std::wstring wtitle = utf8_to_wstring(this->title());
+
             m_hwnd = CreateWindowExW(exstyle,
                                      (LPCWSTR)s_window_class,
-                                     L"",
+                                     wtitle.c_str(),
                                      style,
                                      0,
                                      0,
@@ -144,6 +167,14 @@ namespace mge {
                 BringWindowToTop(m_hwnd);
                 SetForegroundWindow(m_hwnd);
                 SetFocus(m_hwnd);
+            }
+        }
+
+        void window::on_title_changed()
+        {
+            if (m_hwnd) {
+                std::wstring wtitle = utf8_to_wstring(title());
+                SetWindowTextW(m_hwnd, wtitle.c_str());
             }
         }
 
