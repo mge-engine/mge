@@ -13,8 +13,8 @@
 
 ## Verify Change
 
-* Always execute 'cmake --build build' to build the project, do a build always to verify a change
-* When checking an error, use 'cmake --build build -j 1' to do a single-threaded build for easier debugging
+* Only verify when asked in prompt. Do not verify every change by default.
+* Execute 'cmake --build build' to build the project,
 * After building, run the appropriate tests (see Test Workflow below)
 * Run each test command exactly once for verification. Do not re-run the same tests multiple times.
 * Execute these commands from the root of the repository.
