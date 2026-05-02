@@ -145,7 +145,11 @@ jobs:
               cat /etc/os-release
           - name: Update and upgrade apt packages
             run: |
-              sudo apt-get update
+              for i in 1 2 3; do
+                sudo apt-get update && break
+                echo "apt-get update failed (attempt $i), retrying..."
+                sleep 5
+              done
               sudo apt-get upgrade -y
           - name: Show Python version
             run: |
