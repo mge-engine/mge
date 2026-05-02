@@ -9,6 +9,7 @@
 #include "mge/core/properties.hpp"
 #include "mge/core/trace.hpp"
 #include <iostream>
+#include <sstream>
 
 namespace mge {
     MGE_DEFINE_TRACE(ASSETTOOL);
@@ -54,7 +55,8 @@ public:
         m_description = "Show information about the asset";
         m_options.option("h,help", "Show help message")
             .option("m,mount-point",
-                    "Mount asset collections, can be used multiple times",
+                    "Mount asset source, format: "
+                    "type=<type>,mount=<path>[,key=value,...]",
                     mge::program_options::value<std::string>().composing())
             .option("r", "Mount current directory as root of asset collection")
             .positional("asset",
@@ -84,10 +86,37 @@ public:
             const auto& mount_points =
                 std::any_cast<const std::vector<std::string>&>(
                     opts.option("mount-point"));
-            for (const auto& mount_point : mount_points) {
+            for (const auto& spec : mount_points) {
                 MGE_DEBUG_TRACE(ASSETTOOL,
-                                "Processing mount point: {}",
-                                mount_point);
+                                "Processing mount point spec: {}",
+                                spec);
+                std::string        src_type;
+                std::string        mount_pt;
+                mge::properties    props;
+                std::istringstream ss(spec);
+                std::string        token;
+                while (std::getline(ss, token, ',')) {
+                    auto eq = token.find('=');
+                    if (eq == std::string::npos) {
+                        continue;
+                    }
+                    std::string k = token.substr(0, eq);
+                    std::string v = token.substr(eq + 1);
+                    if (k == "type") {
+                        src_type = v;
+                    } else if (k == "mount") {
+                        mount_pt = v;
+                    } else {
+                        props.put(k, v);
+                    }
+                }
+                if (src_type.empty() || mount_pt.empty()) {
+                    MGE_ERROR_TRACE(ASSETTOOL,
+                                    "Mount spec '{}' missing 'type' or 'mount'",
+                                    spec);
+                    continue;
+                }
+                mge::asset::mount(mount_pt, src_type, props);
             }
         }
 

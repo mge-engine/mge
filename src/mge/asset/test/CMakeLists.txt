@@ -6,6 +6,7 @@ SET(MGEASSET_TEST_SOURCES
     asset_test.cpp
     test_asset_type.cpp
     test_asset.cpp
+    test_db_asset.cpp
 )
 
 MGE_TEST(
