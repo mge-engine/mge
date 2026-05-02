@@ -21,6 +21,11 @@ namespace mge {
         return m_entity.is_valid();
     }
 
+    std::string_view scene::entity::name() const noexcept
+    {
+        return std::string_view(m_entity.name());
+    }
+
     // scene
 
     scene::scene() = default;

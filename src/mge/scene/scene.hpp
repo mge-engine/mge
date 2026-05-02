@@ -17,7 +17,7 @@ namespace mge {
     {
     public:
         /**
-         * @brief Wrapper around a flecs entity belonging to this scene.
+         * @brief Entity class.
          */
         class MGESCENE_EXPORT entity
         {
@@ -29,8 +29,9 @@ namespace mge {
             entity& operator=(entity&&) = default;
             ~entity() = default;
 
-            flecs::entity_t id() const noexcept;
-            bool            valid() const noexcept;
+            flecs::entity_t  id() const noexcept;
+            bool             valid() const noexcept;
+            std::string_view name() const noexcept;
 
             template <typename T> entity& set(const T& value)
             {
@@ -64,6 +65,22 @@ namespace mge {
 
         entity create_entity();
         entity create_entity(std::string_view name);
+
+        template <typename... Components>
+        entity create_entity(Components&&... components)
+        {
+            entity e = create_entity();
+            (e.set(std::forward<Components>(components)), ...);
+            return e;
+        }
+
+        template <typename... Components>
+        entity create_entity(std::string_view name, Components&&... components)
+        {
+            entity e = create_entity(name);
+            (e.set(std::forward<Components>(components)), ...);
+            return e;
+        }
 
         void update(float delta_time = 0.0f);
 
