@@ -39,7 +39,9 @@ namespace mge {
 
             m_handle = glfwCreateWindow(static_cast<int>(ext.width),
                                         static_cast<int>(ext.height),
-                                        "mge",
+                                        options.title().empty()
+                                            ? "mge"
+                                            : options.title().c_str(),
                                         nullptr,
                                         nullptr);
             if (!m_handle) {
@@ -86,6 +88,13 @@ namespace mge {
         {
             glfwHideWindow(m_handle);
         }
+
+        void window::on_title_changed()
+        {
+            if (m_handle) {
+                glfwSetWindowTitle(m_handle, title().c_str());
+            }
+}
 
         void window::process_input()
         {
