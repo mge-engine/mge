@@ -53,10 +53,7 @@ namespace mge {
 
         size_t index_count() const;
 
-        explicit operator bool() const noexcept
-        {
-            return m_vertices && m_indices;
-        }
+        explicit operator bool() const noexcept;
 
         void draw(command_buffer&       command_buffer,
                   const program_handle& program,

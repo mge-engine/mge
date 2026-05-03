@@ -44,6 +44,11 @@ namespace mge {
         return m_indices->element_count();
     }
 
+    render_mesh::operator bool() const noexcept
+    {
+        return m_vertices && m_indices;
+    }
+
     void render_mesh::draw(command_buffer&       command_buffer,
                            const program_handle& program,
                            uint32_t              index_count,
