@@ -4,11 +4,14 @@
 #pragma once
 
 #include "mge/scene/dllexport.hpp"
+#include "mge/scene/entity.hpp"
 
 #include <flecs.h>
 #include <string_view>
 
 namespace mge {
+
+    class node;
 
     /**
      * @brief Scene, master container for entities and systems.
@@ -16,45 +19,6 @@ namespace mge {
     class MGESCENE_EXPORT scene
     {
     public:
-        /**
-         * @brief Entity class.
-         */
-        class MGESCENE_EXPORT entity
-        {
-        public:
-            entity() = default;
-            entity(const entity&) = default;
-            entity(entity&&) = default;
-            entity& operator=(const entity&) = default;
-            entity& operator=(entity&&) = default;
-            ~entity() = default;
-
-            flecs::entity_t  id() const noexcept;
-            bool             valid() const noexcept;
-            std::string_view name() const noexcept;
-
-            template <typename T> entity& set(const T& value)
-            {
-                m_entity.set<T>(value);
-                return *this;
-            }
-
-            template <typename T> const T* get() const
-            {
-                return m_entity.get<T>();
-            }
-
-            template <typename T> bool has() const
-            {
-                return m_entity.has<T>();
-            }
-
-        private:
-            friend class scene;
-            explicit entity(flecs::entity e);
-            flecs::entity m_entity;
-        };
-
         scene();
         ~scene();
 
@@ -65,6 +29,9 @@ namespace mge {
 
         entity create_entity();
         entity create_entity(std::string_view name);
+
+        node create_node();
+        node create_node(std::string_view name);
 
         template <typename... Components>
         entity create_entity(Components&&... components)
@@ -87,8 +54,25 @@ namespace mge {
         flecs::world&       world() noexcept;
         const flecs::world& world() const noexcept;
 
+        template <typename T> scene& set(const T& value)
+        {
+            m_scene_entity.set(value);
+            return *this;
+        }
+
+        template <typename T> const T* get() const
+        {
+            return m_scene_entity.get<T>();
+        }
+
+        template <typename T> bool has() const
+        {
+            return m_scene_entity.has<T>();
+        }
+
     private:
         flecs::world m_world;
+        entity       m_scene_entity;
     };
 
 } // namespace mge
