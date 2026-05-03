@@ -5,6 +5,7 @@
 #include "mge/core/memory.hpp"
 
 namespace mge {
+    MGE_DECLARE_REF(world);
     MGE_DECLARE_REF(scene);
     MGE_DECLARE_REF(material);
     MGE_DECLARE_REF(texture_material);

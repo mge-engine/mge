@@ -44,7 +44,11 @@ namespace mge {
     };
 
     /**
-     * @brief Node entity — a scene entity that always has a position.
+     * @brief Node entity-
+     *
+     * A scene entity that always has a position,
+     * orientation and scale, and a cached transform matrix. The transform is
+     * recomputed whenever one of the components changes.
      */
     class MGESCENE_EXPORT node : public entity
     {

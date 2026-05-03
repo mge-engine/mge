@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/scene/node.hpp"
 #include "mge/scene/scene.hpp"
+#include "mge/scene/world.hpp"
 #include "test/googletest.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -11,6 +12,16 @@ TEST(scene, construct)
 {
     mge::scene s;
     (void)s;
+}
+
+TEST(world, scenes_share_entities)
+{
+    mge::world w;
+    auto       a = w.create_scene();
+    auto       b = w.create_scene();
+    auto       e = a.create_entity("shared_entity");
+
+    EXPECT_EQ(b.world().lookup("shared_entity").id(), e.id());
 }
 
 TEST(node, transform_identity_on_default)

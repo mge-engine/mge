@@ -18,6 +18,8 @@ namespace mge {
     class MGESCENE_EXPORT entity
     {
     public:
+        using id_type = flecs::entity_t;
+
         entity() = default;
         entity(const entity&) = default;
         entity(entity&&) = default;
@@ -25,9 +27,14 @@ namespace mge {
         entity& operator=(entity&&) = default;
         ~entity() = default;
 
-        flecs::entity_t  id() const noexcept;
+        id_type          id() const noexcept;
         bool             valid() const noexcept;
         std::string_view name() const noexcept;
+
+        inline operator bool() const noexcept
+        {
+            return valid();
+        }
 
         template <typename T> entity& set(const T& value)
         {
@@ -47,6 +54,7 @@ namespace mge {
 
     private:
         friend class scene;
+        friend class world;
         explicit entity(flecs::entity e);
         flecs::entity m_entity;
     };

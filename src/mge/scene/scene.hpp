@@ -7,19 +7,37 @@
 #include "mge/scene/entity.hpp"
 
 #include <flecs.h>
+#include <memory>
 #include <string_view>
+#include <type_traits>
+#include <utility>
 
 namespace mge {
 
     class node;
+    class world;
+
+    namespace detail {
+
+        template <typename... Args>
+        struct first_is_scene_entity_name : std::false_type
+        {};
+
+        template <typename First, typename... Rest>
+        struct first_is_scene_entity_name<First, Rest...>
+            : std::bool_constant<std::is_convertible_v<First, std::string_view>>
+        {};
+
+    } // namespace detail
 
     /**
-     * @brief Scene, master container for entities and systems.
+     * @brief Scene, a scoped view into a world.
      */
     class MGESCENE_EXPORT scene
     {
     public:
         scene();
+        explicit scene(mge::world& world);
         ~scene();
 
         scene(const scene&) = delete;
@@ -34,6 +52,7 @@ namespace mge {
         node create_node(std::string_view name);
 
         template <typename... Components>
+            requires(!detail::first_is_scene_entity_name<Components...>::value)
         entity create_entity(Components&&... components)
         {
             entity e = create_entity();
@@ -71,8 +90,14 @@ namespace mge {
         }
 
     private:
-        flecs::world m_world;
-        entity       m_scene_entity;
+        friend class world;
+
+        explicit scene(std::shared_ptr<mge::world> world);
+        scene(mge::world& world, flecs::entity scene_entity);
+
+        std::shared_ptr<mge::world> m_owned_world;
+        mge::world*                 m_world{nullptr};
+        entity                      m_scene_entity;
     };
 
 } // namespace mge
