@@ -46,6 +46,16 @@ namespace mge {
         }
 
         /**
+         * @brief Get the type of index elements.
+         *
+         * @return index element type
+         */
+        data_type index_element_type() const noexcept
+        {
+            return m_index_element_type;
+        }
+
+        /**
          * @brief Size of the vertex data in bytes.
          * @return size of the vertex data in bytes
          */
@@ -100,8 +110,8 @@ namespace mge {
         virtual buffer_ref indices() const = 0;
 
     private:
-        vertex_layout              m_vertex_layout;
-        [[maybe_unused]] data_type m_index_element_type;
+        vertex_layout m_vertex_layout;
+        data_type     m_index_element_type;
     };
 
 } // namespace mge
