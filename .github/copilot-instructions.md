@@ -10,6 +10,7 @@
 2. Minimum code that solves the problem. Nothing speculative.
 3. Touch only what you must. Clean up only your own mess.
 4. Define success criteria. Loop until verified.
+5. Do not check intellisense errors in IDE as failure sign.
 
 ## Verify Change
 
@@ -22,12 +23,9 @@
 ## Commit Messages
 
 * Use present tense ("Add feature" not "Added feature")
-* Be concise yet descriptive
-* Use the following structure:
-    - A short summary of the change (50 characters or less)
-    - A blank line
-    - A detailed description of the change, if necessary (wrap at 72 characters)
-* Do not mention that test passes in the commit message unless the commit is specifically about fixing or adding tests.
+* Be concise yet descriptive.
+* Use one line.
+* Do not add Co-authored-by: Copilot <copilot@github.com>
 
 ## Communication
 
