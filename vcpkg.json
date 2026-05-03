@@ -11,10 +11,7 @@
     "boost-bimap",
     "boost-stacktrace",
     "glm",
-    {
-      "name": "python3",
-      "default-features": true
-    },
+    "pkgconf",
     "stb",
     "nlohmann-json",
     "glslang",
