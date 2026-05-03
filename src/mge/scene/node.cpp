@@ -10,6 +10,9 @@ namespace mge {
     node::node(entity e)
         : entity(std::move(e))
     {
+        if (!has<mge::node::tag>()) {
+            set(mge::node::tag{});
+        }
         if (!has<mge::node_position>()) {
             set(mge::node_position{});
         }

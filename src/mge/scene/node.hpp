@@ -53,6 +53,9 @@ namespace mge {
     class MGESCENE_EXPORT node : public entity
     {
     public:
+        struct tag : public entity::tag
+        {};
+
         node() = default;
         node(const node&) = default;
         node(node&&) = default;

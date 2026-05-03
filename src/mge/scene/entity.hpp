@@ -7,6 +7,7 @@
 
 #include <flecs.h>
 #include <string_view>
+#include <type_traits>
 
 namespace mge {
 
@@ -17,6 +18,10 @@ namespace mge {
      */
     class MGESCENE_EXPORT entity
     {
+    protected:
+        struct tag
+        {};
+
     public:
         using id_type = flecs::entity_t;
 
@@ -50,6 +55,14 @@ namespace mge {
         template <typename T> bool has() const
         {
             return m_entity.has<T>();
+        }
+
+        template <typename T>
+            requires requires { typename T::tag; } &&
+                     std::is_base_of_v<entity::tag, typename T::tag>
+        bool is() const
+        {
+            return m_entity.has<typename T::tag>();
         }
 
     private:

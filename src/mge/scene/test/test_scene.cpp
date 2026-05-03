@@ -31,6 +31,13 @@ TEST(node, transform_identity_on_default)
     EXPECT_EQ(n.transform(), mge::fmat4{1.f});
 }
 
+TEST(node, create_node_sets_node_tag)
+{
+    mge::scene s;
+    auto       n = s.create_node("t");
+    EXPECT_TRUE(n.is<mge::node>());
+}
+
 TEST(node, transform_recomputed_on_set_position)
 {
     mge::scene s;
