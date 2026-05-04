@@ -12,14 +12,14 @@ def write_file(filename, lines):
     print("updating %s" % filename)
     if dry_run:
         return
-    f = open(filename, "w")
+    f = open(filename, "w", encoding='utf-8')
     for l in lines:
         f.write(l)
     f.close()
 
 
 def process_script(filename):
-    f = open(filename)
+    f = open(filename, encoding='utf-8-sig')
     lines = f.readlines()
     f.close()
     curated_lines = []
@@ -38,7 +38,7 @@ def process_script(filename):
 
 
 def process_cpp_source_file(filename):
-    f = open(filename)
+    f = open(filename, encoding='utf-8-sig')
     lines = f.readlines()
     f.close()
     curated_lines = []
@@ -70,7 +70,7 @@ def process_cpp_source_file(filename):
 
 
 def process_c_source_file(filename):
-    f = open(filename)
+    f = open(filename, encoding='utf-8-sig')
     lines = f.readlines()
     f.close()
     curated_lines = []
