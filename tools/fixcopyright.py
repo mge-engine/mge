@@ -24,7 +24,7 @@ def process_script(filename):
     f.close()
     curated_lines = []
     curated_lines.append("# mge - Modern Game Engine\n")
-    curated_lines.append("# Copyright (c) 2017-2023 by Alexander Schroeder\n")
+    curated_lines.append("# Copyright (c) 2017-2026 by Alexander Schroeder\n")
     curated_lines.append("# All rights reserved.\n")
     headercomment = True
     for l in lines:
@@ -43,7 +43,7 @@ def process_cpp_source_file(filename):
     f.close()
     curated_lines = []
     curated_lines.append("// mge - Modern Game Engine\n")
-    curated_lines.append("// Copyright (c) 2017-2023 by Alexander Schroeder\n")
+    curated_lines.append("// Copyright (c) 2017-2026 by Alexander Schroeder\n")
     curated_lines.append("// All rights reserved.\n")
 
     state = 'initial'
@@ -75,7 +75,7 @@ def process_c_source_file(filename):
     f.close()
     curated_lines = []
     curated_lines.append("/* mge - Modern Game Engine\n")
-    curated_lines.append(" * Copyright (c) 2017-2023 by Alexander Schroeder\n")
+    curated_lines.append(" * Copyright (c) 2017-2026 by Alexander Schroeder\n")
     curated_lines.append(" * All rights reserved.\n")
     curated_lines.append(" */\n")
 
