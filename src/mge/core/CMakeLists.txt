@@ -13,6 +13,7 @@ SET(mgecore_sources
     parameter_dump_info_provider.cpp
     component_dump_info_provider.cpp
     module_dump_info_provider.cpp
+    memory_dump_info_provider.cpp
     trace_sink.cpp
     memory_trace_sink.cpp
     stream_trace_sink.cpp
