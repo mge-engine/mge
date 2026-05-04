@@ -1,9 +1,10 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
-#include "python_context.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/script_engine.hpp"
+#include "python_context.hpp"
+
 
 namespace mge {
     MGE_DEFINE_TRACE(PYTHON);

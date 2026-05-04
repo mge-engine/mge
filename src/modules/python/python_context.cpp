@@ -2,8 +2,9 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "python_context.hpp"
-#include "python_engine.hpp"
 #include "mge/core/trace.hpp"
+#include "python_engine.hpp"
+
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
