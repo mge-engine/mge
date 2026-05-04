@@ -252,7 +252,7 @@ sections to the crash dump. They are discovered and instantiated via the
 <dd><p>Component interface for providing sections in crash dumps. </p>
 <p>Implementations contribute a named section with diagnostic information to the markdown crash dump document. Each provider is discovered and instantiated via the component system during dump generation.</p>
 <p>Implementations should derive from this class, register via <code class="docutils literal notranslate"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code>, and override <code class="docutils literal notranslate"><span class="pre">section_name</span></code> and <code class="docutils literal notranslate"><span class="pre">dump_info</span></code>. </p>
-<p>Subclassed by mge::component_dump_info_provider, mge::module_dump_info_provider, mge::parameter_dump_info_provider, mge::trace_dump_info_provider</p>
+<p>Subclassed by mge::component_dump_info_provider, mge::memory_dump_info_provider, mge::module_dump_info_provider, mge::parameter_dump_info_provider, mge::trace_dump_info_provider</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
