@@ -8,6 +8,11 @@ namespace mge::python {
 
     class python_engine : public mge::script_engine
     {
+    public:
+        python_engine();
+        ~python_engine() override;
+
+        script_context_ref create_context() override;
     };
 
 } // namespace mge::python
