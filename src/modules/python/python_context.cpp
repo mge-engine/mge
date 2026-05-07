@@ -5,7 +5,6 @@
 #include "mge/core/trace.hpp"
 #include "python_engine.hpp"
 
-
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -16,6 +15,7 @@ namespace mge::python {
         : m_engine(engine)
     {
         MGE_INFO_TRACE(PYTHON, "Python context created");
+        init_interpreter();
     }
 
     python_context::~python_context() {}
@@ -31,5 +31,10 @@ namespace mge::python {
     }
 
     void python_context::bind() {}
+
+    void python_context::init_interpreter()
+    {
+        auto state = m_engine->main_thread_state();
+    }
 
 } // namespace mge::python

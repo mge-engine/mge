@@ -13,6 +13,17 @@ namespace mge::python {
         ~python_engine() override;
 
         script_context_ref create_context() override;
+
+        PyThreadState* main_thread_state() const noexcept
+        {
+            return m_main_thread_state;
+        }
+
+    private:
+        void init_main_state();
+
+        PyConfig       m_config;
+        PyThreadState* m_main_thread_state{nullptr};
     };
 
 } // namespace mge::python

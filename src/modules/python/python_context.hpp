@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/script_context.hpp"
+#include "python.hpp"
 
 namespace mge::python {
 
@@ -19,7 +20,10 @@ namespace mge::python {
         void bind() override;
 
     private:
+        void init_interpreter();
+
         python_engine* m_engine;
+        PyThreadState* m_thread_state{nullptr};
     };
 
 } // namespace mge::python
