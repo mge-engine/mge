@@ -39,4 +39,8 @@ ELSE()
         Python3::Python)
 ENDIF()
 
+ADD_EXECUTABLE(mgepython mgepython.cpp)
+TARGET_LINK_LIBRARIES(mgepython mgecore mgescript)
+
+
 ADD_SUBDIRECTORY(test)
