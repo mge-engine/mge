@@ -11,7 +11,7 @@ namespace mge::python {
     {
         auto context = engine->create_context();
     }
-#if 0
+
     TEST_F(test_context, simple_eval)
     {
         auto context = engine->create_context();
@@ -32,7 +32,5 @@ namespace mge::python {
                          e.what());
         }
     }
-
-#endif
 
 } // namespace mge::python

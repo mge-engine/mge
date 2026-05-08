@@ -34,10 +34,48 @@ namespace mge::python {
     {
         MGE_DEBUG_TRACE(PYTHON, "eval");
         PyThreadState* prev = PyThreadState_Swap(m_thread_state);
-        int            rc = PyRun_SimpleString(script.c_str());
+
+        PyObject* main_module = PyImport_AddModule("__main__");
+        PyObject* globals = PyModule_GetDict(main_module);
+        PyObject* result =
+            PyRun_String(script.c_str(), Py_file_input, globals, globals);
+
+        // Capture exception info while m_thread_state is still active,
+        // before PyErr_Print() can clear it or the swap loses the context.
+        std::string error_msg;
+        if (!result) {
+            PyObject* exc = PyErr_GetRaisedException();
+            if (exc) {
+                PyObject* ex_type = PyObject_Type(exc);
+                PyObject* ex_type_repr = PyObject_Str(ex_type);
+                PyObject* ex_type_str =
+                    PyUnicode_AsEncodedString(ex_type_repr, "utf-8", "ignore");
+                std::string ex_type_cstr = ex_type_str
+                                               ? PyBytes_AS_STRING(ex_type_str)
+                                               : "(unknown type)";
+                PyObject*   ex_value_repr = PyObject_Str(exc);
+                PyObject*   ex_value_str =
+                    PyUnicode_AsEncodedString(ex_value_repr, "utf-8", "ignore");
+                std::string ex_value_cstr =
+                    ex_value_str ? PyBytes_AS_STRING(ex_value_str)
+                                 : "(no message)";
+                Py_XDECREF(ex_type_str);
+                Py_XDECREF(ex_type_repr);
+                Py_XDECREF(ex_type);
+                Py_XDECREF(ex_value_repr);
+                Py_XDECREF(ex_value_str);
+                Py_DECREF(exc);
+                error_msg =
+                    "Python error (of " + ex_type_cstr + "): " + ex_value_cstr;
+            } else {
+                error_msg = "Python error (unknown)";
+            }
+        }
+        Py_XDECREF(result);
         PyThreadState_Swap(prev);
-        if (rc != 0) {
-            MGE_THROW(mge::python::error);
+
+        if (!error_msg.empty()) {
+            MGE_THROW(mge::python::error) << error_msg;
         }
     }
 
