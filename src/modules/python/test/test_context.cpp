@@ -1,0 +1,38 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
+#include "pythontest.hpp"
+
+namespace mge::python {
+    class test_context : public pythontest
+    {};
+
+    TEST_F(test_context, create)
+    {
+        auto context = engine->create_context();
+    }
+#if 0
+    TEST_F(test_context, simple_eval)
+    {
+        auto context = engine->create_context();
+        context->eval("print('Hello from Python')\n");
+    }
+
+    TEST_F(test_context, simple_exception)
+    {
+        auto context = engine->create_context();
+        try {
+            context->eval(
+                "raise Exception(\"My hoovercraft is full of eels\")");
+            // "print('hello')");
+            FAIL() << "Exception expected";
+        } catch (const mge::exception& e) {
+            EXPECT_STREQ("Python error (of <class 'Exception'>): My "
+                         "hoovercraft is full of eels",
+                         e.what());
+        }
+    }
+
+#endif
+
+} // namespace mge::python

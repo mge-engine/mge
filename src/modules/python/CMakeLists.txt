@@ -7,23 +7,36 @@ SET(mge_python_module_SOURCES
     python_error.cpp
 )
 
-SET(MGE_PYTHON_VENV_DIR "${CMAKE_BINARY_DIR}/python3")
-IF(NOT EXISTS "${MGE_PYTHON_VENV_DIR}")
-    MESSAGE(STATUS "Creating Python venv at ${MGE_PYTHON_VENV_DIR}")
-    EXECUTE_PROCESS(
-        COMMAND "${Python3_EXECUTABLE}" -m venv "${MGE_PYTHON_VENV_DIR}"
-        RESULT_VARIABLE _venv_result
-    )
-    IF(NOT _venv_result EQUAL 0)
-        MESSAGE(FATAL_ERROR "Failed to create Python venv at ${MGE_PYTHON_VENV_DIR}")
-    ENDIF()
+IF(Python3_Development_FOUND)
+    MESSAGE("-- Python development tools have been found")
+    GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
+    MESSAGE("-- Copying python installation to target")
+    FILE(GLOB_RECURSE _python3files RELATIVE "${_python3path}" "${_python3path}/*")
+    FOREACH(_file ${_python3files})
+        GET_FILENAME_COMPONENT(_file_base ${_file} NAME)
+        IF(NOT _file_base MATCHES ".*\\.pyc")
+            CONFIGURE_FILE("${_python3path}/${_file}" ${CMAKE_BINARY_DIR}/python3/${_file} COPYONLY)
+        ENDIF()
+    ENDFOREACH()
 ENDIF()
+
 
 ADD_LIBRARY(mge_module_python MODULE
             ${mge_python_module_SOURCES})
 
-TARGET_LINK_LIBRARIES(mge_module_python
-    mgecore
-    mgereflection
-    mgescript
-    Python3::Python)
+IF(WIN32)
+    TARGET_LINK_LIBRARIES(mge_module_python
+        mgecore
+        mgereflection
+        mgescript
+        Python3::Python
+        psapi)
+ELSE()
+    TARGET_LINK_LIBRARIES(mge_module_python
+        mgecore
+        mgereflection
+        mgescript
+        Python3::Python)
+ENDIF()
+
+ADD_SUBDIRECTORY(test)

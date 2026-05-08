@@ -22,8 +22,8 @@ namespace mge::python {
     private:
         void init_main_state();
 
-        PyConfig       m_config;
         PyThreadState* m_main_thread_state{nullptr};
+        std::wstring   m_home;
     };
 
 } // namespace mge::python
