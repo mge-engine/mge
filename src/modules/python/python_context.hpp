@@ -21,9 +21,11 @@ namespace mge::python {
 
     private:
         void init_interpreter();
+        void create_helper_module();
 
         python_engine* m_engine;
         PyThreadState* m_thread_state{nullptr};
+        PyObject*      m_mge_module{nullptr};
     };
 
 } // namespace mge::python

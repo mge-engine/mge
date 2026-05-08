@@ -2,7 +2,11 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "python_context.hpp"
+
 #include "mge/core/trace.hpp"
+
+#include "mge/reflection/module.hpp"
+
 #include "python_engine.hpp"
 #include "python_error.hpp"
 
@@ -24,6 +28,10 @@ namespace mge::python {
     python_context::~python_context()
     {
         if (m_thread_state) {
+            PyThreadState* prev = PyThreadState_Swap(m_thread_state);
+            Py_XDECREF(m_mge_module);
+            m_mge_module = nullptr;
+            PyThreadState_Swap(prev);
             PyThreadState_Clear(m_thread_state);
             PyThreadState_Delete(m_thread_state);
             m_thread_state = nullptr;
@@ -111,7 +119,31 @@ namespace mge::python {
         return rc;
     }
 
-    void python_context::bind() {}
+    void python_context::bind()
+    {
+        reflection::module root_module = reflection::module::root();
+        MGE_DEBUG_TRACE(PYTHON, "Compute binding information");
+        create_helper_module();
+    }
+
+    void python_context::create_helper_module()
+    {
+        PyThreadState* prev = PyThreadState_Swap(m_thread_state);
+
+        // Create a module named 'mge' and register it in sys.modules
+        // so it is importable as: import mge
+        m_mge_module = PyModule_New("__mge__");
+        if (m_mge_module) {
+            PyObject* sys_modules = PyImport_GetModuleDict();
+            PyDict_SetItemString(sys_modules, "__mge__", m_mge_module);
+            MGE_DEBUG_TRACE(PYTHON, "Helper module '__mge__' created");
+        } else {
+            MGE_WARNING_TRACE(PYTHON,
+                              "Failed to create helper module '__mge__'");
+        }
+
+        PyThreadState_Swap(prev);
+    }
 
     void python_context::init_interpreter()
     {
