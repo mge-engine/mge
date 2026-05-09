@@ -18,8 +18,11 @@ namespace mge::python {
         ~python_module();
 
     private:
+        void create_module();
+
         python_context&                m_context;
         reflection::module_details_ref m_details;
+        std::string                    m_full_name;
         pyobject_ref                   m_py_module;
     };
 
