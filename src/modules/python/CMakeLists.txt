@@ -6,6 +6,7 @@ SET(mge_python_module_SOURCES
     python_context.cpp
     python_error.cpp
     python_binder.cpp
+    python_module.cpp
 )
 
 IF(Python3_Development_FOUND)
