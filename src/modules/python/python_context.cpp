@@ -6,7 +6,9 @@
 #include "mge/core/trace.hpp"
 
 #include "mge/reflection/module.hpp"
+#include "mge/reflection/module_details.hpp"
 
+#include "python_binder.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
 
@@ -106,7 +108,8 @@ namespace mge::python {
             } else {
                 FILE* f = fopen(argv[1], "r");
                 if (f) {
-                    rc = PyRun_SimpleFileEx(f, argv[1], 1) == 0 ? 0 : 1;
+                    rc = PyRun_SimpleFileEx(f, argv[1], /*closeit=*/1) == 0 ? 0
+                                                                            : 1;
                 } else {
                     rc = 1;
                 }
@@ -124,6 +127,9 @@ namespace mge::python {
         reflection::module root_module = reflection::module::root();
         MGE_DEBUG_TRACE(PYTHON, "Compute binding information");
         create_helper_module();
+
+        python_binder b(this);
+        root_module.details()->apply(b);
     }
 
     void python_context::create_helper_module()
