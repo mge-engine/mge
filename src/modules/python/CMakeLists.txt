@@ -12,19 +12,24 @@ SET(mge_python_module_SOURCES
 IF(Python3_Development_FOUND)
     MESSAGE("-- Python development tools have been found")
     GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
-    MESSAGE("-- Copying python installation to target")
-    FILE(GLOB_RECURSE _python3files RELATIVE "${_python3path}" "${_python3path}/*")
-    FOREACH(_file ${_python3files})
-        GET_FILENAME_COMPONENT(_file_base ${_file} NAME)
-        IF(NOT _file_base MATCHES ".*\\.pyc")
-            CONFIGURE_FILE("${_python3path}/${_file}" ${CMAKE_BINARY_DIR}/python3/${_file} COPYONLY)
-        ENDIF()
-    ENDFOREACH()
+    MESSAGE("-- Scheduling python installation copy to build time")
+
+    ADD_CUSTOM_TARGET(copy-python3-runtime ALL
+        COMMAND ${CMAKE_COMMAND}
+            -DSRC_DIR="${_python3path}"
+            -DDST_DIR="${CMAKE_BINARY_DIR}/python3"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/copy_python3.cmake"
+        COMMENT "Copying Python installation to ${CMAKE_BINARY_DIR}/python3"
+    )
 ENDIF()
 
 
 ADD_LIBRARY(mge_module_python MODULE
             ${mge_python_module_SOURCES})
+
+IF(Python3_Development_FOUND)
+    ADD_DEPENDENCIES(mge_module_python copy-python3-runtime)
+ENDIF()
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_python
