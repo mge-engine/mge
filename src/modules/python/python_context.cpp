@@ -11,6 +11,7 @@
 #include "python_binder.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
+#include "python_module.hpp"
 
 #include <string_view>
 
@@ -33,6 +34,9 @@ namespace mge::python {
             PyThreadState* prev = PyThreadState_Swap(m_thread_state);
             Py_XDECREF(m_mge_module);
             m_mge_module = nullptr;
+
+            m_modules.clear();
+
             PyThreadState_Swap(prev);
             PyThreadState_Clear(m_thread_state);
             PyThreadState_Delete(m_thread_state);
@@ -105,6 +109,59 @@ namespace mge::python {
         if (argc >= 2) {
             if (std::string_view(argv[1]) == "-c" && argc >= 3) {
                 rc = PyRun_SimpleString(argv[2]) == 0 ? 0 : 1;
+            } else if (std::string_view(argv[1]) == "-m" && argc >= 3) {
+                // Run a module as __main__: python -m module [args...]
+                // Set sys.argv to [argv[0], args after module...]
+                // (alter_sys=True will replace argv[0] with module path)
+                int       module_argc = argc - 2;
+                PyObject* module_argv = PyList_New(module_argc);
+                PyList_SetItem(module_argv,
+                               0,
+                               PyUnicode_DecodeFSDefault(argv[0]));
+                for (int i = 1; i < module_argc; ++i) {
+                    PyList_SetItem(module_argv,
+                                   i,
+                                   PyUnicode_DecodeFSDefault(argv[i + 2]));
+                }
+                PySys_SetObject("argv", module_argv);
+                Py_DECREF(module_argv);
+
+                PyObject* runpy = PyImport_ImportModule("runpy");
+                if (runpy) {
+                    PyObject* run_func =
+                        PyObject_GetAttrString(runpy, "run_module");
+                    if (run_func) {
+                        PyObject* py_mod_name = PyUnicode_FromString(argv[2]);
+                        PyObject* args = PyTuple_Pack(1, py_mod_name);
+                        Py_DECREF(py_mod_name);
+                        PyObject* kwargs = PyDict_New();
+                        PyObject* py_run_name =
+                            PyUnicode_FromString("__main__");
+                        PyDict_SetItemString(kwargs, "run_name", py_run_name);
+                        Py_DECREF(py_run_name);
+                        Py_INCREF(Py_True);
+                        PyDict_SetItemString(kwargs, "alter_sys", Py_True);
+                        Py_DECREF(Py_True);
+                        PyObject* result =
+                            PyObject_Call(run_func, args, kwargs);
+                        Py_DECREF(args);
+                        Py_DECREF(kwargs);
+                        Py_DECREF(run_func);
+                        if (!result) {
+                            PyErr_Print();
+                            rc = 1;
+                        } else {
+                            Py_DECREF(result);
+                        }
+                    } else {
+                        PyErr_Print();
+                        rc = 1;
+                    }
+                    Py_DECREF(runpy);
+                } else {
+                    PyErr_Print();
+                    rc = 1;
+                }
             } else {
                 FILE* f = fopen(argv[1], "r");
                 if (f) {
@@ -128,8 +185,10 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON, "Compute binding information");
         create_helper_module();
 
-        python_binder b(this);
+        PyThreadState* prev = PyThreadState_Swap(m_thread_state);
+        python_binder  b(*this);
         root_module.details()->apply(b);
+        PyThreadState_Swap(prev);
     }
 
     void python_context::create_helper_module()
@@ -164,6 +223,11 @@ namespace mge::python {
                 << "Failed to create Python thread state";
         }
         MGE_DEBUG_TRACE(PYTHON, "Python thread state created");
+    }
+
+    void python_context::add_module(const python_module_ref& module)
+    {
+        m_modules[module->full_name()] = module;
     }
 
 } // namespace mge::python

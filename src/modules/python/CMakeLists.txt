@@ -47,7 +47,7 @@ ELSE()
 ENDIF()
 
 ADD_EXECUTABLE(mgepython mgepython.cpp)
-TARGET_LINK_LIBRARIES(mgepython mgecore mgescript)
+TARGET_LINK_LIBRARIES(mgepython mgecore mgescript mgereflection)
 
 
 ADD_SUBDIRECTORY(test)

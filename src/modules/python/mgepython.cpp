@@ -4,6 +4,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/reflection/reflector.hpp"
 #include "mge/script/script_context.hpp"
 #include "mge/script/script_engine.hpp"
 
@@ -18,6 +19,7 @@ int main(int argc, const char** argv)
             mge::configuration::load();
         }
         mge::module::load_all();
+        mge::reflection::reflector::reflect_all();
         MGE_DEBUG_TRACE(MGEPYTHON, "Creating python engine");
         mge::script_engine_ref engine = mge::script_engine::create("python");
         MGE_DEBUG_TRACE(MGEPYTHON, "Creating python context");

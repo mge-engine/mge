@@ -15,7 +15,7 @@ namespace mge::python {
     class python_binder : public mge::reflection::visitor
     {
     public:
-        python_binder(python_context* context)
+        python_binder(python_context& context)
             : m_context(context)
         {}
 
@@ -34,7 +34,7 @@ namespace mge::python {
         void after(const mge::reflection::function_details& details) override;
 
     private:
-        python_context* m_context;
+        python_context& m_context;
     };
 
 } // namespace mge::python
