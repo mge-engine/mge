@@ -23,6 +23,7 @@ namespace mge::python {
 
     private:
         void init_enum();
+        void init_class();
 
         python_context&                 m_context;
         const reflection::type_details& m_type_details;

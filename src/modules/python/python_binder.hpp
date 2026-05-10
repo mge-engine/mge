@@ -36,6 +36,7 @@ namespace mge::python {
 
     private:
         void bind_enum(const mge::reflection::type_details& details);
+        void bind_class(const mge::reflection::type_details& details);
 
         python_context&                m_context;
         std::vector<python_module_ref> m_module_stack;

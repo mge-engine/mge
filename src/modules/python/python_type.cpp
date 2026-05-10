@@ -5,6 +5,7 @@
 #include "python_type.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
+#include "python_instance.hpp"
 #include "python_module.hpp"
 
 #include "mge/core/trace.hpp"
@@ -25,10 +26,8 @@ namespace mge::python {
 
         if (details.is_enum) {
             init_enum();
-        } else {
-            MGE_DEBUG_TRACE(PYTHON,
-                            "Creating python type for class: {}",
-                            details.name);
+        } else if (details.is_class) {
+            init_class();
         }
     }
 
@@ -85,6 +84,69 @@ namespace mge::python {
             error::check_error();
             MGE_THROW(python::error) << "Cannot add type '" << m_name
                                      << "' to module '" << m_module_name << "'";
+        }
+    }
+
+    void python_type::init_class()
+    {
+        MGE_DEBUG_TRACE(PYTHON,
+                        "Creating python type for class: {}",
+                        m_type_details.name);
+
+        m_type_slots.push_back(
+            {Py_tp_new,
+             reinterpret_cast<void*>(
+                 +[](PyTypeObject* type,
+                     PyObject*,
+                     PyObject*) -> PyObject* {
+                     PyObject* self = type->tp_alloc(type, 0);
+                     if (self) {
+                         auto* h = reinterpret_cast<python_instance_header*>(
+                             self);
+                         new (&h->object) std::shared_ptr<void>();
+                     }
+                     return self;
+                 })});
+
+        m_type_slots.push_back(
+            {Py_tp_finalize,
+             reinterpret_cast<void*>(+[](PyObject* self) {
+                 auto* h =
+                     reinterpret_cast<python_instance_header*>(self);
+                 h->object.~shared_ptr<void>();
+             })});
+
+        m_type_slots.push_back({0, nullptr});
+
+        // strip namespace prefix for the Python name
+        std::string_view short_name = m_type_details.alias.empty()
+                                          ? m_type_details.name
+                                          : m_type_details.alias;
+        auto pos = short_name.rfind("::");
+        if (pos != std::string_view::npos) {
+            short_name = short_name.substr(pos + 2);
+        }
+
+        m_spec = {.name      = m_name.c_str(),
+                  .basicsize = static_cast<int>(sizeof(python_instance_header)),
+                  .flags     = Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HEAPTYPE,
+                  .slots     = m_type_slots.data()};
+
+        python_module_ref module = m_context.module(m_module_name);
+        m_type_object = PyType_FromModuleAndSpec(module->py_module().get(),
+                                                 &m_spec,
+                                                 nullptr);
+        if (!m_type_object) {
+            error::check_error();
+        }
+
+        if (PyModule_AddObject(module->py_module().get(),
+                               std::string(short_name).c_str(),
+                               m_type_object.get())) {
+            error::check_error();
+            MGE_THROW(python::error)
+                << "Cannot add type '" << m_name << "' to module '"
+                << m_module_name << "'";
         }
     }
 

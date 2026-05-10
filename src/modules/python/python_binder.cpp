@@ -44,6 +44,7 @@ namespace mge::python {
     }
 
     void python_binder::before(const mge::reflection::type_details& details) {}
+
     void python_binder::on(const mge::reflection::type_details& details)
     {
         MGE_DEBUG_TRACE(PYTHON,
@@ -51,9 +52,9 @@ namespace mge::python {
                         std::string(details.name).c_str());
         if (details.is_enum) {
             bind_enum(details);
-        } // else if (details.is_class) {
-          // bind_class(details);
-        //}
+        } else if (details.is_class) {
+            bind_class(details);
+        }
     }
 
     void python_binder::after(const mge::reflection::type_details& details) {}
@@ -67,6 +68,13 @@ namespace mge::python {
     void python_binder::bind_enum(const mge::reflection::type_details& details)
     {
         MGE_DEBUG_TRACE(PYTHON, "Binding enum: {}", details.name);
+        auto type = std::make_shared<python_type>(m_context, details);
+        m_module_stack.back()->add(type);
+    }
+
+    void python_binder::bind_class(const mge::reflection::type_details& details)
+    {
+        MGE_DEBUG_TRACE(PYTHON, "Binding class: {}", details.name);
         auto type = std::make_shared<python_type>(m_context, details);
         m_module_stack.back()->add(type);
     }
