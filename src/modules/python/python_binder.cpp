@@ -3,12 +3,19 @@
 // All rights reserved.
 #include "python_binder.hpp"
 
+#include "mge/core/trace.hpp"
+
 #include "mge/reflection/function_details.hpp"
 #include "mge/reflection/module_details.hpp"
 #include "mge/reflection/type_details.hpp"
 #include "mge/reflection/type_identifier.hpp"
+
 #include "python_context.hpp"
 #include "python_module.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
     python_binder::~python_binder() {}
@@ -29,7 +36,18 @@ namespace mge::python {
     void python_binder::after(const mge::reflection::module_details& details) {}
 
     void python_binder::before(const mge::reflection::type_details& details) {}
-    void python_binder::on(const mge::reflection::type_details& details) {}
+    void python_binder::on(const mge::reflection::type_details& details)
+    {
+        MGE_DEBUG_TRACE(PYTHON,
+                        "Binding type: {}",
+                        std::string(details.name).c_str());
+        if (details.is_enum) {
+            bind_enum(details.name, details.enum_specific());
+        } // else if (details.is_class) {
+          // bind_class(details);
+        //}
+    }
+
     void python_binder::after(const mge::reflection::type_details& details) {}
 
     void python_binder::before(const mge::reflection::function_details& details)
@@ -37,5 +55,13 @@ namespace mge::python {
     void python_binder::on(const mge::reflection::function_details& details) {}
     void python_binder::after(const mge::reflection::function_details& details)
     {}
+
+    void python_binder::bind_enum(
+        const std::string_view& name,
+        const mge::reflection::type_details::enum_specific_details&
+            enum_details)
+    {
+        MGE_DEBUG_TRACE(PYTHON, "Binding enum: {}", name);
+    }
 
 } // namespace mge::python

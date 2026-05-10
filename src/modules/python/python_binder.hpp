@@ -34,6 +34,11 @@ namespace mge::python {
         void after(const mge::reflection::function_details& details) override;
 
     private:
+        void
+        bind_enum(const std::string_view& name,
+                  const mge::reflection::type_details::enum_specific_details&
+                      enum_details);
+
         python_context& m_context;
     };
 
