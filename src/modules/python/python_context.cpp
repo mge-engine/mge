@@ -186,8 +186,13 @@ namespace mge::python {
         create_helper_module();
 
         PyThreadState* prev = PyThreadState_Swap(m_thread_state);
-        python_binder  b(*this);
-        root_module.details()->apply(b);
+        try {
+            python_binder b(*this);
+            root_module.details()->apply(b);
+        } catch (...) {
+            PyThreadState_Swap(prev);
+            throw;
+        }
         PyThreadState_Swap(prev);
     }
 
@@ -228,6 +233,17 @@ namespace mge::python {
     void python_context::add_module(const python_module_ref& module)
     {
         m_modules[module->full_name()] = module;
+    }
+
+    const python_module_ref&
+    python_context::module(const std::string& full_name) const
+    {
+        auto it = m_modules.find(full_name);
+        if (it == m_modules.end()) {
+            MGE_THROW(mge::python::error)
+                << "Python module not found in context: " << full_name;
+        }
+        return it->second;
     }
 
 } // namespace mge::python

@@ -12,6 +12,7 @@
 
 #include "python_context.hpp"
 #include "python_module.hpp"
+#include "python_type.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -32,8 +33,15 @@ namespace mge::python {
             std::const_pointer_cast<mge::reflection::module_details>(
                 details.shared_from_this()));
         m_context.add_module(mod);
+        m_module_stack.push_back(mod);
     }
-    void python_binder::after(const mge::reflection::module_details& details) {}
+
+    void python_binder::after(const mge::reflection::module_details& details)
+    {
+        if (!details.is_root()) {
+            m_module_stack.pop_back();
+        }
+    }
 
     void python_binder::before(const mge::reflection::type_details& details) {}
     void python_binder::on(const mge::reflection::type_details& details)
@@ -59,6 +67,8 @@ namespace mge::python {
     void python_binder::bind_enum(const mge::reflection::type_details& details)
     {
         MGE_DEBUG_TRACE(PYTHON, "Binding enum: {}", details.name);
+        auto type = std::make_shared<python_type>(m_context, details);
+        m_module_stack.back()->add(type);
     }
 
 } // namespace mge::python

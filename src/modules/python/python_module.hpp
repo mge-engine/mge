@@ -6,6 +6,7 @@
 #include "mge/reflection/module_details.hpp"
 
 #include "pyobject_ref.hpp"
+#include "python_fwd.hpp"
 
 namespace mge::python {
     class python_context;
@@ -27,6 +28,13 @@ namespace mge::python {
             return m_python_name;
         }
 
+        const pyobject_ref& py_module() const noexcept
+        {
+            return m_py_module;
+        }
+
+        void add(const python_type_ref& type);
+
     private:
         void create_module();
 
@@ -35,6 +43,7 @@ namespace mge::python {
         std::string                    m_full_name;
         std::string                    m_python_name;
         pyobject_ref                   m_py_module;
+        std::vector<python_type_ref>   m_types;
     };
 
 } // namespace mge::python

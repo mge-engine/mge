@@ -7,6 +7,7 @@
 #include "mge/reflection/visitor.hpp"
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
+#include "python_fwd.hpp"
 
 namespace mge::python {
 
@@ -36,7 +37,8 @@ namespace mge::python {
     private:
         void bind_enum(const mge::reflection::type_details& details);
 
-        python_context& m_context;
+        python_context&                m_context;
+        std::vector<python_module_ref> m_module_stack;
     };
 
 } // namespace mge::python

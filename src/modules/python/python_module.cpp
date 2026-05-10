@@ -31,7 +31,10 @@ namespace mge::python {
         create_module();
     }
 
-    python_module::~python_module() {}
+    python_module::~python_module()
+    {
+        m_types.clear();
+    }
 
     void python_module::create_module()
     {
@@ -66,4 +69,10 @@ namespace mge::python {
             }
         }
     }
+
+    void python_module::add(const python_type_ref& type)
+    {
+        m_types.push_back(type);
+    }
+
 } // namespace mge::python

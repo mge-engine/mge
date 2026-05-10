@@ -25,6 +25,8 @@ namespace mge::python {
 
         void add_module(const python_module_ref& module);
 
+        const python_module_ref& module(const std::string& full_name) const;
+
     private:
         void init_interpreter();
         void create_helper_module();
