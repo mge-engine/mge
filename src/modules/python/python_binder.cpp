@@ -42,7 +42,7 @@ namespace mge::python {
                         "Binding type: {}",
                         std::string(details.name).c_str());
         if (details.is_enum) {
-            bind_enum(details.name, details.enum_specific());
+            bind_enum(details);
         } // else if (details.is_class) {
           // bind_class(details);
         //}
@@ -56,12 +56,9 @@ namespace mge::python {
     void python_binder::after(const mge::reflection::function_details& details)
     {}
 
-    void python_binder::bind_enum(
-        const std::string_view& name,
-        const mge::reflection::type_details::enum_specific_details&
-            enum_details)
+    void python_binder::bind_enum(const mge::reflection::type_details& details)
     {
-        MGE_DEBUG_TRACE(PYTHON, "Binding enum: {}", name);
+        MGE_DEBUG_TRACE(PYTHON, "Binding enum: {}", details.name);
     }
 
 } // namespace mge::python
