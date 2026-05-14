@@ -275,7 +275,7 @@ jobs:
     build-msvc-windows-latest:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
-        runs-on: windows-latest
+        runs-on: windows-2022
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
@@ -368,7 +368,7 @@ jobs:
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
                 $env:VCPKG_VERBOSE="1" 
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 $maxAttempts = 3
                 $attempt = 0
@@ -402,7 +402,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --parallel 8 --target all
             - name: Run Tests
@@ -410,7 +410,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 ctest --verbose
             - name: Upload test results
@@ -426,7 +426,7 @@ jobs:
     build-documentation-windows-latest:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build documentation
-        runs-on: windows-latest
+        runs-on: windows-2022
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
