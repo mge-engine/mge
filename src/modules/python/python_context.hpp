@@ -44,7 +44,6 @@ namespace mge::python {
         std::map<std::string, python_module_ref> m_modules;
         std::vector<std::unique_ptr<mge::dynamic_implementation_registry_entry>>
             m_component_entries;
-        std::vector<std::shared_ptr<mge::component_base>> m_component_instances;
     };
 
 } // namespace mge::python

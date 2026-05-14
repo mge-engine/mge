@@ -7,16 +7,30 @@
 namespace mge::python {
 
     python_invocation_context::python_invocation_context(PyObject* self)
-        : m_self(self, pyobject_ref::incref::yes)
+        : m_self(self)
+        , m_self_owned(false)
     {}
 
-    python_invocation_context::~python_invocation_context() = default;
+    python_invocation_context::~python_invocation_context()
+    {
+        if (m_self_owned) {
+            Py_CLEAR(m_self);
+        }
+    }
+
+    void python_invocation_context::keep_self_alive()
+    {
+        if (!m_self_owned) {
+            Py_XINCREF(m_self);
+            m_self_owned = true;
+        }
+    }
 
     bool python_invocation_context::call_implemented(const char* method)
     {
         // Check if the concrete Python type defines this method as a Python
         // function, not as an inherited C method_descriptor from the C++ base.
-        PyObject* type_obj = reinterpret_cast<PyObject*>(Py_TYPE(m_self.get()));
+        PyObject* type_obj = reinterpret_cast<PyObject*>(Py_TYPE(m_self));
         PyObject* attr = PyObject_GetAttrString(type_obj, method);
         if (!attr) {
             PyErr_Clear();
@@ -35,55 +49,59 @@ namespace mge::python {
         m_stored_args[index] = pyobject_ref(obj);
     }
 
-    void python_invocation_context::store_bool_argument(size_t index, bool value)
+    void python_invocation_context::store_bool_argument(size_t index,
+                                                        bool   value)
     {
         set_arg(index, PyBool_FromLong(value ? 1 : 0));
     }
 
-    void python_invocation_context::store_int8_t_argument(size_t  index,
-                                                           int8_t  value)
+    void python_invocation_context::store_int8_t_argument(size_t index,
+                                                          int8_t value)
     {
         set_arg(index, PyLong_FromLong(static_cast<long>(value)));
     }
 
     void python_invocation_context::store_uint8_t_argument(size_t  index,
-                                                            uint8_t value)
+                                                           uint8_t value)
     {
-        set_arg(index, PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
+        set_arg(index,
+                PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
     }
 
     void python_invocation_context::store_int16_t_argument(size_t  index,
-                                                            int16_t value)
+                                                           int16_t value)
     {
         set_arg(index, PyLong_FromLong(static_cast<long>(value)));
     }
 
     void python_invocation_context::store_uint16_t_argument(size_t   index,
-                                                             uint16_t value)
+                                                            uint16_t value)
     {
-        set_arg(index, PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
+        set_arg(index,
+                PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
     }
 
     void python_invocation_context::store_int32_t_argument(size_t  index,
-                                                            int32_t value)
+                                                           int32_t value)
     {
         set_arg(index, PyLong_FromLong(static_cast<long>(value)));
     }
 
     void python_invocation_context::store_uint32_t_argument(size_t   index,
-                                                             uint32_t value)
+                                                            uint32_t value)
     {
-        set_arg(index, PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
+        set_arg(index,
+                PyLong_FromUnsignedLong(static_cast<unsigned long>(value)));
     }
 
     void python_invocation_context::store_int64_t_argument(size_t  index,
-                                                            int64_t value)
+                                                           int64_t value)
     {
         set_arg(index, PyLong_FromLongLong(static_cast<long long>(value)));
     }
 
     void python_invocation_context::store_uint64_t_argument(size_t   index,
-                                                             uint64_t value)
+                                                            uint64_t value)
     {
         set_arg(index,
                 PyLong_FromUnsignedLongLong(
@@ -91,29 +109,32 @@ namespace mge::python {
     }
 
     void python_invocation_context::store_float_argument(size_t index,
-                                                          float  value)
+                                                         float  value)
     {
         set_arg(index, PyFloat_FromDouble(static_cast<double>(value)));
     }
 
     void python_invocation_context::store_double_argument(size_t index,
-                                                           double value)
+                                                          double value)
     {
         set_arg(index, PyFloat_FromDouble(value));
     }
 
-    void python_invocation_context::store_long_double_argument(size_t      index,
-                                                                long double value)
+    void
+    python_invocation_context::store_long_double_argument(size_t      index,
+                                                          long double value)
     {
         set_arg(index, PyFloat_FromDouble(static_cast<double>(value)));
     }
 
-    void python_invocation_context::store_string_argument(size_t             index,
-                                                           const std::string& value)
+    void
+    python_invocation_context::store_string_argument(size_t             index,
+                                                     const std::string& value)
     {
-        set_arg(index,
-                PyUnicode_FromStringAndSize(
-                    value.data(), static_cast<Py_ssize_t>(value.size())));
+        set_arg(
+            index,
+            PyUnicode_FromStringAndSize(value.data(),
+                                        static_cast<Py_ssize_t>(value.size())));
     }
 
     mge::reflection::invocation_context::call_result_type
@@ -138,7 +159,7 @@ namespace mge::python {
         }
         m_stored_args.clear();
 
-        PyObject* method_obj = PyObject_GetAttrString(m_self.get(), method);
+        PyObject* method_obj = PyObject_GetAttrString(m_self, method);
         if (!method_obj) {
             Py_DECREF(tuple);
             PyErr_Clear();
@@ -202,8 +223,7 @@ namespace mge::python {
 
     uint64_t python_invocation_context::get_uint64_t_result()
     {
-        return static_cast<uint64_t>(
-            PyLong_AsUnsignedLongLong(m_result.get()));
+        return static_cast<uint64_t>(PyLong_AsUnsignedLongLong(m_result.get()));
     }
 
     float python_invocation_context::get_float_result()
@@ -223,7 +243,7 @@ namespace mge::python {
 
     std::string python_invocation_context::get_string_result()
     {
-        Py_ssize_t  len  = 0;
+        Py_ssize_t  len = 0;
         const char* utf8 = PyUnicode_AsUTF8AndSize(m_result.get(), &len);
         if (!utf8) {
             PyErr_Clear();

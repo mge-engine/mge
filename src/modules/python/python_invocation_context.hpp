@@ -26,9 +26,14 @@ namespace mge::python {
         explicit python_invocation_context(PyObject* self);
         ~python_invocation_context() override;
 
+        void keep_self_alive();
+
         bool call_implemented(const char* method) override;
 
-        PyObject* self() const { return m_self.get(); }
+        PyObject* self() const
+        {
+            return m_self;
+        }
 
     protected:
         void store_bool_argument(size_t index, bool value) override;
@@ -42,7 +47,8 @@ namespace mge::python {
         void store_uint64_t_argument(size_t index, uint64_t value) override;
         void store_float_argument(size_t index, float value) override;
         void store_double_argument(size_t index, double value) override;
-        void store_long_double_argument(size_t index, long double value) override;
+        void store_long_double_argument(size_t      index,
+                                        long double value) override;
         void store_string_argument(size_t             index,
                                    const std::string& value) override;
 
@@ -65,7 +71,8 @@ namespace mge::python {
     private:
         void set_arg(size_t index, PyObject* obj);
 
-        pyobject_ref              m_self;
+        PyObject*                 m_self;
+        bool                      m_self_owned;
         std::vector<pyobject_ref> m_stored_args;
         pyobject_ref              m_result;
     };

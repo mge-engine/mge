@@ -280,8 +280,7 @@ namespace mge::python {
             PyGILState_STATE g = PyGILState_Ensure();
 
             // Call impl_class() — goes through tp_new + tp_init_static which
-            // allocates the proxy, creates an invocation_context, and stores
-            // both in h->object.
+            // allocates the proxy and stores it in h->object.
             PyObject* empty_tuple = PyTuple_New(0);
             PyObject* py_inst =
                 PyObject_Call(impl_class_ref->get(), empty_tuple, nullptr);
@@ -293,25 +292,20 @@ namespace mge::python {
                                                  "failed to construct instance";
             }
 
-            // py_inst refcount = 1 (local) + 1 (inv_ctx::m_self) = 2
-            auto* h = reinterpret_cast<python_instance_header*>(py_inst);
+            // inv_ctx stores a raw (non-owning) pointer to py_inst.
+            // Keep py_inst alive for the proxy's lifetime via the returned
+            // shared_ptr's deleter. py_inst's owning h->object keeps the
+            // proxy alive in turn — no ownership cycle.
+            Py_INCREF(py_inst);
 
-            // Extract the owning shared_ptr before breaking the cycle
-            std::shared_ptr<void> real_owner = h->object;
+            auto* h    = reinterpret_cast<python_instance_header*>(py_inst);
+            auto* base = static_cast<mge::component_base*>(h->object.get());
 
-            // Replace h->object with a non-owning alias to break the
-            // inv_ctx→py_inst→h->object→proxy→inv_ctx cycle.
-            h->object = std::shared_ptr<void>(real_owner.get(), [](void*) {});
+            auto result = std::shared_ptr<mge::component_base>(
+                base,
+                [py_inst](mge::component_base*) { Py_DECREF(py_inst); });
 
-            // Build an aliasing component_base shared_ptr
-            auto* base = static_cast<mge::component_base*>(real_owner.get());
-            auto  result =
-                std::shared_ptr<mge::component_base>(real_owner, base);
-
-            real_owner.reset();
-
-            // Release local reference; inv_ctx::m_self keeps py_inst alive
-            Py_DECREF(py_inst);
+            Py_DECREF(py_inst); // balance factory-local ref; result owns 1 ref
 
             PyGILState_Release(g);
             return result;
@@ -381,11 +375,10 @@ namespace mge::python {
             return nullptr;
         }
 
-        // Keep the C++ proxy alive for the lifetime of the context. The
-        // Python wrapper's h->object is non-owning (set by the factory), so
-        // the context must hold the owning reference.
-        ctx->m_component_instances.push_back(instance);
-
+        // The proxy is owned by py_inst's h->object (owning shared_ptr).
+        // The returned shared_ptr's deleter keeps py_inst alive.
+        // Python code holds the returned py_self reference, which owns
+        // one additional ref; when it drops, tp_finalize frees the proxy.
         if (class_details.get_context) {
             void* raw_ptr = instance.get();
             auto* inv_ctx = static_cast<python_invocation_context*>(
