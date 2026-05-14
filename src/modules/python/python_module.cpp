@@ -75,4 +75,27 @@ namespace mge::python {
         m_types.push_back(type);
     }
 
+    void python_module::add_function(std::string                        name,
+                                     std::unique_ptr<mge::closure_base> closure,
+                                     PyCFunction                        fn_ptr)
+    {
+        auto entry      = std::make_unique<function_entry>();
+        entry->name     = std::move(name);
+        entry->closure  = std::move(closure);
+        entry->method_def = {entry->name.c_str(), fn_ptr, METH_VARARGS, nullptr};
+
+        PyObject* func =
+            PyCFunction_NewEx(&entry->method_def, nullptr, m_py_module.get());
+        if (func) {
+            if (PyModule_AddObject(m_py_module.get(),
+                                   entry->name.c_str(),
+                                   func) < 0) {
+                Py_DECREF(func);
+            }
+            // PyModule_AddObject steals reference on success
+        }
+
+        m_function_entries.push_back(std::move(entry));
+    }
+
 } // namespace mge::python
