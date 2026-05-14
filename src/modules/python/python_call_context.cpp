@@ -107,12 +107,30 @@ namespace mge::python {
     }
 
     void* python_call_context::pointer_parameter(
-        size_t index, const mge::reflection::type_details& /*details*/)
+        size_t index, const mge::reflection::type_details& details)
     {
         PyObject* arg = arg_at(index);
         if (!arg || arg == Py_None) {
             return nullptr;
         }
+
+        // Python str passed for const std::string& parameter: convert and pin
+        // storage so the view returned by the caller stays valid for the call.
+        if (PyUnicode_Check(arg)) {
+            const auto& std_string_td =
+                mge::reflection::type_details::get<std::string>();
+            if (std_string_td && std_string_td.get() == &details) {
+                Py_ssize_t  len  = 0;
+                const char* utf8 = PyUnicode_AsUTF8AndSize(arg, &len);
+                if (utf8) {
+                    m_string_storage.emplace_back(utf8,
+                                                   static_cast<size_t>(len));
+                    return &m_string_storage.back();
+                }
+                return nullptr;
+            }
+        }
+
         PyObject* capsule = PyObject_GetAttrString(
             reinterpret_cast<PyObject*>(Py_TYPE(arg)), "__mge_type_details__");
         if (capsule) {
