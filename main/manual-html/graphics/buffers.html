@@ -936,7 +936,7 @@ texture coordinate, and normal vector data.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_format11binary_sizeEv">
 <span id="_CPPv3NK3mge13vertex_format11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_format11binary_sizeEv"></span><span id="mge::vertex_format::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aac61c56d3ec5a4f30f39399959925cef"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format11binary_sizeEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Binary size of vertex (number of bytes) </p>
+<dd><p>Binary size of vertex (number of bytes). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>binary size </p>
@@ -1289,25 +1289,25 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 </div>
 <dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout5entryE">
+<span id="_CPPv3N3mge13vertex_layout5entryE"></span><span id="_CPPv2N3mge13vertex_layout5entryE"></span><span id="mge::vertex_layout::entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout5entryE" title="Link to this definition"></a><br /></dt>
+<dd><p>Entry in a vertex layout. </p>
+</dd></dl>
+
+<dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout11const_entryE">
 <span id="_CPPv3N3mge13vertex_layout11const_entryE"></span><span id="_CPPv2N3mge13vertex_layout11const_entryE"></span><span id="mge::vertex_layout::const_entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1const__entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout11const_entryE" title="Link to this definition"></a><br /></dt>
 <dd><p>Const entry in a vertex layout. </p>
 </dd></dl>
 
 <dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout14const_iteratorE">
-<span id="_CPPv3N3mge13vertex_layout14const_iteratorE"></span><span id="_CPPv2N3mge13vertex_layout14const_iteratorE"></span><span id="mge::vertex_layout::const_iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1const__iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout14const_iteratorE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
-<dl class="cpp struct">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout5entryE">
-<span id="_CPPv3N3mge13vertex_layout5entryE"></span><span id="_CPPv2N3mge13vertex_layout5entryE"></span><span id="mge::vertex_layout::entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout5entryE" title="Link to this definition"></a><br /></dt>
-<dd><p>Entry in a vertex layout. </p>
-</dd></dl>
-
-<dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout8iteratorE">
 <span id="_CPPv3N3mge13vertex_layout8iteratorE"></span><span id="_CPPv2N3mge13vertex_layout8iteratorE"></span><span id="mge::vertex_layout::iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout8iteratorE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout14const_iteratorE">
+<span id="_CPPv3N3mge13vertex_layout14const_iteratorE"></span><span id="_CPPv2N3mge13vertex_layout14const_iteratorE"></span><span id="mge::vertex_layout::const_iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1const__iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout14const_iteratorE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1488,7 +1488,7 @@ efficient GPU sync.</p>
 <dd><p>Write a typed value to a member by name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>T</strong> – value type (must match the member’s uniform_data_type) </p>
+<dd class="field-odd"><p><strong>T</strong> – value type (must match the member’s <a class="reference internal" href="#namespacemge_1ad35d96560f913cb7c4f94585f41f5eec"><span class="std std-ref">uniform_data_type</span></a>) </p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
