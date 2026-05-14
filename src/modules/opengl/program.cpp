@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2017-2023 by Alexander Schroeder
+// Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "program.hpp"
 #include "error.hpp"
@@ -564,17 +564,18 @@ namespace mge::opengl {
 
             const GLenum      member_props[] = {GL_NAME_LENGTH,
                                                 GL_TYPE,
-                                                GL_ARRAY_SIZE};
+                                                GL_ARRAY_SIZE,
+                                                GL_OFFSET};
             std::vector<char> member_name_buf(max_uniform_name_length);
 
             for (GLint j = 0; j < num_uniforms; ++j) {
-                GLint member_values[3];
+                GLint member_values[4];
                 glGetProgramResourceiv(m_program,
                                        GL_UNIFORM,
                                        uniform_indices[j],
-                                       3,
+                                       4,
                                        member_props,
-                                       3,
+                                       4,
                                        nullptr,
                                        member_values);
                 CHECK_OPENGL_ERROR(glGetProgramResourceiv);
@@ -593,6 +594,7 @@ namespace mge::opengl {
                                         member_name_len);
                 GLenum      gl_member_type = member_values[1];
                 GLint       member_array_size = member_values[2];
+                GLint       member_offset = member_values[3];
                 auto        member_type = uniform_type_from_gl(gl_member_type);
 
                 MGE_DEBUG_TRACE(OPENGL,
@@ -628,16 +630,22 @@ namespace mge::opengl {
                 ub.uniforms.push_back({std::move(member_name),
                                        member_type,
                                        static_cast<uint32_t>(member_array_size),
-                                       0});
+                                       static_cast<uint32_t>(member_offset)});
 
                 MGE_DEBUG_TRACE(OPENGL,
                                 "  Block member: '{}', type: {}, "
-                                "array_size: {}",
+                                "array_size: {}, offset: {}",
                                 ub.uniforms.back().name,
                                 ub.uniforms.back().type,
-                                ub.uniforms.back().array_size);
+                                ub.uniforms.back().array_size,
+                                ub.uniforms.back().location);
             }
 
+            std::sort(ub.uniforms.begin(),
+                      ub.uniforms.end(),
+                      [](const uniform& a, const uniform& b) {
+                          return a.location < b.location;
+                      });
             m_uniform_block_metadata.push_back(std::move(ub));
 
             MGE_DEBUG_TRACE(OPENGL,
@@ -770,19 +778,34 @@ namespace mge::opengl {
                     member_size = 1;
                 }
 
+                GLint member_offset = 0;
+                GLuint uidx = static_cast<GLuint>(uniform_indices[j]);
+                glGetActiveUniformsiv(m_program,
+                                     1,
+                                     &uidx,
+                                     GL_UNIFORM_OFFSET,
+                                     &member_offset);
+                CHECK_OPENGL_ERROR(glGetActiveUniformsiv(GL_UNIFORM_OFFSET));
+
                 ub.uniforms.push_back({std::move(member_name),
                                        member_type,
                                        static_cast<uint32_t>(member_size),
-                                       0});
+                                       static_cast<uint32_t>(member_offset)});
 
                 MGE_DEBUG_TRACE(OPENGL,
                                 "  Block member: '{}', type: {}, "
-                                "array_size: {}",
+                                "array_size: {}, offset: {}",
                                 ub.uniforms.back().name,
                                 ub.uniforms.back().type,
-                                ub.uniforms.back().array_size);
+                                ub.uniforms.back().array_size,
+                                ub.uniforms.back().location);
             }
 
+            std::sort(ub.uniforms.begin(),
+                      ub.uniforms.end(),
+                      [](const uniform& a, const uniform& b) {
+                          return a.location < b.location;
+                      });
             m_uniform_block_metadata.push_back(std::move(ub));
 
             MGE_DEBUG_TRACE(OPENGL,

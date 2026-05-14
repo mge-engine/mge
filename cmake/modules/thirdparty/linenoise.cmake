@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2017-2023 by Alexander Schroeder
+# Copyright (c) 2017-2026 by Alexander Schroeder
 # All rights reserved.
 FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/linenoise-ng)
 SET(CMAKE_LIST_CONTENT "

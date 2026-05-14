@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2017-2023 by Alexander Schroeder
+# Copyright (c) 2017-2026 by Alexander Schroeder
 # All rights reserved.
 FIND_PACKAGE(PkgConfig)
 PKG_CHECK_MODULES(LUAJIT REQUIRED IMPORTED_TARGET luajit)
