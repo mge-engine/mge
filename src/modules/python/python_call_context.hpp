@@ -6,10 +6,13 @@
 #include "mge/reflection/call_context.hpp"
 #include "python.hpp"
 #include "python_fwd.hpp"
+#include "pyobject_ref.hpp"
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <typeindex>
+#include <unordered_map>
 #include <vector>
 
 namespace mge::python {
@@ -80,6 +83,76 @@ namespace mge::python {
             m_shared_ptr_result_type = type;
         }
 
+        using callable_factory_fn =
+            std::function<std::shared_ptr<void>(PyObject*)>;
+
+        static std::unordered_map<std::type_index, callable_factory_fn>&
+        callable_factories();
+
+        template <typename T>
+        static PyObject* cpp_to_python_arg(T val)
+        {
+            using bare = std::remove_cv_t<std::remove_reference_t<T>>;
+            if constexpr (std::is_same_v<bare, bool>) {
+                return PyBool_FromLong(val ? 1 : 0);
+            } else if constexpr (std::is_same_v<bare, float> ||
+                                 std::is_same_v<bare, double> ||
+                                 std::is_same_v<bare, long double>) {
+                return PyFloat_FromDouble(static_cast<double>(val));
+            } else if constexpr (std::is_unsigned_v<bare>) {
+                return PyLong_FromUnsignedLongLong(
+                    static_cast<unsigned long long>(val));
+            } else if constexpr (std::is_integral_v<bare>) {
+                return PyLong_FromLongLong(static_cast<long long>(val));
+            } else {
+                Py_INCREF(Py_None);
+                return Py_None;
+            }
+        }
+
+        template <typename R, typename... Args>
+        static void register_callable_type()
+        {
+            callable_factories()[std::type_index(
+                typeid(std::function<R(Args...)>))] =
+                [](PyObject* py_callable) -> std::shared_ptr<void> {
+                auto ref = std::make_shared<pyobject_ref>(
+                    py_callable, pyobject_ref::incref::yes);
+                return std::make_shared<std::function<R(Args...)>>(
+                    [ref](Args... args) -> R {
+                        PyGILState_STATE g = PyGILState_Ensure();
+                        PyObject* tup =
+                            PyTuple_New(static_cast<Py_ssize_t>(sizeof...(Args)));
+                        size_t i = 0;
+                        (PyTuple_SET_ITEM(tup,
+                                          static_cast<Py_ssize_t>(i++),
+                                          cpp_to_python_arg(args)),
+                         ...);
+                        PyObject* r =
+                            PyObject_Call(ref->get(), tup, nullptr);
+                        Py_DECREF(tup);
+                        if (!r) {
+                            PyErr_Clear();
+                            PyGILState_Release(g);
+                            if constexpr (!std::is_void_v<R>) {
+                                return R{};
+                            } else {
+                                return;
+                            }
+                        }
+                        if constexpr (!std::is_void_v<R>) {
+                            R result{};
+                            Py_DECREF(r);
+                            PyGILState_Release(g);
+                            return result;
+                        } else {
+                            Py_DECREF(r);
+                            PyGILState_Release(g);
+                        }
+                    });
+            };
+        }
+
     private:
         PyObject* arg_at(size_t index);
 
@@ -92,7 +165,8 @@ namespace mge::python {
         const mge::reflection::type_details* m_pointer_result_type{nullptr};
         const mge::reflection::type_details* m_shared_ptr_result_type{nullptr};
 
-        std::vector<std::string> m_string_storage;
+        std::vector<std::string>           m_string_storage;
+        std::vector<std::shared_ptr<void>> m_callable_storage;
     };
 
 } // namespace mge::python

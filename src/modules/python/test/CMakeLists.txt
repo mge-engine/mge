@@ -14,7 +14,11 @@ SET(PYTHON_TESTS
     test004_function.py
     test005_component.py
     test006_reflection_bindings.py
-    test007_application.py)
+    test007_application.py
+    test008_proxy_subclass.py
+    test009_proxy_dispatch.py
+    test010_callbacks.py
+    test011_application_main.py)
 
 LIST(TRANSFORM
     PYTHON_TESTS

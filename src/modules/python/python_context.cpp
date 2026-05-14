@@ -7,10 +7,15 @@
 
 #include "mge/reflection/module.hpp"
 #include "mge/reflection/module_details.hpp"
+#include "mge/reflection/type_details.hpp"
 
+#include "pyobject_ref.hpp"
 #include "python_binder.hpp"
+#include "python_call_context.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
+#include "python_instance.hpp"
+#include "python_invocation_context.hpp"
 #include "python_module.hpp"
 
 #include <string_view>
@@ -179,8 +184,225 @@ namespace mge::python {
         return rc;
     }
 
+    PyObject* python_context::register_component_call(PyObject* self,
+                                                       PyObject* args)
+    {
+        auto* ctx = static_cast<python_context*>(
+            PyCapsule_GetPointer(self, "__mge_context__"));
+        if (!ctx) {
+            PyErr_SetString(PyExc_RuntimeError, "invalid context");
+            return nullptr;
+        }
+
+        PyObject* type_obj  = nullptr;
+        PyObject* impl_class = nullptr;
+        if (!PyArg_ParseTuple(args, "OO", &type_obj, &impl_class)) {
+            return nullptr;
+        }
+
+        if (!PyType_Check(type_obj)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "register_component arg1: expected a type object");
+            return nullptr;
+        }
+        if (!PyType_Check(impl_class)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "register_component arg2: expected a type object");
+            return nullptr;
+        }
+
+        // Extract type_details from the base type capsule
+        PyObject* capsule =
+            PyObject_GetAttrString(type_obj, "__mge_type_details__");
+        if (!capsule || !PyCapsule_CheckExact(capsule)) {
+            Py_XDECREF(capsule);
+            PyErr_SetString(
+                PyExc_TypeError,
+                "register_component arg1: not a reflected C++ class");
+            return nullptr;
+        }
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            PyCapsule_GetPointer(capsule, "__mge_type_details__"));
+        Py_DECREF(capsule);
+
+        if (!details || !details->is_class) {
+            PyErr_SetString(PyExc_TypeError,
+                            "register_component arg1: expected a class type");
+            return nullptr;
+        }
+
+        const auto& class_details = std::get<
+            mge::reflection::type_details::class_specific_details>(
+            details->specific_details);
+
+        if (!class_details.proxy_type) {
+            PyErr_SetString(PyExc_TypeError,
+                            "register_component arg1: type has no proxy");
+            return nullptr;
+        }
+
+        // Verify impl_class is a subclass of type_obj
+        if (!PyObject_IsSubclass(impl_class, type_obj)) {
+            PyErr_Clear();
+            PyErr_SetString(
+                PyExc_TypeError,
+                "register_component arg2: not a subclass of arg1");
+            return nullptr;
+        }
+
+        // Get implementation name from __mge_name__ or __name__
+        PyObject* name_obj =
+            PyObject_GetAttrString(impl_class, "__mge_name__");
+        if (!name_obj) {
+            PyErr_Clear();
+            name_obj = PyObject_GetAttrString(impl_class, "__name__");
+        }
+        if (!name_obj || !PyUnicode_Check(name_obj)) {
+            Py_XDECREF(name_obj);
+            PyErr_SetString(PyExc_TypeError,
+                            "register_component arg2: missing '__name__'");
+            return nullptr;
+        }
+        std::string impl_name(PyUnicode_AsUTF8(name_obj));
+        Py_DECREF(name_obj);
+
+        std::string component_name(details->name);
+
+        // Keep the Python impl class alive for the factory's lifetime
+        auto impl_class_ref =
+            std::make_shared<pyobject_ref>(impl_class, pyobject_ref::incref::yes);
+
+        auto factory = [impl_class_ref]() -> std::shared_ptr<mge::component_base> {
+            PyGILState_STATE g = PyGILState_Ensure();
+
+            // Call impl_class() — goes through tp_new + tp_init_static which
+            // allocates the proxy, creates an invocation_context, and stores
+            // both in h->object.
+            PyObject* empty_tuple = PyTuple_New(0);
+            PyObject* py_inst =
+                PyObject_Call(impl_class_ref->get(), empty_tuple, nullptr);
+            Py_DECREF(empty_tuple);
+            if (!py_inst) {
+                PyErr_Print();
+                PyGILState_Release(g);
+                MGE_THROW(mge::python::error)
+                    << "register_component factory: failed to construct instance";
+            }
+
+            // py_inst refcount = 1 (local) + 1 (inv_ctx::m_self) = 2
+            auto* h = reinterpret_cast<python_instance_header*>(py_inst);
+
+            // Extract the owning shared_ptr before breaking the cycle
+            std::shared_ptr<void> real_owner = h->object;
+
+            // Replace h->object with a non-owning alias to break the
+            // inv_ctx→py_inst→h->object→proxy→inv_ctx cycle.
+            h->object =
+                std::shared_ptr<void>(real_owner.get(), [](void*) {});
+
+            // Build an aliasing component_base shared_ptr
+            auto* base =
+                static_cast<mge::component_base*>(real_owner.get());
+            auto result = std::shared_ptr<mge::component_base>(real_owner, base);
+
+            real_owner.reset();
+
+            // Release local reference; inv_ctx::m_self keeps py_inst alive
+            Py_DECREF(py_inst);
+
+            PyGILState_Release(g);
+            return result;
+        };
+
+        auto entry = std::make_unique<mge::dynamic_implementation_registry_entry>(
+            std::move(factory), component_name, impl_name);
+        ctx->m_component_entries.push_back(std::move(entry));
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    PyObject* python_context::create_component_call(PyObject* self,
+                                                     PyObject* args)
+    {
+        auto* ctx = static_cast<python_context*>(
+            PyCapsule_GetPointer(self, "__mge_context__"));
+        if (!ctx) {
+            PyErr_SetString(PyExc_RuntimeError, "invalid context");
+            return nullptr;
+        }
+
+        PyObject*   type_obj  = nullptr;
+        const char* impl_name = nullptr;
+        if (!PyArg_ParseTuple(args, "Os", &type_obj, &impl_name)) {
+            return nullptr;
+        }
+
+        if (!PyType_Check(type_obj)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "create_component arg1: expected a type object");
+            return nullptr;
+        }
+
+        PyObject* capsule =
+            PyObject_GetAttrString(type_obj, "__mge_type_details__");
+        if (!capsule || !PyCapsule_CheckExact(capsule)) {
+            Py_XDECREF(capsule);
+            PyErr_SetString(
+                PyExc_TypeError,
+                "create_component arg1: not a reflected C++ class");
+            return nullptr;
+        }
+        auto* details = static_cast<const mge::reflection::type_details*>(
+            PyCapsule_GetPointer(capsule, "__mge_type_details__"));
+        Py_DECREF(capsule);
+
+        if (!details || !details->is_class) {
+            PyErr_SetString(PyExc_TypeError,
+                            "create_component arg1: expected a class type");
+            return nullptr;
+        }
+
+        const auto& class_details = std::get<
+            mge::reflection::type_details::class_specific_details>(
+            details->specific_details);
+
+        auto instance = mge::component_base::create(details->name, impl_name);
+        if (!instance) {
+            PyErr_Format(PyExc_RuntimeError,
+                         "create_component: no implementation '%s' for '%s'",
+                         impl_name,
+                         std::string(details->name).c_str());
+            return nullptr;
+        }
+
+        // Keep the C++ proxy alive for the lifetime of the context. The
+        // Python wrapper's h->object is non-owning (set by the factory), so
+        // the context must hold the owning reference.
+        ctx->m_component_instances.push_back(instance);
+
+        if (class_details.get_context) {
+            void* raw_ptr = instance.get();
+            auto* inv_ctx = static_cast<python_invocation_context*>(
+                class_details.get_context(raw_ptr));
+            if (inv_ctx && inv_ctx->self()) {
+                PyObject* py_self = inv_ctx->self();
+                Py_INCREF(py_self);
+                return py_self;
+            }
+        }
+
+        PyErr_SetString(PyExc_RuntimeError,
+                        "create_component: no Python object found in context");
+        return nullptr;
+    }
+
     void python_context::bind()
     {
+        // Register callable types before binding so is_python_compatible
+        // recognizes them when building method dispatch tables.
+        python_call_context::register_callable_type<void, uint64_t, double>();
+
         reflection::module root_module = reflection::module::root();
         MGE_DEBUG_TRACE(PYTHON, "Compute binding information");
         create_helper_module();
@@ -193,6 +415,39 @@ namespace mge::python {
             PyThreadState_Swap(prev);
             throw;
         }
+
+        // Add mge.register_component and mge.create_component as module-level
+        // functions, using a capsule to pass 'this' as the self pointer.
+        PyObject* ctx_capsule =
+            PyCapsule_New(this, "__mge_context__", nullptr);
+
+        if (ctx_capsule) {
+            const auto& mge_mod = module("mge");
+            PyObject*   py_mod  = mge_mod->py_module().get();
+
+            static PyMethodDef s_register_def{
+                "register_component",
+                &python_context::register_component_call,
+                METH_VARARGS,
+                nullptr};
+            static PyMethodDef s_create_def{
+                "create_component",
+                &python_context::create_component_call,
+                METH_VARARGS,
+                nullptr};
+
+            if (PyObject* meth =
+                    PyCFunction_New(&s_register_def, ctx_capsule)) {
+                PyModule_AddObject(py_mod, "register_component", meth);
+            }
+            if (PyObject* meth =
+                    PyCFunction_New(&s_create_def, ctx_capsule)) {
+                PyModule_AddObject(py_mod, "create_component", meth);
+            }
+
+            Py_DECREF(ctx_capsule);
+        }
+
         PyThreadState_Swap(prev);
     }
 

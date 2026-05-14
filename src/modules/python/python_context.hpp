@@ -2,12 +2,15 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/component.hpp"
 #include "mge/script/script_context.hpp"
 
 #include "python.hpp"
 #include "python_fwd.hpp"
 
 #include <map>
+#include <memory>
+#include <vector>
 
 namespace mge::python {
 
@@ -31,11 +34,17 @@ namespace mge::python {
         void init_interpreter();
         void create_helper_module();
 
+        static PyObject* register_component_call(PyObject* self, PyObject* args);
+        static PyObject* create_component_call(PyObject* self, PyObject* args);
+
         python_engine* m_engine;
         PyThreadState* m_thread_state{nullptr};
         PyObject*      m_mge_module{nullptr};
 
         std::map<std::string, python_module_ref> m_modules;
+        std::vector<std::unique_ptr<mge::dynamic_implementation_registry_entry>>
+            m_component_entries;
+        std::vector<std::shared_ptr<mge::component_base>> m_component_instances;
     };
 
 } // namespace mge::python

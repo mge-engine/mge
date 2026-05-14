@@ -28,6 +28,8 @@ namespace mge::python {
 
         bool call_implemented(const char* method) override;
 
+        PyObject* self() const { return m_self.get(); }
+
     protected:
         void store_bool_argument(size_t index, bool value) override;
         void store_int8_t_argument(size_t index, int8_t value) override;

@@ -9,6 +9,8 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/type_details.hpp"
 
+#include <unordered_map>
+
 namespace mge::python {
 
     python_call_context::python_call_context(PyObject* args,
@@ -147,10 +149,31 @@ namespace mge::python {
         return nullptr;
     }
 
-    void* python_call_context::callable_parameter(
-        size_t /*index*/, const std::type_index& /*callable_type*/)
+    std::unordered_map<std::type_index,
+                        python_call_context::callable_factory_fn>&
+    python_call_context::callable_factories()
     {
-        MGE_THROW_NOT_IMPLEMENTED << "Python callable parameter not yet supported";
+        static std::unordered_map<std::type_index, callable_factory_fn>
+            s_factories;
+        return s_factories;
+    }
+
+    void* python_call_context::callable_parameter(size_t                 index,
+                                                   const std::type_index& callable_type)
+    {
+        auto it = callable_factories().find(callable_type);
+        if (it == callable_factories().end()) {
+            MGE_THROW_NOT_IMPLEMENTED
+                << "Python callable type not registered: " << callable_type.name();
+        }
+        PyObject* py_callable = arg_at(index);
+        if (!py_callable || !PyCallable_Check(py_callable)) {
+            PyErr_SetString(PyExc_TypeError, "expected callable");
+            MGE_THROW(mge::python::error) << "expected callable argument";
+        }
+        auto shared = it->second(py_callable);
+        m_callable_storage.push_back(shared);
+        return shared.get();
     }
 
     void python_call_context::bool_result(bool value)

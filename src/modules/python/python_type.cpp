@@ -82,6 +82,9 @@ namespace mge::python {
                 PyErr_Clear();
                 return false;
             }
+            if (python_call_context::callable_factories().count(ti) != 0) {
+                return PyCallable_Check(arg) != 0;
+            }
             return false;
         }
 
