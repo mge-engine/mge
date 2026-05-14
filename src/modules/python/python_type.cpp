@@ -7,6 +7,7 @@
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_instance.hpp"
+#include "python_invocation_context.hpp"
 #include "python_module.hpp"
 
 #include "mge/core/trace.hpp"
@@ -411,12 +412,28 @@ namespace mge::python {
         }
 
         auto raw_dtor = ctor_source.raw_destructor;
-        h->object = std::shared_ptr<void>(raw, [raw_dtor](void* p) {
-            if (raw_dtor) {
-                raw_dtor(p);
-            }
-            ::operator delete(p);
-        });
+
+        if (proxy_type && class_details.set_context) {
+            auto* inv_ctx = new python_invocation_context(self);
+            class_details.set_context(raw, inv_ctx);
+            auto set_ctx = class_details.set_context;
+            h->object = std::shared_ptr<void>(
+                raw, [raw_dtor, inv_ctx, set_ctx](void* p) {
+                    set_ctx(p, nullptr);
+                    if (raw_dtor) {
+                        raw_dtor(p);
+                    }
+                    ::operator delete(p);
+                    delete inv_ctx;
+                });
+        } else {
+            h->object = std::shared_ptr<void>(raw, [raw_dtor](void* p) {
+                if (raw_dtor) {
+                    raw_dtor(p);
+                }
+                ::operator delete(p);
+            });
+        }
 
         return 0;
     }
