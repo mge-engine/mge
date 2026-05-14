@@ -10,8 +10,11 @@ SET(PYTHON_TEST_SOURCES
 SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
-    test003_object.py 
-    test004_function.py)
+    test003_object.py
+    test004_function.py
+    test005_component.py
+    test006_reflection_bindings.py
+    test007_application.py)
 
 LIST(TRANSFORM
     PYTHON_TESTS

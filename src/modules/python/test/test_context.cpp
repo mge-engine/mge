@@ -33,4 +33,28 @@ namespace mge::python {
         }
     }
 
+    TEST_F(test_context, main_dash_c_succeeds)
+    {
+        auto        context = engine->create_context();
+        const char* argv[]  = {"mgepython", "-c", "pass"};
+        int         rc      = context->main(3, argv);
+        EXPECT_EQ(0, rc);
+    }
+
+    TEST_F(test_context, main_dash_c_prints)
+    {
+        auto        context = engine->create_context();
+        const char* argv[]  = {"mgepython", "-c", "print('hello from main')"};
+        int         rc      = context->main(3, argv);
+        EXPECT_EQ(0, rc);
+    }
+
+    TEST_F(test_context, main_dash_c_syntax_error_returns_nonzero)
+    {
+        auto        context = engine->create_context();
+        const char* argv[]  = {"mgepython", "-c", "def ("};
+        int         rc      = context->main(3, argv);
+        EXPECT_NE(0, rc);
+    }
+
 } // namespace mge::python
