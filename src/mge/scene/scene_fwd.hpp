@@ -11,4 +11,5 @@ namespace mge {
     MGE_DECLARE_REF(texture_material);
     MGE_DECLARE_REF(pbr_material);
     MGE_DECLARE_REF(shader_material);
+    MGE_DECLARE_REF(renderer);
 } // namespace mge

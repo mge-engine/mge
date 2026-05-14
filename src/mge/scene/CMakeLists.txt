@@ -7,6 +7,7 @@ SET(mgescene_sources
     node.cpp
     scene.cpp
     world.cpp
+    renderer.cpp
 )
 
 SET(mgescene_headers
@@ -21,6 +22,7 @@ SET(mgescene_headers
     shader_material.hpp
     texture_material.hpp
     world.hpp
+    renderer.hpp
 )
 
 MGE_LIBRARY(
