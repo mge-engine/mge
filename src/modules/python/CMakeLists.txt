@@ -14,7 +14,17 @@ SET(mge_python_module_SOURCES
 
 IF(Python3_Development_FOUND)
     MESSAGE("-- Python development tools have been found")
-    GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
+    EXECUTE_PROCESS(
+        COMMAND ${Python3_EXECUTABLE} -c "import sys; print(sys.base_prefix)"
+        OUTPUT_VARIABLE _python3path
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE _python3baseprefix_result
+    )
+    IF(NOT _python3baseprefix_result EQUAL 0 OR NOT IS_DIRECTORY "${_python3path}")
+        MESSAGE(WARNING "Unable to determine Python base prefix, falling back to executable directory")
+        GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
+    ENDIF()
+    MESSAGE("-- Python runtime source: ${_python3path}")
     MESSAGE("-- Scheduling python installation copy to build time")
 
     ADD_CUSTOM_TARGET(copy-python3-runtime ALL
