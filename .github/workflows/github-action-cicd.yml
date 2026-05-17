@@ -166,7 +166,8 @@ jobs:
               sudo apt-get install -y \
                 automake autoconf autoconf-archive libtool \
                 libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev \
-                libxi-dev libxxf86vm-dev libgl1-mesa-dev pkg-config
+                libxi-dev libxxf86vm-dev libgl1-mesa-dev pkg-config \
+                vulkan-tools mesa-vulkan-drivers
           - name: Checkout source code
             uses: actions/checkout@v6
             with:
