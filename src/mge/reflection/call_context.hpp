@@ -89,6 +89,8 @@ namespace mge::reflection {
                 return long_double_parameter(index);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 return string_view_parameter(index);
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                return std::string(string_view_parameter(index));
             } else if constexpr (mge::is_primitive_vector_v<T>) {
                 T vec;
                 primitive_vector_parameter(
@@ -205,6 +207,8 @@ namespace mge::reflection {
                 long_double_result(value);
             } else if constexpr (std::is_same_v<T, std::string_view>) {
                 string_view_result(value);
+            } else if constexpr (std::is_same_v<T, std::string>) {
+                string_view_result(std::string_view(value));
             } else if constexpr (mge::is_primitive_vector_v<T>) {
                 primitive_vector_result(
                     value.data(),

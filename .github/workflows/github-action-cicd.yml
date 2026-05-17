@@ -151,6 +151,11 @@ jobs:
                 sleep 5
               done
               sudo apt-get upgrade -y
+          - name: Setup Python 3.14
+            uses: actions/setup-python@v5
+            with:
+              python-version: '3.14'
+              allow-prereleases: false
           - name: Show Python version
             run: |
               python3 --version  
