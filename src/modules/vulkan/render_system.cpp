@@ -15,7 +15,7 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/monitor.hpp"
-#elif defined MGE_OS_MACOSX
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
 #    include "mge/glfw/monitor.hpp"
 #    include <GLFW/glfw3.h>
 #endif
@@ -70,7 +70,7 @@ namespace mge::vulkan {
             MGE_INFO_TRACE(VULKAN, "Creating Vulkan render system");
             init_capabilities();
             m_library = std::make_shared<vulkan_library>();
-#ifdef MGE_OS_MACOSX
+#if defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
             glfwInitVulkanLoader(m_library->vkGetInstanceProcAddr);
             if (!glfwInit()) {
                 MGE_THROW(mge::runtime_exception) << "glfwInit failed";
@@ -150,7 +150,7 @@ namespace mge::vulkan {
 #ifdef MGE_OS_WINDOWS
     static const char* s_default_extensions[] = {"VK_KHR_surface",
                                                  "VK_KHR_win32_surface"};
-#elif defined MGE_OS_MACOSX
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
     static const char** s_glfw_extensions = nullptr;
     static uint32_t     s_glfw_extension_count = 0;
 
@@ -289,7 +289,7 @@ namespace mge::vulkan {
         for (const auto& e : s_default_extensions) {
             extensions.push_back(e);
         }
-#elif defined MGE_OS_MACOSX
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
         uint32_t     ext_count = 0;
         const char** exts = get_default_extensions(ext_count);
         for (uint32_t i = 0; i < ext_count; ++i) {
@@ -564,7 +564,7 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         return mge::win32::monitor::all_monitors();
-#elif defined MGE_OS_MACOSX
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
         return mge::glfw::monitor::all_monitors();
 #else
 #    error Missing Port
