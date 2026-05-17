@@ -10,12 +10,11 @@ IF(OpenGL_FOUND)
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
 ENDIF()
-IF(NOT LINUX)
+
 IF(Vulkan_FOUND)
     ADD_SUBDIRECTORY(vulkan)
 ELSE()
     MESSAGE("-- Vulkan not found or not supported on this platform, not building vulkan render system")
-ENDIF()
 ENDIF()
 
 IF(MSVC)
