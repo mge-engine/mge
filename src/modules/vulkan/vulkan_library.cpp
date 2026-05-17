@@ -14,6 +14,8 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         const char* vulkan_library_name = "vulkan-1.dll";
+#elif defined MGE_OS_LINUX
+    const char* vulkan_library_name = "libvulkan.so.1";
 #elif defined MGE_OS_MACOSX
         const char* vulkan_library_name =
             MGE_VULKAN_LIBRARY_DIR "/libvulkan.1.dylib";

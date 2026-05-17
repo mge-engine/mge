@@ -5,6 +5,10 @@
 ADD_LIBRARY(mge_slang STATIC
     slang_compiler.cpp)
 
+SET_TARGET_PROPERTIES(mge_slang
+    PROPERTIES
+    POSITION_INDEPENDENT_CODE ON)
+
 TARGET_LINK_LIBRARIES(mge_slang
     mgecore
     mgegraphics

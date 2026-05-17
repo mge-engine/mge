@@ -166,9 +166,15 @@ jobs:
           - name: Install Ninja
             run: |
               sudo apt-get install -y ninja-build
-          - name: Install automake and autoconf
+          - name: Install build dependencies
             run: |
-              sudo apt-get install -y automake autoconf autoconf-archive libtool
+              sudo apt-get install -y \
+                automake autoconf autoconf-archive libtool \
+                libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev \
+                libxi-dev libxxf86vm-dev libxext-dev libxrender-dev \
+                libxfixes-dev libxau-dev libxdmcp-dev \
+                libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev pkg-config \
+                libvulkan-dev vulkan-tools mesa-vulkan-drivers
           - name: Checkout source code
             uses: actions/checkout@v6
             with:

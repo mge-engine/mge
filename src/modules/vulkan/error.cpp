@@ -111,14 +111,20 @@ namespace mge::vulkan {
         case VK_ERROR_COMPRESSION_EXHAUSTED_EXT:
             return "An image creation failed because internal resources "
                    "required for compression are exhausted";
+#ifdef VK_INCOMPATIBLE_SHADER_BINARY_EXT
         case VK_INCOMPATIBLE_SHADER_BINARY_EXT:
             return "The provided binary shader code is not compatible with "
                    "this device";
+#endif
+#ifdef VK_PIPELINE_BINARY_MISSING_KHR
         case VK_PIPELINE_BINARY_MISSING_KHR:
             return "A pipeline binary was required but was not found";
+#endif
+#ifdef VK_ERROR_NOT_ENOUGH_SPACE_KHR
         case VK_ERROR_NOT_ENOUGH_SPACE_KHR:
             return "There is not enough space in the buffer to write the "
                    "result";
+#endif
         case VK_ERROR_SURFACE_LOST_KHR:
             return "A surface is no longer available";
         case VK_SUBOPTIMAL_KHR:

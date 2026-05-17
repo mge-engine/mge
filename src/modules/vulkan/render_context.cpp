@@ -17,7 +17,7 @@
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/memory_image.hpp"
 
-#ifdef MGE_OS_MACOSX
+#if defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
 #    include <GLFW/glfw3.h>
 #endif
 
@@ -229,7 +229,7 @@ namespace mge::vulkan {
             &create_info,
             nullptr,
             &m_surface));
-#elif defined MGE_OS_MACOSX
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
         MGE_DEBUG_TRACE(VULKAN, "Create Vulkan surface (GLFW)");
         CHECK_VK_CALL(glfwCreateWindowSurface(m_render_system->instance(),
                                               m_window.handle(),
