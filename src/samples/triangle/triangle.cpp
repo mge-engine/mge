@@ -80,8 +80,7 @@ namespace mge {
 
                 auto& command_buffer =
                     m_window->render_context().command_buffer(true);
-                command_buffer.draw(m_program, m_vertices, m_indices);
-                pass.submit(command_buffer);
+                command_buffer.draw(pass, m_program, m_vertices, m_indices);
             } else {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();

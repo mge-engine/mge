@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mock_render_context.hpp"
 #include "test/googletest.hpp"
@@ -52,11 +53,12 @@ TEST(command_buffer, initially_empty)
 TEST(command_buffer, draw_adds_command)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
     EXPECT_FALSE(cb.empty());
 }
 
@@ -64,11 +66,12 @@ TEST(command_buffer, draw_uses_supplied_memory_resource)
 {
     counting_resource         resource;
     mge::command_buffer       cb(&resource);
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
 
     EXPECT_GT(resource.allocations(), 0u);
 }
@@ -76,11 +79,12 @@ TEST(command_buffer, draw_uses_supplied_memory_resource)
 TEST(command_buffer, clear_empties_buffer)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
     cb.clear();
     EXPECT_TRUE(cb.empty());
 }
@@ -88,11 +92,12 @@ TEST(command_buffer, clear_empties_buffer)
 TEST(command_buffer, for_each_verifies_single_draw)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle&       p,
@@ -118,13 +123,14 @@ TEST(command_buffer, for_each_verifies_single_draw)
 TEST(command_buffer, for_each_verifies_multiple_draws)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog1, prog2, prog3;
     mge::vertex_buffer_handle vb1, vb2, vb3;
     mge::index_buffer_handle  ib1, ib2, ib3;
 
-    cb.draw(prog1, vb1, ib1);
-    cb.draw(prog2, vb2, ib2);
-    cb.draw(prog3, vb3, ib3);
+    cb.draw(p, prog1, vb1, ib1);
+    cb.draw(p, prog2, vb2, ib2);
+    cb.draw(p, prog3, vb3, ib3);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle&       p,
@@ -157,19 +163,20 @@ TEST(command_buffer, for_each_verifies_multiple_draws)
 TEST(command_buffer, for_each_verifies_blend_states)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog1, prog2, prog3;
     mge::vertex_buffer_handle vb1, vb2, vb3;
     mge::index_buffer_handle  ib1, ib2, ib3;
 
     cb.blend_opaque();
-    cb.draw(prog1, vb1, ib1);
+    cb.draw(p, prog1, vb1, ib1);
 
     cb.blend_function(mge::blend_factor::SRC_ALPHA,
                       mge::blend_factor::ONE_MINUS_SRC_ALPHA);
-    cb.draw(prog2, vb2, ib2);
+    cb.draw(p, prog2, vb2, ib2);
 
     cb.blend_equation(mge::blend_operation::ADD);
-    cb.draw(prog3, vb3, ib3);
+    cb.draw(p, prog3, vb3, ib3);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle&       p,
@@ -208,17 +215,18 @@ TEST(command_buffer, for_each_verifies_blend_states)
 TEST(command_buffer, depth_write_state)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog1, prog2, prog3;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog1, vb, ib);
+    cb.draw(p, prog1, vb, ib);
 
     cb.depth_write(true);
-    cb.draw(prog2, vb, ib);
+    cb.draw(p, prog2, vb, ib);
 
     cb.depth_write(false);
-    cb.draw(prog3, vb, ib);
+    cb.draw(p, prog3, vb, ib);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle&       p,
@@ -245,20 +253,21 @@ TEST(command_buffer, depth_write_state)
 TEST(command_buffer, depth_test_function_state)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog1, prog2, prog3, prog4;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog1, vb, ib);
+    cb.draw(p, prog1, vb, ib);
 
     cb.depth_test_function(mge::test::GREATER);
-    cb.draw(prog2, vb, ib);
+    cb.draw(p, prog2, vb, ib);
 
     cb.depth_test_function(mge::test::ALWAYS);
-    cb.draw(prog3, vb, ib);
+    cb.draw(p, prog3, vb, ib);
 
     cb.depth_test_function(mge::test::NEVER);
-    cb.draw(prog4, vb, ib);
+    cb.draw(p, prog4, vb, ib);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle&       p,
@@ -287,11 +296,12 @@ TEST(command_buffer, depth_test_function_state)
 TEST(command_buffer, scissor_default_is_zero_area)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
 
     cb.for_each(
         [&](const mge::program_handle& /*p*/,
@@ -308,14 +318,15 @@ TEST(command_buffer, scissor_default_is_zero_area)
 TEST(command_buffer, set_scissor_persists_across_draws)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
     mge::rectangle sr{10, 20, 110, 120};
     cb.set_scissor(sr);
-    cb.draw(prog, vb, ib);
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle& /*p*/,
@@ -336,15 +347,16 @@ TEST(command_buffer, set_scissor_persists_across_draws)
 TEST(command_buffer, clear_scissor_resets)
 {
     mge::command_buffer       cb;
+    mge::pass                 p(0);
     mge::program_handle       prog;
     mge::vertex_buffer_handle vb;
     mge::index_buffer_handle  ib;
 
     mge::rectangle sr{10, 20, 110, 120};
     cb.set_scissor(sr);
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
     cb.clear_scissor();
-    cb.draw(prog, vb, ib);
+    cb.draw(p, prog, vb, ib);
 
     size_t count = 0;
     cb.for_each([&](const mge::program_handle& /*p*/,

@@ -16,6 +16,8 @@
 
 namespace mge {
 
+    class pass;
+
     class texture;
     class uniform_block;
 
@@ -178,13 +180,17 @@ namespace mge {
         /**
          * @brief Record a draw command into the command buffer.
          *
-         * @param program   program to use for drawing
-         * @param vertices  vertex buffer to use
-         * @param indices   index buffer to use
+         * Marks the target @p pass as active.
+         *
+         * @param pass        pass to render this draw command into
+         * @param program     program to use for drawing
+         * @param vertices    vertex buffer to use
+         * @param indices     index buffer to use
          * @param index_count number of indices to draw (0 = all)
          * @param index_offset offset in index buffer (in indices, not bytes)
          */
-        void draw(const program_handle&       program,
+        void draw(mge::pass&                  pass,
+                  const program_handle&       program,
                   const vertex_buffer_handle& vertices,
                   const index_buffer_handle&  indices,
                   uint32_t                    index_count = 0,
@@ -217,6 +223,35 @@ namespace mge {
         }
 
         /**
+         * @brief Iterate over draw commands targeting a specific pass.
+         *
+         * Calls @c f for each draw command whose target pass index matches
+         * @p pass_index, with the same arguments as @c for_each.
+         *
+         * @tparam F callable type
+         * @param pass_index pass index to filter by
+         * @param f callable invoked for each matching draw command
+         */
+        template <typename F>
+        void for_each_in_pass(uint32_t pass_index, F&& f) const
+        {
+            auto count = m_programs.size();
+            for (size_t i = 0; i < count; ++i) {
+                if (m_pass_indices[i] == pass_index) {
+                    f(m_programs[i],
+                      m_vertex_buffers[i],
+                      m_index_buffers[i],
+                      m_pipeline_states[i],
+                      m_uniform_blocks[i],
+                      m_textures[i],
+                      m_index_counts[i],
+                      m_index_offsets[i],
+                      m_scissor_rects[i]);
+                }
+            }
+        }
+
+        /**
          * @brief Check whether the command buffer has no recorded commands.
          *
          * @return true if no draw commands have been recorded
@@ -231,6 +266,7 @@ namespace mge {
          */
         void clear() noexcept
         {
+            m_pass_indices.clear();
             m_programs.clear();
             m_vertex_buffers.clear();
             m_index_buffers.clear();
@@ -248,6 +284,7 @@ namespace mge {
         texture_binding_list m_current_textures;
         mge::rectangle       m_current_scissor_rect{};
 
+        std::pmr::vector<uint32_t>             m_pass_indices;
         std::pmr::vector<pipeline_state>       m_pipeline_states;
         std::pmr::vector<program_handle>       m_programs;
         std::pmr::vector<vertex_buffer_handle> m_vertex_buffers;

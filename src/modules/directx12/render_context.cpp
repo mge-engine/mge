@@ -973,7 +973,9 @@ namespace mge::dx12 {
         }
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
-        p.for_each_draw_command([&](const mge::program_handle&       program,
+        m_command_buffer->for_each_in_pass(
+            p.index(),
+            [&](const mge::program_handle&       program,
                                     const mge::vertex_buffer_handle& vertices,
                                     const mge::index_buffer_handle&  indices,
                                     const mge::pipeline_state&       state,
@@ -1009,7 +1011,8 @@ namespace mge::dx12 {
         });
 
         if (blend_pass_needed) {
-            p.for_each_draw_command(
+            m_command_buffer->for_each_in_pass(
+                p.index(),
                 [&](const mge::program_handle&       program,
                     const mge::vertex_buffer_handle& vertices,
                     const mge::index_buffer_handle&  indices,

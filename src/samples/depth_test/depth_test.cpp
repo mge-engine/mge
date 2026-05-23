@@ -87,14 +87,16 @@ namespace mge {
                 // farther ones
 
                 // Draw back triangle (red, at z=0.5)
-                command_buffer.draw(m_program_back, m_vertices_back, m_indices);
-
-                // Draw front triangle (green, at z=0.0)
-                command_buffer.draw(m_program_front,
-                                    m_vertices_front,
+                command_buffer.draw(pass,
+                                    m_program_back,
+                                    m_vertices_back,
                                     m_indices);
 
-                pass.submit(command_buffer);
+                // Draw front triangle (green, at z=0.0)
+                command_buffer.draw(pass,
+                                    m_program_front,
+                                    m_vertices_front,
+                                    m_indices);
             } else {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();
