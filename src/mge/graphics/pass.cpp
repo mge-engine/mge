@@ -11,6 +11,10 @@ namespace mge {
         , m_index(index)
     {}
 
+    pass::pass(uint32_t index) noexcept
+        : m_index(index)
+    {}
+
     pass::~pass() {}
 
     void pass::touch()
@@ -54,7 +58,6 @@ namespace mge {
         m_clear_color_enabled = false;
         m_clear_depth_enabled = false;
         m_clear_stencil_enabled = false;
-        m_draw_commands.clear();
     }
 
     void pass::clear_color(const rgba_color& color)
@@ -99,30 +102,5 @@ namespace mge {
         // setting frame buffer does not make a pass active
     }
 
-    void pass::submit(const command_buffer& cb)
-    {
-        if (!cb.empty()) {
-            cb.for_each([this](const program_handle&       program,
-                               const vertex_buffer_handle& vertices,
-                               const index_buffer_handle&  indices,
-                               const pipeline_state&       state,
-                               mge::uniform_block*         ub,
-                               const texture_binding_list& textures,
-                               uint32_t                    index_count,
-                               uint32_t                    index_offset,
-                               const mge::rectangle&       scissor) {
-                m_draw_commands.push_back(draw_command{program,
-                                                       vertices,
-                                                       indices,
-                                                       state,
-                                                       ub,
-                                                       textures,
-                                                       index_count,
-                                                       index_offset,
-                                                       scissor});
-            });
-        }
-        m_active = true;
-    }
 
 } // namespace mge

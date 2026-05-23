@@ -2,11 +2,13 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/pass.hpp"
 
 namespace mge {
 
     command_buffer::command_buffer(std::pmr::memory_resource* resource)
-        : m_pipeline_states(resource)
+        : m_pass_indices(resource)
+        , m_pipeline_states(resource)
         , m_programs(resource)
         , m_vertex_buffers(resource)
         , m_index_buffers(resource)
@@ -29,12 +31,15 @@ namespace mge {
         m_current_textures.push_back({slot, tex});
     }
 
-    void command_buffer::draw(const program_handle&       program,
+    void command_buffer::draw(mge::pass&                  pass,
+                              const program_handle&       program,
                               const vertex_buffer_handle& vertices,
                               const index_buffer_handle&  indices,
                               uint32_t                    index_count,
                               uint32_t                    index_offset)
     {
+        pass.touch();
+        m_pass_indices.push_back(pass.index());
         m_programs.push_back(program);
         m_vertex_buffers.push_back(vertices);
         m_index_buffers.push_back(indices);

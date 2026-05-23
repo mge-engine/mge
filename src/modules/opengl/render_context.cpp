@@ -795,7 +795,8 @@ namespace mge::opengl {
 
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
-        p.for_each_draw_command(
+        m_command_buffer->for_each_in_pass(
+            p.index(),
             [this, wh, &blend_pass_needed, &current_scissor, &p](
                 const program_handle&            program,
                 const vertex_buffer_handle&      vertices,
@@ -868,7 +869,8 @@ namespace mge::opengl {
         if (blend_pass_needed) {
             glEnable(GL_BLEND);
             CHECK_OPENGL_ERROR(glEnable);
-            p.for_each_draw_command(
+            m_command_buffer->for_each_in_pass(
+                p.index(),
                 [this, wh, &current_scissor, &p](
                     const program_handle&            program,
                     const vertex_buffer_handle&      vertices,

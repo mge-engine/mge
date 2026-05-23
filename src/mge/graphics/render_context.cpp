@@ -211,6 +211,9 @@ namespace mge {
             }
             reset_prepare_frame_actions();
         }
+        if (!m_command_buffer) {
+            m_command_buffer = std::make_unique<mge::command_buffer>();
+        }
         bool rendered = false;
         if (m_passes.size() > 0) {
             for (const auto& p : m_passes)
