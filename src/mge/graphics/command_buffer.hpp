@@ -194,7 +194,8 @@ namespace mge {
                   const vertex_buffer_handle& vertices,
                   const index_buffer_handle&  indices,
                   uint32_t                    index_count = 0,
-                  uint32_t                    index_offset = 0);
+                  uint32_t                    index_offset = 0,
+                  uint32_t                    sort_key = 0);
 
         /**
          * @brief Iterate over all recorded draw commands.
@@ -267,6 +268,7 @@ namespace mge {
         void clear() noexcept
         {
             m_pass_indices.clear();
+            m_sort_keys.clear();
             m_programs.clear();
             m_vertex_buffers.clear();
             m_index_buffers.clear();
@@ -285,6 +287,7 @@ namespace mge {
         mge::rectangle       m_current_scissor_rect{};
 
         std::pmr::vector<uint32_t>             m_pass_indices;
+        std::pmr::vector<uint32_t>             m_sort_keys;
         std::pmr::vector<pipeline_state>       m_pipeline_states;
         std::pmr::vector<program_handle>       m_programs;
         std::pmr::vector<vertex_buffer_handle> m_vertex_buffers;
