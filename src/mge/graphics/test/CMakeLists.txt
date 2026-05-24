@@ -24,6 +24,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_shader.cpp
     test_vertex_layout.cpp
     test_command_buffer.cpp
+    test_frame_buffer.cpp
 )
 
 MGE_TEST(

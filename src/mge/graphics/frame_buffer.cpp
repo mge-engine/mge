@@ -11,6 +11,7 @@ namespace mge {
 
     void frame_buffer::attach_color(texture_ref tex, uint32_t slot)
     {
+        on_attach_color(tex, slot);
         if (slot >= m_color_attachments.size()) {
             m_color_attachments.resize(slot + 1);
         }
@@ -19,6 +20,7 @@ namespace mge {
 
     void frame_buffer::attach_depth(texture_ref tex)
     {
+        on_attach_depth(tex);
         m_depth_attachment = tex;
     }
 

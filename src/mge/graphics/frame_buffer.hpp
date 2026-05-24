@@ -30,25 +30,23 @@ namespace mge {
         /**
          * @brief Attach a texture as a color render target.
          *
-         * The base implementation stores @c tex in @c m_color_attachments.
-         * Backend overrides perform the additional GPU-side binding and
-         * should call the base first.
+         * Calls @c on_attach_color() for backend GPU-side binding, then
+         * stores @c tex in @c m_color_attachments.
          *
          * @param tex  texture to bind as color attachment
          * @param slot color attachment index (0-based)
          */
-        virtual void attach_color(texture_ref tex, uint32_t slot = 0);
+        void attach_color(texture_ref tex, uint32_t slot = 0);
 
         /**
          * @brief Attach a texture as the depth (or depth/stencil) target.
          *
-         * The base implementation stores @c tex in @c m_depth_attachment.
-         * Backend overrides perform the additional GPU-side binding and
-         * should call the base first.
+         * Calls @c on_attach_depth() for backend GPU-side binding, then
+         * stores @c tex in @c m_depth_attachment.
          *
          * @param tex texture to bind as depth attachment
          */
-        virtual void attach_depth(texture_ref tex);
+        void attach_depth(texture_ref tex);
 
         /**
          * @brief Retrieve a color attachment by slot.
@@ -66,6 +64,23 @@ namespace mge {
         texture_ref depth_attachment() const;
 
     protected:
+        /**
+         * @brief Backend hook called by @c attach_color() before the base
+         * class updates @c m_color_attachments.
+         *
+         * @param tex  texture being attached
+         * @param slot color attachment index (0-based)
+         */
+        virtual void on_attach_color(texture_ref tex, uint32_t slot) = 0;
+
+        /**
+         * @brief Backend hook called by @c attach_depth() before the base
+         * class updates @c m_depth_attachment.
+         *
+         * @param tex texture being attached
+         */
+        virtual void on_attach_depth(texture_ref tex) = 0;
+
         std::vector<texture_ref> m_color_attachments;
         texture_ref              m_depth_attachment;
     };
