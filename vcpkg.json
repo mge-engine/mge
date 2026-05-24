@@ -3,6 +3,7 @@
   "dependencies": [
     "gtest",
     "boost-preprocessor",
+    "boost-unordered",
     "boost-filesystem",
     "boost-circular-buffer",
     "boost-lexical-cast",
