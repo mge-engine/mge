@@ -51,6 +51,10 @@ namespace mge {
             void          on_frame_present() override;
 
             mge::texture_ref create_texture(texture_type type) override;
+            mge::texture_ref
+            create_render_target_texture(texture_type        type,
+                                         const image_format& format,
+                                         const mge::extent&  extent) override;
             mge::image_ref   screenshot() override;
 
             mge::rectangle default_scissor() const;

@@ -11,6 +11,7 @@
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/graphics/program_handle.hpp"
@@ -215,6 +216,24 @@ namespace mge {
          * @return created texture
          */
         virtual texture_ref create_texture(texture_type type) = 0;
+
+        /**
+         * @brief Create a texture pre-allocated as a color render target.
+         *
+         * The backend allocates the GPU resource immediately with the
+         * appropriate bind flags or image usage bits for use as a color
+         * attachment.  The texture can also be sampled in shaders after
+         * the render pass completes.
+         *
+         * @param type   texture type (typically TYPE_2D)
+         * @param format pixel format of the attachment
+         * @param extent size in pixels
+         * @return created render-target texture
+         */
+        virtual texture_ref
+        create_render_target_texture(texture_type        type,
+                                     const image_format& format,
+                                     const mge::extent&  extent) = 0;
 
         /**
          * @brief Get the extent of the render context.

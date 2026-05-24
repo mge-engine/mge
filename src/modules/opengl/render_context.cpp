@@ -565,6 +565,18 @@ namespace mge::opengl {
         return result;
     }
 
+    mge::texture_ref
+    render_context::create_render_target_texture(mge::texture_type        type,
+                                                 const mge::image_format& format,
+                                                 const mge::extent&       extent)
+    {
+        return std::make_shared<texture>(*this,
+                                         type,
+                                         format,
+                                         extent,
+                                         mge::texture_usage::RENDER_TARGET);
+    }
+
     mge::rectangle render_context::default_scissor() const
     {
         return mge::rectangle(0, 0, m_extent.width, m_extent.height);

@@ -15,6 +15,32 @@ namespace mge::opengl {
         glGenTextures(1, &m_texture);
     }
 
+    texture::texture(render_context&          context,
+                     mge::texture_type        type,
+                     const mge::image_format& format,
+                     const mge::extent&       extent,
+                     mge::texture_usage       usage)
+        : mge::texture(context, type, usage)
+        , m_texture(0)
+    {
+        glGenTextures(1, &m_texture);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        CHECK_OPENGL_ERROR(glBindTexture);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     internal_format(format),
+                     static_cast<GLsizei>(extent.width),
+                     static_cast<GLsizei>(extent.height),
+                     0,
+                     pixel_format(format),
+                     pixel_type(format),
+                     nullptr);
+        CHECK_OPENGL_ERROR(glTexImage2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
     texture::~texture()
     {
         if (m_texture) {

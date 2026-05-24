@@ -6,30 +6,22 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/texture.hpp"
 #include "mge/graphics/texture_usage.hpp"
-#include "opengl_test.hpp"
-#include "test/benchmark.hpp"
+#include "vulkan_test.hpp"
 
-class texture_test : public mge::opengl::opengltest
+class texture_test : public mge::vulkan::vulkantest
 {};
 
 TEST_F(texture_test, create_texture)
 {
     auto& context = m_window->render_context();
-    auto  texture = context.create_texture(mge::texture_type::TYPE_2D);
-}
-
-TEST_F(texture_test, bench_texture_creation)
-{
-    mge::benchmark().run("texture_creation", [&]() {
-        auto& context = m_window->render_context();
-        auto  texture = context.create_texture(mge::texture_type::TYPE_2D);
-    });
+    auto  tex     = context.create_texture(mge::texture_type::TYPE_2D);
+    EXPECT_TRUE(tex);
 }
 
 TEST_F(texture_test, create_render_target_texture)
 {
-    auto&            context = m_window->render_context();
-    mge::extent      ext(256, 256);
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
     mge::image_format fmt(mge::image_format::data_format::RGBA,
                           mge::data_type::UINT8);
     auto tex = context.create_render_target_texture(
@@ -39,8 +31,8 @@ TEST_F(texture_test, create_render_target_texture)
 
 TEST_F(texture_test, render_target_texture_has_render_target_usage)
 {
-    auto&            context = m_window->render_context();
-    mge::extent      ext(256, 256);
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
     mge::image_format fmt(mge::image_format::data_format::RGBA,
                           mge::data_type::UINT8);
     auto tex = context.create_render_target_texture(
@@ -51,8 +43,8 @@ TEST_F(texture_test, render_target_texture_has_render_target_usage)
 
 TEST_F(texture_test, render_target_texture_type)
 {
-    auto&            context = m_window->render_context();
-    mge::extent      ext(256, 256);
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
     mge::image_format fmt(mge::image_format::data_format::RGBA,
                           mge::data_type::UINT8);
     auto tex = context.create_render_target_texture(

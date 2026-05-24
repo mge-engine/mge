@@ -18,6 +18,20 @@ namespace mge::vulkan {
         : mge::texture(context, type)
     {}
 
+    texture::texture(render_context&          context,
+                     mge::texture_type        type,
+                     const mge::image_format& format,
+                     const mge::extent&       extent)
+        : mge::texture(context, type, mge::texture_usage::RENDER_TARGET)
+    {
+        VkFormat vk_format = texture_format(format);
+        create_image_as_render_target(vk_format,
+                                      extent.width,
+                                      extent.height);
+        create_image_view(vk_format);
+        create_sampler();
+    }
+
     texture::~texture()
     {
         auto& ctx = static_cast<render_context&>(context());
@@ -79,6 +93,39 @@ namespace mge::vulkan {
         image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         image_info.usage =
             VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
+        image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+        image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        VmaAllocationCreateInfo alloc_info = {};
+        alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+        CHECK_VK_CALL(vmaCreateImage(ctx.allocator(),
+                                     &image_info,
+                                     &alloc_info,
+                                     &m_image,
+                                     &m_allocation,
+                                     nullptr));
+    }
+
+    void texture::create_image_as_render_target(VkFormat format,
+                                                uint32_t width,
+                                                uint32_t height)
+    {
+        auto& ctx = static_cast<render_context&>(context());
+
+        VkImageCreateInfo image_info = {};
+        image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        image_info.imageType = VK_IMAGE_TYPE_2D;
+        image_info.extent.width = width;
+        image_info.extent.height = height;
+        image_info.extent.depth = 1;
+        image_info.mipLevels = 1;
+        image_info.arrayLayers = 1;
+        image_info.format = format;
+        image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+        image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        image_info.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+                           VK_IMAGE_USAGE_SAMPLED_BIT;
         image_info.samples = VK_SAMPLE_COUNT_1_BIT;
         image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 

@@ -209,6 +209,15 @@ namespace mge::vulkan {
         return std::make_shared<mge::vulkan::texture>(*this, type);
     }
 
+    mge::texture_ref
+    render_context::create_render_target_texture(texture_type        type,
+                                                 const image_format& format,
+                                                 const mge::extent&  extent)
+    {
+        return std::make_shared<mge::vulkan::texture>(*this, type, format,
+                                                       extent);
+    }
+
     void render_context::create_surface()
     {
 #ifdef MGE_OS_WINDOWS

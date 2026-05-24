@@ -126,6 +126,7 @@ namespace mge::dx12 {
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)
         , m_rtv_descriptor_size(0)
+        , m_rtv_next_index(buffer_count)
         , m_dsv_descriptor_size(0)
         , m_srv_descriptor_size(0)
         , m_srv_next_index(0)
@@ -365,7 +366,7 @@ namespace mge::dx12 {
     {
         D3D12_DESCRIPTOR_HEAP_DESC rtv_heap_desc = {};
 
-        rtv_heap_desc.NumDescriptors = buffer_count;
+        rtv_heap_desc.NumDescriptors = buffer_count + max_extra_rtvs;
         rtv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
         rtv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
         auto rc = m_device->CreateDescriptorHeap(&rtv_heap_desc,
@@ -707,6 +708,15 @@ namespace mge::dx12 {
         return result;
     }
 
+    D3D12_CPU_DESCRIPTOR_HANDLE render_context::allocate_rtv()
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE result =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+        result.ptr += m_rtv_descriptor_size * m_rtv_next_index;
+        ++m_rtv_next_index;
+        return result;
+    }
+
     D3D12_CPU_DESCRIPTOR_HANDLE render_context::dsv_handle(uint32_t index) const
     {
         D3D12_CPU_DESCRIPTOR_HANDLE result =
@@ -748,6 +758,14 @@ namespace mge::dx12 {
     mge::texture_ref render_context::create_texture(texture_type type)
     {
         return std::make_shared<dx12::texture>(*this, type);
+    }
+
+    mge::texture_ref
+    render_context::create_render_target_texture(texture_type        type,
+                                                 const image_format& format,
+                                                 const mge::extent&  extent)
+    {
+        return std::make_shared<dx12::texture>(*this, type, format, extent);
     }
 
     void render_context::enable_debug_layer()

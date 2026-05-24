@@ -26,6 +26,7 @@ namespace mge::dx12 {
     {
     public:
         static constexpr uint32_t buffer_count = 2;
+        static constexpr uint32_t max_extra_rtvs = 64;
 
         render_context(mge::dx12::render_system& render_system,
                        window&                   window_);
@@ -45,6 +46,10 @@ namespace mge::dx12 {
         void          on_frame_present() override;
 
         mge::texture_ref create_texture(texture_type type) override;
+        mge::texture_ref
+        create_render_target_texture(texture_type        type,
+                                     const image_format& format,
+                                     const mge::extent&  extent) override;
         mge::image_ref   screenshot() override;
 
         const mge::dx12::window& window() const
@@ -98,6 +103,7 @@ namespace mge::dx12 {
         }
 
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
+        D3D12_CPU_DESCRIPTOR_HANDLE allocate_rtv();
         D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle(uint32_t index) const;
 
         void wait_for_command_queue();
@@ -202,6 +208,7 @@ namespace mge::dx12 {
         D3D12_VIEWPORT m_viewport;
         D3D12_RECT     m_scissor_rect;
         uint32_t       m_rtv_descriptor_size;
+        uint32_t       m_rtv_next_index;
         uint32_t       m_dsv_descriptor_size;
         uint32_t       m_srv_descriptor_size;
         uint32_t       m_srv_next_index;

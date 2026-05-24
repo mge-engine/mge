@@ -13,6 +13,10 @@ namespace mge::dx11 {
     {
     public:
         texture(render_context& context, mge::texture_type type);
+        texture(render_context&          context,
+                mge::texture_type        type,
+                const mge::image_format& format,
+                const mge::extent&       extent);
         ~texture() override;
 
         void set_data(const mge::image_format& format,
@@ -30,10 +34,16 @@ namespace mge::dx11 {
             return m_sampler_state.get();
         }
 
+        ID3D11RenderTargetView* render_target_view() const
+        {
+            return m_render_target_view.get();
+        }
+
     private:
         DXGI_FORMAT texture_format(const mge::image_format& format) const;
         mge::com_unique_ptr<ID3D11Texture2D>          m_texture;
         mge::com_unique_ptr<ID3D11ShaderResourceView> m_shader_resource_view;
         mge::com_unique_ptr<ID3D11SamplerState>       m_sampler_state;
+        mge::com_unique_ptr<ID3D11RenderTargetView>   m_render_target_view;
     };
 } // namespace mge::dx11

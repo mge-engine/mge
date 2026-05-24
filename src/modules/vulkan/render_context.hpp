@@ -33,6 +33,10 @@ namespace mge::vulkan {
         void render(const mge::pass& p) override;
 
         mge::texture_ref create_texture(texture_type type) override;
+        mge::texture_ref
+        create_render_target_texture(texture_type        type,
+                                     const image_format& format,
+                                     const mge::extent&  extent) override;
         mge::image_ref   screenshot() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};

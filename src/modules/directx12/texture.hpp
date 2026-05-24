@@ -14,6 +14,10 @@ namespace mge::dx12 {
     {
     public:
         texture(render_context& context, mge::texture_type type);
+        texture(render_context&          context,
+                mge::texture_type        type,
+                const mge::image_format& format,
+                const mge::extent&       extent);
         ~texture() override;
 
         void set_data(const mge::image_format& format,
@@ -26,11 +30,17 @@ namespace mge::dx12 {
             return m_srv_gpu_handle;
         }
 
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_cpu_handle() const
+        {
+            return m_rtv_cpu_handle;
+        }
+
     private:
         DXGI_FORMAT texture_format(const mge::image_format& format) const;
 
         mge::com_ptr<ID3D12Resource> m_texture;
         D3D12_GPU_DESCRIPTOR_HANDLE  m_srv_gpu_handle;
         D3D12_CPU_DESCRIPTOR_HANDLE  m_srv_cpu_handle;
+        D3D12_CPU_DESCRIPTOR_HANDLE  m_rtv_cpu_handle;
     };
 } // namespace mge::dx12

@@ -398,6 +398,14 @@ namespace mge::dx11 {
         return result;
     }
 
+    mge::texture_ref
+    render_context::create_render_target_texture(mge::texture_type        type,
+                                                 const mge::image_format& format,
+                                                 const mge::extent&       extent)
+    {
+        return std::make_shared<texture>(*this, type, format, extent);
+    }
+
     void render_context::render(const mge::pass& p)
     {
         ID3D11RenderTargetView* rtv = nullptr;

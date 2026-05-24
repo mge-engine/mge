@@ -34,4 +34,10 @@ public:
     MOCK_METHOD(mge::image_ref, screenshot, (), ());
 
     MOCK_METHOD(mge::texture_ref, create_texture, (mge::texture_type), ());
+    MOCK_METHOD(mge::texture_ref,
+                create_render_target_texture,
+                (mge::texture_type,
+                 const mge::image_format&,
+                 const mge::extent&),
+                ());
 };

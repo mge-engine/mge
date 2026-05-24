@@ -18,6 +18,78 @@ namespace mge::dx12 {
     {
         m_srv_gpu_handle = {};
         m_srv_cpu_handle = {};
+        m_rtv_cpu_handle = {};
+    }
+
+    texture::texture(render_context&          context,
+                     mge::texture_type        type,
+                     const mge::image_format& format,
+                     const mge::extent&       extent)
+        : mge::texture(context, type, mge::texture_usage::RENDER_TARGET)
+    {
+        m_srv_gpu_handle = {};
+        m_srv_cpu_handle = {};
+        m_rtv_cpu_handle = {};
+
+        auto& ctx = static_cast<render_context&>(context);
+        auto* device = ctx.device();
+
+        DXGI_FORMAT dxgi_format = texture_format(format);
+
+        D3D12_RESOURCE_DESC tex_desc = {};
+        tex_desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+        tex_desc.Alignment = 0;
+        tex_desc.Width = extent.width;
+        tex_desc.Height = extent.height;
+        tex_desc.DepthOrArraySize = 1;
+        tex_desc.MipLevels = 1;
+        tex_desc.Format = dxgi_format;
+        tex_desc.SampleDesc.Count = 1;
+        tex_desc.SampleDesc.Quality = 0;
+        tex_desc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+        tex_desc.Flags = D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;
+
+        D3D12_CLEAR_VALUE clear_value = {};
+        clear_value.Format = dxgi_format;
+        clear_value.Color[0] = 0.0f;
+        clear_value.Color[1] = 0.0f;
+        clear_value.Color[2] = 0.0f;
+        clear_value.Color[3] = 1.0f;
+
+        D3D12_HEAP_PROPERTIES default_heap = {};
+        default_heap.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+        auto hr =
+            device->CreateCommittedResource(&default_heap,
+                                            D3D12_HEAP_FLAG_NONE,
+                                            &tex_desc,
+                                            D3D12_RESOURCE_STATE_RENDER_TARGET,
+                                            &clear_value,
+                                            IID_PPV_ARGS(m_texture.GetAddressOf()));
+        CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
+
+        m_rtv_cpu_handle = ctx.allocate_rtv();
+        D3D12_RENDER_TARGET_VIEW_DESC rtv_desc = {};
+        rtv_desc.Format = dxgi_format;
+        rtv_desc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+        rtv_desc.Texture2D.MipSlice = 0;
+        rtv_desc.Texture2D.PlaneSlice = 0;
+        device->CreateRenderTargetView(m_texture.Get(), &rtv_desc,
+                                       m_rtv_cpu_handle);
+
+        auto srv_handles = ctx.allocate_srv();
+        m_srv_cpu_handle = srv_handles.first;
+        m_srv_gpu_handle = srv_handles.second;
+
+        D3D12_SHADER_RESOURCE_VIEW_DESC srv_desc = {};
+        srv_desc.Shader4ComponentMapping =
+            D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+        srv_desc.Format = dxgi_format;
+        srv_desc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+        srv_desc.Texture2D.MostDetailedMip = 0;
+        srv_desc.Texture2D.MipLevels = 1;
+        device->CreateShaderResourceView(m_texture.Get(), &srv_desc,
+                                         m_srv_cpu_handle);
     }
 
     texture::~texture() {}

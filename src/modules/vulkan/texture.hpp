@@ -12,6 +12,10 @@ namespace mge::vulkan {
     {
     public:
         texture(render_context& context, mge::texture_type type);
+        texture(render_context&          context,
+                mge::texture_type        type,
+                const mge::image_format& format,
+                const mge::extent&       extent);
         ~texture() override;
 
         void set_data(const mge::image_format& format,
@@ -32,6 +36,9 @@ namespace mge::vulkan {
     private:
         VkFormat texture_format(const mge::image_format& format) const;
         void     create_image(VkFormat format, uint32_t width, uint32_t height);
+        void     create_image_as_render_target(VkFormat format,
+                                               uint32_t width,
+                                               uint32_t height);
         void     create_image_view(VkFormat format);
         void     create_sampler();
         void     upload_data(const void* data,

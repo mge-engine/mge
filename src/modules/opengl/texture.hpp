@@ -12,6 +12,11 @@ namespace mge::opengl {
     {
     public:
         texture(render_context& context, mge::texture_type type);
+        texture(render_context&          context,
+                mge::texture_type        type,
+                const mge::image_format& format,
+                const mge::extent&       extent,
+                mge::texture_usage       usage);
         ~texture() override;
 
         void set_data(const mge::image_format& format,

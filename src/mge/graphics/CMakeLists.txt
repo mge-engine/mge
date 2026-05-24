@@ -72,6 +72,7 @@ SET(mgegraphics_headers
     cull_mode.hpp
     pipeline_state.hpp
     texture_type.hpp
+    texture_usage.hpp
     texture.hpp
     topology.hpp
     image.hpp

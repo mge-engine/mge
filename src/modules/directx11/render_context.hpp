@@ -35,6 +35,10 @@ namespace mge::dx11 {
         void          on_frame_present() override;
 
         mge::texture_ref create_texture(mge::texture_type type) override;
+        mge::texture_ref
+        create_render_target_texture(mge::texture_type        type,
+                                     const mge::image_format& format,
+                                     const mge::extent&       extent) override;
         mge::image_ref   screenshot() override;
 
         const ::mge::dx11::window& window() const
