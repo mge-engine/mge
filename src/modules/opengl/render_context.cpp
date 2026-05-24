@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "error.hpp"
+#include "frame_buffer.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/system_error.hpp"
@@ -559,6 +560,12 @@ namespace mge::opengl {
         return new mge::opengl::program(*this);
     }
 
+    mge::frame_buffer*
+    render_context::on_create_frame_buffer(const mge::frame_buffer_info&)
+    {
+        return new opengl::frame_buffer(*this);
+    }
+
     mge::texture_ref render_context::create_texture(mge::texture_type type)
     {
         mge::texture_ref result = std::make_shared<texture>(*this, type);
@@ -753,8 +760,9 @@ namespace mge::opengl {
     {
         GLuint fb = 0;
         if (p.frame_buffer()) {
-            MGE_THROW_NOT_IMPLEMENTED
-                << "Rendering to custom frame buffers not implemented";
+            auto* fbo =
+                static_cast<opengl::frame_buffer*>(p.frame_buffer().get());
+            fb = fbo->fbo_name();
         }
 
         glBindFramebuffer(GL_FRAMEBUFFER, fb);
@@ -770,7 +778,10 @@ namespace mge::opengl {
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 
-        GLint wh = static_cast<GLint>(window_height());
+        // Scissor coordinates use top-left origin in the engine; OpenGL uses
+        // bottom-left. Use the FBO height for off-screen passes.
+        GLint wh = fb != 0 ? static_cast<GLint>(vp.height)
+                           : static_cast<GLint>(window_height());
         glScissor(static_cast<const GLint>(p.scissor().left),
                   wh - static_cast<const GLint>(p.scissor().bottom),
                   static_cast<const GLsizei>(p.scissor().width()),

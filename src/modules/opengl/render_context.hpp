@@ -46,9 +46,11 @@ namespace mge {
                 return *s_glinfo;
             }
 
-            mge::shader*  on_create_shader(shader_type t) override;
-            mge::program* on_create_program() override;
-            void          on_frame_present() override;
+            mge::shader*        on_create_shader(shader_type t) override;
+            mge::program*       on_create_program() override;
+            mge::frame_buffer*  on_create_frame_buffer(
+                const mge::frame_buffer_info& info) override;
+            void                on_frame_present() override;
 
             mge::texture_ref create_texture(texture_type type) override;
             mge::texture_ref

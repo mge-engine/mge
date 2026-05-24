@@ -13,7 +13,8 @@ SET(mge_opengl_module_SOURCES
     error.cpp
     common.cpp
     program.cpp
-    texture.cpp)
+    texture.cpp
+    frame_buffer.cpp)
 
 ADD_LIBRARY(mge_module_opengl SHARED
             ${mge_opengl_module_SOURCES})
