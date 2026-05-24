@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "error.hpp"
+#include "frame_buffer.hpp"
 #include "index_buffer.hpp"
 #include "message_id.hpp"
 #include "mge/core/checked_cast.hpp"
@@ -128,6 +129,7 @@ namespace mge::dx12 {
         , m_rtv_descriptor_size(0)
         , m_rtv_next_index(buffer_count)
         , m_dsv_descriptor_size(0)
+        , m_dsv_next_index(buffer_count)
         , m_srv_descriptor_size(0)
         , m_srv_next_index(0)
         , m_callback_cookie(0)
@@ -379,7 +381,7 @@ namespace mge::dx12 {
         MGE_DEBUG_TRACE(DX12, "Create descriptor heap for render target views");
 
         D3D12_DESCRIPTOR_HEAP_DESC dsv_heap_desc = {};
-        dsv_heap_desc.NumDescriptors = buffer_count;
+        dsv_heap_desc.NumDescriptors = buffer_count + max_extra_dsvs;
         dsv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
         dsv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
         rc = m_device->CreateDescriptorHeap(&dsv_heap_desc,
@@ -611,6 +613,31 @@ namespace mge::dx12 {
         return new dx12::program(*this);
     }
 
+    mge::frame_buffer* render_context::on_create_frame_buffer(
+        const mge::frame_buffer_info& info)
+    {
+        auto* fb = new dx12::frame_buffer(*this);
+
+        for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
+            const auto& ca = info.color_attachments[i];
+            auto        tex = create_render_target_texture(
+                mge::texture_type::TYPE_2D, ca.format, ca.extent);
+            fb->attach_color(tex, i);
+        }
+
+        if (info.depth_stencil_extent) {
+            mge::image_format depth_fmt(
+                mge::image_format::data_format::DEPTH_STENCIL,
+                mge::data_type::UINT32);
+            auto tex = create_render_target_texture(mge::texture_type::TYPE_2D,
+                                                    depth_fmt,
+                                                    *info.depth_stencil_extent);
+            fb->attach_depth(tex);
+        }
+
+        return fb;
+    }
+
     void render_context::copy_resource_sync(ID3D12Resource*       dst,
                                             ID3D12Resource*       src,
                                             D3D12_RESOURCE_STATES state_after)
@@ -714,6 +741,15 @@ namespace mge::dx12 {
             m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
         result.ptr += m_rtv_descriptor_size * m_rtv_next_index;
         ++m_rtv_next_index;
+        return result;
+    }
+
+    D3D12_CPU_DESCRIPTOR_HANDLE render_context::allocate_dsv()
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE result =
+            m_dsv_heap->GetCPUDescriptorHandleForHeapStart();
+        result.ptr += m_dsv_descriptor_size * m_dsv_next_index;
+        ++m_dsv_next_index;
         return result;
     }
 
@@ -915,22 +951,27 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
-        ID3D12GraphicsCommandList* pass_command_list = nullptr;
-        uint32_t                   current_buffer_index = 0;
+        ID3D12GraphicsCommandList* pass_command_list = m_command_list.Get();
+
+        D3D12_CPU_DESCRIPTOR_HANDLE pass_rtv = {};
+        D3D12_CPU_DESCRIPTOR_HANDLE pass_dsv = {};
+        bool                        pass_has_dsv = false;
+        DXGI_FORMAT pass_rtv_format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        DXGI_FORMAT pass_dsv_format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
         if (!p.frame_buffer()) {
-            pass_command_list = m_command_list.Get();
-            current_buffer_index = m_swap_chain->GetCurrentBackBufferIndex();
-            if (m_draw_state != draw_state::DRAW) {
-                // MGE_DEBUG_TRACE(DX12, "Waiting for frame to be finished");
+            uint32_t current_buffer_index =
+                m_swap_chain->GetCurrentBackBufferIndex();
+
+            if (m_draw_state == draw_state::NONE) {
                 wait_for_command_queue();
-                // MGE_DEBUG_TRACE(DX12, "Reset command list for new frame");
                 auto rc = m_command_allocator->Reset();
                 CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
                 rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
                 CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-                // MGE_DEBUG_TRACE(DX12, "Setup resource barrier present to
-                // render");
+            }
+
+            if (m_draw_state != draw_state::DRAW) {
                 D3D12_RESOURCE_BARRIER present_to_render = {
                     .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
                     .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
@@ -938,23 +979,45 @@ namespace mge::dx12 {
                         {.pResource = m_backbuffers[current_buffer_index].Get(),
                          .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
                          .StateBefore = D3D12_RESOURCE_STATE_PRESENT,
-                         .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
+                         .StateAfter  = D3D12_RESOURCE_STATE_RENDER_TARGET},
                 };
                 pass_command_list->ResourceBarrier(1, &present_to_render);
-                D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
-                    m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
-                rtv_handle.ptr += m_rtv_descriptor_size * current_buffer_index;
-
-                D3D12_CPU_DESCRIPTOR_HANDLE dsv =
-                    dsv_handle(current_buffer_index);
-                pass_command_list->OMSetRenderTargets(1,
-                                                      &rtv_handle,
-                                                      FALSE,
-                                                      &dsv);
                 m_draw_state = draw_state::DRAW;
             }
+
+            pass_rtv = rtv_handle(current_buffer_index);
+            pass_dsv = dsv_handle(current_buffer_index);
+            pass_has_dsv = true;
+            pass_command_list->OMSetRenderTargets(1,
+                                                  &pass_rtv,
+                                                  FALSE,
+                                                  &pass_dsv);
         } else {
-            // frame buffer specific command list
+            auto* fb = static_cast<dx12::frame_buffer*>(p.frame_buffer().get());
+
+            if (m_draw_state == draw_state::NONE) {
+                wait_for_command_queue();
+                auto rc = m_command_allocator->Reset();
+                CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+                rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
+                CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+                m_draw_state = draw_state::FBO_DRAW;
+            }
+
+            pass_rtv = fb->rtv_cpu_handle(0);
+            pass_rtv_format = fb->rtv_dxgi_format(0);
+            pass_has_dsv = fb->has_depth();
+            if (pass_has_dsv) {
+                pass_dsv = fb->dsv_cpu_handle();
+                pass_dsv_format = fb->dsv_dxgi_format();
+            } else {
+                pass_dsv_format = DXGI_FORMAT_UNKNOWN;
+            }
+            pass_command_list->OMSetRenderTargets(
+                1,
+                &pass_rtv,
+                FALSE,
+                pass_has_dsv ? &pass_dsv : nullptr);
         }
 
         const auto&    vp = p.viewport();
@@ -972,61 +1035,62 @@ namespace mge::dx12 {
         if (p.clear_color_enabled()) {
             const auto& color = p.clear_color_value();
             FLOAT       clear_color[4] = {color.r, color.g, color.b, color.a};
-            pass_command_list->ClearRenderTargetView(
-                rtv_handle(current_buffer_index),
-                clear_color,
-                0,
-                nullptr);
+            pass_command_list->ClearRenderTargetView(pass_rtv,
+                                                     clear_color,
+                                                     0,
+                                                     nullptr);
         }
 
-        if (p.clear_depth_enabled()) {
+        if (p.clear_depth_enabled() && pass_has_dsv) {
             FLOAT depth_value = static_cast<FLOAT>(p.clear_depth_value());
-            pass_command_list->ClearDepthStencilView(
-                dsv_handle(current_buffer_index),
-                D3D12_CLEAR_FLAG_DEPTH,
-                depth_value,
-                0,
-                0,
-                nullptr);
+            pass_command_list->ClearDepthStencilView(pass_dsv,
+                                                     D3D12_CLEAR_FLAG_DEPTH,
+                                                     depth_value,
+                                                     0,
+                                                     0,
+                                                     nullptr);
         }
+
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
         for_each_draw_in_pass(
             p.index(),
             [&](const mge::program_handle&       program,
-                                    const mge::vertex_buffer_handle& vertices,
-                                    const mge::index_buffer_handle&  indices,
-                                    const mge::pipeline_state&       state,
-                                    mge::uniform_block*              ub,
-                                    const mge::texture_binding_list& textures,
-                                    uint32_t              index_count,
-                                    uint32_t              index_offset,
-                                    const mge::rectangle& cmd_scissor) {
-            const auto& effective =
-                cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-            if (effective != current_scissor) {
-                D3D12_RECT sr = {static_cast<LONG>(effective.left),
-                                 static_cast<LONG>(effective.top),
-                                 static_cast<LONG>(effective.right),
-                                 static_cast<LONG>(effective.bottom)};
-                pass_command_list->RSSetScissorRects(1, &sr);
-                current_scissor = effective;
-            }
-            auto blend_operation = state.color_blend_operation();
-            if (blend_operation == blend_operation::NONE) {
-                draw_geometry(pass_command_list,
-                              program.get(),
-                              vertices.get(),
-                              indices.get(),
-                              state,
-                              ub,
-                              textures,
-                              index_count,
-                              index_offset);
-            } else {
-                blend_pass_needed = true;
-            }
-        });
+                const mge::vertex_buffer_handle& vertices,
+                const mge::index_buffer_handle&  indices,
+                const mge::pipeline_state&       state,
+                mge::uniform_block*              ub,
+                const mge::texture_binding_list& textures,
+                uint32_t                         index_count,
+                uint32_t                         index_offset,
+                const mge::rectangle&            cmd_scissor) {
+                const auto& effective =
+                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
+                if (effective != current_scissor) {
+                    D3D12_RECT sr = {static_cast<LONG>(effective.left),
+                                     static_cast<LONG>(effective.top),
+                                     static_cast<LONG>(effective.right),
+                                     static_cast<LONG>(effective.bottom)};
+                    pass_command_list->RSSetScissorRects(1, &sr);
+                    current_scissor = effective;
+                }
+                auto blend_op = state.color_blend_operation();
+                if (blend_op == blend_operation::NONE) {
+                    draw_geometry(pass_command_list,
+                                  program.get(),
+                                  vertices.get(),
+                                  indices.get(),
+                                  state,
+                                  ub,
+                                  textures,
+                                  pass_rtv_format,
+                                  pass_dsv_format,
+                                  index_count,
+                                  index_offset);
+                } else {
+                    blend_pass_needed = true;
+                }
+            });
 
         if (blend_pass_needed) {
             for_each_draw_in_pass(
@@ -1057,6 +1121,8 @@ namespace mge::dx12 {
                                   state,
                                   ub,
                                   textures,
+                                  pass_rtv_format,
+                                  pass_dsv_format,
                                   index_count,
                                   index_offset);
                 });
@@ -1071,6 +1137,8 @@ namespace mge::dx12 {
                                   const mge::pipeline_state&       state,
                                   mge::uniform_block*              ub,
                                   const mge::texture_binding_list& textures,
+                                  DXGI_FORMAT                      rtv_format,
+                                  DXGI_FORMAT                      dsv_format,
                                   uint32_t                         index_count,
                                   uint32_t                         index_offset)
     {
@@ -1089,7 +1157,7 @@ namespace mge::dx12 {
         const auto& il = input_layout_from_vertex_buffer(vb);
 
         const auto& pipeline_state =
-            static_pipeline_state(dx12_program, state, il);
+            static_pipeline_state(dx12_program, state, il, rtv_format, dsv_format);
         if (!pipeline_state.Get()) {
             MGE_THROW(mge::illegal_state)
                 << "Failed to get pipeline state for program";
@@ -1321,21 +1389,27 @@ namespace mge::dx12 {
 
     void render_context::on_frame_present()
     {
-        D3D12_RESOURCE_BARRIER render_to_present = {
-            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
-            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
-            .Transition = {
-                .pResource =
-                    m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()]
-                        .Get(),
-                .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
-                .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
-                .StateAfter = D3D12_RESOURCE_STATE_PRESENT}};
-        m_command_list->ResourceBarrier(1, &render_to_present);
+        if (m_draw_state == draw_state::DRAW) {
+            D3D12_RESOURCE_BARRIER render_to_present = {
+                .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
+                .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
+                .Transition = {
+                    .pResource =
+                        m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()]
+                            .Get(),
+                    .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
+                    .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
+                    .StateAfter  = D3D12_RESOURCE_STATE_PRESENT}};
+            m_command_list->ResourceBarrier(1, &render_to_present);
+        }
 
-        m_command_list->Close();
-        ID3D12CommandList* lists[] = {m_command_list.Get()};
-        m_command_queue->ExecuteCommandLists(1, lists);
+        if (m_draw_state == draw_state::DRAW ||
+            m_draw_state == draw_state::FBO_DRAW) {
+            m_command_list->Close();
+            ID3D12CommandList* lists[] = {m_command_list.Get()};
+            m_command_queue->ExecuteCommandLists(1, lists);
+        }
+
         m_draw_state = draw_state::SUBMIT;
         m_swap_chain->Present(0, 0);
         m_draw_state = draw_state::NONE;
@@ -1351,10 +1425,13 @@ namespace mge::dx12 {
     render_context::static_pipeline_state(
         mge::dx12::program*                          program,
         const mge::pipeline_state&                   state,
-        const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout)
+        const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout,
+        DXGI_FORMAT                                  rtv_format,
+        DXGI_FORMAT                                  dsv_format)
     {
         pipeline_state_key key =
-            std::make_tuple(static_cast<void*>(program), state);
+            std::make_tuple(static_cast<void*>(program), state,
+                            rtv_format, dsv_format);
 
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
@@ -1421,17 +1498,21 @@ namespace mge::dx12 {
                 .LogicOp = D3D12_LOGIC_OP_NOOP,
                 .RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL};
         }
+        bool depth_enabled = dsv_format != DXGI_FORMAT_UNKNOWN;
         pso_desc.DepthStencilState = {
-            .DepthEnable = TRUE,
-            .DepthWriteMask = state.depth_write() ? D3D12_DEPTH_WRITE_MASK_ALL
-                                                  : D3D12_DEPTH_WRITE_MASK_ZERO,
-            .DepthFunc = depth_test_to_dx12(state.depth_test_function()),
+            .DepthEnable = depth_enabled ? TRUE : FALSE,
+            .DepthWriteMask = (depth_enabled && state.depth_write())
+                                  ? D3D12_DEPTH_WRITE_MASK_ALL
+                                  : D3D12_DEPTH_WRITE_MASK_ZERO,
+            .DepthFunc = depth_enabled
+                             ? depth_test_to_dx12(state.depth_test_function())
+                             : D3D12_COMPARISON_FUNC_ALWAYS,
             .StencilEnable = FALSE};
         pso_desc.SampleMask = UINT_MAX;
         pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
         pso_desc.NumRenderTargets = 1;
-        pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-        pso_desc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        pso_desc.RTVFormats[0] = rtv_format;
+        pso_desc.DSVFormat = dsv_format;
         pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
         mge::com_ptr<ID3D12PipelineState> pipeline_state;
         auto rc = m_device->CreateGraphicsPipelineState(

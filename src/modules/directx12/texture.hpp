@@ -35,6 +35,17 @@ namespace mge::dx12 {
             return m_rtv_cpu_handle;
         }
 
+        D3D12_CPU_DESCRIPTOR_HANDLE dsv_cpu_handle() const
+        {
+            return m_dsv_cpu_handle;
+        }
+
+        // The actual view format (RTV color format, or DSV depth format)
+        DXGI_FORMAT view_dxgi_format() const
+        {
+            return m_view_dxgi_format;
+        }
+
     private:
         DXGI_FORMAT texture_format(const mge::image_format& format) const;
 
@@ -42,5 +53,7 @@ namespace mge::dx12 {
         D3D12_GPU_DESCRIPTOR_HANDLE  m_srv_gpu_handle;
         D3D12_CPU_DESCRIPTOR_HANDLE  m_srv_cpu_handle;
         D3D12_CPU_DESCRIPTOR_HANDLE  m_rtv_cpu_handle;
+        D3D12_CPU_DESCRIPTOR_HANDLE  m_dsv_cpu_handle;
+        DXGI_FORMAT                  m_view_dxgi_format{DXGI_FORMAT_UNKNOWN};
     };
 } // namespace mge::dx12

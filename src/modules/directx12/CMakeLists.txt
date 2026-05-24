@@ -12,6 +12,7 @@ SET(mge_dx12_module_SOURCES
     shader.cpp
     program.cpp
     texture.cpp
+    frame_buffer.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )

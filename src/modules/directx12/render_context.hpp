@@ -27,6 +27,7 @@ namespace mge::dx12 {
     public:
         static constexpr uint32_t buffer_count = 2;
         static constexpr uint32_t max_extra_rtvs = 64;
+        static constexpr uint32_t max_extra_dsvs = 64;
 
         render_context(mge::dx12::render_system& render_system,
                        window&                   window_);
@@ -41,9 +42,11 @@ namespace mge::dx12 {
         on_create_vertex_buffer(const mge::vertex_layout& layout,
                                 size_t                    data_size) override;
 
-        mge::shader*  on_create_shader(shader_type t) override;
-        mge::program* on_create_program() override;
-        void          on_frame_present() override;
+        mge::shader*       on_create_shader(shader_type t) override;
+        mge::program*      on_create_program() override;
+        mge::frame_buffer* on_create_frame_buffer(
+            const mge::frame_buffer_info& info) override;
+        void on_frame_present() override;
 
         mge::texture_ref create_texture(texture_type type) override;
         mge::texture_ref
@@ -105,6 +108,7 @@ namespace mge::dx12 {
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
         D3D12_CPU_DESCRIPTOR_HANDLE allocate_rtv();
         D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle(uint32_t index) const;
+        D3D12_CPU_DESCRIPTOR_HANDLE allocate_dsv();
 
         void wait_for_command_queue();
 
@@ -123,7 +127,9 @@ namespace mge::dx12 {
         {
             std::lock_guard<mge::mutex> lock(m_data_lock);
             auto min_key = std::make_tuple(static_cast<void*>(program),
-                                           mge::pipeline_state{});
+                                           mge::pipeline_state{},
+                                           DXGI_FORMAT_UNKNOWN,
+                                           DXGI_FORMAT_UNKNOWN);
             auto it = m_program_pipeline_states.lower_bound(min_key);
             while (it != m_program_pipeline_states.end() &&
                    std::get<0>(it->first) == program) {
@@ -134,7 +140,9 @@ namespace mge::dx12 {
         const mge::com_ptr<ID3D12PipelineState>& static_pipeline_state(
             mge::dx12::program*                          program,
             const mge::pipeline_state&                   state,
-            const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout);
+            const std::vector<D3D12_INPUT_ELEMENT_DESC>& input_layout,
+            DXGI_FORMAT rtv_format = DXGI_FORMAT_R8G8B8A8_UNORM,
+            DXGI_FORMAT dsv_format = DXGI_FORMAT_D24_UNORM_S8_UINT);
 
     private:
         void enable_debug_layer();
@@ -157,6 +165,8 @@ namespace mge::dx12 {
                            const mge::pipeline_state&       state,
                            mge::uniform_block*              ub,
                            const mge::texture_binding_list& textures,
+                           DXGI_FORMAT                      rtv_format,
+                           DXGI_FORMAT                      dsv_format,
                            uint32_t                         index_count = 0,
                            uint32_t                         index_offset = 0);
 
@@ -198,7 +208,8 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandAllocator>    m_xfer_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_xfer_command_list;
 
-        using pipeline_state_key = std::tuple<void*, mge::pipeline_state>;
+        using pipeline_state_key =
+            std::tuple<void*, mge::pipeline_state, DXGI_FORMAT, DXGI_FORMAT>;
 
         std::map<pipeline_state_key, mge::com_ptr<ID3D12PipelineState>>
             m_program_pipeline_states;
@@ -210,6 +221,7 @@ namespace mge::dx12 {
         uint32_t       m_rtv_descriptor_size;
         uint32_t       m_rtv_next_index;
         uint32_t       m_dsv_descriptor_size;
+        uint32_t       m_dsv_next_index;
         uint32_t       m_srv_descriptor_size;
         uint32_t       m_srv_next_index;
         DWORD          m_callback_cookie;
@@ -219,9 +231,10 @@ namespace mge::dx12 {
 
         enum class draw_state
         {
-            NONE,
-            DRAW,
-            SUBMIT,
+            NONE,     // command list closed
+            FBO_DRAW, // command list open, backbuffer still in PRESENT state
+            DRAW,     // command list open, backbuffer in RENDER_TARGET state
+            SUBMIT,   // submitted for presentation
         };
 
         draw_state m_draw_state{draw_state::NONE};
