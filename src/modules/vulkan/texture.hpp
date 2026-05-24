@@ -33,6 +33,16 @@ namespace mge::vulkan {
             return m_sampler;
         }
 
+        VkFormat vk_format() const noexcept
+        {
+            return m_vk_format;
+        }
+
+        bool is_depth() const noexcept
+        {
+            return m_is_depth;
+        }
+
     private:
         VkFormat texture_format(const mge::image_format& format) const;
         void     create_image(VkFormat format, uint32_t width, uint32_t height);
@@ -54,5 +64,7 @@ namespace mge::vulkan {
         VmaAllocation m_allocation{VK_NULL_HANDLE};
         VkImageView   m_image_view{VK_NULL_HANDLE};
         VkSampler     m_sampler{VK_NULL_HANDLE};
+        VkFormat      m_vk_format{VK_FORMAT_UNDEFINED};
+        bool          m_is_depth{false};
     };
 } // namespace mge::vulkan

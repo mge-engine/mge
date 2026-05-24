@@ -37,7 +37,9 @@ namespace mge::vulkan {
         create_render_target_texture(texture_type        type,
                                      const image_format& format,
                                      const mge::extent&  extent) override;
-        mge::image_ref   screenshot() override;
+        mge::frame_buffer*
+        on_create_frame_buffer(const mge::frame_buffer_info& info) override;
+        mge::image_ref screenshot() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -107,6 +109,11 @@ namespace mge::vulkan {
             return m_extent;
         }
 
+        VkFormat depth_format() const noexcept
+        {
+            return m_depth_format;
+        }
+
         VmaAllocator allocator() const noexcept
         {
             return m_allocator;
@@ -117,7 +124,8 @@ namespace mge::vulkan {
 
         VkPipeline pipeline(const vertex_buffer&       buffer,
                             const program&             program,
-                            const mge::pipeline_state& state);
+                            const mge::pipeline_state& state,
+                            VkRenderPass               render_pass);
 
         void draw_geometry(VkCommandBuffer                  command_buffer,
                            mge::program*                    program,
@@ -126,6 +134,7 @@ namespace mge::vulkan {
                            const mge::pipeline_state&       state,
                            mge::uniform_block*              ub,
                            const mge::texture_binding_list& textures,
+                           VkRenderPass                     render_pass,
                            uint32_t                         index_count = 0,
                            uint32_t                         index_offset = 0);
 
@@ -225,7 +234,7 @@ namespace mge::vulkan {
             m_vertex_input_attribute_descriptions;
 
         using pipeline_key_type =
-            std::tuple<VkBuffer, VkPipelineLayout, mge::pipeline_state>;
+            std::tuple<VkBuffer, VkPipelineLayout, mge::pipeline_state, VkRenderPass>;
         using pipeline_cache_type =
             std::unordered_map<pipeline_key_type, VkPipeline>;
         pipeline_cache_type m_pipelines;

@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
+#include "frame_buffer.hpp"
 #include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -216,6 +217,12 @@ namespace mge::vulkan {
     {
         return std::make_shared<mge::vulkan::texture>(*this, type, format,
                                                        extent);
+    }
+
+    mge::frame_buffer* render_context::on_create_frame_buffer(
+        const mge::frame_buffer_info& info)
+    {
+        return new mge::vulkan::frame_buffer(*this, info);
     }
 
     void render_context::create_surface()
@@ -1673,6 +1680,7 @@ namespace mge::vulkan {
                                   const mge::pipeline_state& state,
                                   mge::uniform_block*        ub,
                                   const mge::texture_binding_list& textures,
+                                  VkRenderPass                     render_pass,
                                   uint32_t                         index_count,
                                   uint32_t                         index_offset)
     {
@@ -1684,7 +1692,7 @@ namespace mge::vulkan {
             static_cast<mge::vulkan::index_buffer*>(ib);
 
         VkPipeline pipeline =
-            this->pipeline(*vk_vertex_buffer, *vk_program, state);
+            this->pipeline(*vk_vertex_buffer, *vk_program, state, render_pass);
         vkCmdBindPipeline(command_buffer,
                           VK_PIPELINE_BIND_POINT_GRAPHICS,
                           pipeline);
@@ -1730,45 +1738,50 @@ namespace mge::vulkan {
         if (m_current_frame_state == frame_state::BEFORE_DRAW) {
             wait_for_frame_finished();
             acquire_next_image();
+            auto cmd = current_primary_command_buffer();
+            CHECK_VK_CALL(vkResetCommandBuffer(cmd, 0));
+            VkCommandBufferBeginInfo begin_info = {};
+            begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+            CHECK_VK_CALL(vkBeginCommandBuffer(cmd, &begin_info));
+            m_current_frame_state = frame_state::DRAW;
         }
-        VkCommandBuffer command_buffer = VK_NULL_HANDLE;
+
+        VkCommandBuffer command_buffer = current_primary_command_buffer();
+
+        VkRenderPass  pass_render_pass;
+        VkFramebuffer pass_framebuffer;
+        VkExtent2D    pass_extent;
+
         if (!p.frame_buffer()) {
-            command_buffer = current_primary_command_buffer();
-            if (m_current_frame_state == frame_state::BEFORE_DRAW) {
-                CHECK_VK_CALL(vkResetCommandBuffer(command_buffer, 0));
-                VkCommandBufferBeginInfo begin_info = {};
-                begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-                begin_info.flags = 0;
-                begin_info.pInheritanceInfo = nullptr;
-                CHECK_VK_CALL(
-                    vkBeginCommandBuffer(command_buffer, &begin_info));
-            }
+            pass_render_pass = m_render_pass;
+            pass_framebuffer = m_swap_chain_framebuffers[m_current_image_index];
+            pass_extent      = m_extent;
         } else {
-            MGE_THROW_NOT_IMPLEMENTED << "Rendering to custom frame buffers "
-                                         "not implemented in Vulkan yet";
+            auto* vk_fb = static_cast<mge::vulkan::frame_buffer*>(
+                p.frame_buffer().get());
+            pass_render_pass = vk_fb->render_pass();
+            pass_framebuffer = vk_fb->vk_framebuffer();
+            pass_extent      = vk_fb->fbo_extent();
         }
 
         VkRenderPassBeginInfo render_pass_info{};
-        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        render_pass_info.renderPass = m_render_pass;
-        render_pass_info.framebuffer =
-            m_swap_chain_framebuffers[m_current_image_index];
-
+        render_pass_info.sType      = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        render_pass_info.renderPass = pass_render_pass;
+        render_pass_info.framebuffer = pass_framebuffer;
         render_pass_info.renderArea.offset = {0, 0};
-        render_pass_info.renderArea.extent = m_extent;
+        render_pass_info.renderArea.extent = pass_extent;
 
         vkCmdBeginRenderPass(command_buffer,
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_INLINE);
 
-        // use flipped view port to align with opengl and dx
-        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
+        // Flip viewport to match OpenGL/DX conventions
         const auto& vp = p.viewport();
         VkViewport  viewport{};
         viewport.x = static_cast<float>(vp.x);
         viewport.y = static_cast<float>(vp.y) + static_cast<float>(vp.height);
-        viewport.width = static_cast<float>(vp.width);
-        viewport.height = -static_cast<float>(vp.height);
+        viewport.width    = static_cast<float>(vp.width);
+        viewport.height   = -static_cast<float>(vp.height);
         viewport.minDepth = vp.min_depth;
         viewport.maxDepth = vp.max_depth;
         vkCmdSetViewport(command_buffer, 0, 1, &viewport);
@@ -1786,24 +1799,21 @@ namespace mge::vulkan {
             VkClearValue clear_color = {};
             clear_color.color = {{c.r, c.g, c.b, c.a}};
             VkClearAttachment clear_attachment = {};
-            clear_attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            clear_attachment.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
             clear_attachment.colorAttachment = 0;
-            clear_attachment.clearValue = clear_color;
+            clear_attachment.clearValue      = clear_color;
             VkClearRect clear_rect = {};
-            clear_rect.rect.offset = {0, 0};
-            clear_rect.rect.extent = extent();
+            clear_rect.rect.offset  = {0, 0};
+            clear_rect.rect.extent  = pass_extent;
             clear_rect.baseArrayLayer = 0;
-            clear_rect.layerCount = 1;
-            vkCmdClearAttachments(command_buffer,
-                                  1,
-                                  &clear_attachment,
-                                  1,
+            clear_rect.layerCount   = 1;
+            vkCmdClearAttachments(command_buffer, 1, &clear_attachment, 1,
                                   &clear_rect);
         }
 
         if (p.clear_depth_enabled() || p.clear_stencil_enabled()) {
             VkClearValue      clear_depth_stencil = {};
-            VkClearAttachment clear_attachment = {};
+            VkClearAttachment clear_attachment    = {};
             if (p.clear_depth_enabled()) {
                 clear_depth_stencil.depthStencil.depth = p.clear_depth_value();
                 clear_attachment.aspectMask |= VK_IMAGE_ASPECT_DEPTH_BIT;
@@ -1815,45 +1825,48 @@ namespace mge::vulkan {
             }
             clear_attachment.clearValue = clear_depth_stencil;
             VkClearRect clear_rect = {};
-            clear_rect.rect.offset = {0, 0};
-            clear_rect.rect.extent = m_extent;
+            clear_rect.rect.offset    = {0, 0};
+            clear_rect.rect.extent    = pass_extent;
             clear_rect.baseArrayLayer = 0;
-            clear_rect.layerCount = 1;
-            vkCmdClearAttachments(command_buffer,
-                                  1,
-                                  &clear_attachment,
-                                  1,
+            clear_rect.layerCount     = 1;
+            vkCmdClearAttachments(command_buffer, 1, &clear_attachment, 1,
                                   &clear_rect);
         }
+
         bool           blend_pass_needed = false;
-        mge::rectangle current_scissor = p.scissor();
+        mge::rectangle current_scissor   = p.scissor();
         for_each_draw_in_pass(
             p.index(),
-            [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
-                const program_handle&            program,
-                const vertex_buffer_handle&      vertex_buffer,
-                const index_buffer_handle&       index_buffer,
-                const mge::pipeline_state&       state,
-                mge::uniform_block*              ub,
-                const mge::texture_binding_list& textures,
-                uint32_t                         index_count,
-                uint32_t                         index_offset,
-                const mge::rectangle&            cmd_scissor) {
+            [this,
+             command_buffer,
+             pass_render_pass,
+             &blend_pass_needed,
+             &current_scissor,
+             &p](const program_handle&            program,
+                 const vertex_buffer_handle&      vertex_buffer,
+                 const index_buffer_handle&       index_buffer,
+                 const mge::pipeline_state&       state,
+                 mge::uniform_block*              ub,
+                 const mge::texture_binding_list& textures,
+                 uint32_t                         index_count,
+                 uint32_t                         index_offset,
+                 const mge::rectangle&            cmd_scissor) {
                 const auto& effective =
                     cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                 if (effective != current_scissor) {
                     VkRect2D vk_scissor{};
-                    vk_scissor.offset = {static_cast<int32_t>(effective.left),
-                                         static_cast<int32_t>(effective.top)};
+                    vk_scissor.offset = {
+                        static_cast<int32_t>(effective.left),
+                        static_cast<int32_t>(effective.top)};
                     vk_scissor.extent = {
-                        static_cast<uint32_t>(effective.right - effective.left),
+                        static_cast<uint32_t>(effective.right -
+                                              effective.left),
                         static_cast<uint32_t>(effective.bottom -
                                               effective.top)};
                     vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
                     current_scissor = effective;
                 }
-                auto blend_operation = state.color_blend_operation();
-                if (blend_operation == mge::blend_operation::NONE) {
+                if (state.color_blend_operation() == mge::blend_operation::NONE) {
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
@@ -1861,25 +1874,30 @@ namespace mge::vulkan {
                                   state,
                                   ub,
                                   textures,
+                                  pass_render_pass,
                                   index_count,
                                   index_offset);
                 } else {
                     blend_pass_needed = true;
                 }
             });
+
         if (blend_pass_needed) {
             for_each_draw_in_pass(
                 p.index(),
-                [this, command_buffer, &current_scissor, &p](
-                    const program_handle&            program,
-                    const vertex_buffer_handle&      vertex_buffer,
-                    const index_buffer_handle&       index_buffer,
-                    const mge::pipeline_state&       state,
-                    mge::uniform_block*              ub,
-                    const mge::texture_binding_list& textures,
-                    uint32_t                         index_count,
-                    uint32_t                         index_offset,
-                    const mge::rectangle&            cmd_scissor) {
+                [this,
+                 command_buffer,
+                 pass_render_pass,
+                 &current_scissor,
+                 &p](const program_handle&            program,
+                     const vertex_buffer_handle&      vertex_buffer,
+                     const index_buffer_handle&       index_buffer,
+                     const mge::pipeline_state&       state,
+                     mge::uniform_block*              ub,
+                     const mge::texture_binding_list& textures,
+                     uint32_t                         index_count,
+                     uint32_t                         index_offset,
+                     const mge::rectangle&            cmd_scissor) {
                     const auto& effective =
                         cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
                     if (effective != current_scissor) {
@@ -1895,7 +1913,6 @@ namespace mge::vulkan {
                         vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
                         current_scissor = effective;
                     }
-                    auto blend_operation = state.color_blend_operation();
                     draw_geometry(command_buffer,
                                   program.get(),
                                   vertex_buffer.get(),
@@ -1903,13 +1920,13 @@ namespace mge::vulkan {
                                   state,
                                   ub,
                                   textures,
+                                  pass_render_pass,
                                   index_count,
                                   index_offset);
                 });
         }
 
         vkCmdEndRenderPass(command_buffer);
-        m_current_frame_state = frame_state::DRAW;
     }
 
     void render_context::on_frame_present()
@@ -1981,16 +1998,13 @@ namespace mge::vulkan {
 
     VkPipeline render_context::pipeline(const vertex_buffer&       buffer,
                                         const program&             program,
-                                        const mge::pipeline_state& state)
+                                        const mge::pipeline_state& state,
+                                        VkRenderPass               render_pass)
     {
-        // binding_description
-        // attribute_descriptions -> layout
-        // program (pipeline layout)
-        // render pass - always the same for now
-        // blend state
         pipeline_key_type key{buffer.vk_buffer(),
                               program.pipeline_layout(),
-                              state};
+                              state,
+                              render_pass};
 
         auto it = m_pipelines.find(key);
         if (it != m_pipelines.end()) {
@@ -2163,7 +2177,7 @@ namespace mge::vulkan {
         pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
         pipeline_create_info.pDynamicState = &dynamic_state_create_info;
         pipeline_create_info.layout = pipeline_layout;
-        pipeline_create_info.renderPass = render_pass();
+        pipeline_create_info.renderPass = render_pass;
         pipeline_create_info.subpass = 0;
         pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
         pipeline_create_info.basePipelineIndex = -1;

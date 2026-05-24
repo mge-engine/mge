@@ -30,6 +30,7 @@ SET(mge_vulkan_module_SOURCES
     vulkan_memory_allocator.cpp
     program.cpp
     texture.cpp
+    frame_buffer.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )

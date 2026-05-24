@@ -24,11 +24,13 @@ namespace mge::vulkan {
                      const mge::extent&       extent)
         : mge::texture(context, type, mge::texture_usage::RENDER_TARGET)
     {
-        VkFormat vk_format = texture_format(format);
-        create_image_as_render_target(vk_format,
-                                      extent.width,
-                                      extent.height);
-        create_image_view(vk_format);
+        m_is_depth = (format.format() ==
+                          mge::image_format::data_format::DEPTH ||
+                      format.format() ==
+                          mge::image_format::data_format::DEPTH_STENCIL);
+        m_vk_format = texture_format(format);
+        create_image_as_render_target(m_vk_format, extent.width, extent.height);
+        create_image_view(m_vk_format);
         create_sampler();
     }
 
@@ -69,6 +71,15 @@ namespace mge::vulkan {
             default:
                 MGE_THROW(mge::illegal_argument)
                     << "Unsupported image format (data type): " << format;
+            }
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return VK_FORMAT_D24_UNORM_S8_UINT;
+        case mge::image_format::data_format::DEPTH:
+            switch (format.type()) {
+            case mge::data_type::FLOAT:
+                return VK_FORMAT_D32_SFLOAT;
+            default:
+                return VK_FORMAT_D16_UNORM;
             }
         default:
             MGE_THROW(mge::illegal_argument)
@@ -124,8 +135,12 @@ namespace mge::vulkan {
         image_info.format = format;
         image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
         image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-        image_info.usage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
-                           VK_IMAGE_USAGE_SAMPLED_BIT;
+        image_info.usage =
+            m_is_depth
+                ? (VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT |
+                   VK_IMAGE_USAGE_SAMPLED_BIT)
+                : (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+                   VK_IMAGE_USAGE_SAMPLED_BIT);
         image_info.samples = VK_SAMPLE_COUNT_1_BIT;
         image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
@@ -153,7 +168,8 @@ namespace mge::vulkan {
         view_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
         view_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
         view_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-        view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        view_info.subresourceRange.aspectMask =
+            m_is_depth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
         view_info.subresourceRange.baseMipLevel = 0;
         view_info.subresourceRange.levelCount = 1;
         view_info.subresourceRange.baseArrayLayer = 0;
@@ -171,11 +187,19 @@ namespace mge::vulkan {
 
         VkSamplerCreateInfo sampler_info = {};
         sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-        sampler_info.magFilter = VK_FILTER_LINEAR;
-        sampler_info.minFilter = VK_FILTER_LINEAR;
-        sampler_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        sampler_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        sampler_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.magFilter =
+            m_is_depth ? VK_FILTER_NEAREST : VK_FILTER_LINEAR;
+        sampler_info.minFilter =
+            m_is_depth ? VK_FILTER_NEAREST : VK_FILTER_LINEAR;
+        sampler_info.addressModeU = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.addressModeV = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.addressModeW = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
         sampler_info.anisotropyEnable = VK_FALSE;
         sampler_info.maxAnisotropy = 1.0f;
         sampler_info.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
