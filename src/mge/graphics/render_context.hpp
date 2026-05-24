@@ -9,6 +9,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
@@ -173,8 +174,9 @@ namespace mge {
          */
         virtual void on_destroy_program(program* p);
 
-        virtual frame_buffer* on_create_frame_buffer();
-        virtual void          on_destroy_frame_buffer(frame_buffer* fb);
+        virtual frame_buffer*
+        on_create_frame_buffer(const frame_buffer_info& info);
+        virtual void on_destroy_frame_buffer(frame_buffer* fb);
 
     public:
         /**
@@ -189,11 +191,22 @@ namespace mge {
         program_handle create_program();
 
         /**
-         * @brief Create a frame buffer object.
+         * @brief Create an empty frame buffer object.
          *
          * @return created frame buffer
          */
         frame_buffer_handle create_frame_buffer();
+
+        /**
+         * @brief Create a frame buffer with pre-specified attachments.
+         *
+         * The backend allocates all attachment resources described by
+         * @c info during this call.
+         *
+         * @param info attachment descriptor
+         * @return created frame buffer
+         */
+        frame_buffer_handle create_frame_buffer(const frame_buffer_info& info);
 
         /**
          * @brief Create a texture object.

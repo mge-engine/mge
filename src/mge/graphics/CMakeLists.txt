@@ -84,6 +84,7 @@ SET(mgegraphics_headers
     viewport.hpp
     pass.hpp
     frame_buffer.hpp
+    frame_buffer_info.hpp
     command_buffer.hpp
     frame_debugger.hpp
     test.hpp

@@ -15,6 +15,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer.hpp"
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
@@ -269,7 +270,8 @@ namespace mge {
         delete p;
     }
 
-    frame_buffer* render_context::on_create_frame_buffer()
+    frame_buffer*
+    render_context::on_create_frame_buffer(const frame_buffer_info&)
     {
         MGE_THROW_NOT_IMPLEMENTED << "frame buffer creation not implemented";
         return nullptr;
@@ -369,7 +371,13 @@ namespace mge {
 
     frame_buffer_handle render_context::create_frame_buffer()
     {
-        std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer()};
+        return create_frame_buffer(frame_buffer_info{});
+    }
+
+    frame_buffer_handle
+    render_context::create_frame_buffer(const frame_buffer_info& info)
+    {
+        std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer(info)};
         if (ptr) {
             frame_buffer_handle handle{
                 index(),
