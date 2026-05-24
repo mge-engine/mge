@@ -1818,7 +1818,7 @@ namespace mge::vulkan {
         }
         bool           blend_pass_needed = false;
         mge::rectangle current_scissor = p.scissor();
-        m_command_buffer->for_each_in_pass(
+        for_each_draw_in_pass(
             p.index(),
             [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
                 const program_handle&            program,
@@ -1859,7 +1859,7 @@ namespace mge::vulkan {
                 }
             });
         if (blend_pass_needed) {
-            m_command_buffer->for_each_in_pass(
+            for_each_draw_in_pass(
                 p.index(),
                 [this, command_buffer, &current_scissor, &p](
                     const program_handle&            program,

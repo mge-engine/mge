@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/graphics/render_context.hpp"
 #include "mge/asset/asset.hpp"
+#include <thread>
 #include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/crash.hpp"
@@ -211,9 +212,6 @@ namespace mge {
             }
             reset_prepare_frame_actions();
         }
-        if (!m_command_buffer) {
-            m_command_buffer = std::make_unique<mge::command_buffer>();
-        }
         bool rendered = false;
         if (m_passes.size() > 0) {
             for (const auto& p : m_passes)
@@ -225,6 +223,9 @@ namespace mge {
                 p.reset();
             }
         }
+        m_command_buffers.visit_all([](auto& entry) {
+            if (entry.second) entry.second->clear();
+        });
         if (rendered) {
             if (m_screenshot_at_frame != 0 &&
                 m_frame_counter == m_screenshot_at_frame) {
@@ -392,12 +393,19 @@ namespace mge {
 
     mge::command_buffer& render_context::command_buffer(bool clear)
     {
-        if (!m_command_buffer) {
-            m_command_buffer = std::make_unique<mge::command_buffer>();
-        } else if (clear) {
-            m_command_buffer->clear();
+        auto              tid = std::this_thread::get_id();
+        mge::command_buffer* result = nullptr;
+        if (!m_command_buffers.visit(tid, [&](auto& entry) {
+                if (clear) entry.second->clear();
+                result = entry.second.get();
+            })) {
+            m_command_buffers.emplace(tid,
+                                      std::make_unique<mge::command_buffer>());
+            m_command_buffers.visit(tid, [&](auto& entry) {
+                result = entry.second.get();
+            });
         }
-        return *m_command_buffer;
+        return *result;
     }
 
     mge::viewport render_context::default_viewport() const

@@ -21,8 +21,11 @@
 
 #include "mge/core/noncopyable.hpp"
 
+#include <boost/unordered/concurrent_flat_map.hpp>
+
 #include <memory>
 #include <memory_resource>
+#include <thread>
 
 namespace mge {
 
@@ -295,6 +298,29 @@ namespace mge {
          */
         virtual void render(const mge::pass& p);
 
+        /**
+         * @brief Iterate over all draw commands targeting a pass across
+         * all thread command buffers.
+         *
+         * Calls @c f for each draw command whose pass index matches @p
+         * pass_index, with the same arguments as
+         * @c command_buffer::for_each.
+         *
+         * @tparam F callable type
+         * @param pass_index pass to iterate
+         * @param f callable invoked per matching draw command
+         */
+        template <typename F>
+        void for_each_draw_in_pass(uint32_t pass_index, F&& f)
+        {
+            m_command_buffers.visit_all([&](auto& entry) {
+                if (entry.second) {
+                    entry.second->for_each_in_pass(pass_index,
+                                                   std::forward<F>(f));
+                }
+            });
+        }
+
     public:
         /**
          * @brief Take a screenshot of the current frame buffer.
@@ -432,8 +458,12 @@ namespace mge {
         std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
-        std::vector<mge::pass>               m_passes;
-        std::unique_ptr<mge::command_buffer> m_command_buffer;
+        std::vector<mge::pass> m_passes;
+
+        boost::concurrent_flat_map<std::thread::id,
+                                   std::unique_ptr<mge::command_buffer>,
+                                   std::hash<std::thread::id>>
+            m_command_buffers;
 
         bool     m_record_frames{false};
         bool     m_first_frame{true};
