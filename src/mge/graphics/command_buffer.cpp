@@ -8,6 +8,7 @@ namespace mge {
 
     command_buffer::command_buffer(std::pmr::memory_resource* resource)
         : m_pass_indices(resource)
+        , m_sort_keys(resource)
         , m_pipeline_states(resource)
         , m_programs(resource)
         , m_vertex_buffers(resource)
@@ -36,10 +37,12 @@ namespace mge {
                               const vertex_buffer_handle& vertices,
                               const index_buffer_handle&  indices,
                               uint32_t                    index_count,
-                              uint32_t                    index_offset)
+                              uint32_t                    index_offset,
+                              uint32_t                    sort_key)
     {
         pass.touch();
         m_pass_indices.push_back(pass.index());
+        m_sort_keys.push_back(sort_key);
         m_programs.push_back(program);
         m_vertex_buffers.push_back(vertices);
         m_index_buffers.push_back(indices);
