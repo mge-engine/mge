@@ -13,6 +13,7 @@ SET(mge_dx11_module_SOURCES
     program.cpp
     input_layout_cache.cpp
     texture.cpp
+    frame_buffer.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE

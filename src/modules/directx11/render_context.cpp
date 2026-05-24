@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "error.hpp"
+#include "frame_buffer.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
@@ -392,6 +393,31 @@ namespace mge::dx11 {
         return new program(*this);
     }
 
+    mge::frame_buffer* render_context::on_create_frame_buffer(
+        const mge::frame_buffer_info& info)
+    {
+        auto* fb = new dx11::frame_buffer(*this);
+
+        for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
+            const auto& ca = info.color_attachments[i];
+            auto        tex = create_render_target_texture(
+                mge::texture_type::TYPE_2D, ca.format, ca.extent);
+            fb->attach_color(tex, i);
+        }
+
+        if (info.depth_stencil_extent) {
+            mge::image_format depth_fmt(
+                mge::image_format::data_format::DEPTH_STENCIL,
+                mge::data_type::UINT32);
+            auto tex = create_render_target_texture(mge::texture_type::TYPE_2D,
+                                                    depth_fmt,
+                                                    *info.depth_stencil_extent);
+            fb->attach_depth(tex);
+        }
+
+        return fb;
+    }
+
     mge::texture_ref render_context::create_texture(mge::texture_type type)
     {
         mge::texture_ref result = std::make_shared<texture>(*this, type);
@@ -409,11 +435,17 @@ namespace mge::dx11 {
     void render_context::render(const mge::pass& p)
     {
         ID3D11RenderTargetView* rtv = nullptr;
+        ID3D11DepthStencilView* dsv = nullptr;
+
         if (p.frame_buffer()) {
-            // support custom frame buffers
+            auto* fb = static_cast<dx11::frame_buffer*>(p.frame_buffer().get());
+            rtv = fb->render_target_view(0);
+            dsv = fb->depth_stencil_view();
         } else {
             rtv = m_render_target_view.get();
+            dsv = m_depth_stencil_view.get();
         }
+        m_device_context->OMSetRenderTargets(1, &rtv, dsv);
 
         const auto&    vp = p.viewport();
         D3D11_VIEWPORT dx11_vp =
@@ -427,7 +459,7 @@ namespace mge::dx11 {
                                     .bottom = static_cast<LONG>(sc.bottom)};
         m_device_context->RSSetScissorRects(1, &scissor_rect);
 
-        if (p.clear_color_enabled()) {
+        if (p.clear_color_enabled() && rtv) {
             float clearcolor[4] = {p.clear_color_value().r,
                                    p.clear_color_value().g,
                                    p.clear_color_value().b,
@@ -435,8 +467,8 @@ namespace mge::dx11 {
             m_device_context->ClearRenderTargetView(rtv, clearcolor);
         }
 
-        if (p.clear_depth_enabled()) {
-            m_device_context->ClearDepthStencilView(this->depth_stencil_view(),
+        if (p.clear_depth_enabled() && dsv) {
+            m_device_context->ClearDepthStencilView(dsv,
                                                     D3D11_CLEAR_DEPTH,
                                                     p.clear_depth_value(),
                                                     0);

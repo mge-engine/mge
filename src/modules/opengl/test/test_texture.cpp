@@ -60,3 +60,37 @@ TEST_F(texture_test, render_target_texture_type)
     ASSERT_TRUE(tex);
     EXPECT_EQ(tex->type(), mge::texture_type::TYPE_2D);
 }
+
+TEST_F(texture_test, create_depth_stencil_render_target_texture)
+{
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
+    mge::image_format fmt(mge::image_format::data_format::DEPTH_STENCIL,
+                          mge::data_type::UINT32);
+    auto tex = context.create_render_target_texture(
+        mge::texture_type::TYPE_2D, fmt, ext);
+    EXPECT_TRUE(tex);
+}
+
+TEST_F(texture_test, create_depth_float_render_target_texture)
+{
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
+    mge::image_format fmt(mge::image_format::data_format::DEPTH,
+                          mge::data_type::FLOAT);
+    auto tex = context.create_render_target_texture(
+        mge::texture_type::TYPE_2D, fmt, ext);
+    EXPECT_TRUE(tex);
+}
+
+TEST_F(texture_test, depth_texture_has_render_target_usage)
+{
+    auto&             context = m_window->render_context();
+    mge::extent       ext(256, 256);
+    mge::image_format fmt(mge::image_format::data_format::DEPTH_STENCIL,
+                          mge::data_type::UINT32);
+    auto tex = context.create_render_target_texture(
+        mge::texture_type::TYPE_2D, fmt, ext);
+    ASSERT_TRUE(tex);
+    EXPECT_EQ(tex->usage(), mge::texture_usage::RENDER_TARGET);
+}

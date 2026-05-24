@@ -39,11 +39,18 @@ namespace mge::dx11 {
             return m_render_target_view.get();
         }
 
+        ID3D11DepthStencilView* depth_stencil_view() const
+        {
+            return m_depth_stencil_view.get();
+        }
+
     private:
         DXGI_FORMAT texture_format(const mge::image_format& format) const;
+
         mge::com_unique_ptr<ID3D11Texture2D>          m_texture;
         mge::com_unique_ptr<ID3D11ShaderResourceView> m_shader_resource_view;
         mge::com_unique_ptr<ID3D11SamplerState>       m_sampler_state;
         mge::com_unique_ptr<ID3D11RenderTargetView>   m_render_target_view;
+        mge::com_unique_ptr<ID3D11DepthStencilView>   m_depth_stencil_view;
     };
 } // namespace mge::dx11

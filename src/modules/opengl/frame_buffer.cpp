@@ -39,11 +39,14 @@ namespace mge::opengl {
 
     void frame_buffer::on_attach_depth(mge::texture_ref tex)
     {
-        auto* gl_tex = static_cast<opengl::texture*>(tex.get());
+        auto*  gl_tex = static_cast<opengl::texture*>(tex.get());
+        GLenum attachment = gl_tex->is_depth_stencil()
+                                ? GL_DEPTH_STENCIL_ATTACHMENT
+                                : GL_DEPTH_ATTACHMENT;
         glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
         CHECK_OPENGL_ERROR(glBindFramebuffer);
         glFramebufferTexture2D(GL_FRAMEBUFFER,
-                               GL_DEPTH_ATTACHMENT,
+                               attachment,
                                GL_TEXTURE_2D,
                                gl_tex->texture_name(),
                                0);

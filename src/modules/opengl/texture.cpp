@@ -22,6 +22,7 @@ namespace mge::opengl {
                      mge::texture_usage       usage)
         : mge::texture(context, type, usage)
         , m_texture(0)
+        , m_image_format(format)
     {
         glGenTextures(1, &m_texture);
         glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -36,8 +37,15 @@ namespace mge::opengl {
                      pixel_type(format),
                      nullptr);
         CHECK_OPENGL_ERROR(glTexImage2D);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        bool is_depth =
+            format.format() == mge::image_format::data_format::DEPTH ||
+            format.format() == mge::image_format::data_format::DEPTH_STENCIL;
+        GLint filter = is_depth ? GL_NEAREST : GL_LINEAR;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
@@ -55,9 +63,20 @@ namespace mge::opengl {
             return GL_RGB;
         case mge::image_format::data_format::RGBA:
             return GL_RGBA;
+        case mge::image_format::data_format::DEPTH:
+            switch (format.type()) {
+            case mge::data_type::FLOAT:
+                return GL_DEPTH_COMPONENT32F;
+            case mge::data_type::UINT16:
+                return GL_DEPTH_COMPONENT16;
+            default:
+                return GL_DEPTH_COMPONENT24;
+            }
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return GL_DEPTH24_STENCIL8;
         default:
             MGE_THROW(mge::illegal_argument)
-                << "Unsuppprted image format (internal format): " << format;
+                << "Unsupported image format (internal format): " << format;
         }
     }
 
@@ -68,6 +87,10 @@ namespace mge::opengl {
             return GL_RGB;
         case mge::image_format::data_format::RGBA:
             return GL_RGBA;
+        case mge::image_format::data_format::DEPTH:
+            return GL_DEPTH_COMPONENT;
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return GL_DEPTH_STENCIL;
         default:
             MGE_THROW(mge::illegal_argument)
                 << "Unsupported image format (pixel format): " << format;
@@ -76,6 +99,9 @@ namespace mge::opengl {
 
     GLenum texture::pixel_type(const mge::image_format& format) const
     {
+        if (format.format() == mge::image_format::data_format::DEPTH_STENCIL) {
+            return GL_UNSIGNED_INT_24_8;
+        }
         switch (format.type()) {
         case mge::data_type::INT8:
             return GL_BYTE;

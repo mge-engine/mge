@@ -29,11 +29,18 @@ namespace mge::opengl {
             return m_texture;
         }
 
+        bool is_depth_stencil() const noexcept
+        {
+            return m_image_format.format() ==
+                   mge::image_format::data_format::DEPTH_STENCIL;
+        }
+
     private:
         GLint  internal_format(const mge::image_format& format) const;
         GLenum pixel_format(const mge::image_format& format) const;
         GLenum pixel_type(const mge::image_format& format) const;
 
-        GLuint m_texture;
+        GLuint            m_texture;
+        mge::image_format m_image_format;
     };
 } // namespace mge::opengl

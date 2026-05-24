@@ -30,9 +30,11 @@ namespace mge::dx11 {
         on_create_vertex_buffer(const mge::vertex_layout& layout,
                                 size_t                    data_size) override;
 
-        mge::shader*  on_create_shader(mge::shader_type t) override;
-        mge::program* on_create_program() override;
-        void          on_frame_present() override;
+        mge::shader*       on_create_shader(mge::shader_type t) override;
+        mge::program*      on_create_program() override;
+        mge::frame_buffer* on_create_frame_buffer(
+            const mge::frame_buffer_info& info) override;
+        void on_frame_present() override;
 
         mge::texture_ref create_texture(mge::texture_type type) override;
         mge::texture_ref

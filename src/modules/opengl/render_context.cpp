@@ -561,9 +561,28 @@ namespace mge::opengl {
     }
 
     mge::frame_buffer*
-    render_context::on_create_frame_buffer(const mge::frame_buffer_info&)
+    render_context::on_create_frame_buffer(const mge::frame_buffer_info& info)
     {
-        return new opengl::frame_buffer(*this);
+        auto* fb = new opengl::frame_buffer(*this);
+
+        for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
+            const auto& ca = info.color_attachments[i];
+            auto        tex = create_render_target_texture(
+                mge::texture_type::TYPE_2D, ca.format, ca.extent);
+            fb->attach_color(tex, i);
+        }
+
+        if (info.depth_stencil_extent) {
+            mge::image_format depth_fmt(
+                mge::image_format::data_format::DEPTH_STENCIL,
+                mge::data_type::UINT32);
+            auto tex = create_render_target_texture(mge::texture_type::TYPE_2D,
+                                                    depth_fmt,
+                                                    *info.depth_stencil_extent);
+            fb->attach_depth(tex);
+        }
+
+        return fb;
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)
