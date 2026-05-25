@@ -74,8 +74,11 @@ namespace mge::opengl {
                 return GL_DEPTH_COMPONENT32F;
             case mge::data_type::UINT16:
                 return GL_DEPTH_COMPONENT16;
-            default:
+            case mge::data_type::UINT32:
                 return GL_DEPTH_COMPONENT24;
+            default:
+                MGE_THROW(mge::illegal_argument)
+                    << "Unsupported depth image format (data type): " << format;
             }
         case mge::image_format::data_format::DEPTH_STENCIL:
             return GL_DEPTH24_STENCIL8;
