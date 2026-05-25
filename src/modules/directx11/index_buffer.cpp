@@ -7,7 +7,7 @@
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX11);
@@ -15,7 +15,7 @@ namespace mge {
 
 namespace mge::dx11 {
 
-    index_buffer::index_buffer(render_context& context,
+    index_buffer::index_buffer(render_context_base& context,
                                mge::data_type  type,
                                size_t          data_size)
         : mge::index_buffer(context, type, data_size)

@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "texture.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
@@ -14,11 +14,11 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
     {}
 
-    texture::texture(render_context&          context,
+    texture::texture(render_context_base&      context,
                      mge::texture_type        type,
                      const mge::image_format& format,
                      const mge::extent&       extent)
@@ -36,7 +36,7 @@ namespace mge::vulkan {
 
     texture::~texture()
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         if (m_sampler != VK_NULL_HANDLE) {
             ctx.vkDestroySampler(ctx.device(), m_sampler, nullptr);
@@ -89,7 +89,7 @@ namespace mge::vulkan {
 
     void texture::create_image(VkFormat format, uint32_t width, uint32_t height)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkImageCreateInfo image_info = {};
         image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -122,7 +122,7 @@ namespace mge::vulkan {
                                                 uint32_t width,
                                                 uint32_t height)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkImageCreateInfo image_info = {};
         image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -140,7 +140,8 @@ namespace mge::vulkan {
                 ? (VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT |
                    VK_IMAGE_USAGE_SAMPLED_BIT)
                 : (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
-                   VK_IMAGE_USAGE_SAMPLED_BIT);
+                   VK_IMAGE_USAGE_SAMPLED_BIT |
+                   VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
         image_info.samples = VK_SAMPLE_COUNT_1_BIT;
         image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
@@ -157,7 +158,7 @@ namespace mge::vulkan {
 
     void texture::create_image_view(VkFormat format)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkImageViewCreateInfo view_info = {};
         view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -183,7 +184,7 @@ namespace mge::vulkan {
 
     void texture::create_sampler()
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkSamplerCreateInfo sampler_info = {};
         sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
@@ -253,7 +254,7 @@ namespace mge::vulkan {
             MGE_THROW(mge::illegal_argument) << "Unsupported layout transition";
         }
 
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
         ctx.vkCmdPipelineBarrier(command_buffer,
                                  src_stage,
                                  dst_stage,
@@ -272,7 +273,7 @@ namespace mge::vulkan {
                               uint32_t    height,
                               size_t      row_pitch)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         // Create staging buffer
         VkBufferCreateInfo buffer_info = {};

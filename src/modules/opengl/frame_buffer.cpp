@@ -3,12 +3,12 @@
 // All rights reserved.
 #include "frame_buffer.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "texture.hpp"
 
 namespace mge::opengl {
 
-    frame_buffer::frame_buffer(render_context& ctx)
+    frame_buffer::frame_buffer(render_context_base& ctx)
         : mge::frame_buffer(ctx)
     {
         glGenFramebuffers(1, &m_fbo);

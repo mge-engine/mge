@@ -7,13 +7,13 @@
 #include "mge/win32/com_unique_ptr.hpp"
 
 namespace mge::dx11 {
-    class render_context;
+    class render_context_base;
 
     class texture : public mge::texture
     {
     public:
-        texture(render_context& context, mge::texture_type type);
-        texture(render_context&          context,
+        texture(render_context_base& context, mge::texture_type type);
+        texture(render_context_base&     context,
                 mge::texture_type        type,
                 const mge::image_format& format,
                 const mge::extent&       extent);
@@ -42,6 +42,11 @@ namespace mge::dx11 {
         ID3D11DepthStencilView* depth_stencil_view() const
         {
             return m_depth_stencil_view.get();
+        }
+
+        ID3D11Texture2D* texture2d() const
+        {
+            return m_texture.get();
         }
 
     private:

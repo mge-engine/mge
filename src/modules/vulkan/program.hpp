@@ -9,12 +9,12 @@
 #include <vector>
 
 namespace mge::vulkan {
-    class render_context;
+    class render_context_base;
     class shader;
     class program : public mge::program
     {
     public:
-        program(render_context& context);
+        program(render_context_base& context);
         ~program();
         const auto& shader_stage_create_infos() const
         {

@@ -24,7 +24,9 @@ SET(mge_vulkan_module_SOURCES
     vulkan_library.cpp
     error.cpp
     render_system.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     window.cpp
     shader.cpp
     vulkan_memory_allocator.cpp

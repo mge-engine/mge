@@ -7,7 +7,7 @@
 #include "mge/core/checked_cast.hpp"
 
 namespace mge::dx11 {
-    vertex_buffer::vertex_buffer(render_context&      context,
+    vertex_buffer::vertex_buffer(render_context_base& context,
                                  const vertex_layout& layout,
                                  size_t               data_size)
         : mge::vertex_buffer(context, layout, data_size)

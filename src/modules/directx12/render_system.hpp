@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
+#pragma once
 #include "dx12.hpp"
 #include "mge/graphics/render_system.hpp"
 
@@ -15,6 +16,9 @@ namespace mge::dx12 {
 
         mge::window_ref create_window(const mge::extent&         extent,
                                       const mge::window_options& options);
+
+        mge::render_context_ref
+        create_headless_render_context(const mge::extent& extent) override;
 
         bool debug() const;
         bool warp() const;

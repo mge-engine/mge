@@ -7,12 +7,12 @@
 
 namespace mge::opengl {
 
-    class render_context;
+    class render_context_base;
 
     class frame_buffer : public mge::frame_buffer
     {
     public:
-        explicit frame_buffer(render_context& ctx);
+        explicit frame_buffer(render_context_base& ctx);
         ~frame_buffer() override;
 
         GLuint fbo_name() const noexcept

@@ -6,13 +6,13 @@
 #include "vulkan.hpp"
 
 namespace mge::vulkan {
-    class render_context;
+    class render_context_base;
 
     class texture : public mge::texture
     {
     public:
-        texture(render_context& context, mge::texture_type type);
-        texture(render_context&          context,
+        texture(render_context_base& context, mge::texture_type type);
+        texture(render_context_base&     context,
                 mge::texture_type        type,
                 const mge::image_format& format,
                 const mge::extent&       extent);
@@ -22,6 +22,11 @@ namespace mge::vulkan {
                       const mge::extent&       extent,
                       const void*              data,
                       size_t                   size) override;
+
+        VkImage vk_image() const noexcept
+        {
+            return m_image;
+        }
 
         VkImageView image_view() const noexcept
         {

@@ -8,12 +8,12 @@
 
 namespace mge::vulkan {
 
-    class render_context;
+    class render_context_base;
 
     class frame_buffer : public mge::frame_buffer
     {
     public:
-        frame_buffer(render_context&              ctx,
+        frame_buffer(render_context_base&          ctx,
                      const mge::frame_buffer_info& info);
         ~frame_buffer() override;
 
@@ -40,7 +40,7 @@ namespace mge::vulkan {
         void create_render_pass(const mge::frame_buffer_info& info);
         void create_framebuffer();
 
-        render_context& m_context;
+        render_context_base& m_context;
         VkRenderPass    m_render_pass{VK_NULL_HANDLE};
         VkFramebuffer   m_framebuffer{VK_NULL_HANDLE};
         VkExtent2D      m_extent{};

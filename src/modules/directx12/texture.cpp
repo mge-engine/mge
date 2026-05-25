@@ -5,7 +5,7 @@
 #include "error.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX12);
@@ -13,7 +13,7 @@ namespace mge {
 
 namespace mge::dx12 {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
     {
         m_srv_gpu_handle = {};
@@ -22,7 +22,7 @@ namespace mge::dx12 {
         m_dsv_cpu_handle = {};
     }
 
-    texture::texture(render_context&          context,
+    texture::texture(render_context_base&     context,
                      mge::texture_type        type,
                      const mge::image_format& format,
                      const mge::extent&       extent)
@@ -33,7 +33,7 @@ namespace mge::dx12 {
         m_rtv_cpu_handle = {};
         m_dsv_cpu_handle = {};
 
-        auto& ctx = static_cast<render_context&>(context);
+        auto& ctx = context;
         auto* device = ctx.device();
 
         bool is_depth =
@@ -207,7 +207,7 @@ namespace mge::dx12 {
                            const void*              data,
                            size_t                   size)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx    = static_cast<render_context_base&>(context());
         auto* device = ctx.device();
 
         DXGI_FORMAT dxgi_format = texture_format(format);

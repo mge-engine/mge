@@ -5,7 +5,9 @@
 
 namespace mge::dx12 {
     class render_system;
+    class render_context_base;
     class render_context;
+    class headless_render_context;
     class index_buffer;
     class vertex_buffer;
     class shader;

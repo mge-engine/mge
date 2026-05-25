@@ -5,21 +5,21 @@
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/zero_memory.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::dx11 {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
     {}
 
-    texture::texture(render_context&          context,
+    texture::texture(render_context_base&     context,
                      mge::texture_type        type,
                      const mge::image_format& format,
                      const mge::extent&       extent)
         : mge::texture(context, type, mge::texture_usage::RENDER_TARGET)
     {
-        auto* device = dx11_context(context).device();
+        auto* device = context.device();
 
         D3D11_TEXTURE2D_DESC desc;
         mge::zero_memory(desc);

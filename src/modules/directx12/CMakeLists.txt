@@ -8,7 +8,9 @@ SET(mge_dx12_module_SOURCES
     input_layout_cache.cpp
     message_id.cpp
     render_system.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     shader.cpp
     program.cpp
     texture.cpp
