@@ -4,7 +4,7 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/graphics/data_type.hpp" // Include data_type.hpp
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "shader.hpp"
 
 namespace mge {
@@ -227,7 +227,7 @@ static mge::data_type attribute_type_from_gl(GLenum t)
 }
 
 namespace mge::opengl {
-    program::program(render_context& context)
+    program::program(render_context_base& context)
         : mge::program(context)
         , m_program(0)
     {
@@ -467,7 +467,7 @@ namespace mge::opengl {
         m_uniform_block_metadata.clear();
         m_block_indices.clear();
 
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx  = static_cast<render_context_base&>(context());
         auto& info = ctx.gl_info();
         if (info.major_version > 4 ||
             (info.major_version == 4 && info.minor_version >= 3)) {

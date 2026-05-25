@@ -5,7 +5,9 @@
 SET(mge_opengl_module_SOURCES
     render_system.cpp
     window.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     opengl_info.cpp
     index_buffer.cpp
     vertex_buffer.cpp

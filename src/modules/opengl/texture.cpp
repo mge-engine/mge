@@ -4,18 +4,18 @@
 #include "texture.hpp"
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::opengl {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
         , m_texture(0)
     {
         glGenTextures(1, &m_texture);
     }
 
-    texture::texture(render_context&          context,
+    texture::texture(render_context_base&     context,
                      mge::texture_type        type,
                      const mge::image_format& format,
                      const mge::extent&       extent,

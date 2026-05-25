@@ -4,7 +4,7 @@
 #include "shader.hpp"
 #include "error.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
@@ -12,7 +12,7 @@ namespace mge {
 
 namespace mge::opengl {
 
-    shader::shader(render_context& context, shader_type type)
+    shader::shader(render_context_base& context, shader_type type)
         : mge::shader(context, type)
         , m_shader(0)
     {}

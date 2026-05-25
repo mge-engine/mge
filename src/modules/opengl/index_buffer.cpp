@@ -4,10 +4,10 @@
 #include "index_buffer.hpp"
 #include "error.hpp"
 #include "mge/core/checked_cast.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 namespace mge::opengl {
 
-    index_buffer::index_buffer(render_context& context,
+    index_buffer::index_buffer(render_context_base& context,
                                mge::data_type  dt,
                                size_t          data_size)
         : mge::index_buffer(context, dt, data_size)

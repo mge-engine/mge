@@ -6,13 +6,13 @@
 #include "opengl.hpp"
 
 namespace mge::opengl {
-    class render_context;
+    class render_context_base;
 
     class texture : public mge::texture
     {
     public:
-        texture(render_context& context, mge::texture_type type);
-        texture(render_context&          context,
+        texture(render_context_base& context, mge::texture_type type);
+        texture(render_context_base&      context,
                 mge::texture_type        type,
                 const mge::image_format& format,
                 const mge::extent&       extent,
