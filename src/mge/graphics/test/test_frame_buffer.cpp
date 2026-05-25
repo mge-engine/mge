@@ -5,6 +5,7 @@
 #include "mock_render_context.hpp"
 #include "mock_render_system.hpp"
 #include "mock_texture.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "test/googlemock.hpp"
 
 using namespace testing;
@@ -99,4 +100,10 @@ TEST_F(frame_buffer_test, color_attachment_empty_before_attach)
 TEST_F(frame_buffer_test, depth_attachment_empty_before_attach)
 {
     EXPECT_FALSE(fb->depth_attachment());
+}
+
+TEST_F(frame_buffer_test, create_frame_buffer_throws_on_null_return)
+{
+    EXPECT_CALL(*ctx, on_create_frame_buffer(_)).WillOnce(Return(nullptr));
+    EXPECT_THROW(ctx->create_frame_buffer(), mge::null_pointer);
 }

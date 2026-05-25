@@ -7,6 +7,7 @@
 #include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/mutex.hpp"
 #include "mge/core/parameter.hpp"
@@ -378,16 +379,15 @@ namespace mge {
     render_context::create_frame_buffer(const frame_buffer_info& info)
     {
         std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer(info)};
-        if (ptr) {
-            frame_buffer_handle handle{
-                index(),
-                0,
-                static_cast<uint32_t>(m_frame_buffers.size())};
-            m_frame_buffers.emplace_back(ptr.release());
-            return handle;
-        } else {
-            return frame_buffer_handle();
+        if (!ptr) {
+            MGE_THROW(null_pointer) << "on_create_frame_buffer returned nullptr";
         }
+        frame_buffer_handle handle{
+            index(),
+            0,
+            static_cast<uint32_t>(m_frame_buffers.size())};
+        m_frame_buffers.emplace_back(ptr.release());
+        return handle;
     }
 
     mge::pass& render_context::pass(uint32_t index)

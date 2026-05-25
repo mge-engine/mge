@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mock_render_system.hpp"
 #include "test/googlemock.hpp"
@@ -39,5 +40,9 @@ public:
                 (mge::texture_type,
                  const mge::image_format&,
                  const mge::extent&),
+                ());
+    MOCK_METHOD(mge::frame_buffer*,
+                on_create_frame_buffer,
+                (const mge::frame_buffer_info&),
                 ());
 };
