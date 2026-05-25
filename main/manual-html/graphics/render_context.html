@@ -213,10 +213,25 @@ has a 1:1 relationship with the window.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context19create_frame_bufferEv">
 <span id="_CPPv3N3mge14render_context19create_frame_bufferEv"></span><span id="_CPPv2N3mge14render_context19create_frame_bufferEv"></span><span id="mge::render_context::create_frame_buffer"></span><span class="target" id="classmge_1_1render__context_1afb35298560a08973fa96f4b619773b03"></span><span class="n"><span class="pre">frame_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_frame_buffer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_frame_bufferEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Create a frame buffer object. </p>
+<dd><p>Create an empty frame buffer object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>created frame buffer </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context19create_frame_bufferERK17frame_buffer_info">
+<span id="_CPPv3N3mge14render_context19create_frame_bufferERK17frame_buffer_info"></span><span id="_CPPv2N3mge14render_context19create_frame_bufferERK17frame_buffer_info"></span><span id="mge::render_context::create_frame_buffer__frame_buffer_infoCR"></span><span class="target" id="classmge_1_1render__context_1ac57b13bbc455956f8e2cd5d696130982"></span><span class="n"><span class="pre">frame_buffer_handle</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_frame_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">frame_buffer_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_frame_bufferERK17frame_buffer_info" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a frame buffer with pre-specified attachments. </p>
+<p>The backend allocates all attachment resources described by <code class="docutils literal notranslate"><span class="pre">info</span></code> during this call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>info</strong> – attachment descriptor </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created frame buffer </p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,6 +246,25 @@ has a 1:1 relationship with the window.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created texture </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context28create_render_target_textureE12texture_typeRK12image_formatRKN3mge6extentE">
+<span id="_CPPv3N3mge14render_context28create_render_target_textureE12texture_typeRK12image_formatRKN3mge6extentE"></span><span id="_CPPv2N3mge14render_context28create_render_target_textureE12texture_typeRK12image_formatRKN3mge6extentE"></span><span id="mge::render_context::create_render_target_texture__texture_type.image_formatCR.mge::extentCR"></span><span class="target" id="classmge_1_1render__context_1ad7aefb349f8e17e95b1475825239c2d3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_render_target_texture</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="texture.html#_CPPv4N3mge12texture_typeE" title="mge::texture_type"><span class="n"><span class="pre">texture_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="image.html#_CPPv4N3mge12image_formatE" title="mge::image_format"><span class="n"><span class="pre">image_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">format</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context28create_render_target_textureE12texture_typeRK12image_formatRKN3mge6extentE" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a texture pre-allocated as a color render target. </p>
+<p>The backend allocates the GPU resource immediately with the appropriate bind flags or image usage bits for use as a color attachment. The texture can also be sampled in shaders after the render pass completes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> – texture type (typically TYPE_2D) </p></li>
+<li><p><strong>format</strong> – pixel format of the attachment </p></li>
+<li><p><strong>extent</strong> – size in pixels </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created render-target texture </p>
 </dd>
 </dl>
 </dd></dl>
@@ -835,7 +869,64 @@ operations, viewports, and scissor rectangles.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12frame_bufferE">
 <span id="_CPPv3N3mge12frame_bufferE"></span><span id="_CPPv2N3mge12frame_bufferE"></span><span id="mge::frame_buffer"></span><span class="target" id="classmge_1_1frame__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge12frame_bufferE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
+<dd><p>An off-screen render target consisting of one or more color attachments and an optional depth/stencil attachment. </p>
+<p>A frame buffer is created via <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context_1afb35298560a08973fa96f4b619773b03"><span class="std std-ref"><span class="pre">render_context::create_frame_buffer()</span></span></a></code>. Attachments can be specified at creation time through <code class="docutils literal notranslate"><span class="pre">frame_buffer_info</span></code>, or added afterwards with <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1frame__buffer_1a78c31d1af191f4868a257cba920ea53c"><span class="std std-ref"><span class="pre">attach_color()</span></span></a></code> / <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1frame__buffer_1ae70395645bd7137252edfb41e914da89"><span class="std std-ref"><span class="pre">attach_depth()</span></span></a></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12frame_buffer12attach_colorERK11texture_ref8uint32_t">
+<span id="_CPPv3N3mge12frame_buffer12attach_colorERK11texture_ref8uint32_t"></span><span id="_CPPv2N3mge12frame_buffer12attach_colorERK11texture_ref8uint32_t"></span><span id="mge::frame_buffer::attach_color__texture_refCR.uint32_t"></span><span class="target" id="classmge_1_1frame__buffer_1a78c31d1af191f4868a257cba920ea53c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">attach_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tex</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">slot</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12frame_buffer12attach_colorERK11texture_ref8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Attach a texture as a color render target. </p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">on_attach_color()</span></code> for backend GPU-side binding, then stores <code class="docutils literal notranslate"><span class="pre">tex</span></code> in <code class="docutils literal notranslate"><span class="pre">m_color_attachments</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tex</strong> – texture to bind as color attachment </p></li>
+<li><p><strong>slot</strong> – color attachment index (0-based) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12frame_buffer12attach_depthERK11texture_ref">
+<span id="_CPPv3N3mge12frame_buffer12attach_depthERK11texture_ref"></span><span id="_CPPv2N3mge12frame_buffer12attach_depthERK11texture_ref"></span><span id="mge::frame_buffer::attach_depth__texture_refCR"></span><span class="target" id="classmge_1_1frame__buffer_1ae70395645bd7137252edfb41e914da89"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">attach_depth</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12frame_buffer12attach_depthERK11texture_ref" title="Link to this definition"></a><br /></dt>
+<dd><p>Attach a texture as the depth (or depth/stencil) target. </p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">on_attach_depth()</span></code> for backend GPU-side binding, then stores <code class="docutils literal notranslate"><span class="pre">tex</span></code> in <code class="docutils literal notranslate"><span class="pre">m_depth_attachment</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tex</strong> – texture to bind as depth attachment </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12frame_buffer16color_attachmentE8uint32_t">
+<span id="_CPPv3NK3mge12frame_buffer16color_attachmentE8uint32_t"></span><span id="_CPPv2NK3mge12frame_buffer16color_attachmentE8uint32_t"></span><span id="mge::frame_buffer::color_attachment__uint32_tC"></span><span class="target" id="classmge_1_1frame__buffer_1ab75ab77dfb06455052c620d42803cee7"></span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">color_attachment</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">slot</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12frame_buffer16color_attachmentE8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieve a color attachment by slot. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>slot</strong> – attachment index </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>texture_ref, empty if slot has not been attached </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12frame_buffer16depth_attachmentEv">
+<span id="_CPPv3NK3mge12frame_buffer16depth_attachmentEv"></span><span id="_CPPv2NK3mge12frame_buffer16depth_attachmentEv"></span><span id="mge::frame_buffer::depth_attachmentC"></span><span class="target" id="classmge_1_1frame__buffer_1a8cad4fbc3bf7c4dc831d518d63b38f16"></span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">depth_attachment</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12frame_buffer16depth_attachmentEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieve the depth attachment. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>texture_ref, empty if no depth attachment has been set </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
 
 </section>
 </section>

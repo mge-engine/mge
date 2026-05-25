@@ -176,6 +176,21 @@ or “vulkan”.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system30create_headless_render_contextERK6extent">
+<span id="_CPPv3N3mge13render_system30create_headless_render_contextERK6extent"></span><span id="_CPPv2N3mge13render_system30create_headless_render_contextERK6extent"></span><span id="mge::render_system::create_headless_render_context__extentCR"></span><span class="target" id="classmge_1_1render__system_1a0da816d91a53137ae2a65046945199e6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">render_context_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_headless_render_context</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ext</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system30create_headless_render_contextERK6extent" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a headless render context with no window or swap chain. </p>
+<p>Renders into frame buffers only; <code class="docutils literal notranslate"><span class="pre">on_frame_present()</span></code> is a no-op. The default implementation throws <code class="docutils literal notranslate"><a class="reference internal" href="../core/exception.html#classmge_1_1not__yet__implemented"><span class="std std-ref"><span class="pre">mge::not_yet_implemented</span></span></a></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ext</strong> – output resolution in pixels </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>created headless render context </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system8monitorsEv">
 <span id="_CPPv3N3mge13render_system8monitorsEv"></span><span id="_CPPv2N3mge13render_system8monitorsEv"></span><span id="mge::render_system::monitors"></span><span class="target" id="classmge_1_1render__system_1abe8d4666f72bcf8f04d4c22badfa0b10"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">monitor_ref</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system8monitorsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get monitors of the system. </p>
