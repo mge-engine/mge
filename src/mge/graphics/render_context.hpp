@@ -412,6 +412,10 @@ namespace mge {
                     return static_cast<vertex_buffer*>(
                         m_vertex_buffers[object_index]);
                 }
+            } else if constexpr (std::is_same_v<T, frame_buffer>) {
+                if (object_index < m_frame_buffers.size()) {
+                    return m_frame_buffers[object_index];
+                }
             }
             return nullptr;
         }
