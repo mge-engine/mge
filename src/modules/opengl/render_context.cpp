@@ -11,6 +11,7 @@
 #include "mge/core/zero_memory.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/memory_image.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/graphics/uniform_block.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -565,7 +566,8 @@ namespace mge::opengl {
     {
         auto fb = std::make_unique<opengl::frame_buffer>(*this);
 
-        for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
+        const auto num_color = mge::checked_cast<uint32_t>(info.color_attachments.size());
+        for (uint32_t i = 0; i < num_color; ++i) {
             const auto& ca = info.color_attachments[i];
             auto        tex = create_render_target_texture(
                 mge::texture_type::TYPE_2D, ca.format, ca.extent);

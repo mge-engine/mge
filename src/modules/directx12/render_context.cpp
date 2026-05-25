@@ -618,7 +618,8 @@ namespace mge::dx12 {
     {
         auto fb = std::make_unique<dx12::frame_buffer>(*this);
 
-        for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
+        const auto num_color = mge::checked_cast<uint32_t>(info.color_attachments.size());
+        for (uint32_t i = 0; i < num_color; ++i) {
             const auto& ca = info.color_attachments[i];
             auto        tex = create_render_target_texture(
                 mge::texture_type::TYPE_2D, ca.format, ca.extent);
