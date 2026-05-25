@@ -89,6 +89,13 @@ namespace mge {
         return component<render_system>::create(implementation_name);
     }
 
+    render_context_ref
+    render_system::create_headless_render_context(const extent&)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "headless render context not supported by this render system";
+    }
+
     window_ref render_system::create_window()
     {
         return create_window(mge::extent(800, 600),

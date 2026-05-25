@@ -1,16 +1,66 @@
-# Project Overview 
-
-* MGE (Modern Game/Graphics Engine) is a framework having the following goals:
-* cross-platform, C++20
-* modular (plugins)
+# Agent Instructions
 
 ## General Rules
 
-1. Don’t assume. Don’t hide confusion. Surface tradeoffs.
-2. Minimum code that solves the problem. Nothing speculative.
-3. Touch only what you must. Clean up only your own mess.
-4. Define success criteria. Loop until verified.
-5. Do not check intellisense errors in IDE as failure sign.
+### Think before code
+
+Don't assume. Don't hide confusion. Surface tradeoffs.
+
+* state assumptions, ask user in doubt
+* if multiple intepretations exist, present them and ask    
+* if simpler approach exist, say so
+* if something is unclear, stop and ask 
+* do not defer decisions
+* use short statements
+
+### Simplicity
+
+Minimum code that solves the problem. Nothing speculative.
+
+* No features beyond what was asked.
+* No abstractions for single-use code.
+* No "flexibility" or "configurability" that wasn't requested.
+* No error handling for impossible scenarios.
+* If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+### Surgical Change
+
+Touch only what you must. Clean up only your own mess.
+
+When editing existing code:
+
+* Don't "improve" adjacent code, comments, or formatting.
+* Don't refactor things that aren't broken.
+* Match existing style, even if you'd do it differently.
+* If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+
+* Remove imports/variables/functions that YOUR changes made unused.
+* Don't remove pre-existing dead code unless asked.
+* Don't remove comments
+
+The test: Every changed line should trace directly to the user's request.
+
+### Goal-Driven Execution
+Define success criteria. Loop until verified.
+
+Transform tasks into verifiable goals:
+
+* "Add validation" → "Write tests for invalid inputs, then make them pass"
+* "Fix the bug" → "Write a test that reproduces it, then make it pass"
+* "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+
+Strong success criteria let you loop independently. 
+Weak criteria ("make it work") require constant clarification.
 
 ## Verify Change
 
@@ -87,78 +137,66 @@ ctest --output-on-failure --test-dir build -L unit
 
 #### Which Tests to Run (Agent Guidance)
 
-Choose tests based on which files were changed:
-
-| Changed files | Tests to run |
-|---------------|-------------|
-| `src/mge/core/`, `src/mge/math/`, `src/mge/reflection/`, `src/mge/asset/`, `src/mge/input/` | `quick-tests` |
-| `src/modules/lua/` | `ctest -L lua` first, then `quick-tests` |
-| `src/modules/directx11/` | `ctest -L directx11` first, then other backends |
-| `src/modules/directx12/` | `ctest -L directx12` first, then other backends |
-| `src/modules/opengl/` | `ctest -L opengl` first, then other backends |
-| `src/modules/vulkan/` | `ctest -L vulkan` first, then other backends |
-| `src/mge/graphics/`, `src/mge/ui/`, `assets/shaders/`, `src/samples/` | All tests: `ctest --output-on-failure --test-dir build` |
-| `cmake/`, `CMakeLists.txt`, build system changes | All tests: `ctest --output-on-failure --test-dir build` |
+* quick-tests: changes in core, math, relection, asset, input, lua, python
+* directx11, directx12, opengl, vulkan: if one of these backends or graphics changed
+* otherwise all tests
 
 When fixing a backend-specific issue, run that backend's capture tests first. If they pass, run other backends to check for regressions.
   
 
-### CMake Structure
-- use CMakePresets.json for settings
-- **Custom macros**: [cmake/modules/macros/](../cmake/modules/macros/)
-  - `MGE_LIBRARY()`: library with auto-defined `BUILD_<TARGET>` flags
-  - `MGE_TEST()`: Google Test integration with display/headless env handling
-  - Tests requiring display use `NEEDSDISPLAY` flag (see [../cmake/modules/macros/test.cmake](../cmake/modules/macros/test.cmake))
-
-### Module Development
-Modules are built as `MODULE` or `SHARED` libraries:
-```cmake
-ADD_LIBRARY(mge_module_dx11 MODULE render_context.cpp ...)
-TARGET_LINK_LIBRARIES(mge_module_dx11 mgecore mgegraphics ...)
-```
-They export component implementations discoverable at runtime.
+* Core libraries: `src/mge/` — abstractions for graphics, application, input, math, assets, scenes
+* Modules: `src/modules/` — register as `component` implementations at runtime
+* Reference types: `MGE_DECLARE_REF(type)` generates `type_ref` as `std::shared_ptr<type>`
+* Component system: Plugin architecture (`src/mge/core/component.hpp`)
+* Dependencies via vcpkg (`vcpkg.json`)
 
 ## Coding Standards
 
-### Naming Conventions
-- **snake_case** for everything: classes, methods, variables
-- **UPPER_CASE** for constants, enum values
-- Methods are verbs; classes are nouns
-- **No** `get_`/`is_` prefixes for accessors—just the property name (e.g., `name()`, not `get_name()`)
-- Avoid common suffixes like `_type` (use C++ standard library naming where applicable)
+* **snake_case** for everything: classes, methods, variables
+* **UPPER_CASE** for constants, enum values
+* No `get_`/`is_` prefixes for accessors — just the property name
+* 4 spaces, no tabs; 80-char line limit
+* Pointer/reference left-aligned: `Type* ptr`, `Type& ref`
+* Braces: Allman for classes/functions, K&R for control flow
+* All code in `namespace mge`; backends in `mge::dx11`, `mge::dx12`, `mge::opengl`, `mge::vulkan`
 
-### Code Style
-Enforced by [.clang-format](../.clang-format):
-- 4 spaces, no tabs
-- Pointer/reference left-aligned: `Type* ptr`, `Type& ref`
-- Braces: Allman style for classes/functions, K&R for control flow
-- Constructor initializers: break before comma (`,` starts continuation lines)
-- 80-character line limit
+## Commit Messages
 
-### Namespaces
-- All code in `namespace mge`
-- Backend-specific code in nested namespaces: `mge::dx11`, `mge::opengl`, `mge::vulkan`
-- Internal details in `detail` namespace or anonymous namespace
+* prefix 1st line with purpose: `feat:`, `fix:`, `refactor:`,`chore:` 
+* short summary only
+t passes unless the commit is specifically about tests
+
+## Tracing
+
+Structured logging via trace macros:
 
 ### Error Handling & Tracing
 Always declare trace topics at file scope:
 ```cpp
-namespace mge {
-    MGE_USE_TRACE(DX11);  // Declare once per file
-}
+MGE_USE_TRACE(TOPIC);           // use existing topic
+MGE_DEFINE_TRACE(TOPIC);        // define new topic
+MGE_DEBUG_TRACE(TOPIC, msg, args ...); // fmt like trace formatting
 ```
-- Use structured tracing instead of `std::cout`:
+Macros for DEBUG, INFO, WARNING and ERROR exist.
 
 ### Testing
 - Unit tests use Google Test via `MGE_TEST()` macro in `src/test/`
 - Test structure: `src/test/<component>/test_<feature>.cpp`
 - Example: `TEST(benchmark, memory_cycle) { ... }` in [src/test/test/test_benchmark.cpp](../src/test/test/test_benchmark.cpp)
 
-### Sample Tests
-- in `src/samples` directory
-- demonstrate module usage and integration
-- full applications
-- configured via json config when running
+```bash
+export MGE_TRACE_ENABLED=1
+export MGE_TRACE_TO_STDOUT=1
+```
+Or: `-c "trace.globally_enabled=true" -c "trace.print_to_stdout=true"`
+
+## Skills Reference
+
+For domain-specific procedures, read these files:
+
+- **Crash debugging**: `.github/skills/fix-crash/SKILL.md` — crash dumps, trace topics, stack traces, debugging procedures
+- **Graphical issues**: `.github/skills/fix-graphical-issue/SKILL.md` — screenshots, before/after comparison, rendering diagnosis
+- **Regenerate capture tests**: `.github/skills/regenerate-capture-test/SKILL.md` — update reference files after intentional rendering changes
 
 ## Common Pitfalls
 - Don't create in-source builds (CMake rejects them)

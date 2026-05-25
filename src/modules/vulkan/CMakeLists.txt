@@ -24,12 +24,15 @@ SET(mge_vulkan_module_SOURCES
     vulkan_library.cpp
     error.cpp
     render_system.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     window.cpp
     shader.cpp
     vulkan_memory_allocator.cpp
     program.cpp
     texture.cpp
+    frame_buffer.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )
@@ -55,11 +58,13 @@ TARGET_INCLUDE_DIRECTORIES(mge_module_vulkan PRIVATE "${CMAKE_BINARY_DIR}/src/mo
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan PRIVATE mge_win32 mgeapplication)
-ELSEIF(APPLE)
+ELSE()
     TARGET_LINK_LIBRARIES(mge_module_vulkan PRIVATE mge_glfw mgeapplication)
-    GET_FILENAME_COMPONENT(MGE_VULKAN_LIBRARY_DIR "${Vulkan_LIBRARY}" DIRECTORY)
-    TARGET_COMPILE_DEFINITIONS(mge_module_vulkan PRIVATE
-        MGE_VULKAN_LIBRARY_DIR="${MGE_VULKAN_LIBRARY_DIR}")
+    IF(APPLE)
+        GET_FILENAME_COMPONENT(MGE_VULKAN_LIBRARY_DIR "${Vulkan_LIBRARY}" DIRECTORY)
+        TARGET_COMPILE_DEFINITIONS(mge_module_vulkan PRIVATE
+            MGE_VULKAN_LIBRARY_DIR="${MGE_VULKAN_LIBRARY_DIR}")
+    ENDIF()
 ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_vulkan
     PRIVATE

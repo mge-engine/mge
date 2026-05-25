@@ -7,12 +7,12 @@
 
 namespace mge::opengl {
 
-    class render_context;
+    class render_context_base;
 
     class index_buffer : public mge::index_buffer
     {
     public:
-        index_buffer(render_context& context,
+        index_buffer(render_context_base& context,
                      mge::data_type  dt,
                      size_t          data_size);
         virtual ~index_buffer();

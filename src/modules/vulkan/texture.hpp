@@ -6,18 +6,27 @@
 #include "vulkan.hpp"
 
 namespace mge::vulkan {
-    class render_context;
+    class render_context_base;
 
     class texture : public mge::texture
     {
     public:
-        texture(render_context& context, mge::texture_type type);
+        texture(render_context_base& context, mge::texture_type type);
+        texture(render_context_base&     context,
+                mge::texture_type        type,
+                const mge::image_format& format,
+                const mge::extent&       extent);
         ~texture() override;
 
         void set_data(const mge::image_format& format,
                       const mge::extent&       extent,
                       const void*              data,
                       size_t                   size) override;
+
+        VkImage vk_image() const noexcept
+        {
+            return m_image;
+        }
 
         VkImageView image_view() const noexcept
         {
@@ -29,9 +38,22 @@ namespace mge::vulkan {
             return m_sampler;
         }
 
+        VkFormat vk_format() const noexcept
+        {
+            return m_vk_format;
+        }
+
+        bool is_depth() const noexcept
+        {
+            return m_is_depth;
+        }
+
     private:
         VkFormat texture_format(const mge::image_format& format) const;
         void     create_image(VkFormat format, uint32_t width, uint32_t height);
+        void     create_image_as_render_target(VkFormat format,
+                                               uint32_t width,
+                                               uint32_t height);
         void     create_image_view(VkFormat format);
         void     create_sampler();
         void     upload_data(const void* data,
@@ -47,5 +69,7 @@ namespace mge::vulkan {
         VmaAllocation m_allocation{VK_NULL_HANDLE};
         VkImageView   m_image_view{VK_NULL_HANDLE};
         VkSampler     m_sampler{VK_NULL_HANDLE};
+        VkFormat      m_vk_format{VK_FORMAT_UNDEFINED};
+        bool          m_is_depth{false};
     };
 } // namespace mge::vulkan

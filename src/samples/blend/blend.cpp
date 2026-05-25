@@ -90,12 +90,10 @@ namespace mge {
                                               blend_factor::ONE);
 
                 // Draw first triangle
-                command_buffer.draw(m_program, m_vertices1, m_indices);
+                command_buffer.draw(pass, m_program, m_vertices1, m_indices);
 
                 // Draw second triangle (will blend additively)
-                command_buffer.draw(m_program, m_vertices2, m_indices);
-
-                pass.submit(command_buffer);
+                command_buffer.draw(pass, m_program, m_vertices2, m_indices);
             } else {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();

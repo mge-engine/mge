@@ -26,7 +26,9 @@ namespace mge {
             UNKNOWN = 0,
             RGB,
             RGBA,
-            MAX_FORMAT = RGBA
+            DEPTH,
+            DEPTH_STENCIL,
+            MAX_FORMAT = DEPTH_STENCIL
         };
 
         image_format()
@@ -71,6 +73,9 @@ namespace mge {
                 return 3;
             case data_format::RGBA:
                 return 4;
+            case data_format::DEPTH:
+            case data_format::DEPTH_STENCIL:
+                return 1;
             default:
                 return 0;
             }

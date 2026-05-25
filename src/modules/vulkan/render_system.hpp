@@ -20,6 +20,9 @@ namespace mge::vulkan {
         create_window(const mge::extent&         extent,
                       const mge::window_options& options) override;
 
+        mge::render_context_ref
+        create_headless_render_context(const mge::extent& extent) override;
+
         std::span<mge::monitor_ref> monitors() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};

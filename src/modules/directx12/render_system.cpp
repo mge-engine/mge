@@ -4,6 +4,7 @@
 #include "render_system.hpp"
 #include "dx12.hpp"
 #include "error.hpp"
+#include "headless_render_context.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
@@ -82,6 +83,12 @@ namespace mge::dx12 {
     {
         mge::window_ref ref = std::make_shared<window>(*this, extent, options);
         return ref;
+    }
+
+    mge::render_context_ref
+    render_system::create_headless_render_context(const mge::extent& extent)
+    {
+        return std::make_shared<headless_render_context>(*this, extent);
     }
 
     bool render_system::debug() const

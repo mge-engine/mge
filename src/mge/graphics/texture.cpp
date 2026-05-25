@@ -5,9 +5,10 @@
 
 namespace mge {
 
-    texture::texture(render_context& ctx, texture_type type)
+    texture::texture(render_context& ctx, texture_type type, texture_usage usage)
         : context_object(ctx)
         , m_type(type)
+        , m_usage(usage)
     {}
 
     texture_type texture::type() const

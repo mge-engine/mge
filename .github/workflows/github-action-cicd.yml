@@ -151,6 +151,11 @@ jobs:
                 sleep 5
               done
               sudo apt-get upgrade -y
+          - name: Setup Python 3.14
+            uses: actions/setup-python@v5
+            with:
+              python-version: '3.14'
+              allow-prereleases: false
           - name: Show Python version
             run: |
               python3 --version  
@@ -161,9 +166,15 @@ jobs:
           - name: Install Ninja
             run: |
               sudo apt-get install -y ninja-build
-          - name: Install automake and autoconf
+          - name: Install build dependencies
             run: |
-              sudo apt-get install -y automake autoconf autoconf-archive libtool
+              sudo apt-get install -y \
+                automake autoconf autoconf-archive libtool \
+                libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev \
+                libxi-dev libxxf86vm-dev libxext-dev libxrender-dev \
+                libxfixes-dev libxau-dev libxdmcp-dev \
+                libgl1-mesa-dev libglu1-mesa-dev libxkbcommon-dev pkg-config \
+                libvulkan-dev vulkan-tools mesa-vulkan-drivers
           - name: Checkout source code
             uses: actions/checkout@v6
             with:
@@ -270,7 +281,7 @@ jobs:
     build-msvc-windows-latest:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
-        runs-on: windows-latest
+        runs-on: windows-2022
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
@@ -363,7 +374,7 @@ jobs:
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
                 $env:VCPKG_VERBOSE="1" 
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 $maxAttempts = 3
                 $attempt = 0
@@ -397,7 +408,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --parallel 8 --target all
             - name: Run Tests
@@ -405,7 +416,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.341.1"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.4.350.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 ctest --verbose
             - name: Upload test results
@@ -421,7 +432,7 @@ jobs:
     build-documentation-windows-latest:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build documentation
-        runs-on: windows-latest
+        runs-on: windows-2022
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:

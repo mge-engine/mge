@@ -72,8 +72,7 @@ namespace mge {
                 pass.clear_depth(1.0f);
                 auto& command_buffer = ctx.command_buffer(true);
                 command_buffer.bind_uniform_block(m_uniform_block.get());
-                command_buffer.draw(m_program, m_vertices, m_indices);
-                pass.submit(command_buffer);
+                command_buffer.draw(pass, m_program, m_vertices, m_indices);
             } else {
                 auto& pass = ctx.pass(0);
                 pass.default_viewport();

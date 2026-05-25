@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
+#include "headless_render_context.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "window.hpp"
@@ -33,6 +34,12 @@ namespace mge {
             auto ref =
                 std::make_shared<mge::opengl::window>(*this, extent, options);
             return ref;
+        }
+
+        mge::render_context_ref
+        render_system::create_headless_render_context(const mge::extent& extent)
+        {
+            return std::make_shared<headless_render_context>(*this, extent);
         }
 
         std::span<mge::monitor_ref> render_system::monitors()

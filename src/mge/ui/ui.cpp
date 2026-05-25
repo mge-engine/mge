@@ -781,7 +781,8 @@ namespace mge {
             }
 
             // Submit draw command
-            cmd.draw(m_ui_program,
+            cmd.draw(pass,
+                     m_ui_program,
                      m_vertex_buffer,
                      m_index_buffer,
                      static_cast<uint32_t>(nk_cmd->elem_count),
@@ -789,9 +790,6 @@ namespace mge {
 
             offset += nk_cmd->elem_count;
         }
-
-        // Submit command buffer to pass
-        pass.submit(cmd);
 
         // Clear nuklear state and begin collecting input for next frame
         nk_clear(m_context);

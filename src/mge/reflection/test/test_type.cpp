@@ -788,7 +788,8 @@ namespace mge::reflection {
 
     TEST(type, constructor_exception_handling)
     {
-        const auto& details = type<throwing_constructor>().details();
+        auto        type_obj = type<throwing_constructor>();
+        const auto& details = type_obj.details();
         const auto& class_details = details->class_specific();
 
         ASSERT_EQ(class_details.constructors.size(), 1);
@@ -818,7 +819,8 @@ namespace mge::reflection {
 
     TEST(type, destructor_exception_handling)
     {
-        const auto& details = type<throwing_destructor>().details();
+        auto        type_obj = type<throwing_destructor>();
+        const auto& details = type_obj.details();
         const auto& class_details = details->class_specific();
 
         ASSERT_TRUE(class_details.destructor);

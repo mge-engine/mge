@@ -46,20 +46,20 @@ namespace mge::opengl {
     };
 } // namespace mge::opengl
 
-#define TRACE_OPENGL_ERROR(function)                                           \
-    opengl::error::trace_error(__FILE__,                                       \
-                               __LINE__,                                       \
-                               MGE_FUNCTION_SIGNATURE,                         \
+#define TRACE_OPENGL_ERROR(function) \
+    opengl::error::trace_error(__FILE__, \
+                               __LINE__, \
+                               MGE_FUNCTION_SIGNATURE, \
                                #function)
 
-#define CHECK_OPENGL_ERROR(function)                                           \
-    opengl::error::check_error(__FILE__,                                       \
-                               __LINE__,                                       \
-                               MGE_FUNCTION_SIGNATURE,                         \
+#define CHECK_OPENGL_ERROR(function) \
+    opengl::error::check_error(__FILE__, \
+                               __LINE__, \
+                               MGE_FUNCTION_SIGNATURE, \
                                #function)
 
-#define WARN_OPENGL_ERROR(function)                                            \
-    opengl::error::warn_error(__FILE__,                                        \
-                              __LINE__,                                        \
-                              MGE_FUNCTION_SIGNATURE,                          \
+#define WARN_OPENGL_ERROR(function) \
+    opengl::error::warn_error(__FILE__, \
+                              __LINE__, \
+                              MGE_FUNCTION_SIGNATURE, \
                               #function)

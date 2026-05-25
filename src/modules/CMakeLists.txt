@@ -5,13 +5,8 @@
 
 
 IF(OpenGL_FOUND)
-    IF (NOT LINUX)
-        MESSAGE("-- OpenGL found and enabled")
-        ADD_SUBDIRECTORY(opengl)
-
-    ELSE()
-        MESSAGE("-- On Linux platform, skipping OpenGL render system")
-    ENDIF()
+    MESSAGE("-- OpenGL found and enabled")
+    ADD_SUBDIRECTORY(opengl)
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")
 ENDIF()
@@ -41,6 +36,7 @@ ENDIF()
 ADD_SUBDIRECTORY(stb_image)
 ADD_SUBDIRECTORY(assimp)
 ADD_SUBDIRECTORY(lua)
+ADD_SUBDIRECTORY(python)
 IF(WIN32 OR (UNIX AND NOT APPLE))
     ADD_SUBDIRECTORY(renderdoc)
 ENDIF()

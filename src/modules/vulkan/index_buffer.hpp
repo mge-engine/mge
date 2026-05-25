@@ -7,14 +7,14 @@
 
 namespace mge::vulkan {
 
-    class render_context;
+    class render_context_base;
 
     class index_buffer : public mge::index_buffer
     {
     public:
-        index_buffer(render_context& context,
-                     mge::data_type  typem,
-                     size_t          data_size);
+        index_buffer(render_context_base& context,
+                     mge::data_type       typem,
+                     size_t               data_size);
 
         ~index_buffer();
 
@@ -30,7 +30,7 @@ namespace mge::vulkan {
     private:
         void create_buffer();
 
-        render_context& m_vulkan_context;
+        render_context_base& m_vulkan_context;
         VkBuffer        m_buffer{VK_NULL_HANDLE};
         VmaAllocation   m_allocation{VK_NULL_HANDLE};
     };

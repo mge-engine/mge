@@ -9,7 +9,9 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/graphics/program_handle.hpp"
@@ -21,8 +23,11 @@
 
 #include "mge/core/noncopyable.hpp"
 
+#include <boost/unordered/concurrent_flat_map.hpp>
+
 #include <memory>
 #include <memory_resource>
+#include <thread>
 
 namespace mge {
 
@@ -170,8 +175,9 @@ namespace mge {
          */
         virtual void on_destroy_program(program* p);
 
-        virtual frame_buffer* on_create_frame_buffer();
-        virtual void          on_destroy_frame_buffer(frame_buffer* fb);
+        virtual frame_buffer*
+        on_create_frame_buffer(const frame_buffer_info& info);
+        virtual void on_destroy_frame_buffer(frame_buffer* fb);
 
     public:
         /**
@@ -186,11 +192,22 @@ namespace mge {
         program_handle create_program();
 
         /**
-         * @brief Create a frame buffer object.
+         * @brief Create an empty frame buffer object.
          *
          * @return created frame buffer
          */
         frame_buffer_handle create_frame_buffer();
+
+        /**
+         * @brief Create a frame buffer with pre-specified attachments.
+         *
+         * The backend allocates all attachment resources described by
+         * @c info during this call.
+         *
+         * @param info attachment descriptor
+         * @return created frame buffer
+         */
+        frame_buffer_handle create_frame_buffer(const frame_buffer_info& info);
 
         /**
          * @brief Create a texture object.
@@ -199,6 +216,24 @@ namespace mge {
          * @return created texture
          */
         virtual texture_ref create_texture(texture_type type) = 0;
+
+        /**
+         * @brief Create a texture pre-allocated as a color render target.
+         *
+         * The backend allocates the GPU resource immediately with the
+         * appropriate bind flags or image usage bits for use as a color
+         * attachment.  The texture can also be sampled in shaders after
+         * the render pass completes.
+         *
+         * @param type   texture type (typically TYPE_2D)
+         * @param format pixel format of the attachment
+         * @param extent size in pixels
+         * @return created render-target texture
+         */
+        virtual texture_ref
+        create_render_target_texture(texture_type        type,
+                                     const image_format& format,
+                                     const mge::extent&  extent) = 0;
 
         /**
          * @brief Get the extent of the render context.
@@ -295,6 +330,29 @@ namespace mge {
          */
         virtual void render(const mge::pass& p);
 
+        /**
+         * @brief Iterate over all draw commands targeting a pass across
+         * all thread command buffers.
+         *
+         * Calls @c f for each draw command whose pass index matches @p
+         * pass_index, with the same arguments as
+         * @c command_buffer::for_each.
+         *
+         * @tparam F callable type
+         * @param pass_index pass to iterate
+         * @param f callable invoked per matching draw command
+         */
+        template <typename F>
+        void for_each_draw_in_pass(uint32_t pass_index, F&& f)
+        {
+            m_command_buffers.visit_all([&](auto& entry) {
+                if (entry.second) {
+                    entry.second->for_each_in_pass(pass_index,
+                                                   std::forward<F>(f));
+                }
+            });
+        }
+
     public:
         /**
          * @brief Take a screenshot of the current frame buffer.
@@ -353,6 +411,10 @@ namespace mge {
                 if (object_index < m_vertex_buffers.size()) {
                     return static_cast<vertex_buffer*>(
                         m_vertex_buffers[object_index]);
+                }
+            } else if constexpr (std::is_same_v<T, frame_buffer>) {
+                if (object_index < m_frame_buffers.size()) {
+                    return m_frame_buffers[object_index];
                 }
             }
             return nullptr;
@@ -432,8 +494,12 @@ namespace mge {
         std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
-        std::vector<mge::pass>               m_passes;
-        std::unique_ptr<mge::command_buffer> m_command_buffer;
+        std::vector<mge::pass> m_passes;
+
+        boost::concurrent_flat_map<std::thread::id,
+                                   std::unique_ptr<mge::command_buffer>,
+                                   std::hash<std::thread::id>>
+            m_command_buffers;
 
         bool     m_record_frames{false};
         bool     m_first_frame{true};

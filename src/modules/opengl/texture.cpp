@@ -4,15 +4,54 @@
 #include "texture.hpp"
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::opengl {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
         , m_texture(0)
     {
         glGenTextures(1, &m_texture);
+    }
+
+    texture::texture(render_context_base&     context,
+                     mge::texture_type        type,
+                     const mge::image_format& format,
+                     const mge::extent&       extent,
+                     mge::texture_usage       usage)
+        : mge::texture(context, type, usage)
+        , m_texture(0)
+        , m_image_format(format)
+    {
+        glGenTextures(1, &m_texture);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        CHECK_OPENGL_ERROR(glBindTexture);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     internal_format(format),
+                     static_cast<GLsizei>(extent.width),
+                     static_cast<GLsizei>(extent.height),
+                     0,
+                     pixel_format(format),
+                     pixel_type(format),
+                     nullptr);
+        CHECK_OPENGL_ERROR(glTexImage2D);
+
+        bool is_depth =
+            format.format() == mge::image_format::data_format::DEPTH ||
+            format.format() == mge::image_format::data_format::DEPTH_STENCIL;
+        GLint filter = is_depth ? GL_NEAREST : GL_LINEAR;
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        CHECK_OPENGL_ERROR(glTexParameteri);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        CHECK_OPENGL_ERROR(glTexParameteri);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        CHECK_OPENGL_ERROR(glTexParameteri);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        CHECK_OPENGL_ERROR(glTexParameteri);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        CHECK_OPENGL_ERROR(glBindTexture);
     }
 
     texture::~texture()
@@ -29,9 +68,23 @@ namespace mge::opengl {
             return GL_RGB;
         case mge::image_format::data_format::RGBA:
             return GL_RGBA;
+        case mge::image_format::data_format::DEPTH:
+            switch (format.type()) {
+            case mge::data_type::FLOAT:
+                return GL_DEPTH_COMPONENT32F;
+            case mge::data_type::UINT16:
+                return GL_DEPTH_COMPONENT16;
+            case mge::data_type::UINT32:
+                return GL_DEPTH_COMPONENT24;
+            default:
+                MGE_THROW(mge::illegal_argument)
+                    << "Unsupported depth image format (data type): " << format;
+            }
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return GL_DEPTH24_STENCIL8;
         default:
             MGE_THROW(mge::illegal_argument)
-                << "Unsuppprted image format (internal format): " << format;
+                << "Unsupported image format (internal format): " << format;
         }
     }
 
@@ -42,6 +95,10 @@ namespace mge::opengl {
             return GL_RGB;
         case mge::image_format::data_format::RGBA:
             return GL_RGBA;
+        case mge::image_format::data_format::DEPTH:
+            return GL_DEPTH_COMPONENT;
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return GL_DEPTH_STENCIL;
         default:
             MGE_THROW(mge::illegal_argument)
                 << "Unsupported image format (pixel format): " << format;
@@ -50,6 +107,9 @@ namespace mge::opengl {
 
     GLenum texture::pixel_type(const mge::image_format& format) const
     {
+        if (format.format() == mge::image_format::data_format::DEPTH_STENCIL) {
+            return GL_UNSIGNED_INT_24_8;
+        }
         switch (format.type()) {
         case mge::data_type::INT8:
             return GL_BYTE;

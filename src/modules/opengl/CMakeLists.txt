@@ -5,7 +5,9 @@
 SET(mge_opengl_module_SOURCES
     render_system.cpp
     window.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     opengl_info.cpp
     index_buffer.cpp
     vertex_buffer.cpp
@@ -13,7 +15,8 @@ SET(mge_opengl_module_SOURCES
     error.cpp
     common.cpp
     program.cpp
-    texture.cpp)
+    texture.cpp
+    frame_buffer.cpp)
 
 ADD_LIBRARY(mge_module_opengl SHARED
             ${mge_opengl_module_SOURCES})

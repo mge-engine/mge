@@ -3,11 +3,9 @@
 // All rights reserved.
 /** @file */
 #pragma once
-#include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
-#include "mge/graphics/pipeline_state.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
@@ -230,36 +228,25 @@ namespace mge {
         }
 
         /**
-         * @brief Submit a command buffer for execution in this pass.
+         * @brief Index of this pass.
          *
-         * @param command_buffer command buffer containing draw commands
+         * @return pass index
          */
-        void submit(const command_buffer& command_buffer);
+        uint32_t index() const noexcept
+        {
+            return m_index;
+        }
 
         /**
-         * @brief Iterate over all submitted draw commands.
+         * @brief Construct a pass with only an index, without a render context.
          *
-         * Calls @c f for each draw command with the program,
-         * vertex buffer, index buffer, pipeline state, uniform block,
-         * and texture.
+         * Intended for use in unit tests. Methods that access the render
+         * context (default_viewport, default_scissor) must not be called
+         * on a pass constructed this way.
          *
-         * @tparam F callable type
-         * @param f callable invoked for each draw command
+         * @param index pass index
          */
-        template <typename F> void for_each_draw_command(F&& f) const
-        {
-            for (const auto& cmd : m_draw_commands) {
-                f(cmd.program,
-                  cmd.vertices,
-                  cmd.indices,
-                  cmd.state,
-                  cmd.uniform_block,
-                  cmd.textures,
-                  cmd.index_count,
-                  cmd.index_offset,
-                  cmd.scissor);
-            }
-        }
+        explicit pass(uint32_t index) noexcept;
 
     private:
         friend class render_context;
@@ -277,21 +264,6 @@ namespace mge {
         bool                     m_clear_color_enabled{false};
         bool                     m_clear_depth_enabled{false};
         bool                     m_clear_stencil_enabled{false};
-
-        struct draw_command
-        {
-            program_handle        program;
-            vertex_buffer_handle  vertices;
-            index_buffer_handle   indices;
-            mge::pipeline_state   state;
-            mge::uniform_block*   uniform_block{nullptr};
-            texture_binding_list  textures;
-            uint32_t              index_count{0};
-            uint32_t              index_offset{0};
-            mge::rectangle        scissor{};
-        };
-
-        std::vector<draw_command> m_draw_commands;
     };
 
 } // namespace mge

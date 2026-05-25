@@ -12,12 +12,12 @@
 
 namespace mge::opengl {
 
-    class render_context;
+    class render_context_base;
 
     class program : public mge::program
     {
     public:
-        program(render_context& context);
+        program(render_context_base& context);
         virtual ~program();
 
         void on_link() override;

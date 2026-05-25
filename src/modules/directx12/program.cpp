@@ -6,7 +6,7 @@
 #include "mge/core/to_underlying.hpp"
 #include "mge/slang/slang_compiler.hpp"
 #include "mge/win32/com_scope.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "shader.hpp"
 
 namespace mge {
@@ -15,14 +15,13 @@ namespace mge {
 
 namespace mge::dx12 {
 
-    program::program(render_context& context)
+    program::program(render_context_base& context)
         : ::mge::program(context)
     {}
 
     program::~program()
     {
-        auto dx12_context = static_cast<dx12::render_context*>(&context());
-        dx12_context->remove_pipeline_state(this);
+        dx12_context(context()).remove_pipeline_state(this);
     }
 
     void program::on_link()

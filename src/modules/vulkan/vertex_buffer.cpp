@@ -3,11 +3,11 @@
 // All rights reserved.
 #include "vertex_buffer.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::vulkan {
 
-    vertex_buffer::vertex_buffer(render_context&           context,
+    vertex_buffer::vertex_buffer(render_context_base&       context,
                                  const mge::vertex_layout& layout,
                                  size_t                    data_size)
         : mge::vertex_buffer(context, layout, data_size)

@@ -6,7 +6,7 @@
 #include "glslang.hpp"
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "spirv-reflect/spirv_reflect.h"
 
 namespace mge {
@@ -15,7 +15,7 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    shader::shader(render_context& context, shader_type type)
+    shader::shader(render_context_base& context, shader_type type)
         : mge::shader(context, type)
         , m_vulkan_context(context)
         , m_shader_module(VK_NULL_HANDLE)
