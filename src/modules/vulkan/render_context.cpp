@@ -4,15 +4,12 @@
 #include "render_context.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
-#include "index_buffer.hpp"
-#include "program.hpp"
+#include "frame_buffer.hpp"
 #include "render_system.hpp"
-#include "shader.hpp"
 #include "texture.hpp"
-#include "vertex_buffer.hpp"
 #include "window.hpp"
 
-#include "mge/core/configuration.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/memory_image.hpp"
@@ -27,103 +24,9 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    static inline VkBlendFactor blend_factor_to_vulkan(blend_factor factor)
-    {
-        switch (factor) {
-        case blend_factor::ZERO:
-            return VK_BLEND_FACTOR_ZERO;
-        case blend_factor::ONE:
-            return VK_BLEND_FACTOR_ONE;
-        case blend_factor::SRC_COLOR:
-            return VK_BLEND_FACTOR_SRC_COLOR;
-        case blend_factor::ONE_MINUS_SRC_COLOR:
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
-        case blend_factor::DST_COLOR:
-            return VK_BLEND_FACTOR_DST_COLOR;
-        case blend_factor::ONE_MINUS_DST_COLOR:
-            return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
-        case blend_factor::SRC_ALPHA:
-            return VK_BLEND_FACTOR_SRC_ALPHA;
-        case blend_factor::ONE_MINUS_SRC_ALPHA:
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-        case blend_factor::DST_ALPHA:
-            return VK_BLEND_FACTOR_DST_ALPHA;
-        case blend_factor::ONE_MINUS_DST_ALPHA:
-            return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
-        case blend_factor::CONSTANT_COLOR:
-            return VK_BLEND_FACTOR_CONSTANT_COLOR;
-        case blend_factor::ONE_MINUS_CONSTANT_COLOR:
-            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR;
-        case blend_factor::CONSTANT_ALPHA:
-            return VK_BLEND_FACTOR_CONSTANT_ALPHA;
-        case blend_factor::ONE_MINUS_CONSTANT_ALPHA:
-            return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_ALPHA;
-        case blend_factor::SRC_ALPHA_SATURATE:
-            return VK_BLEND_FACTOR_SRC_ALPHA_SATURATE;
-        case blend_factor::SRC1_COLOR:
-            return VK_BLEND_FACTOR_SRC1_COLOR;
-        case blend_factor::ONE_MINUS_SRC1_COLOR:
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR;
-        case blend_factor::SRC1_ALPHA:
-            return VK_BLEND_FACTOR_SRC1_ALPHA;
-        case blend_factor::ONE_MINUS_SRC1_ALPHA:
-            return VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA;
-        default:
-            MGE_THROW(mge::illegal_argument)
-                << "Unknown blend factor: " << factor;
-        }
-    }
-
-    static inline VkBlendOp blend_operation_to_vulkan(blend_operation op)
-    {
-        switch (op) {
-        case blend_operation::NONE:
-            return VK_BLEND_OP_ADD;
-        case blend_operation::ADD:
-            return VK_BLEND_OP_ADD;
-        case blend_operation::SUBTRACT:
-            return VK_BLEND_OP_SUBTRACT;
-        case blend_operation::REVERSE_SUBTRACT:
-            return VK_BLEND_OP_REVERSE_SUBTRACT;
-        case blend_operation::MIN:
-            return VK_BLEND_OP_MIN;
-        case blend_operation::MAX:
-            return VK_BLEND_OP_MAX;
-        default:
-            MGE_THROW(mge::illegal_argument)
-                << "Unknown blend operation: " << op;
-        }
-    }
-
-    static inline VkCompareOp depth_test_to_vulkan(mge::test func)
-    {
-        switch (func) {
-        case mge::test::NEVER:
-            return VK_COMPARE_OP_NEVER;
-        case mge::test::LESS:
-            return VK_COMPARE_OP_LESS;
-        case mge::test::EQUAL:
-            return VK_COMPARE_OP_EQUAL;
-        case mge::test::LESS_EQUAL:
-            return VK_COMPARE_OP_LESS_OR_EQUAL;
-        case mge::test::GREATER:
-            return VK_COMPARE_OP_GREATER;
-        case mge::test::NOT_EQUAL:
-            return VK_COMPARE_OP_NOT_EQUAL;
-        case mge::test::GREATER_EQUAL:
-            return VK_COMPARE_OP_GREATER_OR_EQUAL;
-        case mge::test::ALWAYS:
-            return VK_COMPARE_OP_ALWAYS;
-        default:
-            MGE_THROW(mge::illegal_argument)
-                << "Unknown depth test: " << static_cast<int>(func);
-        }
-    }
-
     render_context::render_context(mge::vulkan::render_system& render_system_,
                                    window&                     window_)
-        : mge::render_context(render_system_, window_.extent())
-        , m_render_system(render_system_.shared_from_this())
+        : render_context_base(render_system_, window_.extent())
         , m_window(window_)
     {
         try {
@@ -135,7 +38,6 @@ namespace mge::vulkan {
             init_capabilities();
             fetch_surface_capabilities();
             choose_extent();
-            // Update base class extent to actual framebuffer pixel size
             mge::render_context::m_extent = {m_extent.width, m_extent.height};
             create_swap_chain();
             create_image_views();
@@ -149,9 +51,6 @@ namespace mge::vulkan {
             create_semaphores();
             create_descriptor_pool();
 
-            // For Vulkan, RenderDoc must be injected before vkCreateInstance
-            // So we don't set the context programmatically - instead launch
-            // the application through RenderDoc UI or renderdoccmd
             auto fd = m_render_system->frame_debugger();
             if (fd) {
                 MGE_INFO_TRACE(
@@ -181,32 +80,11 @@ namespace mge::vulkan {
         teardown();
     }
 
-    mge::index_buffer* render_context::on_create_index_buffer(data_type dt,
-                                                              size_t data_size)
+    std::vector<const char*> render_context::get_device_extensions() const
     {
-        return new index_buffer(*this, dt, data_size);
-    }
-
-    mge::vertex_buffer*
-    render_context::on_create_vertex_buffer(const vertex_layout& layout,
-                                            size_t               data_size)
-    {
-        return new mge::vulkan::vertex_buffer(*this, layout, data_size);
-    }
-
-    mge::shader* render_context::on_create_shader(shader_type t)
-    {
-        return new shader(*this, t);
-    }
-
-    mge::program* render_context::on_create_program()
-    {
-        return new mge::vulkan::program(*this);
-    }
-
-    mge::texture_ref render_context::create_texture(texture_type type)
-    {
-        return std::make_shared<mge::vulkan::texture>(*this, type);
+        std::vector<const char*> extensions;
+        extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+        return extensions;
     }
 
     void render_context::create_surface()
@@ -220,10 +98,9 @@ namespace mge::vulkan {
         }
         VkWin32SurfaceCreateInfoKHR create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-        // no need to release module handle
         create_info.hinstance = GetModuleHandle(nullptr);
         create_info.hwnd = m_window.hwnd();
-        create_info.flags = 0; // must be 0, reserved
+        create_info.flags = 0;
         CHECK_VK_CALL(m_render_system->vkCreateWin32SurfaceKHR(
             m_render_system->instance(),
             &create_info,
@@ -240,68 +117,11 @@ namespace mge::vulkan {
 #endif
     }
 
-    void render_context::create_device()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Create logical device");
-        VkDeviceQueueCreateInfo queue_create_info{};
-        queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queue_create_info.queueFamilyIndex =
-            m_render_system->graphics_queue_index();
-        queue_create_info.queueCount = 1;
-        float queue_priority = 1.0f;
-        queue_create_info.pQueuePriorities = &queue_priority;
-
-        VkPhysicalDeviceFeatures device_features{};
-
-        VkDeviceCreateInfo device_create_info{};
-        device_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        device_create_info.pQueueCreateInfos = &queue_create_info;
-        device_create_info.queueCreateInfoCount = 1;
-        device_create_info.pEnabledFeatures = &device_features;
-
-        std::vector<const char*> device_extensions;
-        device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-#ifdef MGE_OS_MACOSX
-        device_extensions.push_back("VK_KHR_portability_subset");
-#endif
-
-        std::vector<const char*> device_layers;
-        if (m_render_system->debug()) {
-            device_layers.push_back("VK_LAYER_KHRONOS_validation");
-        }
-        device_create_info.ppEnabledLayerNames = device_layers.data();
-        device_create_info.enabledLayerCount =
-            static_cast<uint32_t>(device_layers.size());
-        device_create_info.enabledExtensionCount =
-            static_cast<uint32_t>(device_extensions.size());
-        device_create_info.ppEnabledExtensionNames = device_extensions.data();
-
-        CHECK_VK_CALL(
-            m_render_system->vkCreateDevice(m_render_system->physical_device(),
-                                            &device_create_info,
-                                            nullptr,
-                                            &m_device));
-        MGE_DEBUG_TRACE(VULKAN,
-                        "Created logical device: {}",
-                        static_cast<void*>(m_device));
-    }
-
     void render_context::teardown()
     {
-        // Clean up uniform buffers
-        for (auto& [ub, data] : m_uniform_buffers) {
-            if (data.buffer != VK_NULL_HANDLE) {
-                vmaDestroyBuffer(m_allocator, data.buffer, data.allocation);
-            }
-        }
-        m_uniform_buffers.clear();
-
-        // Clean up descriptor pool
-        if (vkDestroyDescriptorPool && m_descriptor_pool) {
-            vkDestroyDescriptorPool(m_device, m_descriptor_pool, nullptr);
-            m_descriptor_pool = VK_NULL_HANDLE;
-        }
-        m_descriptor_sets.clear();
+        // Clean up uniform buffers and descriptor pool (shared)
+        // These are cleaned up in teardown_shared, but we must clean
+        // windowed-specific resources first.
 
         if (vkDestroySemaphore) {
             for (auto s : m_image_available_semaphores) {
@@ -343,11 +163,6 @@ namespace mge::vulkan {
                 mge::checked_cast<uint32_t>(m_primary_command_buffers.size()),
                 m_primary_command_buffers.data());
             m_primary_command_buffers.clear();
-        }
-
-        if (vkDestroyCommandPool && m_graphics_command_pool) {
-            vkDestroyCommandPool(m_device, m_graphics_command_pool, nullptr);
-            m_graphics_command_pool = VK_NULL_HANDLE;
         }
 
         if (vkDestroyRenderPass && m_render_pass) {
@@ -394,19 +209,7 @@ namespace mge::vulkan {
         m_surface_formats.clear();
         m_surface_present_modes.clear();
 
-        m_queue = VK_NULL_HANDLE;
-
-        if (m_allocator) {
-            vmaDestroyAllocator(m_allocator);
-            m_allocator = VK_NULL_HANDLE;
-        }
-
-        if (m_device && vkDestroyDevice) {
-            vkDestroyDevice(m_device, nullptr);
-            m_device = VK_NULL_HANDLE;
-        }
-
-        clear_functions();
+        teardown_shared();
 
         if (m_surface != VK_NULL_HANDLE &&
             m_render_system->vkDestroySurfaceKHR) {
@@ -415,91 +218,6 @@ namespace mge::vulkan {
                                                  nullptr);
             m_surface = VK_NULL_HANDLE;
         }
-    }
-
-    static void* resolve_device_function(void*                   original,
-                                         PFN_vkGetDeviceProcAddr getDeviceProc,
-                                         VkDevice                device,
-                                         const char*             name)
-    {
-        void* result = original;
-        auto  ptr = getDeviceProc(device, name);
-        if (ptr) {
-            // Too much output
-            // MGE_DEBUG_TRACE(VULKAN)
-            //    << "Replace " << name << ": " << (void*)(original) << " by "
-            //    << (void*)ptr;
-            result = reinterpret_cast<void*>(ptr);
-        }
-        return result;
-    }
-
-    void render_context::resolve_device_functions()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Resolve device functions");
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(push)
-#    pragma warning(disable : 4191)
-#endif
-#define RESOLVE(X)                                                             \
-    this->X = reinterpret_cast<decltype(this->X)>(                             \
-        resolve_device_function((void*)m_render_system->X,                     \
-                                m_render_system->vkGetDeviceProcAddr,          \
-                                m_device,                                      \
-                                #X));
-
-#define BASIC_INSTANCE_FUNCTION(X)
-#define INSTANCE_FUNCTION(X)
-#define DEVICE_FUNCTION(X) RESOLVE(X)
-
-#include "vulkan_core.inc"
-#ifdef MGE_OS_WINDOWS
-#    include "vulkan_win32.inc"
-#endif
-
-#undef BASIC_INSTANCE_FUNCTION
-#undef INSTANCE_FUNCTION
-#undef DEVICE_FUNCTION
-#undef RESOLVE
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(pop)
-#endif
-    }
-
-    void render_context::clear_functions()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Clear device functions");
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(push)
-#    pragma warning(disable : 4191)
-#endif
-#define RESOLVE(X) this->X = nullptr;
-
-#define BASIC_INSTANCE_FUNCTION(X) RESOLVE(X)
-#define INSTANCE_FUNCTION(X) RESOLVE(X)
-#define DEVICE_FUNCTION(X) RESOLVE(X)
-
-#include "vulkan_core.inc"
-#ifdef MGE_OS_WINDOWS
-#    include "vulkan_win32.inc"
-#endif
-
-#undef BASIC_INSTANCE_FUNCTION
-#undef INSTANCE_FUNCTION
-#undef DEVICE_FUNCTION
-#undef RESOLVE
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(pop)
-#endif
-    }
-
-    void render_context::get_device_queue()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Get device queue");
-        vkGetDeviceQueue(m_device,
-                         m_render_system->graphics_queue_index(),
-                         0,
-                         &m_queue);
     }
 
     void render_context::fetch_surface_capabilities()
@@ -676,32 +394,6 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::find_depth_format()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Find depth format");
-        const VkFormat candidates[] = {
-            VK_FORMAT_D24_UNORM_S8_UINT,
-            VK_FORMAT_D32_SFLOAT,
-        };
-
-        for (auto format : candidates) {
-            VkFormatProperties props;
-            m_render_system->vkGetPhysicalDeviceFormatProperties(
-                m_render_system->physical_device(),
-                format,
-                &props);
-            if (props.optimalTilingFeatures &
-                VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
-                m_depth_format = format;
-                MGE_DEBUG_TRACE(VULKAN,
-                                "Selected depth format: {}",
-                                static_cast<int>(format));
-                return;
-            }
-        }
-        MGE_THROW(mge::vulkan::error) << "No supported depth format found";
-    }
-
     void render_context::create_depth_resources()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create depth resources");
@@ -754,118 +446,16 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::init_capabilities()
-    {
-        VkPhysicalDeviceProperties props;
-        m_render_system->vkGetPhysicalDeviceProperties(
-            m_render_system->physical_device(),
-            &props);
-        const VkPhysicalDeviceLimits& limits = props.limits;
-
-        class capabilities : public mge::render_context::capabilities
-        {
-        public:
-            explicit capabilities(const VkPhysicalDeviceLimits& l)
-            {
-                m_max_texture_size = l.maxImageDimension2D;
-                m_max_texture_3d_size = l.maxImageDimension3D;
-                m_max_texture_cube_size = l.maxImageDimensionCube;
-                m_max_texture_array_layers = l.maxImageArrayLayers;
-                m_max_vertex_attributes = l.maxVertexInputAttributes;
-                m_max_uniform_buffer_bindings =
-                    l.maxDescriptorSetUniformBuffers;
-                m_max_texture_bindings = l.maxDescriptorSetSampledImages;
-                m_max_color_attachments = l.maxColorAttachments;
-            }
-            ~capabilities() = default;
-
-            uint32_t max_texture_size() const override
-            {
-                return m_max_texture_size;
-            }
-
-            uint32_t max_texture_3d_size() const override
-            {
-                return m_max_texture_3d_size;
-            }
-
-            uint32_t max_texture_cube_size() const override
-            {
-                return m_max_texture_cube_size;
-            }
-
-            uint32_t max_texture_array_layers() const override
-            {
-                return m_max_texture_array_layers;
-            }
-
-            uint32_t max_vertex_attributes() const override
-            {
-                return m_max_vertex_attributes;
-            }
-
-            uint32_t max_uniform_buffer_bindings() const override
-            {
-                return m_max_uniform_buffer_bindings;
-            }
-
-            uint32_t max_texture_bindings() const override
-            {
-                return m_max_texture_bindings;
-            }
-
-            uint32_t max_color_attachments() const override
-            {
-                return m_max_color_attachments;
-            }
-
-        private:
-            uint32_t m_max_texture_size{0};
-            uint32_t m_max_texture_3d_size{0};
-            uint32_t m_max_texture_cube_size{0};
-            uint32_t m_max_texture_array_layers{0};
-            uint32_t m_max_vertex_attributes{0};
-            uint32_t m_max_uniform_buffer_bindings{0};
-            uint32_t m_max_texture_bindings{0};
-            uint32_t m_max_color_attachments{0};
-        };
-
-        m_capabilities = std::make_unique<capabilities>(limits);
-    }
-
-    void render_context::create_allocator()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Create allocator");
-        VmaVulkanFunctions vk_functions = {};
-        vk_functions.vkGetInstanceProcAddr =
-            m_render_system->library().vkGetInstanceProcAddr;
-        vk_functions.vkGetDeviceProcAddr = m_render_system->vkGetDeviceProcAddr;
-
-        VmaAllocatorCreateInfo allocator_info = {};
-        allocator_info.physicalDevice = m_render_system->physical_device();
-        allocator_info.device = m_device;
-        allocator_info.instance = m_render_system->instance();
-        allocator_info.flags = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
-        allocator_info.pVulkanFunctions = &vk_functions;
-        allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
-        CHECK_VK_CALL(vmaCreateAllocator(&allocator_info, &m_allocator));
-    }
-
     void render_context::create_render_pass()
     {
         MGE_DEBUG_TRACE(VULKAN, "Create render pass");
         VkAttachmentDescription color_attachment = {};
-        // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        // explicit clear via vkCmdClearAttachments
         color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-        // store content of the image for later
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-        // nothing needed for stencil
         color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-
         color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
@@ -926,21 +516,6 @@ namespace mge::vulkan {
                                          &m_render_pass));
     }
 
-    void render_context::create_graphics_command_pool()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Create graphics command pool");
-        VkCommandPoolCreateInfo pool_info = {};
-        pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        pool_info.queueFamilyIndex = m_render_system->graphics_queue_index();
-        pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT |
-                          VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-
-        CHECK_VK_CALL(vkCreateCommandPool(m_device,
-                                          &pool_info,
-                                          nullptr,
-                                          &m_graphics_command_pool));
-    }
-
     void render_context::create_primary_command_buffers()
     {
         MGE_DEBUG_TRACE(VULKAN,
@@ -992,7 +567,6 @@ namespace mge::vulkan {
         m_frame_finished_fences.resize(m_swap_chain_images.size());
         VkFenceCreateInfo fence_info = {};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-        // enable first draw begin to pass through
         fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
         for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
             CHECK_VK_CALL(vkCreateFence(m_device,
@@ -1021,39 +595,14 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::create_descriptor_pool()
-    {
-        MGE_DEBUG_TRACE(VULKAN, "Create descriptor pool");
-
-        std::array<VkDescriptorPoolSize, 2> pool_sizes = {};
-        pool_sizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        pool_sizes[0].descriptorCount = 1000;
-        pool_sizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        pool_sizes[1].descriptorCount = 1000;
-
-        VkDescriptorPoolCreateInfo pool_info = {};
-        pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
-        pool_info.pPoolSizes = pool_sizes.data();
-        pool_info.maxSets = 1000;
-        pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-
-        CHECK_VK_CALL(vkCreateDescriptorPool(m_device,
-                                             &pool_info,
-                                             nullptr,
-                                             &m_descriptor_pool));
-    }
-
     void render_context::wait_for_frame_finished()
     {
-        // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
                                       &m_frame_finished_fences[m_current_frame],
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
         ++m_frame;
-        // reset fence
         CHECK_VK_CALL(vkResetFences(m_device,
                                     1,
                                     &m_frame_finished_fences[m_current_frame]));
@@ -1070,843 +619,46 @@ namespace mge::vulkan {
                                   &m_current_image_index));
     }
 
-#if 0
-    void render_context::begin_draw()
-    {
-        if (m_current_frame_state != frame_state::BEFORE_DRAW) {
-            MGE_THROW(error) << "Invalid frame state for start of drawing: "
-                             << m_current_frame_state;
-        }
-
-        CHECK_VK_CALL(
-            vkResetCommandBuffer(current_primary_command_buffer(), 0));
-
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags = 0;
-        begin_info.pInheritanceInfo = nullptr;
-        CHECK_VK_CALL(vkBeginCommandBuffer(current_primary_command_buffer(),
-                                           &begin_info));
-
-        VkRenderPassBeginInfo render_pass_info{};
-        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        render_pass_info.renderPass = m_render_pass;
-        render_pass_info.framebuffer =
-            m_swap_chain_framebuffers[m_current_image_index];
-
-        render_pass_info.renderArea.offset = {0, 0};
-        render_pass_info.renderArea.extent = m_extent;
-
-        VkClearValue clear_color = {{{0.0f, 0.0f, 0.0f, 1.0f}}};
-        render_pass_info.clearValueCount = 1;
-        render_pass_info.pClearValues = &clear_color;
-
-        vkCmdBeginRenderPass(current_primary_command_buffer(),
-                             &render_pass_info,
-                             VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS);
-        m_current_frame_state = frame_state::DRAW;
-        // MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
-    }
-#endif
-#if 0
-    void render_context::tmp_draw_all()
-    {
-        wait_for_frame_finished();
-        acquire_next_image();
-
-        CHECK_VK_CALL(vkResetCommandBuffer(m_tmp_command_buffer, 0));
-
-        // begin command buffer recording
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags = 0;
-        begin_info.pInheritanceInfo = nullptr;
-        CHECK_VK_CALL(vkBeginCommandBuffer(m_tmp_command_buffer, &begin_info));
-
-        VkRenderPassBeginInfo render_pass_info{};
-        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        render_pass_info.renderPass = m_render_pass;
-        render_pass_info.framebuffer =
-            m_swap_chain_framebuffers[m_current_image_index];
-
-        render_pass_info.renderArea.offset = {0, 0};
-        render_pass_info.renderArea.extent = m_extent;
-
-        VkClearValue clear_color = {{{0.0f, 0.0f, 1.0f, 1.0f}}};
-        render_pass_info.clearValueCount = 1;
-        render_pass_info.pClearValues = &clear_color;
-
-        vkCmdBeginRenderPass(m_tmp_command_buffer,
-                             &render_pass_info,
-                             VK_SUBPASS_CONTENTS_INLINE);
-
-        VkViewport viewport{};
-        viewport.x = 0.0f;
-        viewport.y = 0.0f;
-        viewport.width = static_cast<float>(m_extent.width);
-        viewport.height = static_cast<float>(m_extent.height);
-        viewport.minDepth = 0.0f;
-        viewport.maxDepth = 1.0f;
-        vkCmdSetViewport(m_tmp_command_buffer, 0, 1, &viewport);
-
-        VkRect2D scissor{};
-        scissor.offset = {0, 0};
-        scissor.extent = m_extent;
-        vkCmdSetScissor(m_tmp_command_buffer, 0, 1, &scissor);
-
-        // pipeline
-        // draw
-
-        vkCmdEndRenderPass(m_tmp_command_buffer);
-        CHECK_VK_CALL(vkEndCommandBuffer(m_tmp_command_buffer));
-
-        VkSubmitInfo submit_info{};
-        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore wait_semaphores[] = {
-            m_image_available_semaphores[m_current_frame]};
-        VkSemaphore signal_semaphores[] = {
-            m_render_finished_semaphores[m_current_frame]};
-        VkPipelineStageFlags wait_stages[] = {
-            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        submit_info.waitSemaphoreCount = 1;
-        submit_info.pWaitSemaphores = wait_semaphores;
-        submit_info.pWaitDstStageMask = wait_stages;
-        submit_info.signalSemaphoreCount = 1;
-        submit_info.pSignalSemaphores = signal_semaphores;
-        submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = &m_tmp_command_buffer;
-
-        CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fences[m_current_frame]));
-
-        VkPresentInfoKHR present_info = {};
-        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-        present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = signal_semaphores;
-        present_info.swapchainCount = 1;
-        present_info.pSwapchains = &m_swap_chain_khr;
-        present_info.pImageIndices = &m_current_image_index;
-        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-    }
-#endif
-
-    mge::image_ref render_context::screenshot()
-    {
-        VkImage      swap_image = m_swap_chain_images[m_current_image_index];
-        uint32_t     w = m_extent.width;
-        uint32_t     h = m_extent.height;
-        VkDeviceSize image_size = static_cast<VkDeviceSize>(w) * h * 4;
-
-        // Create staging buffer
-        VkBufferCreateInfo buffer_info = {};
-        buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        buffer_info.size = image_size;
-        buffer_info.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT;
-        buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-        VmaAllocationCreateInfo alloc_info = {};
-        alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
-        alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
-
-        VkBuffer          staging_buffer = VK_NULL_HANDLE;
-        VmaAllocation     staging_alloc = VK_NULL_HANDLE;
-        VmaAllocationInfo staging_alloc_info = {};
-        CHECK_VK_CALL(vmaCreateBuffer(m_allocator,
-                                      &buffer_info,
-                                      &alloc_info,
-                                      &staging_buffer,
-                                      &staging_alloc,
-                                      &staging_alloc_info));
-
-        // Allocate temporary command buffer
-        VkCommandBufferAllocateInfo cmd_alloc_info = {};
-        cmd_alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        cmd_alloc_info.commandPool = m_graphics_command_pool;
-        cmd_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        cmd_alloc_info.commandBufferCount = 1;
-
-        VkCommandBuffer cmd = VK_NULL_HANDLE;
-        CHECK_VK_CALL(
-            vkAllocateCommandBuffers(m_device, &cmd_alloc_info, &cmd));
-
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        CHECK_VK_CALL(vkBeginCommandBuffer(cmd, &begin_info));
-
-        // Transition swap chain image: PRESENT_SRC -> TRANSFER_SRC
-        VkImageMemoryBarrier to_transfer = {};
-        to_transfer.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-        to_transfer.srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
-        to_transfer.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-        to_transfer.oldLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        to_transfer.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-        to_transfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-        to_transfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-        to_transfer.image = swap_image;
-        to_transfer.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        to_transfer.subresourceRange.levelCount = 1;
-        to_transfer.subresourceRange.layerCount = 1;
-        vkCmdPipelineBarrier(cmd,
-                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-                             VK_PIPELINE_STAGE_TRANSFER_BIT,
-                             0,
-                             0,
-                             nullptr,
-                             0,
-                             nullptr,
-                             1,
-                             &to_transfer);
-
-        // Copy image to buffer
-        VkBufferImageCopy region = {};
-        region.bufferOffset = 0;
-        region.bufferRowLength = 0;
-        region.bufferImageHeight = 0;
-        region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        region.imageSubresource.layerCount = 1;
-        region.imageOffset = {0, 0, 0};
-        region.imageExtent = {w, h, 1};
-        vkCmdCopyImageToBuffer(cmd,
-                               swap_image,
-                               VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                               staging_buffer,
-                               1,
-                               &region);
-
-        // Transition back: TRANSFER_SRC -> PRESENT_SRC
-        VkImageMemoryBarrier to_present = {};
-        to_present.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-        to_present.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
-        to_present.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
-        to_present.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
-        to_present.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        to_present.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-        to_present.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
-        to_present.image = swap_image;
-        to_present.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        to_present.subresourceRange.levelCount = 1;
-        to_present.subresourceRange.layerCount = 1;
-        vkCmdPipelineBarrier(cmd,
-                             VK_PIPELINE_STAGE_TRANSFER_BIT,
-                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
-                             0,
-                             0,
-                             nullptr,
-                             0,
-                             nullptr,
-                             1,
-                             &to_present);
-
-        CHECK_VK_CALL(vkEndCommandBuffer(cmd));
-
-        // Submit and wait
-        VkFenceCreateInfo fence_info = {};
-        fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-        VkFence fence = VK_NULL_HANDLE;
-        CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &fence));
-
-        VkSubmitInfo submit_info = {};
-        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = &cmd;
-        CHECK_VK_CALL(vkQueueSubmit(m_queue, 1, &submit_info, fence));
-        CHECK_VK_CALL(
-            vkWaitForFences(m_device, 1, &fence, VK_TRUE, UINT64_MAX));
-
-        // Read data
-        mge::image_format fmt(mge::image_format::data_format::RGBA,
-                              mge::data_type::UINT8);
-        auto img = std::make_shared<mge::memory_image>(fmt, mge::extent(w, h));
-
-        auto* dst = static_cast<uint8_t*>(img->data());
-        auto* src = static_cast<const uint8_t*>(staging_alloc_info.pMappedData);
-        uint32_t row_size = w * 4;
-
-        bool need_swizzle =
-            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_UNORM ||
-            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_SRGB;
-
-        for (uint32_t y = 0; y < h; ++y) {
-            memcpy(dst + y * row_size, src + y * row_size, row_size);
-            if (need_swizzle) {
-                uint8_t* row = dst + y * row_size;
-                for (uint32_t x = 0; x < w; ++x) {
-                    std::swap(row[x * 4], row[x * 4 + 2]);
-                }
-            }
-        }
-
-        // Cleanup
-        vkDestroyFence(m_device, fence, nullptr);
-        vkFreeCommandBuffers(m_device, m_graphics_command_pool, 1, &cmd);
-        vmaDestroyBuffer(m_allocator, staging_buffer, staging_alloc);
-
-        return img;
-    }
-
-    void render_context::bind_uniform_block(VkCommandBuffer command_buffer,
-                                            mge::vulkan::program& vk_program,
-                                            mge::uniform_block&   ub)
-    {
-        VkDescriptorSet descriptor_set = prepare_uniform_block(vk_program, ub);
-        if (descriptor_set != VK_NULL_HANDLE) {
-            vkCmdBindDescriptorSets(command_buffer,
-                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                    vk_program.pipeline_layout(),
-                                    0,
-                                    1,
-                                    &descriptor_set,
-                                    0,
-                                    nullptr);
-        }
-    }
-
-    VkDescriptorSet
-    render_context::prepare_uniform_block(mge::vulkan::program& vk_program,
-                                          mge::uniform_block&   ub)
-    {
-        // Sync values from global uniforms
-        ub.sync_from_globals();
-
-        // Get or create uniform buffer
-        auto                 it = m_uniform_buffers.find(&ub);
-        uniform_buffer_data* ub_data = nullptr;
-
-        if (it != m_uniform_buffers.end()) {
-            ub_data = &it->second;
-        } else {
-            // Create new uniform buffer
-            size_t aligned_size = (ub.data_size() + 255) & ~255;
-
-            VkBufferCreateInfo buffer_info = {};
-            buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-            buffer_info.size = aligned_size;
-            buffer_info.usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-            buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-            VmaAllocationCreateInfo alloc_info = {};
-            alloc_info.usage = VMA_MEMORY_USAGE_CPU_TO_GPU;
-            alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
-
-            uniform_buffer_data new_data;
-            VmaAllocationInfo   allocation_info = {};
-
-            VkResult result = vmaCreateBuffer(m_allocator,
-                                              &buffer_info,
-                                              &alloc_info,
-                                              &new_data.buffer,
-                                              &new_data.allocation,
-                                              &allocation_info);
-            if (result != VK_SUCCESS) {
-                MGE_ERROR_TRACE(VULKAN, "Failed to create uniform buffer");
-                return VK_NULL_HANDLE;
-            }
-
-            new_data.mapped_data = allocation_info.pMappedData;
-            new_data.version = 0;
-
-            m_uniform_buffers[&ub] = new_data;
-            ub_data = &m_uniform_buffers[&ub];
-        }
-
-        // Update buffer if version changed
-        if (ub_data->version != ub.version()) {
-            if (ub_data->mapped_data) {
-                memcpy(ub_data->mapped_data, ub.data(), ub.data_size());
-                CHECK_VK_CALL(vmaFlushAllocation(m_allocator,
-                                                 ub_data->allocation,
-                                                 0,
-                                                 ub.data_size()));
-            }
-            ub_data->version = ub.version();
-        }
-
-        // Get or create descriptor set
-        auto desc_key = std::make_tuple(&ub,
-                                        std::vector<mge::texture*>{},
-                                        vk_program.descriptor_set_layout());
-        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
-        auto            desc_it = m_descriptor_sets.find(desc_key);
-
-        if (desc_it != m_descriptor_sets.end()) {
-            descriptor_set = desc_it->second;
-        } else {
-            // Allocate new descriptor set
-            VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
-            if (layout == VK_NULL_HANDLE) {
-                return VK_NULL_HANDLE;
-            }
-
-            VkDescriptorSetAllocateInfo alloc_info = {};
-            alloc_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-            alloc_info.descriptorPool = m_descriptor_pool;
-            alloc_info.descriptorSetCount = 1;
-            alloc_info.pSetLayouts = &layout;
-
-            VkResult result = vkAllocateDescriptorSets(m_device,
-                                                       &alloc_info,
-                                                       &descriptor_set);
-            if (result != VK_SUCCESS) {
-                return VK_NULL_HANDLE;
-            }
-
-            // Update descriptor set with uniform buffer
-            VkDescriptorBufferInfo buffer_info = {};
-            buffer_info.buffer = ub_data->buffer;
-            buffer_info.offset = 0;
-            buffer_info.range = ub.data_size();
-
-            // Find binding point for this uniform block
-            uint32_t binding_point = 0;
-            for (const auto& ub_metadata : vk_program.uniform_buffers()) {
-                if (ub_metadata.name == ub.name()) {
-                    binding_point = ub_metadata.location;
-                    break;
-                }
-            }
-
-            VkWriteDescriptorSet descriptor_write = {};
-            descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-            descriptor_write.dstSet = descriptor_set;
-            descriptor_write.dstBinding = binding_point;
-            descriptor_write.dstArrayElement = 0;
-            descriptor_write.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-            descriptor_write.descriptorCount = 1;
-            descriptor_write.pBufferInfo = &buffer_info;
-
-            vkUpdateDescriptorSets(m_device, 1, &descriptor_write, 0, nullptr);
-
-            m_descriptor_sets[desc_key] = descriptor_set;
-        }
-
-        return descriptor_set;
-    }
-
-    void render_context::bind_texture(VkCommandBuffer       command_buffer,
-                                      mge::vulkan::program& vk_program,
-                                      mge::texture*         tex,
-                                      mge::uniform_block*   ub)
-    {
-        mge::texture_binding_list textures;
-        if (tex) {
-            textures.push_back({0, tex});
-        }
-        VkDescriptorSet descriptor_set =
-            prepare_texture(vk_program, textures, ub);
-        if (descriptor_set != VK_NULL_HANDLE) {
-            vkCmdBindDescriptorSets(command_buffer,
-                                    VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                    vk_program.pipeline_layout(),
-                                    0,
-                                    1,
-                                    &descriptor_set,
-                                    0,
-                                    nullptr);
-        }
-    }
-
-    VkDescriptorSet
-    render_context::prepare_texture(mge::vulkan::program&            vk_program,
-                                    const mge::texture_binding_list& textures,
-                                    mge::uniform_block*              ub)
-    {
-        if (textures.empty()) {
-            return VK_NULL_HANDLE;
-        }
-
-        const auto& sampler_bindings = vk_program.sampler_bindings();
-        if (sampler_bindings.empty()) {
-            return VK_NULL_HANDLE;
-        }
-
-        VkDescriptorSetLayout layout = vk_program.descriptor_set_layout();
-        if (layout == VK_NULL_HANDLE) {
-            return VK_NULL_HANDLE;
-        }
-
-        // Build texture pointer vector for cache key
-        // (sorted by slot for consistent key ordering)
-        std::vector<mge::texture*> tex_ptrs;
-        tex_ptrs.reserve(textures.size());
-        for (const auto& b : textures) {
-            tex_ptrs.push_back(b.texture);
-        }
-
-        auto desc_key =
-            std::make_tuple(ub ? ub : static_cast<mge::uniform_block*>(nullptr),
-                            tex_ptrs,
-                            layout);
-
-        VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
-        auto            desc_it = m_descriptor_sets.find(desc_key);
-
-        if (desc_it != m_descriptor_sets.end()) {
-            descriptor_set = desc_it->second;
-        } else {
-            // Check if there's already a set with UBO written (no textures)
-            auto ub_only_key = std::make_tuple(
-                ub ? ub : static_cast<mge::uniform_block*>(nullptr),
-                std::vector<mge::texture*>{},
-                layout);
-            auto ub_it = m_descriptor_sets.find(ub_only_key);
-
-            if (ub && ub_it != m_descriptor_sets.end()) {
-                // Need a new set with both UBO and textures written
-                VkDescriptorSetAllocateInfo alloc_info = {};
-                alloc_info.sType =
-                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-                alloc_info.descriptorPool = m_descriptor_pool;
-                alloc_info.descriptorSetCount = 1;
-                alloc_info.pSetLayouts = &layout;
-
-                VkResult result = vkAllocateDescriptorSets(m_device,
-                                                           &alloc_info,
-                                                           &descriptor_set);
-                if (result != VK_SUCCESS) {
-                    return VK_NULL_HANDLE;
-                }
-
-                // Write UBO binding
-                auto ub_buf_it = m_uniform_buffers.find(ub);
-                if (ub_buf_it != m_uniform_buffers.end()) {
-                    VkDescriptorBufferInfo buffer_info = {};
-                    buffer_info.buffer = ub_buf_it->second.buffer;
-                    buffer_info.offset = 0;
-                    buffer_info.range = ub->data_size();
-
-                    uint32_t binding_point = 0;
-                    for (const auto& ubm : vk_program.uniform_buffers()) {
-                        if (ubm.name == ub->name()) {
-                            binding_point = ubm.location;
-                            break;
-                        }
-                    }
-
-                    VkWriteDescriptorSet ubo_write = {};
-                    ubo_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                    ubo_write.dstSet = descriptor_set;
-                    ubo_write.dstBinding = binding_point;
-                    ubo_write.dstArrayElement = 0;
-                    ubo_write.descriptorType =
-                        VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-                    ubo_write.descriptorCount = 1;
-                    ubo_write.pBufferInfo = &buffer_info;
-
-                    vkUpdateDescriptorSets(m_device, 1, &ubo_write, 0, nullptr);
-                }
-            } else {
-                VkDescriptorSetAllocateInfo alloc_info = {};
-                alloc_info.sType =
-                    VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-                alloc_info.descriptorPool = m_descriptor_pool;
-                alloc_info.descriptorSetCount = 1;
-                alloc_info.pSetLayouts = &layout;
-
-                VkResult result = vkAllocateDescriptorSets(m_device,
-                                                           &alloc_info,
-                                                           &descriptor_set);
-                if (result != VK_SUCCESS) {
-                    return VK_NULL_HANDLE;
-                }
-            }
-
-            // Write texture bindings — match each sampler binding to
-            // the texture bound at the corresponding slot
-            for (const auto& sb : sampler_bindings) {
-                mge::texture* matched_tex = nullptr;
-                for (const auto& binding : textures) {
-                    if (binding.slot == sb.binding) {
-                        matched_tex = binding.texture;
-                        break;
-                    }
-                }
-                if (!matched_tex) {
-                    continue;
-                }
-
-                auto* vk_tex = static_cast<mge::vulkan::texture*>(matched_tex);
-
-                VkDescriptorImageInfo image_info = {};
-                image_info.imageLayout =
-                    VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-                image_info.imageView = vk_tex->image_view();
-                image_info.sampler = vk_tex->sampler();
-
-                VkWriteDescriptorSet descriptor_write = {};
-                descriptor_write.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                descriptor_write.dstSet = descriptor_set;
-                descriptor_write.dstBinding = sb.binding;
-                descriptor_write.dstArrayElement = 0;
-                descriptor_write.descriptorType =
-                    VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-                descriptor_write.descriptorCount = 1;
-                descriptor_write.pImageInfo = &image_info;
-
-                vkUpdateDescriptorSets(m_device,
-                                       1,
-                                       &descriptor_write,
-                                       0,
-                                       nullptr);
-            }
-
-            m_descriptor_sets[desc_key] = descriptor_set;
-        }
-
-        return descriptor_set;
-    }
-
-    void
-    render_context::draw_geometry(VkCommandBuffer            command_buffer,
-                                  mge::program*              program,
-                                  mge::vertex_buffer*        vb,
-                                  mge::index_buffer*         ib,
-                                  const mge::pipeline_state& state,
-                                  mge::uniform_block*        ub,
-                                  const mge::texture_binding_list& textures,
-                                  uint32_t                         index_count,
-                                  uint32_t                         index_offset)
-    {
-        mge::vulkan::program* vk_program =
-            static_cast<mge::vulkan::program*>(program);
-        mge::vulkan::vertex_buffer* vk_vertex_buffer =
-            static_cast<mge::vulkan::vertex_buffer*>(vb);
-        mge::vulkan::index_buffer* vk_index_buffer =
-            static_cast<mge::vulkan::index_buffer*>(ib);
-
-        VkPipeline pipeline =
-            this->pipeline(*vk_vertex_buffer, *vk_program, state);
-        vkCmdBindPipeline(command_buffer,
-                          VK_PIPELINE_BIND_POINT_GRAPHICS,
-                          pipeline);
-
-        // Bind uniform block and textures together to avoid
-        // updating a descriptor set that is already bound
-        if (ub || !textures.empty()) {
-            VkDescriptorSet descriptor_set = VK_NULL_HANDLE;
-            if (ub) {
-                descriptor_set = prepare_uniform_block(*vk_program, *ub);
-            }
-            if (!textures.empty()) {
-                descriptor_set = prepare_texture(*vk_program, textures, ub);
-            }
-            if (descriptor_set != VK_NULL_HANDLE) {
-                vkCmdBindDescriptorSets(command_buffer,
-                                        VK_PIPELINE_BIND_POINT_GRAPHICS,
-                                        vk_program->pipeline_layout(),
-                                        0,
-                                        1,
-                                        &descriptor_set,
-                                        0,
-                                        nullptr);
-            }
-        }
-
-        VkDeviceSize offsets[1]{0};
-        VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
-        vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
-        vkCmdBindIndexBuffer(command_buffer,
-                             vk_index_buffer->vk_buffer(),
-                             0,
-                             vk_index_buffer->vk_index_type());
-        uint32_t count =
-            index_count > 0
-                ? index_count
-                : static_cast<uint32_t>(vk_index_buffer->element_count());
-        vkCmdDrawIndexed(command_buffer, count, 1, index_offset, 0, 1);
-    }
-
     void render_context::render(const mge::pass& p)
     {
         if (m_current_frame_state == frame_state::BEFORE_DRAW) {
             wait_for_frame_finished();
             acquire_next_image();
+            auto cmd = current_primary_command_buffer();
+            CHECK_VK_CALL(vkResetCommandBuffer(cmd, 0));
+            VkCommandBufferBeginInfo begin_info = {};
+            begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+            CHECK_VK_CALL(vkBeginCommandBuffer(cmd, &begin_info));
+            m_current_frame_state = frame_state::DRAW;
         }
-        VkCommandBuffer command_buffer = VK_NULL_HANDLE;
+
+        VkCommandBuffer command_buffer = current_primary_command_buffer();
+
+        VkRenderPass  pass_render_pass;
+        VkFramebuffer pass_framebuffer;
+        VkExtent2D    pass_extent;
+
         if (!p.frame_buffer()) {
-            command_buffer = current_primary_command_buffer();
-            if (m_current_frame_state == frame_state::BEFORE_DRAW) {
-                CHECK_VK_CALL(vkResetCommandBuffer(command_buffer, 0));
-                VkCommandBufferBeginInfo begin_info = {};
-                begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-                begin_info.flags = 0;
-                begin_info.pInheritanceInfo = nullptr;
-                CHECK_VK_CALL(
-                    vkBeginCommandBuffer(command_buffer, &begin_info));
-            }
+            pass_render_pass = m_render_pass;
+            pass_framebuffer = m_swap_chain_framebuffers[m_current_image_index];
+            pass_extent      = m_extent;
         } else {
-            MGE_THROW_NOT_IMPLEMENTED << "Rendering to custom frame buffers "
-                                         "not implemented in Vulkan yet";
+            auto* vk_fb = static_cast<mge::vulkan::frame_buffer*>(
+                p.frame_buffer().get());
+            pass_render_pass = vk_fb->render_pass();
+            pass_framebuffer = vk_fb->vk_framebuffer();
+            pass_extent      = vk_fb->fbo_extent();
         }
 
-        VkRenderPassBeginInfo render_pass_info{};
-        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        render_pass_info.renderPass = m_render_pass;
-        render_pass_info.framebuffer =
-            m_swap_chain_framebuffers[m_current_image_index];
-
-        render_pass_info.renderArea.offset = {0, 0};
-        render_pass_info.renderArea.extent = m_extent;
-
-        vkCmdBeginRenderPass(command_buffer,
-                             &render_pass_info,
-                             VK_SUBPASS_CONTENTS_INLINE);
-
-        // use flipped view port to align with opengl and dx
-        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
-        const auto& vp = p.viewport();
-        VkViewport  viewport{};
-        viewport.x = static_cast<float>(vp.x);
-        viewport.y = static_cast<float>(vp.y) + static_cast<float>(vp.height);
-        viewport.width = static_cast<float>(vp.width);
-        viewport.height = -static_cast<float>(vp.height);
-        viewport.minDepth = vp.min_depth;
-        viewport.maxDepth = vp.max_depth;
-        vkCmdSetViewport(command_buffer, 0, 1, &viewport);
-
-        const auto& sr = p.scissor();
-        VkRect2D    scissor{};
-        scissor.offset = {static_cast<int32_t>(sr.left),
-                          static_cast<int32_t>(sr.top)};
-        scissor.extent = {static_cast<uint32_t>(sr.right - sr.left),
-                          static_cast<uint32_t>(sr.bottom - sr.top)};
-        vkCmdSetScissor(command_buffer, 0, 1, &scissor);
-
-        if (p.clear_color_enabled()) {
-            const auto&  c = p.clear_color_value();
-            VkClearValue clear_color = {};
-            clear_color.color = {{c.r, c.g, c.b, c.a}};
-            VkClearAttachment clear_attachment = {};
-            clear_attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-            clear_attachment.colorAttachment = 0;
-            clear_attachment.clearValue = clear_color;
-            VkClearRect clear_rect = {};
-            clear_rect.rect.offset = {0, 0};
-            clear_rect.rect.extent = extent();
-            clear_rect.baseArrayLayer = 0;
-            clear_rect.layerCount = 1;
-            vkCmdClearAttachments(command_buffer,
-                                  1,
-                                  &clear_attachment,
-                                  1,
-                                  &clear_rect);
-        }
-
-        if (p.clear_depth_enabled() || p.clear_stencil_enabled()) {
-            VkClearValue      clear_depth_stencil = {};
-            VkClearAttachment clear_attachment = {};
-            if (p.clear_depth_enabled()) {
-                clear_depth_stencil.depthStencil.depth = p.clear_depth_value();
-                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_DEPTH_BIT;
-            }
-            if (p.clear_stencil_enabled()) {
-                clear_depth_stencil.depthStencil.stencil =
-                    p.clear_stencil_value();
-                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
-            }
-            clear_attachment.clearValue = clear_depth_stencil;
-            VkClearRect clear_rect = {};
-            clear_rect.rect.offset = {0, 0};
-            clear_rect.rect.extent = m_extent;
-            clear_rect.baseArrayLayer = 0;
-            clear_rect.layerCount = 1;
-            vkCmdClearAttachments(command_buffer,
-                                  1,
-                                  &clear_attachment,
-                                  1,
-                                  &clear_rect);
-        }
-        bool           blend_pass_needed = false;
-        mge::rectangle current_scissor = p.scissor();
-        for_each_draw_in_pass(
-            p.index(),
-            [this, command_buffer, &blend_pass_needed, &current_scissor, &p](
-                const program_handle&            program,
-                const vertex_buffer_handle&      vertex_buffer,
-                const index_buffer_handle&       index_buffer,
-                const mge::pipeline_state&       state,
-                mge::uniform_block*              ub,
-                const mge::texture_binding_list& textures,
-                uint32_t                         index_count,
-                uint32_t                         index_offset,
-                const mge::rectangle&            cmd_scissor) {
-                const auto& effective =
-                    cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-                if (effective != current_scissor) {
-                    VkRect2D vk_scissor{};
-                    vk_scissor.offset = {static_cast<int32_t>(effective.left),
-                                         static_cast<int32_t>(effective.top)};
-                    vk_scissor.extent = {
-                        static_cast<uint32_t>(effective.right - effective.left),
-                        static_cast<uint32_t>(effective.bottom -
-                                              effective.top)};
-                    vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
-                    current_scissor = effective;
-                }
-                auto blend_operation = state.color_blend_operation();
-                if (blend_operation == mge::blend_operation::NONE) {
-                    draw_geometry(command_buffer,
-                                  program.get(),
-                                  vertex_buffer.get(),
-                                  index_buffer.get(),
-                                  state,
-                                  ub,
-                                  textures,
-                                  index_count,
-                                  index_offset);
-                } else {
-                    blend_pass_needed = true;
-                }
-            });
-        if (blend_pass_needed) {
-            for_each_draw_in_pass(
-                p.index(),
-                [this, command_buffer, &current_scissor, &p](
-                    const program_handle&            program,
-                    const vertex_buffer_handle&      vertex_buffer,
-                    const index_buffer_handle&       index_buffer,
-                    const mge::pipeline_state&       state,
-                    mge::uniform_block*              ub,
-                    const mge::texture_binding_list& textures,
-                    uint32_t                         index_count,
-                    uint32_t                         index_offset,
-                    const mge::rectangle&            cmd_scissor) {
-                    const auto& effective =
-                        cmd_scissor.area() != 0 ? cmd_scissor : p.scissor();
-                    if (effective != current_scissor) {
-                        VkRect2D vk_scissor{};
-                        vk_scissor.offset = {
-                            static_cast<int32_t>(effective.left),
-                            static_cast<int32_t>(effective.top)};
-                        vk_scissor.extent = {
-                            static_cast<uint32_t>(effective.right -
-                                                  effective.left),
-                            static_cast<uint32_t>(effective.bottom -
-                                                  effective.top)};
-                        vkCmdSetScissor(command_buffer, 0, 1, &vk_scissor);
-                        current_scissor = effective;
-                    }
-                    auto blend_operation = state.color_blend_operation();
-                    draw_geometry(command_buffer,
-                                  program.get(),
-                                  vertex_buffer.get(),
-                                  index_buffer.get(),
-                                  state,
-                                  ub,
-                                  textures,
-                                  index_count,
-                                  index_offset);
-                });
-        }
-
-        vkCmdEndRenderPass(command_buffer);
-        m_current_frame_state = frame_state::DRAW;
+        record_render_pass(p,
+                           pass_render_pass,
+                           pass_framebuffer,
+                           pass_extent,
+                           command_buffer);
     }
 
     void render_context::on_frame_present()
     {
-        // MGE_DEBUG_TRACE(VULKAN, "Present frame");
-
         CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -1946,227 +698,151 @@ namespace mge::vulkan {
                           static_cast<uint32_t>(m_swap_chain_images.size());
     }
 
-    const std::vector<VkVertexInputAttributeDescription>&
-    render_context::vertex_input_attribute_descriptions(
-        const mge::vertex_layout& layout)
+    mge::image_ref render_context::screenshot()
     {
-        auto it = m_vertex_input_attribute_descriptions.find(layout);
-        if (it != m_vertex_input_attribute_descriptions.end()) {
-            return it->second;
-        }
-        std::vector<VkVertexInputAttributeDescription> descriptions;
-        uint32_t                                       offset = 0;
-        uint32_t                                       location = 0;
-        for (const auto& el : layout) {
-            VkVertexInputAttributeDescription desc;
-            desc.binding = 0;
-            desc.location = location++;
-            desc.format = vk_format(el.format);
-            desc.offset = offset;
-            descriptions.emplace_back(desc);
-            offset += static_cast<uint32_t>(el.format.binary_size());
-        }
-        return m_vertex_input_attribute_descriptions[layout] =
-                   std::move(descriptions);
-    }
+        VkImage      swap_image = m_swap_chain_images[m_current_image_index];
+        uint32_t     w = m_extent.width;
+        uint32_t     h = m_extent.height;
+        VkDeviceSize image_size = static_cast<VkDeviceSize>(w) * h * 4;
 
-    VkPipeline render_context::pipeline(const vertex_buffer&       buffer,
-                                        const program&             program,
-                                        const mge::pipeline_state& state)
-    {
-        // binding_description
-        // attribute_descriptions -> layout
-        // program (pipeline layout)
-        // render pass - always the same for now
-        // blend state
-        pipeline_key_type key{buffer.vk_buffer(),
-                              program.pipeline_layout(),
-                              state};
+        VkBufferCreateInfo buffer_info = {};
+        buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        buffer_info.size = image_size;
+        buffer_info.usage = VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+        buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        auto it = m_pipelines.find(key);
-        if (it != m_pipelines.end()) {
-            return it->second;
-        }
+        VmaAllocationCreateInfo alloc_info = {};
+        alloc_info.usage = VMA_MEMORY_USAGE_GPU_TO_CPU;
+        alloc_info.flags = VMA_ALLOCATION_CREATE_MAPPED_BIT;
 
-        VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
-                                           VK_DYNAMIC_STATE_SCISSOR};
-        VkPipelineDynamicStateCreateInfo dynamic_state_create_info = {};
-        dynamic_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-        dynamic_state_create_info.dynamicStateCount = std::size(dynamic_states);
-        dynamic_state_create_info.pDynamicStates = dynamic_states;
+        VkBuffer          staging_buffer = VK_NULL_HANDLE;
+        VmaAllocation     staging_alloc = VK_NULL_HANDLE;
+        VmaAllocationInfo staging_alloc_info = {};
+        CHECK_VK_CALL(vmaCreateBuffer(m_allocator,
+                                      &buffer_info,
+                                      &alloc_info,
+                                      &staging_buffer,
+                                      &staging_alloc,
+                                      &staging_alloc_info));
 
-        VkPipelineVertexInputStateCreateInfo vertex_input_state_create_info =
-            {};
-        vertex_input_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
-        vertex_input_state_create_info.pVertexBindingDescriptions =
-            &buffer.binding_description();
-        vertex_input_state_create_info.vertexAttributeDescriptionCount =
-            static_cast<uint32_t>(buffer.attribute_descriptions().size());
-        vertex_input_state_create_info.pVertexAttributeDescriptions =
-            buffer.attribute_descriptions().data();
+        VkCommandBufferAllocateInfo cmd_alloc_info = {};
+        cmd_alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        cmd_alloc_info.commandPool = m_graphics_command_pool;
+        cmd_alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        cmd_alloc_info.commandBufferCount = 1;
 
-        VkPipelineInputAssemblyStateCreateInfo
-            input_assembly_state_create_info = {};
-        input_assembly_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-        input_assembly_state_create_info.topology =
-            VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-        input_assembly_state_create_info.primitiveRestartEnable = VK_FALSE;
+        VkCommandBuffer cmd = VK_NULL_HANDLE;
+        CHECK_VK_CALL(
+            vkAllocateCommandBuffers(m_device, &cmd_alloc_info, &cmd));
 
-        VkPipelineViewportStateCreateInfo viewport_state_create_info{};
-        viewport_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-        viewport_state_create_info.viewportCount = 1;
-        viewport_state_create_info.scissorCount = 1;
+        VkCommandBufferBeginInfo begin_info = {};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+        CHECK_VK_CALL(vkBeginCommandBuffer(cmd, &begin_info));
 
-        VkPipelineRasterizationStateCreateInfo rasterization_state_create_info =
-            {};
-        rasterization_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-        rasterization_state_create_info.depthClampEnable =
-            VK_FALSE; // discard elements out of depth range
-        rasterization_state_create_info.rasterizerDiscardEnable =
-            VK_FALSE; // allow elements to pass rasterizer stage
-        rasterization_state_create_info.polygonMode =
-            VK_POLYGON_MODE_FILL; // fill the polygon drawn
-        rasterization_state_create_info.lineWidth = 1.0f;
+        VkImageMemoryBarrier to_transfer = {};
+        to_transfer.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        to_transfer.srcAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+        to_transfer.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        to_transfer.oldLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        to_transfer.newLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        to_transfer.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_transfer.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_transfer.image = swap_image;
+        to_transfer.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        to_transfer.subresourceRange.levelCount = 1;
+        to_transfer.subresourceRange.layerCount = 1;
+        vkCmdPipelineBarrier(cmd,
+                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                             VK_PIPELINE_STAGE_TRANSFER_BIT,
+                             0,
+                             0,
+                             nullptr,
+                             0,
+                             nullptr,
+                             1,
+                             &to_transfer);
 
-        mge::cull_mode cull = state.cull_mode();
-        switch (cull) {
-        case mge::cull_mode::NONE:
-            rasterization_state_create_info.cullMode = VK_CULL_MODE_NONE;
-            break;
-        case mge::cull_mode::CLOCKWISE:
-            rasterization_state_create_info.cullMode = VK_CULL_MODE_FRONT_BIT;
-            break;
-        case mge::cull_mode::COUNTER_CLOCKWISE:
-            rasterization_state_create_info.cullMode = VK_CULL_MODE_BACK_BIT;
-            break;
-        }
-        rasterization_state_create_info.frontFace =
-            VK_FRONT_FACE_CLOCKWISE; // clockwise front face
+        VkBufferImageCopy region = {};
+        region.bufferOffset = 0;
+        region.bufferRowLength = 0;
+        region.bufferImageHeight = 0;
+        region.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        region.imageSubresource.layerCount = 1;
+        region.imageOffset = {0, 0, 0};
+        region.imageExtent = {w, h, 1};
+        vkCmdCopyImageToBuffer(cmd,
+                               swap_image,
+                               VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                               staging_buffer,
+                               1,
+                               &region);
 
-        // no depth bias, that's only used in shadow mapping
-        rasterization_state_create_info.depthBiasEnable = VK_FALSE;
-        rasterization_state_create_info.depthBiasConstantFactor = 0.0f;
-        rasterization_state_create_info.depthBiasClamp = 0.0f;
-        rasterization_state_create_info.depthBiasSlopeFactor = 0.0f;
+        VkImageMemoryBarrier to_present = {};
+        to_present.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+        to_present.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+        to_present.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+        to_present.oldLayout = VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL;
+        to_present.newLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+        to_present.srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_present.dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED;
+        to_present.image = swap_image;
+        to_present.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        to_present.subresourceRange.levelCount = 1;
+        to_present.subresourceRange.layerCount = 1;
+        vkCmdPipelineBarrier(cmd,
+                             VK_PIPELINE_STAGE_TRANSFER_BIT,
+                             VK_PIPELINE_STAGE_ALL_COMMANDS_BIT,
+                             0,
+                             0,
+                             nullptr,
+                             0,
+                             nullptr,
+                             1,
+                             &to_present);
 
-        VkPipelineMultisampleStateCreateInfo multisampling_create_info{};
-        multisampling_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-        multisampling_create_info.sampleShadingEnable = VK_FALSE;
-        multisampling_create_info.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-        multisampling_create_info.minSampleShading = 1.0f;
-        multisampling_create_info.pSampleMask = nullptr;
-        multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
-        multisampling_create_info.alphaToOneEnable = VK_FALSE;
+        CHECK_VK_CALL(vkEndCommandBuffer(cmd));
 
-        VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info =
-            {};
-        depth_stencil_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-        depth_stencil_state_create_info.depthTestEnable = VK_TRUE;
-        depth_stencil_state_create_info.depthWriteEnable =
-            state.depth_write() ? VK_TRUE : VK_FALSE;
-        depth_stencil_state_create_info.depthCompareOp =
-            depth_test_to_vulkan(state.depth_test_function());
-        depth_stencil_state_create_info.depthBoundsTestEnable = VK_FALSE;
-        depth_stencil_state_create_info.stencilTestEnable = VK_FALSE;
+        VkFenceCreateInfo fence_info = {};
+        fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        VkFence fence = VK_NULL_HANDLE;
+        CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &fence));
 
-        // color blending
-        VkPipelineColorBlendAttachmentState color_blend_attachment_state = {};
-        color_blend_attachment_state.colorWriteMask =
-            VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
-            VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        VkSubmitInfo submit_info = {};
+        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submit_info.commandBufferCount = 1;
+        submit_info.pCommandBuffers = &cmd;
+        CHECK_VK_CALL(vkQueueSubmit(m_queue, 1, &submit_info, fence));
+        CHECK_VK_CALL(
+            vkWaitForFences(m_device, 1, &fence, VK_TRUE, UINT64_MAX));
 
-        auto color_blend_operation = state.color_blend_operation();
+        mge::image_format fmt(mge::image_format::data_format::RGBA,
+                              mge::data_type::UINT8);
+        auto img = std::make_shared<mge::memory_image>(fmt, mge::extent(w, h));
 
-        if (color_blend_operation == mge::blend_operation::NONE) {
-            color_blend_attachment_state.blendEnable = VK_FALSE;
-            color_blend_attachment_state.srcColorBlendFactor =
-                VK_BLEND_FACTOR_ONE;
-            color_blend_attachment_state.dstColorBlendFactor =
-                VK_BLEND_FACTOR_ZERO;
-            color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
-            color_blend_attachment_state.srcAlphaBlendFactor =
-                VK_BLEND_FACTOR_ONE;
-            color_blend_attachment_state.dstAlphaBlendFactor =
-                VK_BLEND_FACTOR_ZERO;
-            color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
-        } else {
-            auto color_src_factor = state.color_blend_factor_src();
-            auto color_dst_factor = state.color_blend_factor_dst();
-            auto alpha_blend_operation = state.alpha_blend_operation();
-            auto alpha_src_factor = state.alpha_blend_factor_src();
-            auto alpha_dst_factor = state.alpha_blend_factor_dst();
+        auto* dst = static_cast<uint8_t*>(img->data());
+        auto* src = static_cast<const uint8_t*>(staging_alloc_info.pMappedData);
+        uint32_t row_size = w * 4;
 
-            color_blend_attachment_state.blendEnable = VK_TRUE;
-            color_blend_attachment_state.srcColorBlendFactor =
-                blend_factor_to_vulkan(color_src_factor);
-            color_blend_attachment_state.dstColorBlendFactor =
-                blend_factor_to_vulkan(color_dst_factor);
-            color_blend_attachment_state.colorBlendOp =
-                blend_operation_to_vulkan(color_blend_operation);
-            color_blend_attachment_state.srcAlphaBlendFactor =
-                blend_factor_to_vulkan(alpha_src_factor);
-            color_blend_attachment_state.dstAlphaBlendFactor =
-                blend_factor_to_vulkan(alpha_dst_factor);
-            color_blend_attachment_state.alphaBlendOp =
-                blend_operation_to_vulkan(alpha_blend_operation);
+        bool need_swizzle =
+            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_UNORM ||
+            m_used_surface_format.format == VK_FORMAT_B8G8R8A8_SRGB;
+
+        for (uint32_t y = 0; y < h; ++y) {
+            memcpy(dst + y * row_size, src + y * row_size, row_size);
+            if (need_swizzle) {
+                uint8_t* row = dst + y * row_size;
+                for (uint32_t x = 0; x < w; ++x) {
+                    std::swap(row[x * 4], row[x * 4 + 2]);
+                }
+            }
         }
 
-        VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
-        color_blend_state_create_info.sType =
-            VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-        color_blend_state_create_info.logicOpEnable = VK_FALSE;
-        color_blend_state_create_info.logicOp = VK_LOGIC_OP_COPY;
-        color_blend_state_create_info.attachmentCount = 1;
-        color_blend_state_create_info.pAttachments =
-            &color_blend_attachment_state;
-        color_blend_state_create_info.blendConstants[0] = 0.0f;
-        color_blend_state_create_info.blendConstants[1] = 0.0f;
-        color_blend_state_create_info.blendConstants[2] = 0.0f;
-        color_blend_state_create_info.blendConstants[3] = 0.0f;
+        vkDestroyFence(m_device, fence, nullptr);
+        vkFreeCommandBuffers(m_device, m_graphics_command_pool, 1, &cmd);
+        vmaDestroyBuffer(m_allocator, staging_buffer, staging_alloc);
 
-        VkPipelineLayout pipeline_layout{program.pipeline_layout()};
-
-        VkGraphicsPipelineCreateInfo pipeline_create_info = {};
-        pipeline_create_info.sType =
-            VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-        pipeline_create_info.stageCount =
-            static_cast<uint32_t>(program.shader_stage_create_infos().size());
-        pipeline_create_info.pStages =
-            program.shader_stage_create_infos().data();
-        pipeline_create_info.pVertexInputState =
-            &vertex_input_state_create_info;
-        pipeline_create_info.pInputAssemblyState =
-            &input_assembly_state_create_info;
-        pipeline_create_info.pViewportState = &viewport_state_create_info;
-        pipeline_create_info.pRasterizationState =
-            &rasterization_state_create_info;
-        pipeline_create_info.pMultisampleState = &multisampling_create_info;
-        pipeline_create_info.pDepthStencilState =
-            &depth_stencil_state_create_info;
-        pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
-        pipeline_create_info.pDynamicState = &dynamic_state_create_info;
-        pipeline_create_info.layout = pipeline_layout;
-        pipeline_create_info.renderPass = render_pass();
-        pipeline_create_info.subpass = 0;
-        pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
-        pipeline_create_info.basePipelineIndex = -1;
-
-        VkPipeline pipeline{VK_NULL_HANDLE};
-        CHECK_VK_CALL(vkCreateGraphicsPipelines(device(),
-                                                VK_NULL_HANDLE,
-                                                1,
-                                                &pipeline_create_info,
-                                                nullptr,
-                                                &pipeline));
-        return m_pipelines[key] = pipeline;
+        return img;
     }
 
 } // namespace mge::vulkan

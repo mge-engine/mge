@@ -9,7 +9,8 @@ SET(DX11_TEST_SOURCES
     test_index_buffer.cpp
     test_vertex_buffer.cpp
     test_shader.cpp
-    test_program.cpp)
+    test_program.cpp
+    test_texture.cpp)
 
 MGE_TEST(
     TARGET      test_dx11

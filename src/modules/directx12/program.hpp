@@ -19,7 +19,7 @@ namespace mge::dx12 {
     class program : public mge::program
     {
     public:
-        program(render_context& context);
+        program(render_context_base& context);
         virtual ~program();
 
         inline shader* program_shader(mge::shader_type t) const

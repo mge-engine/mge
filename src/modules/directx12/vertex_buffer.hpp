@@ -6,13 +6,13 @@
 #include "dx12_fwd.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::dx12 {
     class vertex_buffer : public mge::vertex_buffer
     {
     public:
-        vertex_buffer(render_context&      context,
+        vertex_buffer(render_context_base& context,
                       const vertex_layout& layout,
                       size_t               data_size);
         ~vertex_buffer();

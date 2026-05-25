@@ -9,4 +9,32 @@ namespace mge {
         : mge::context_object(context)
     {}
 
+    void frame_buffer::attach_color(const texture_ref& tex, uint32_t slot)
+    {
+        on_attach_color(tex, slot);
+        if (slot >= m_color_attachments.size()) {
+            m_color_attachments.resize(slot + 1);
+        }
+        m_color_attachments[slot] = tex;
+    }
+
+    void frame_buffer::attach_depth(const texture_ref& tex)
+    {
+        on_attach_depth(tex);
+        m_depth_attachment = tex;
+    }
+
+    texture_ref frame_buffer::color_attachment(uint32_t slot) const
+    {
+        if (slot < m_color_attachments.size()) {
+            return m_color_attachments[slot];
+        }
+        return {};
+    }
+
+    texture_ref frame_buffer::depth_attachment() const
+    {
+        return m_depth_attachment;
+    }
+
 } // namespace mge

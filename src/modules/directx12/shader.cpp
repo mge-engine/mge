@@ -5,14 +5,14 @@
 #include "error.hpp"
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX12);
 }
 
 namespace mge::dx12 {
-    shader::shader(render_context& context, shader_type type)
+    shader::shader(render_context_base& context, shader_type type)
         : mge::shader(context, type)
     {}
 

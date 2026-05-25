@@ -6,7 +6,7 @@
 #include "mge/core/checked_cast.hpp"
 
 namespace mge::dx12 {
-    index_buffer::index_buffer(render_context& context,
+    index_buffer::index_buffer(render_context_base& context,
                                mge::data_type  type,
                                size_t          data_size)
         : mge::index_buffer(context, type, data_size)

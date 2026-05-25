@@ -8,12 +8,12 @@
 #include "vulkan.hpp"
 
 namespace mge::vulkan {
-    class render_context;
+    class render_context_base;
 
     class shader : public mge::shader
     {
     public:
-        shader(render_context& context, shader_type type);
+        shader(render_context_base& context, shader_type type);
         ~shader();
         const VkPipelineShaderStageCreateInfo& pipeline_stage_info() const;
 
@@ -36,7 +36,7 @@ namespace mge::vulkan {
         void                  destroy_shader_module();
         VkShaderStageFlagBits vk_stage_flags() const;
 
-        render_context&                 m_vulkan_context;
+        render_context_base&            m_vulkan_context;
         VkShaderModule                  m_shader_module;
         mge::buffer                     m_code;
         std::string                     m_main_function;

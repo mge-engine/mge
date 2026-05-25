@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "texture.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
@@ -14,13 +14,29 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    texture::texture(render_context& context, mge::texture_type type)
+    texture::texture(render_context_base& context, mge::texture_type type)
         : mge::texture(context, type)
     {}
 
+    texture::texture(render_context_base&      context,
+                     mge::texture_type        type,
+                     const mge::image_format& format,
+                     const mge::extent&       extent)
+        : mge::texture(context, type, mge::texture_usage::RENDER_TARGET)
+    {
+        m_is_depth = (format.format() ==
+                          mge::image_format::data_format::DEPTH ||
+                      format.format() ==
+                          mge::image_format::data_format::DEPTH_STENCIL);
+        m_vk_format = texture_format(format);
+        create_image_as_render_target(m_vk_format, extent.width, extent.height);
+        create_image_view(m_vk_format);
+        create_sampler();
+    }
+
     texture::~texture()
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         if (m_sampler != VK_NULL_HANDLE) {
             ctx.vkDestroySampler(ctx.device(), m_sampler, nullptr);
@@ -56,6 +72,15 @@ namespace mge::vulkan {
                 MGE_THROW(mge::illegal_argument)
                     << "Unsupported image format (data type): " << format;
             }
+        case mge::image_format::data_format::DEPTH_STENCIL:
+            return VK_FORMAT_D24_UNORM_S8_UINT;
+        case mge::image_format::data_format::DEPTH:
+            switch (format.type()) {
+            case mge::data_type::FLOAT:
+                return VK_FORMAT_D32_SFLOAT;
+            default:
+                return VK_FORMAT_D16_UNORM;
+            }
         default:
             MGE_THROW(mge::illegal_argument)
                 << "Unsupported image format (format): " << format;
@@ -64,7 +89,7 @@ namespace mge::vulkan {
 
     void texture::create_image(VkFormat format, uint32_t width, uint32_t height)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkImageCreateInfo image_info = {};
         image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -93,9 +118,47 @@ namespace mge::vulkan {
                                      nullptr));
     }
 
+    void texture::create_image_as_render_target(VkFormat format,
+                                                uint32_t width,
+                                                uint32_t height)
+    {
+        auto& ctx = static_cast<render_context_base&>(context());
+
+        VkImageCreateInfo image_info = {};
+        image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+        image_info.imageType = VK_IMAGE_TYPE_2D;
+        image_info.extent.width = width;
+        image_info.extent.height = height;
+        image_info.extent.depth = 1;
+        image_info.mipLevels = 1;
+        image_info.arrayLayers = 1;
+        image_info.format = format;
+        image_info.tiling = VK_IMAGE_TILING_OPTIMAL;
+        image_info.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        image_info.usage =
+            m_is_depth
+                ? (VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT |
+                   VK_IMAGE_USAGE_SAMPLED_BIT)
+                : (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+                   VK_IMAGE_USAGE_SAMPLED_BIT |
+                   VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
+        image_info.samples = VK_SAMPLE_COUNT_1_BIT;
+        image_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        VmaAllocationCreateInfo alloc_info = {};
+        alloc_info.usage = VMA_MEMORY_USAGE_GPU_ONLY;
+
+        CHECK_VK_CALL(vmaCreateImage(ctx.allocator(),
+                                     &image_info,
+                                     &alloc_info,
+                                     &m_image,
+                                     &m_allocation,
+                                     nullptr));
+    }
+
     void texture::create_image_view(VkFormat format)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkImageViewCreateInfo view_info = {};
         view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -106,7 +169,8 @@ namespace mge::vulkan {
         view_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
         view_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
         view_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-        view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        view_info.subresourceRange.aspectMask =
+            m_is_depth ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
         view_info.subresourceRange.baseMipLevel = 0;
         view_info.subresourceRange.levelCount = 1;
         view_info.subresourceRange.baseArrayLayer = 0;
@@ -120,15 +184,23 @@ namespace mge::vulkan {
 
     void texture::create_sampler()
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         VkSamplerCreateInfo sampler_info = {};
         sampler_info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
-        sampler_info.magFilter = VK_FILTER_LINEAR;
-        sampler_info.minFilter = VK_FILTER_LINEAR;
-        sampler_info.addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        sampler_info.addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT;
-        sampler_info.addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.magFilter =
+            m_is_depth ? VK_FILTER_NEAREST : VK_FILTER_LINEAR;
+        sampler_info.minFilter =
+            m_is_depth ? VK_FILTER_NEAREST : VK_FILTER_LINEAR;
+        sampler_info.addressModeU = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.addressModeV = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        sampler_info.addressModeW = m_is_depth
+                                        ? VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE
+                                        : VK_SAMPLER_ADDRESS_MODE_REPEAT;
         sampler_info.anisotropyEnable = VK_FALSE;
         sampler_info.maxAnisotropy = 1.0f;
         sampler_info.borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
@@ -182,7 +254,7 @@ namespace mge::vulkan {
             MGE_THROW(mge::illegal_argument) << "Unsupported layout transition";
         }
 
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
         ctx.vkCmdPipelineBarrier(command_buffer,
                                  src_stage,
                                  dst_stage,
@@ -201,7 +273,7 @@ namespace mge::vulkan {
                               uint32_t    height,
                               size_t      row_pitch)
     {
-        auto& ctx = static_cast<render_context&>(context());
+        auto& ctx = static_cast<render_context_base&>(context());
 
         // Create staging buffer
         VkBufferCreateInfo buffer_info = {};

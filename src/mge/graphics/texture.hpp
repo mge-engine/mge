@@ -7,6 +7,7 @@
 #include "mge/graphics/image.hpp"
 #include "mge/graphics/image_format.hpp"
 #include "mge/graphics/texture_type.hpp"
+#include "mge/graphics/texture_usage.hpp"
 
 namespace mge {
 
@@ -23,10 +24,13 @@ namespace mge {
         /**
          * @brief Create a texture.
          *
-         * @param ctx  render context
-         * @param type texture type
+         * @param ctx   render context
+         * @param type  texture type
+         * @param usage intended usage (default: SAMPLE)
          */
-        texture(render_context& ctx, texture_type type);
+        texture(render_context& ctx,
+                texture_type   type,
+                texture_usage  usage = texture_usage::SAMPLE);
 
     public:
         /**
@@ -40,6 +44,16 @@ namespace mge {
          * @return texture type
          */
         texture_type type() const;
+
+        /**
+         * @brief Get the intended usage of this texture.
+         *
+         * @return texture usage
+         */
+        texture_usage usage() const noexcept
+        {
+            return m_usage;
+        }
 
         /**
          * @brief Set data of the texture.
@@ -61,7 +75,8 @@ namespace mge {
         void set_data(const image& img);
 
     private:
-        texture_type m_type;
+        texture_type  m_type;
+        texture_usage m_usage;
     };
 
 } // namespace mge

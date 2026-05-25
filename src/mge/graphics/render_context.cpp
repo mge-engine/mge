@@ -7,6 +7,7 @@
 #include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/mutex.hpp"
 #include "mge/core/parameter.hpp"
@@ -15,6 +16,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer.hpp"
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
@@ -269,7 +271,8 @@ namespace mge {
         delete p;
     }
 
-    frame_buffer* render_context::on_create_frame_buffer()
+    frame_buffer*
+    render_context::on_create_frame_buffer(const frame_buffer_info&)
     {
         MGE_THROW_NOT_IMPLEMENTED << "frame buffer creation not implemented";
         return nullptr;
@@ -369,17 +372,22 @@ namespace mge {
 
     frame_buffer_handle render_context::create_frame_buffer()
     {
-        std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer()};
-        if (ptr) {
-            frame_buffer_handle handle{
-                index(),
-                0,
-                static_cast<uint32_t>(m_frame_buffers.size())};
-            m_frame_buffers.emplace_back(ptr.release());
-            return handle;
-        } else {
-            return frame_buffer_handle();
+        return create_frame_buffer(frame_buffer_info{});
+    }
+
+    frame_buffer_handle
+    render_context::create_frame_buffer(const frame_buffer_info& info)
+    {
+        std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer(info)};
+        if (!ptr) {
+            MGE_THROW(null_pointer) << "on_create_frame_buffer returned nullptr";
         }
+        frame_buffer_handle handle{
+            index(),
+            0,
+            static_cast<uint32_t>(m_frame_buffers.size())};
+        m_frame_buffers.emplace_back(ptr.release());
+        return handle;
     }
 
     mge::pass& render_context::pass(uint32_t index)

@@ -5,7 +5,9 @@ SET(mge_dx11_module_SOURCES
     common.cpp
     error.cpp
     window.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     render_system.cpp
     index_buffer.cpp
     vertex_buffer.cpp
@@ -13,6 +15,7 @@ SET(mge_dx11_module_SOURCES
     program.cpp
     input_layout_cache.cpp
     texture.cpp
+    frame_buffer.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE

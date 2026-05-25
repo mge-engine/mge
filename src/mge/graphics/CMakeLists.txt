@@ -72,6 +72,7 @@ SET(mgegraphics_headers
     cull_mode.hpp
     pipeline_state.hpp
     texture_type.hpp
+    texture_usage.hpp
     texture.hpp
     topology.hpp
     image.hpp
@@ -84,6 +85,7 @@ SET(mgegraphics_headers
     viewport.hpp
     pass.hpp
     frame_buffer.hpp
+    frame_buffer_info.hpp
     command_buffer.hpp
     frame_debugger.hpp
     test.hpp

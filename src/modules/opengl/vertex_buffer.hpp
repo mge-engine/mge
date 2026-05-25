@@ -6,12 +6,12 @@
 #include "opengl.hpp"
 
 namespace mge::opengl {
-    class render_context;
+    class render_context_base;
 
     class vertex_buffer : public mge::vertex_buffer
     {
     public:
-        vertex_buffer(render_context&           context,
+        vertex_buffer(render_context_base&      context,
                       const mge::vertex_layout& layout,
                       size_t                    data_size);
         virtual ~vertex_buffer();

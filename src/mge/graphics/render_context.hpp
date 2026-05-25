@@ -9,7 +9,9 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
+#include "mge/graphics/frame_buffer_info.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/graphics/program_handle.hpp"
@@ -173,8 +175,9 @@ namespace mge {
          */
         virtual void on_destroy_program(program* p);
 
-        virtual frame_buffer* on_create_frame_buffer();
-        virtual void          on_destroy_frame_buffer(frame_buffer* fb);
+        virtual frame_buffer*
+        on_create_frame_buffer(const frame_buffer_info& info);
+        virtual void on_destroy_frame_buffer(frame_buffer* fb);
 
     public:
         /**
@@ -189,11 +192,22 @@ namespace mge {
         program_handle create_program();
 
         /**
-         * @brief Create a frame buffer object.
+         * @brief Create an empty frame buffer object.
          *
          * @return created frame buffer
          */
         frame_buffer_handle create_frame_buffer();
+
+        /**
+         * @brief Create a frame buffer with pre-specified attachments.
+         *
+         * The backend allocates all attachment resources described by
+         * @c info during this call.
+         *
+         * @param info attachment descriptor
+         * @return created frame buffer
+         */
+        frame_buffer_handle create_frame_buffer(const frame_buffer_info& info);
 
         /**
          * @brief Create a texture object.
@@ -202,6 +216,24 @@ namespace mge {
          * @return created texture
          */
         virtual texture_ref create_texture(texture_type type) = 0;
+
+        /**
+         * @brief Create a texture pre-allocated as a color render target.
+         *
+         * The backend allocates the GPU resource immediately with the
+         * appropriate bind flags or image usage bits for use as a color
+         * attachment.  The texture can also be sampled in shaders after
+         * the render pass completes.
+         *
+         * @param type   texture type (typically TYPE_2D)
+         * @param format pixel format of the attachment
+         * @param extent size in pixels
+         * @return created render-target texture
+         */
+        virtual texture_ref
+        create_render_target_texture(texture_type        type,
+                                     const image_format& format,
+                                     const mge::extent&  extent) = 0;
 
         /**
          * @brief Get the extent of the render context.
@@ -379,6 +411,10 @@ namespace mge {
                 if (object_index < m_vertex_buffers.size()) {
                     return static_cast<vertex_buffer*>(
                         m_vertex_buffers[object_index]);
+                }
+            } else if constexpr (std::is_same_v<T, frame_buffer>) {
+                if (object_index < m_frame_buffers.size()) {
+                    return m_frame_buffers[object_index];
                 }
             }
             return nullptr;

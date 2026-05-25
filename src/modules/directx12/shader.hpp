@@ -11,11 +11,11 @@
 #include <vector>
 
 namespace mge::dx12 {
-    class render_context;
+    class render_context_base;
     class shader : public mge::shader
     {
     public:
-        shader(render_context& context, shader_type type);
+        shader(render_context_base& context, shader_type type);
         ~shader();
 
         const D3D12_INPUT_ELEMENT_DESC* input_layout() const

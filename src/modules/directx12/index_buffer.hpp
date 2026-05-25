@@ -10,14 +10,14 @@
 #include "dx12_fwd.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::dx12 {
 
     class index_buffer : public mge::index_buffer
     {
     public:
-        index_buffer(render_context& context,
+        index_buffer(render_context_base& context,
                      mge::data_type  type,
                      size_t          data_size);
         virtual ~index_buffer();

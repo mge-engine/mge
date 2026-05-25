@@ -3,11 +3,11 @@
 // All rights reserved.
 #include "index_buffer.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge::vulkan {
 
-    index_buffer::index_buffer(render_context& context,
+    index_buffer::index_buffer(render_context_base& context,
                                mge::data_type  type,
                                size_t          data_size)
         : mge::index_buffer(context, type, data_size)

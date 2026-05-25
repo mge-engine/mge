@@ -24,12 +24,15 @@ SET(mge_vulkan_module_SOURCES
     vulkan_library.cpp
     error.cpp
     render_system.cpp
+    render_context_base.cpp
     render_context.cpp
+    headless_render_context.cpp
     window.cpp
     shader.cpp
     vulkan_memory_allocator.cpp
     program.cpp
     texture.cpp
+    frame_buffer.cpp
     vertex_buffer.cpp
     index_buffer.cpp
 )
