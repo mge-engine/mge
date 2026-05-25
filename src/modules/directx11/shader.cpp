@@ -401,7 +401,7 @@ namespace mge::dx11 {
         }
 
         ID3D11InputLayout* input_layout = nullptr;
-        render_context&    ctx = dx11_context(context());
+        render_context_base& ctx = dx11_context(context());
         auto               rc = ctx.device()->CreateInputLayout(
             input_elements.data(),
             static_cast<UINT>(input_elements.size()),

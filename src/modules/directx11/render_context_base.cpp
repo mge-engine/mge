@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context_base.hpp"
 #include "error.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "frame_buffer.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/checked_cast.hpp"
