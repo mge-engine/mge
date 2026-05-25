@@ -17,6 +17,9 @@ namespace mge::dx11 {
             const mge::extent&         extent,
             const mge::window_options& options) override;
 
+        mge::render_context_ref
+        create_headless_render_context(const mge::extent& ext) override;
+
         bool debug() const;
         bool software_device() const;
 

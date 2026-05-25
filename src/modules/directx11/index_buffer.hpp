@@ -13,7 +13,7 @@ namespace mge::dx11 {
     class index_buffer : public mge::index_buffer
     {
     public:
-        index_buffer(render_context& context,
+        index_buffer(render_context_base& context,
                      mge::data_type  type,
                      size_t          data_size);
 

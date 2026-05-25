@@ -5,7 +5,7 @@
 #include "mge/core/to_underlying.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/slang/slang_compiler.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "shader.hpp"
 
 namespace mge {
@@ -14,7 +14,7 @@ namespace mge {
 
 namespace mge::dx11 {
 
-    program::program(render_context& context)
+    program::program(render_context_base& context)
         : ::mge::program(context)
     {}
 

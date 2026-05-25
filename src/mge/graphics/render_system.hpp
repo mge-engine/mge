@@ -93,6 +93,18 @@ namespace mge {
         static render_system_ref create(std::string_view implementation);
 
         /**
+         * @brief Create a headless render context with no window or swap chain.
+         *
+         * Renders into frame buffers only; @c on_frame_present() is a no-op.
+         * The default implementation throws @c mge::not_yet_implemented.
+         *
+         * @param ext  output resolution in pixels
+         * @return created headless render context
+         */
+        virtual render_context_ref
+        create_headless_render_context(const extent& ext);
+
+        /**
          * @brief Get monitors of the system.
          *
          * @return attached monitors

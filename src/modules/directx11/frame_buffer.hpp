@@ -8,12 +8,12 @@
 
 namespace mge::dx11 {
 
-    class render_context;
+    class render_context_base;
 
     class frame_buffer : public mge::frame_buffer
     {
     public:
-        explicit frame_buffer(render_context& ctx);
+        explicit frame_buffer(render_context_base& ctx);
         ~frame_buffer() override;
 
         ID3D11RenderTargetView* render_target_view(uint32_t slot) const;
@@ -24,7 +24,7 @@ namespace mge::dx11 {
         void on_attach_depth(const mge::texture_ref& tex) override;
 
     private:
-        render_context& m_context;
+        render_context_base& m_context;
     };
 
 } // namespace mge::dx11

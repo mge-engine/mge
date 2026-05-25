@@ -10,11 +10,11 @@
 #include <set>
 
 namespace mge::dx11 {
-    class render_context;
+    class render_context_base;
     class shader : public mge::shader
     {
     public:
-        shader(render_context& context, shader_type type);
+        shader(render_context_base& context, shader_type type);
         ~shader();
 
     protected:

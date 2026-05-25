@@ -2,12 +2,12 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "frame_buffer.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "texture.hpp"
 
 namespace mge::dx11 {
 
-    frame_buffer::frame_buffer(render_context& ctx)
+    frame_buffer::frame_buffer(render_context_base& ctx)
         : mge::frame_buffer(ctx)
         , m_context(ctx)
     {}

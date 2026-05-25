@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_system.hpp"
 #include "dx11.hpp"
+#include "headless_render_context.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
 #include "window.hpp"
@@ -79,6 +80,14 @@ namespace mge::dx11 {
     {
         mge::window_ref ref = std::make_shared<window>(*this, extent, options);
         return ref;
+    }
+
+    mge::render_context_ref
+    render_system::create_headless_render_context(const mge::extent& ext)
+    {
+        auto context = std::make_shared<headless_render_context>(*this, ext);
+        context->initialize();
+        return context;
     }
 
     bool render_system::debug() const

@@ -5,14 +5,14 @@
 #include "error.hpp"
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 
 namespace mge {
     MGE_USE_TRACE(DX11);
 }
 
 namespace mge::dx11 {
-    shader::shader(render_context& context, shader_type type)
+    shader::shader(render_context_base& context, shader_type type)
         : mge::shader(context, type)
     {}
 
@@ -62,7 +62,7 @@ namespace mge::dx11 {
 
     void shader::create_shader()
     {
-        render_context& ctx = dx11_context(context());
+        render_context_base& ctx = dx11_context(context());
         HRESULT         rc = 0;
         switch (type()) {
         case mge::shader_type::FRAGMENT: {
