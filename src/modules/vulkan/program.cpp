@@ -4,7 +4,7 @@
 #include "program.hpp"
 #include "error.hpp"
 #include "mge/slang/slang_compiler.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "shader.hpp"
 
 namespace mge {
@@ -13,23 +13,23 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    program::program(render_context& context)
+    program::program(render_context_base& context)
         : mge::program(context)
     {}
 
     program::~program()
     {
         if (m_descriptor_set_layout != VK_NULL_HANDLE) {
-            static_cast<render_context&>(context())
+            static_cast<render_context_base&>(context())
                 .vkDestroyDescriptorSetLayout(
-                    static_cast<render_context&>(context()).device(),
+                    static_cast<render_context_base&>(context()).device(),
                     m_descriptor_set_layout,
                     nullptr);
             m_descriptor_set_layout = VK_NULL_HANDLE;
         }
         if (m_pipeline_layout != VK_NULL_HANDLE) {
-            static_cast<render_context&>(context()).vkDestroyPipelineLayout(
-                static_cast<render_context&>(context()).device(),
+            static_cast<render_context_base&>(context()).vkDestroyPipelineLayout(
+                static_cast<render_context_base&>(context()).device(),
                 m_pipeline_layout,
                 nullptr);
             m_pipeline_layout = VK_NULL_HANDLE;
@@ -101,9 +101,9 @@ namespace mge::vulkan {
             layout_info.pBindings = layout_bindings.data();
 
             CHECK_VK_CALL(
-                static_cast<render_context&>(context())
+                static_cast<render_context_base&>(context())
                     .vkCreateDescriptorSetLayout(
-                        static_cast<render_context&>(context()).device(),
+                        static_cast<render_context_base&>(context()).device(),
                         &layout_info,
                         nullptr,
                         &descriptor_set_layout));
@@ -122,8 +122,8 @@ namespace mge::vulkan {
         pipeline_layout_info.pPushConstantRanges = nullptr; // Optional
 
         CHECK_VK_CALL(
-            static_cast<render_context&>(context()).vkCreatePipelineLayout(
-                static_cast<render_context&>(context()).device(),
+            static_cast<render_context_base&>(context()).vkCreatePipelineLayout(
+                static_cast<render_context_base&>(context()).device(),
                 &pipeline_layout_info,
                 nullptr,
                 &m_pipeline_layout));

@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "frame_buffer.hpp"
 #include "error.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "texture.hpp"
 
 #include "mge/core/trace.hpp"
@@ -41,7 +41,7 @@ namespace mge::vulkan {
             << "Unsupported color attachment format: " << fmt;
     }
 
-    frame_buffer::frame_buffer(render_context&               ctx,
+    frame_buffer::frame_buffer(render_context_base&           ctx,
                                 const mge::frame_buffer_info& info)
         : mge::frame_buffer(ctx)
         , m_context(ctx)

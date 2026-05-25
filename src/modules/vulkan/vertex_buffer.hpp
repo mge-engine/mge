@@ -7,7 +7,7 @@
 
 namespace mge::vulkan {
 
-    class render_context;
+    class render_context_base;
 
     inline VkFormat vk_format(const mge::vertex_format& fmt) noexcept
     {
@@ -35,7 +35,7 @@ namespace mge::vulkan {
     class vertex_buffer : public mge::vertex_buffer
     {
     public:
-        vertex_buffer(render_context&           context,
+        vertex_buffer(render_context_base&       context,
                       const mge::vertex_layout& layout,
                       size_t                    data_size);
 
@@ -59,7 +59,7 @@ namespace mge::vulkan {
     private:
         void create_buffer();
 
-        render_context&                 m_vulkan_context;
+        render_context_base&            m_vulkan_context;
         VkBuffer                        m_buffer{VK_NULL_HANDLE};
         VmaAllocation                   m_allocation{VK_NULL_HANDLE};
         VkVertexInputBindingDescription m_binding_description;

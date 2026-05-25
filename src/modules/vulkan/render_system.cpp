@@ -5,6 +5,7 @@
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "glslang.hpp"
+#include "headless_render_context.hpp"
 #include "window.hpp"
 
 #include "mge/core/atexit.hpp"
@@ -558,6 +559,12 @@ namespace mge::vulkan {
                                  const mge::window_options& options)
     {
         return std::make_shared<window>(*this, extent, options);
+    }
+
+    mge::render_context_ref
+    render_system::create_headless_render_context(const mge::extent& extent)
+    {
+        return std::make_shared<headless_render_context>(*this, extent);
     }
 
     std::span<mge::monitor_ref> render_system::monitors()
