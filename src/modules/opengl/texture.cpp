@@ -43,10 +43,15 @@ namespace mge::opengl {
             format.format() == mge::image_format::data_format::DEPTH_STENCIL;
         GLint filter = is_depth ? GL_NEAREST : GL_LINEAR;
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+        CHECK_OPENGL_ERROR(glTexParameteri);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+        CHECK_OPENGL_ERROR(glTexParameteri);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        CHECK_OPENGL_ERROR(glTexParameteri);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        CHECK_OPENGL_ERROR(glTexParameteri);
         glBindTexture(GL_TEXTURE_2D, 0);
+        CHECK_OPENGL_ERROR(glBindTexture);
     }
 
     texture::~texture()
