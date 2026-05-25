@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/graphics/render_mesh.hpp"
 #include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/mesh.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -50,11 +51,13 @@ namespace mge {
     }
 
     void render_mesh::draw(command_buffer&       command_buffer,
+                           pass&                 pass,
                            const program_handle& program,
                            uint32_t              index_count,
                            uint32_t              index_offset) const
     {
-        command_buffer.draw(program,
+        command_buffer.draw(pass,
+                            program,
                             m_vertices,
                             m_indices,
                             index_count,

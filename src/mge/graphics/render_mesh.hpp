@@ -15,6 +15,7 @@ namespace mge {
 
     class command_buffer;
     class mesh;
+    class pass;
     class render_context;
     class vertex_layout;
 
@@ -56,6 +57,7 @@ namespace mge {
         explicit operator bool() const noexcept;
 
         void draw(command_buffer&       command_buffer,
+                  pass&                 pass,
                   const program_handle& program,
                   uint32_t              index_count = 0,
                   uint32_t              index_offset = 0) const;

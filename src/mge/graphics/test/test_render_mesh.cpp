@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/graphics/render_mesh.hpp"
 #include "test/googletest.hpp"
 
@@ -19,8 +20,9 @@ TEST(render_mesh, draw_adds_command)
     mge::program_handle       program{1, 0, 4};
     mge::render_mesh          mesh(vertices, indices);
     mge::command_buffer       command_buffer;
+    mge::pass                 pass(0);
 
-    mesh.draw(command_buffer, program, 12, 6);
+    mesh.draw(command_buffer, pass, program, 12, 6);
 
     size_t count = 0;
     command_buffer.for_each([&](const mge::program_handle& /*p*/,
