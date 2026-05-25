@@ -20,8 +20,8 @@ namespace mge::dx11 {
         ID3D11DepthStencilView* depth_stencil_view() const;
 
     protected:
-        void on_attach_color(mge::texture_ref tex, uint32_t slot) override;
-        void on_attach_depth(mge::texture_ref tex) override;
+        void on_attach_color(const mge::texture_ref& tex, uint32_t slot) override;
+        void on_attach_depth(const mge::texture_ref& tex) override;
 
     private:
         render_context& m_context;

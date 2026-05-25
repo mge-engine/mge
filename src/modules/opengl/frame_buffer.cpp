@@ -22,7 +22,7 @@ namespace mge::opengl {
         }
     }
 
-    void frame_buffer::on_attach_color(mge::texture_ref tex, uint32_t slot)
+    void frame_buffer::on_attach_color(const mge::texture_ref& tex, uint32_t slot)
     {
         auto* gl_tex = static_cast<opengl::texture*>(tex.get());
         glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
@@ -37,7 +37,7 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glBindFramebuffer);
     }
 
-    void frame_buffer::on_attach_depth(mge::texture_ref tex)
+    void frame_buffer::on_attach_depth(const mge::texture_ref& tex)
     {
         auto*  gl_tex = static_cast<opengl::texture*>(tex.get());
         GLenum attachment = gl_tex->is_depth_stencil()

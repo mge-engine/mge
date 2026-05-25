@@ -33,8 +33,8 @@ namespace mge::vulkan {
         }
 
     protected:
-        void on_attach_color(mge::texture_ref tex, uint32_t slot) override;
-        void on_attach_depth(mge::texture_ref tex) override;
+        void on_attach_color(const mge::texture_ref& tex, uint32_t slot) override;
+        void on_attach_depth(const mge::texture_ref& tex) override;
 
     private:
         void create_render_pass(const mge::frame_buffer_info& info);

@@ -14,12 +14,12 @@ namespace mge::dx12 {
 
     frame_buffer::~frame_buffer() = default;
 
-    void frame_buffer::on_attach_color(mge::texture_ref tex, uint32_t slot)
+    void frame_buffer::on_attach_color(const mge::texture_ref& tex, uint32_t slot)
     {
         // RTV and view format are pre-created on the texture
     }
 
-    void frame_buffer::on_attach_depth(mge::texture_ref tex)
+    void frame_buffer::on_attach_depth(const mge::texture_ref& tex)
     {
         // DSV and view format are pre-created on the texture
     }

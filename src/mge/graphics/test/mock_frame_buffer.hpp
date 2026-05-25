@@ -13,6 +13,6 @@ public:
     {}
     ~MOCK_frame_buffer() {}
 
-    MOCK_METHOD(void, on_attach_color, (mge::texture_ref, uint32_t), ());
-    MOCK_METHOD(void, on_attach_depth, (mge::texture_ref), ());
+    MOCK_METHOD(void, on_attach_color, (const mge::texture_ref&, uint32_t), ());
+    MOCK_METHOD(void, on_attach_depth, (const mge::texture_ref&), ());
 };

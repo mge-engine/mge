@@ -36,7 +36,7 @@ namespace mge {
          * @param tex  texture to bind as color attachment
          * @param slot color attachment index (0-based)
          */
-        void attach_color(texture_ref tex, uint32_t slot = 0);
+        void attach_color(const texture_ref& tex, uint32_t slot = 0);
 
         /**
          * @brief Attach a texture as the depth (or depth/stencil) target.
@@ -46,7 +46,7 @@ namespace mge {
          *
          * @param tex texture to bind as depth attachment
          */
-        void attach_depth(texture_ref tex);
+        void attach_depth(const texture_ref& tex);
 
         /**
          * @brief Retrieve a color attachment by slot.
@@ -71,7 +71,7 @@ namespace mge {
          * @param tex  texture being attached
          * @param slot color attachment index (0-based)
          */
-        virtual void on_attach_color(texture_ref tex, uint32_t slot) = 0;
+        virtual void on_attach_color(const texture_ref& tex, uint32_t slot) = 0;
 
         /**
          * @brief Backend hook called by @c attach_depth() before the base
@@ -79,7 +79,7 @@ namespace mge {
          *
          * @param tex texture being attached
          */
-        virtual void on_attach_depth(texture_ref tex) = 0;
+        virtual void on_attach_depth(const texture_ref& tex) = 0;
 
         std::vector<texture_ref> m_color_attachments;
         texture_ref              m_depth_attachment;

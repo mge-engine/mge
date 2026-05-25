@@ -22,8 +22,8 @@ namespace mge::dx12 {
         bool                        has_depth() const;
 
     protected:
-        void on_attach_color(mge::texture_ref tex, uint32_t slot) override;
-        void on_attach_depth(mge::texture_ref tex) override;
+        void on_attach_color(const mge::texture_ref& tex, uint32_t slot) override;
+        void on_attach_depth(const mge::texture_ref& tex) override;
 
     private:
         render_context& m_context;

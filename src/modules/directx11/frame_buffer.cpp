@@ -14,12 +14,12 @@ namespace mge::dx11 {
 
     frame_buffer::~frame_buffer() = default;
 
-    void frame_buffer::on_attach_color(mge::texture_ref tex, uint32_t slot)
+    void frame_buffer::on_attach_color(const mge::texture_ref& tex, uint32_t slot)
     {
         // RTV is pre-created on the texture; no additional DX11 work at attach time
     }
 
-    void frame_buffer::on_attach_depth(mge::texture_ref tex)
+    void frame_buffer::on_attach_depth(const mge::texture_ref& tex)
     {
         // DSV is pre-created on the texture; no additional DX11 work at attach time
     }

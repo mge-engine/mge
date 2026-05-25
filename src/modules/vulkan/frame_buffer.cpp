@@ -90,12 +90,12 @@ namespace mge::vulkan {
         }
     }
 
-    void frame_buffer::on_attach_color(mge::texture_ref tex, uint32_t slot)
+    void frame_buffer::on_attach_color(const mge::texture_ref& tex, uint32_t slot)
     {
         // RTV pre-created on the texture; nothing extra needed here
     }
 
-    void frame_buffer::on_attach_depth(mge::texture_ref tex)
+    void frame_buffer::on_attach_depth(const mge::texture_ref& tex)
     {
         // DSV pre-created on the texture; nothing extra needed here
     }

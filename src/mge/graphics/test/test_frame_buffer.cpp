@@ -35,7 +35,7 @@ TEST_F(frame_buffer_test, attach_color_calls_on_attach_color)
 TEST_F(frame_buffer_test, on_attach_color_called_before_state_update)
 {
     EXPECT_CALL(*fb, on_attach_color(tex, 0u))
-        .WillOnce(Invoke([&](mge::texture_ref, uint32_t) {
+        .WillOnce(Invoke([&](const mge::texture_ref&, uint32_t) {
             EXPECT_FALSE(fb->color_attachment(0));
         }));
     fb->attach_color(tex);
@@ -77,7 +77,7 @@ TEST_F(frame_buffer_test, attach_depth_calls_on_attach_depth)
 TEST_F(frame_buffer_test, on_attach_depth_called_before_state_update)
 {
     EXPECT_CALL(*fb, on_attach_depth(tex))
-        .WillOnce(Invoke([&](mge::texture_ref) {
+        .WillOnce(Invoke([&](const mge::texture_ref&) {
             EXPECT_FALSE(fb->depth_attachment());
         }));
     fb->attach_depth(tex);
