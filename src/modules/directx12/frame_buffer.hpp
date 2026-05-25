@@ -7,12 +7,12 @@
 
 namespace mge::dx12 {
 
-    class render_context;
+    class render_context_base;
 
     class frame_buffer : public mge::frame_buffer
     {
     public:
-        explicit frame_buffer(render_context& ctx);
+        explicit frame_buffer(render_context_base& ctx);
         ~frame_buffer() override;
 
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_cpu_handle(uint32_t slot) const;
@@ -24,9 +24,6 @@ namespace mge::dx12 {
     protected:
         void on_attach_color(const mge::texture_ref& tex, uint32_t slot) override;
         void on_attach_depth(const mge::texture_ref& tex) override;
-
-    private:
-        render_context& m_context;
     };
 
 } // namespace mge::dx12

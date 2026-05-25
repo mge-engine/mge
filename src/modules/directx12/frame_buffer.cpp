@@ -2,24 +2,24 @@
 // Copyright (c) 2017-2026 by Alexander Schroeder
 // All rights reserved.
 #include "frame_buffer.hpp"
-#include "render_context.hpp"
+#include "render_context_base.hpp"
 #include "texture.hpp"
 
 namespace mge::dx12 {
 
-    frame_buffer::frame_buffer(render_context& ctx)
+    frame_buffer::frame_buffer(render_context_base& ctx)
         : mge::frame_buffer(ctx)
-        , m_context(ctx)
     {}
 
     frame_buffer::~frame_buffer() = default;
 
-    void frame_buffer::on_attach_color(const mge::texture_ref& tex, uint32_t slot)
+    void frame_buffer::on_attach_color(const mge::texture_ref& /*tex*/,
+                                        uint32_t /*slot*/)
     {
         // RTV and view format are pre-created on the texture
     }
 
-    void frame_buffer::on_attach_depth(const mge::texture_ref& tex)
+    void frame_buffer::on_attach_depth(const mge::texture_ref& /*tex*/)
     {
         // DSV and view format are pre-created on the texture
     }

@@ -8,13 +8,13 @@
 #include "mge/win32/com_unique_ptr.hpp"
 
 namespace mge::dx12 {
-    class render_context;
+    class render_context_base;
 
     class texture : public mge::texture
     {
     public:
-        texture(render_context& context, mge::texture_type type);
-        texture(render_context&          context,
+        texture(render_context_base& context, mge::texture_type type);
+        texture(render_context_base&     context,
                 mge::texture_type        type,
                 const mge::image_format& format,
                 const mge::extent&       extent);
@@ -24,6 +24,11 @@ namespace mge::dx12 {
                       const mge::extent&       extent,
                       const void*              data,
                       size_t                   size) override;
+
+        ID3D12Resource* resource() const
+        {
+            return m_texture.Get();
+        }
 
         D3D12_GPU_DESCRIPTOR_HANDLE srv_gpu_handle() const
         {
@@ -40,7 +45,6 @@ namespace mge::dx12 {
             return m_dsv_cpu_handle;
         }
 
-        // The actual view format (RTV color format, or DSV depth format)
         DXGI_FORMAT view_dxgi_format() const
         {
             return m_view_dxgi_format;
