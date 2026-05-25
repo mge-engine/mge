@@ -616,7 +616,7 @@ namespace mge::dx12 {
     mge::frame_buffer* render_context::on_create_frame_buffer(
         const mge::frame_buffer_info& info)
     {
-        auto* fb = new dx12::frame_buffer(*this);
+        auto fb = std::make_unique<dx12::frame_buffer>(*this);
 
         for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
             const auto& ca = info.color_attachments[i];
@@ -635,7 +635,7 @@ namespace mge::dx12 {
             fb->attach_depth(tex);
         }
 
-        return fb;
+        return fb.release();
     }
 
     void render_context::copy_resource_sync(ID3D12Resource*       dst,

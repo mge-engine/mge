@@ -563,7 +563,7 @@ namespace mge::opengl {
     mge::frame_buffer*
     render_context::on_create_frame_buffer(const mge::frame_buffer_info& info)
     {
-        auto* fb = new opengl::frame_buffer(*this);
+        auto fb = std::make_unique<opengl::frame_buffer>(*this);
 
         for (uint32_t i = 0; i < info.color_attachments.size(); ++i) {
             const auto& ca = info.color_attachments[i];
@@ -582,7 +582,7 @@ namespace mge::opengl {
             fb->attach_depth(tex);
         }
 
-        return fb;
+        return fb.release();
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)
