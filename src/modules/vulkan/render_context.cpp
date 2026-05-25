@@ -1775,7 +1775,8 @@ namespace mge::vulkan {
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_INLINE);
 
-        // Flip viewport to match OpenGL/DX conventions
+        // use flipped view port to align with opengl and dx
+        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
         const auto& vp = p.viewport();
         VkViewport  viewport{};
         viewport.x = static_cast<float>(vp.x);
