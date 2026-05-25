@@ -51,10 +51,13 @@ namespace mge::dx11 {
                 typeless_fmt = DXGI_FORMAT_R32_TYPELESS;
                 dsv_fmt = DXGI_FORMAT_D32_FLOAT;
                 srv_fmt = DXGI_FORMAT_R32_FLOAT;
-            } else {
+            } else if (format.type() == mge::data_type::UINT16) {
                 typeless_fmt = DXGI_FORMAT_R16_TYPELESS;
                 dsv_fmt = DXGI_FORMAT_D16_UNORM;
                 srv_fmt = DXGI_FORMAT_R16_UNORM;
+            } else {
+                MGE_THROW(mge::illegal_argument)
+                    << "Unsupported depth image format (data type): " << format;
             }
 
             desc.Format = typeless_fmt;
