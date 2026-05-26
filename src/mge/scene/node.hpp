@@ -65,15 +65,43 @@ namespace mge {
 
         explicit node(entity e);
 
+        /**
+         * Get node position.
+         * @return node position
+         */
         const fvec3& position() const;
-        void         set_position(const fvec3& pos);
+        /**
+         * Set node position.
+         * @param pos node position
+         */
+        void set_position(const fvec3& pos);
 
+        /**
+         * Get node rotation.
+         * @return node rotation
+         */
         const fquat& rotation() const;
-        void         set_rotation(const fquat& rot);
+        /**
+         * Set node rotation.
+         * @param rot node rotation
+         */
+        void set_rotation(const fquat& rot);
 
+        /**
+         * Get node scale.
+         * @return node scale
+         */
         const fvec3& scale() const;
-        void         set_scale(const fvec3& s);
+        /**
+         * Set node scale.
+         * @param s node scale
+         */
+        void set_scale(const fvec3& s);
 
+        /**
+         * Get node transform matrix.
+         * @return node transform matrix
+         */
         const fmat4& transform() const;
 
     private:
