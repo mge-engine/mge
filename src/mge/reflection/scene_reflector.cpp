@@ -58,8 +58,8 @@ namespace mge::reflection {
 
         std::span<std::string_view> dependencies() const override
         {
-            static std::array<std::string_view, 4> deps{
-                {"core", "std", "graphics", "input"}};
+            static std::array<std::string_view, 5> deps{
+                {"core", "std", "graphics", "math", "input"}};
             return deps;
         }
     };
