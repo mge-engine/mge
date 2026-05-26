@@ -20,6 +20,12 @@ namespace mge {
     public:
         virtual ~renderer() = default;
 
+        /**
+         * @brief Render the scene.
+         *
+         * @param s       scene to render
+         * @param context render context to use for rendering
+         */
         virtual void render(scene& s, render_context& context) = 0;
     };
 
