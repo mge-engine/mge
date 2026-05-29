@@ -10,7 +10,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
-#include "mge/graphics/memory_mesh.hpp"
+#include "mge/graphics/mesh.hpp"
 
 #include <assimp/DefaultLogger.hpp> // Default logger for Assimp
 #include <assimp/IOStream.hpp>      // C++ stream interface
@@ -328,7 +328,7 @@ namespace mge {
                             a.path().string(),
                             layout);
 
-            auto result = std::make_shared<mge::memory_mesh>(
+            auto result = std::make_shared<mge::mesh>(
                 layout,
                 mge::data_type::UINT32,
                 layout.binary_size() * mesh->mNumVertices,

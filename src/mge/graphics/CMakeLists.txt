@@ -29,7 +29,6 @@ SET(mgegraphics_sources
     image_format.cpp
     memory_image.cpp
     mesh.cpp
-    memory_mesh.cpp
     render_mesh.cpp
     uniform_binding.cpp
     pass.cpp
@@ -80,7 +79,6 @@ SET(mgegraphics_headers
     image_format.hpp
     memory_image.hpp
     mesh.hpp
-    memory_mesh.hpp
     render_mesh.hpp
     uniform_binding.hpp
     rectangle.hpp
