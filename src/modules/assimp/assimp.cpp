@@ -305,18 +305,23 @@ namespace mge {
                                  mge::attribute_semantic::NORMAL);
             }
             if (mesh->HasTangentsAndBitangents()) {
-                MGE_THROW_NOT_IMPLEMENTED
-                    << "Tangents and bitangents in mesh asset";
+                layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
+                                 mge::attribute_semantic::TANGENT);
+                layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
+                                 mge::attribute_semantic::BITANGENT);
             }
+            uint32_t num_texcoord_components = 0;
             if (mesh->HasTextureCoords(0)) {
-                MGE_THROW_NOT_IMPLEMENTED
-                    << "Texture coordinates in mesh asset";
+                num_texcoord_components = mesh->mNumUVComponents[0];
+                layout.push_back(
+                    mge::vertex_format(mge::data_type::FLOAT,
+                                       num_texcoord_components),
+                    mge::attribute_semantic::TEXCOORD);
             }
             if (mesh->HasVertexColors(0)) {
                 MGE_THROW_NOT_IMPLEMENTED << "Vertex colors in mesh asset";
             }
 
-            [[maybe_unused]] auto num_vertices = mesh->mNumVertices;
             MGE_DEBUG_TRACE(ASSIMP,
                             "Mesh {} has {} vertices and {} faces",
                             a.path().string(),
@@ -334,25 +339,40 @@ namespace mge {
                 layout.binary_size() * mesh->mNumVertices,
                 mesh->mNumFaces * 3 * sizeof(uint32_t));
 
-            auto   stride = layout.stride();
-            size_t pos = 0;
+            auto     stride = layout.stride();
+            auto     vdata = static_cast<uint8_t*>(result->vertex_data());
+            size_t   attr = 0;
+
             for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
-                aiVector3D* v = mesh->mVertices + i;
-                memcpy(static_cast<uint8_t*>(result->vertex_data()) + pos,
-                       v,
+                memcpy(vdata + i * stride, mesh->mVertices + i,
                        sizeof(aiVector3D));
-                pos += stride;
             }
+            ++attr;
+
             if (mesh->HasNormals()) {
-                auto normal_offset = layout.offset(1);
-                pos = 0;
+                auto off = layout.offset(attr++);
                 for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
-                    aiVector3D* n = mesh->mNormals + i;
-                    memcpy(static_cast<uint8_t*>(result->vertex_data()) + pos +
-                               normal_offset,
-                           n,
+                    memcpy(vdata + i * stride + off, mesh->mNormals + i,
                            sizeof(aiVector3D));
-                    pos += stride;
+                }
+            }
+            if (mesh->HasTangentsAndBitangents()) {
+                auto toff = layout.offset(attr++);
+                auto boff = layout.offset(attr++);
+                for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
+                    memcpy(vdata + i * stride + toff, mesh->mTangents + i,
+                           sizeof(aiVector3D));
+                    memcpy(vdata + i * stride + boff, mesh->mBitangents + i,
+                           sizeof(aiVector3D));
+                }
+            }
+            if (mesh->HasTextureCoords(0)) {
+                auto off = layout.offset(attr++);
+                auto component_bytes = num_texcoord_components * sizeof(float);
+                for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
+                    memcpy(vdata + i * stride + off,
+                           mesh->mTextureCoords[0] + i,
+                           component_bytes);
                 }
             }
 
