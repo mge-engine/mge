@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
-version = "79"
-vcpkg_githash = "b216ddff25a1f432870e6c340ce79357049ef86e"
+version = "80"
+vcpkg_githash = "d592849579fb1fb22f87406b2184522ea21a8783"
