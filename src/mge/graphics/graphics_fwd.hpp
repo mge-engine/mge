@@ -21,6 +21,7 @@ namespace mge {
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
+    MGE_DECLARE_REF(render_mesh);
 
     MGE_DECLARE_REF(frame_debugger);
 

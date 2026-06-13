@@ -78,5 +78,9 @@ SET(mge_module_reflection_input_SOURCES
 ADD_LIBRARY(mge_module_reflection_input MODULE ${mge_module_reflection_input_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_reflection_input mgereflection mgecore mgeinput)
 
+SET(mge_module_reflection_scene_SOURCES
+    scene_reflector.cpp)
+ADD_LIBRARY(mge_module_reflection_scene MODULE ${mge_module_reflection_scene_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_reflection_scene mgereflection mgecore mgescene)
 
 ADD_SUBDIRECTORY(test)

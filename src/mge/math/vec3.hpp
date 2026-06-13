@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/core/format.hpp"
 #include "mge/math/dllexport.hpp"
 #include "mge/math/glm.hpp"
 
@@ -26,24 +27,65 @@ namespace mge {
         return v.x * v.x + v.y * v.y + v.z * v.z;
     }
 
+} // namespace mge
+
+template <> struct fmt::formatter<mge::fvec3> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::fvec3& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {}, {})", v.x, v.y, v.z);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::ivec3> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::ivec3& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {}, {})", v.x, v.y, v.z);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::uvec3> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::uvec3& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {}, {})", v.x, v.y, v.z);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::dvec3> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::dvec3& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {}, {})", v.x, v.y, v.z);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+
     inline std::ostream& operator<<(std::ostream& os, const fvec3& v)
     {
-        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
     inline std::ostream& operator<<(std::ostream& os, const ivec3& v)
     {
-        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
     inline std::ostream& operator<<(std::ostream& os, const uvec3& v)
     {
-        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
     inline std::ostream& operator<<(std::ostream& os, const dvec3& v)
     {
-        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
 

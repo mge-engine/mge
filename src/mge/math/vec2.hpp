@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/core/format.hpp"
 #include "mge/math/dllexport.hpp"
 #include "mge/math/glm.hpp"
 
@@ -26,21 +27,65 @@ namespace mge {
         return v.x * v.x + v.y * v.y;
     }
 
+} // namespace mge
+
+template <> struct fmt::formatter<mge::fvec2> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::fvec2& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {})", v.x, v.y);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::ivec2> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::ivec2& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {})", v.x, v.y);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::uvec2> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::uvec2& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {})", v.x, v.y);
+        return ctx.out();
+    }
+};
+template <> struct fmt::formatter<mge::dvec2> : fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::dvec2& v, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "({}, {})", v.x, v.y);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+
     inline std::ostream& operator<<(std::ostream& os, const fvec2& v)
     {
-        os << "(" << v.x << ", " << v.y << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
-
     inline std::ostream& operator<<(std::ostream& os, const ivec2& v)
     {
-        os << "(" << v.x << ", " << v.y << ")";
+        fmt::print(os, "{}", v);
         return os;
     }
-
     inline std::ostream& operator<<(std::ostream& os, const uvec2& v)
     {
-        os << "(" << v.x << ", " << v.y << ")";
+        fmt::print(os, "{}", v);
+        return os;
+    }
+    inline std::ostream& operator<<(std::ostream& os, const dvec2& v)
+    {
+        fmt::print(os, "{}", v);
         return os;
     }
 

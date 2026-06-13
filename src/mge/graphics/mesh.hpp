@@ -3,7 +3,6 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/buffer.hpp"
-#include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
@@ -13,95 +12,72 @@
 namespace mge {
 
     /**
-     * @brief A mesh is a collection of vertices and indices.
+     * @brief A mesh is a collection of vertices and indices stored in memory.
      *
-     * Note that a mesh is not a vertex or index buffer, but the representation
-     * vertices and indices in memory (or accessible). A mesh can be used to
-     * create vertex and index buffers, but is not necessarily a buffer itself.
+     * A mesh is a concrete buffer of vertex and index data. Use @c render_mesh
+     * to upload mesh data to the GPU for rendering.
      */
     class MGEGRAPHICS_EXPORT mesh
     {
-    protected:
-        /**
-         * @brief Construct a new mesh object.
-         *
-         * @param layout vertex layout
-         * @param index_element_type type of index buffer elements, default
-         * UINT32
-         */
-        mesh(const vertex_layout& layout,
-             data_type            index_element_type = data_type::UINT32);
-
     public:
-        virtual ~mesh() = default;
+        mesh(const vertex_layout& layout,
+             data_type            index_element_type,
+             size_t               vertex_size,
+             size_t               index_size);
 
-        /**
-         * @brief Get the vertex layout of the mesh.
-         *
-         * @return vertex layout of the mesh
-         */
-        const vertex_layout& layout() const
+        mesh(const mesh&) = delete;
+        mesh(mesh&&) = delete;
+        mesh& operator=(const mesh&) = delete;
+        mesh& operator=(mesh&&) = delete;
+
+        ~mesh() = default;
+
+        const vertex_layout& layout() const { return m_vertex_layout; }
+
+        data_type index_element_type() const noexcept
         {
-            return m_vertex_layout;
+            return m_index_element_type;
         }
 
-        /**
-         * @brief Size of the vertex data in bytes.
-         * @return size of the vertex data in bytes
-         */
-        virtual size_t vertex_data_size() const = 0;
+        size_t vertex_data_size() const { return m_vertices->size(); }
 
-        /**
-         * @brief Size of the index data in bytes.
-         * @return size of the index data in bytes
-         */
-        virtual size_t index_data_size() const = 0;
+        size_t index_data_size() const { return m_indices->size(); }
 
-        /**
-         * @brief Raw vertex data.
-         * @return vertex data
-         */
-        virtual void* vertex_data() const = 0;
+        void* vertex_data() const
+        {
+            return static_cast<void*>(
+                const_cast<std::byte*>(m_vertices->data()));
+        }
 
-        /**
-         * @brief Raw index data.
-         * @return index data
-         */
-        virtual void* index_data() const = 0;
+        void* index_data() const
+        {
+            return static_cast<void*>(
+                const_cast<std::byte*>(m_indices->data()));
+        }
 
-        /**
-         * @brief Vertex data of the mesh.
-         *
-         * @return vertex data of the mesh
-         */
-        virtual std::span<std::byte> vertex_data_span() const = 0;
+        std::span<std::byte> vertex_data_span() const
+        {
+            return std::span<std::byte>(
+                const_cast<std::byte*>(m_vertices->data()),
+                m_vertices->size());
+        }
 
-        /**
-         * @brief Index data of the mesh.
-         *
-         * @return index data of the mesh
-         */
-        virtual std::span<std::byte> index_data_span() const = 0;
+        std::span<std::byte> index_data_span() const
+        {
+            return std::span<std::byte>(
+                const_cast<std::byte*>(m_indices->data()),
+                m_indices->size());
+        }
 
-        /**
-         * @brief Get the vertex buffer as buffer reference.
-         * Depending on the implementation of the mesh, this may return a copy.
-         *
-         * @return vertex buffer reference
-         */
-        virtual buffer_ref vertices() const = 0;
+        buffer_ref vertices() const { return m_vertices; }
 
-        /**
-         * @brief Get the index buffer reference.
-         * Depending on the implementation of the mesh, this may return a copy.
-         *
-         * @return index buffer reference
-         */
-        virtual buffer_ref indices() const = 0;
+        buffer_ref indices() const { return m_indices; }
 
     private:
-        vertex_layout              m_vertex_layout;
-        [[maybe_unused]] data_type m_index_element_type;
+        vertex_layout m_vertex_layout;
+        data_type     m_index_element_type;
+        buffer_ref    m_vertices;
+        buffer_ref    m_indices;
     };
 
 } // namespace mge

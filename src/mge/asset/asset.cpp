@@ -44,6 +44,12 @@ namespace mge {
     //                "type": "zip",
     //                "mount_point": "/zipassets",
     //                "file": "assets.zip"
+    //            },
+    //            {
+    //                "type": "db",
+    //                "mount_point": "/dbassets",
+    //                "mode": "rw",
+    //                "path": "assets.db"
     //            }
     //        ]
     //    }
